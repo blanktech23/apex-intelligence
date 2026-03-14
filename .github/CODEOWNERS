@@ -1,0 +1,9 @@
+# Default owner for everything
+* @blanktech23
+
+# CI/CD and GitHub infrastructure
+/.github/ @blanktech23
+
+# Security-sensitive areas
+/src/auth/ @blanktech23
+/src/middleware/ @blanktech23
