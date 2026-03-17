@@ -1,0 +1,2519 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
+import { useParams } from "next/navigation";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  ArrowUp,
+  BarChart3,
+  Bot,
+  Calendar,
+  Check,
+  CheckCircle2,
+  Clock,
+  FileText,
+  Headset,
+  Mail,
+  Megaphone,
+  CalendarClock,
+  Calculator,
+  BookOpen,
+  FolderKanban,
+  HardHat,
+  Loader2,
+  MessageSquarePlus,
+  Palette,
+  Paperclip,
+  PenLine,
+  Sparkles,
+  Wrench,
+  X,
+  type LucideIcon,
+} from "lucide-react";
+
+// ---------------------------------------------------------------------------
+// Agent Maps
+// ---------------------------------------------------------------------------
+
+const agentIconMap: Record<string, LucideIcon> = {
+  "customer-support": Headset,
+  "sales-outreach": Megaphone,
+  scheduling: CalendarClock,
+  estimation: Calculator,
+  bookkeeping: BookOpen,
+  "project-management": FolderKanban,
+  "field-operations": HardHat,
+};
+
+const agentNameMap: Record<string, string> = {
+  "customer-support": "Customer Support Agent",
+  "sales-outreach": "Sales Outreach Agent",
+  scheduling: "Scheduling Agent",
+  estimation: "Estimation Agent",
+  bookkeeping: "Bookkeeping Agent",
+  "project-management": "Project Management Agent",
+  "field-operations": "Field Operations Agent",
+};
+
+const agentColorMap: Record<
+  string,
+  { icon: string; glow: string; bubble: string }
+> = {
+  "customer-support": {
+    icon: "bg-indigo-500/15 text-indigo-400 ring-indigo-500/20",
+    glow: "shadow-[0_0_16px_rgba(99,102,241,0.15)]",
+    bubble: "border-indigo-500/10",
+  },
+  "sales-outreach": {
+    icon: "bg-pink-500/15 text-pink-400 ring-pink-500/20",
+    glow: "shadow-[0_0_16px_rgba(236,72,153,0.15)]",
+    bubble: "border-pink-500/10",
+  },
+  scheduling: {
+    icon: "bg-cyan-500/15 text-cyan-400 ring-cyan-500/20",
+    glow: "shadow-[0_0_16px_rgba(34,211,238,0.15)]",
+    bubble: "border-cyan-500/10",
+  },
+  estimation: {
+    icon: "bg-amber-500/15 text-amber-400 ring-amber-500/20",
+    glow: "shadow-[0_0_16px_rgba(245,158,11,0.15)]",
+    bubble: "border-amber-500/10",
+  },
+  bookkeeping: {
+    icon: "bg-green-500/15 text-green-400 ring-green-500/20",
+    glow: "shadow-[0_0_16px_rgba(34,197,94,0.15)]",
+    bubble: "border-green-500/10",
+  },
+  "project-management": {
+    icon: "bg-violet-500/15 text-violet-400 ring-violet-500/20",
+    glow: "shadow-[0_0_16px_rgba(139,92,246,0.15)]",
+    bubble: "border-violet-500/10",
+  },
+  "field-operations": {
+    icon: "bg-orange-500/15 text-orange-400 ring-orange-500/20",
+    glow: "shadow-[0_0_16px_rgba(249,115,22,0.15)]",
+    bubble: "border-orange-500/10",
+  },
+};
+
+// Plan v3 ID → legacy data ID alias map
+const idAliasMap: Record<string, string> = {
+  "support-agent": "customer-support",
+  "discovery-concierge": "sales-outreach",
+  "project-orchestrator": "scheduling",
+  "estimate-engine": "estimation",
+  "operations-controller": "bookkeeping",
+  "executive-navigator": "project-management",
+  "design-spec-assistant": "field-operations",
+};
+
+// Plan v3 canonical display names
+const v3NameMap: Record<string, string> = {
+  "discovery-concierge": "Discovery Concierge",
+  "estimate-engine": "Estimate Engine",
+  "operations-controller": "Operations Controller",
+  "executive-navigator": "Executive Navigator",
+  "project-orchestrator": "Project Orchestrator",
+  "design-spec-assistant": "Design Spec Assistant",
+  "support-agent": "Support Agent",
+};
+
+// Plan v3 icons
+const v3IconMap: Record<string, LucideIcon> = {
+  "discovery-concierge": Mail,
+  "estimate-engine": Calculator,
+  "operations-controller": Wrench,
+  "executive-navigator": BarChart3,
+  "project-orchestrator": Calendar,
+  "design-spec-assistant": Palette,
+  "support-agent": Headset,
+};
+
+const defaultColor = {
+  icon: "bg-indigo-500/15 text-indigo-400 ring-indigo-500/20",
+  glow: "shadow-[0_0_16px_rgba(99,102,241,0.15)]",
+  bubble: "border-indigo-500/10",
+};
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+interface ConversationPreview {
+  id: string;
+  title: string;
+  preview: string;
+  date: string;
+  messageCount: number;
+  active?: boolean;
+}
+
+type MessageRole = "user" | "agent";
+
+interface StructuredCard {
+  type:
+    | "invoice"
+    | "email"
+    | "status"
+    | "leads"
+    | "schedule"
+    | "estimate"
+    | "financial"
+    | "dashboard"
+    | "inspection"
+    | "weather"
+    | "message"
+    | "pnl"
+    | "table";
+  data: Record<string, unknown>;
+}
+
+interface ActionButton {
+  label: string;
+  variant: "primary" | "secondary" | "danger";
+  icon?: LucideIcon;
+}
+
+interface ChatMessage {
+  id: string;
+  role: MessageRole;
+  content: string;
+  timestamp: string;
+  card?: StructuredCard;
+  actions?: ActionButton[];
+  attachment?: { name: string; type: string };
+  statusItems?: string[];
+  statusComplete?: boolean;
+  thinking?: string;
+}
+
+// ---------------------------------------------------------------------------
+// Mock: Sidebar conversations (per agent)
+// ---------------------------------------------------------------------------
+
+const conversationsByAgent: Record<string, ConversationPreview[]> = {
+  "customer-support": [
+    {
+      id: "conv-1",
+      title: "Invoice dispute - Harbor View",
+      preview:
+        "Looking into invoice #4521 overcharge for tile work...",
+      date: "Today, 2:30 PM",
+      messageCount: 8,
+      active: true,
+    },
+    {
+      id: "conv-2",
+      title: "Warranty claim - Pacific Corp",
+      preview:
+        "Verified warranty coverage for exterior siding issue...",
+      date: "Today, 11:15 AM",
+      messageCount: 10,
+    },
+    {
+      id: "conv-3",
+      title: "Client complaint - noise hours",
+      preview:
+        "Addressed noise complaint from neighbor at Riverside site...",
+      date: "Today, 9:40 AM",
+      messageCount: 6,
+    },
+    {
+      id: "conv-4",
+      title: "Refund request - Summit Heights",
+      preview: "Processing partial refund for delayed completion...",
+      date: "Yesterday, 3:20 PM",
+      messageCount: 12,
+    },
+    {
+      id: "conv-5",
+      title: "Client onboarding - Bayshore",
+      preview:
+        "Set up Bayshore Development in CRM with 4 contacts...",
+      date: "Yesterday, 1:30 PM",
+      messageCount: 9,
+    },
+    {
+      id: "conv-6",
+      title: "Service follow-up - Castillo",
+      preview:
+        "Sent 30-day follow-up survey to Castillo residence...",
+      date: "Mar 14, 4:00 PM",
+      messageCount: 4,
+    },
+    {
+      id: "conv-7",
+      title: "Escalation - delayed permit",
+      preview:
+        "Escalated permit delay concern to project management...",
+      date: "Mar 14, 10:00 AM",
+      messageCount: 7,
+    },
+  ],
+  "sales-outreach": [
+    {
+      id: "conv-1",
+      title: "New lead qualification - batch",
+      preview:
+        "Qualified 3 new website leads. Meridian Properties is top priority...",
+      date: "Today, 10:15 AM",
+      messageCount: 6,
+      active: true,
+    },
+    {
+      id: "conv-2",
+      title: "Proposal draft - Greenfield Corp",
+      preview:
+        "Drafted $520K proposal for commercial renovation...",
+      date: "Today, 8:45 AM",
+      messageCount: 8,
+    },
+    {
+      id: "conv-3",
+      title: "Follow-up sequence - cold leads",
+      preview:
+        "Scheduled 12 follow-up emails for dormant leads...",
+      date: "Yesterday, 4:30 PM",
+      messageCount: 5,
+    },
+    {
+      id: "conv-4",
+      title: "Pipeline review - Q1 close",
+      preview:
+        "Reviewed $1.2M pipeline. 4 deals likely to close this month...",
+      date: "Yesterday, 2:00 PM",
+      messageCount: 10,
+    },
+    {
+      id: "conv-5",
+      title: "Competitor analysis - Titan Build",
+      preview:
+        "Titan Build is underbidding on commercial jobs by 8-12%...",
+      date: "Mar 14, 3:15 PM",
+      messageCount: 7,
+    },
+    {
+      id: "conv-6",
+      title: "Referral outreach - happy clients",
+      preview:
+        "Sent referral request to 6 clients with 5-star reviews...",
+      date: "Mar 14, 11:00 AM",
+      messageCount: 4,
+    },
+    {
+      id: "conv-7",
+      title: "Trade show leads import",
+      preview:
+        "Imported 28 leads from HomeBuilder Expo. Scoring in progress...",
+      date: "Mar 13, 9:30 AM",
+      messageCount: 6,
+    },
+  ],
+  scheduling: [
+    {
+      id: "conv-1",
+      title: "Crew conflict - Summit Heights",
+      preview:
+        "Mike's crew can't make Wednesday. Finding coverage options...",
+      date: "Today, 9:00 AM",
+      messageCount: 6,
+      active: true,
+    },
+    {
+      id: "conv-2",
+      title: "Weekly schedule - Mar 17-21",
+      preview:
+        "Generated next week schedule for 5 crews across 8 sites...",
+      date: "Today, 7:30 AM",
+      messageCount: 4,
+    },
+    {
+      id: "conv-3",
+      title: "Overtime approval - Riverside",
+      preview:
+        "David's crew needs Saturday overtime to meet deadline...",
+      date: "Yesterday, 4:45 PM",
+      messageCount: 5,
+    },
+    {
+      id: "conv-4",
+      title: "Subcontractor coordination",
+      preview:
+        "Aligned plumbing sub schedule with framing completion...",
+      date: "Yesterday, 1:00 PM",
+      messageCount: 8,
+    },
+    {
+      id: "conv-5",
+      title: "PTO conflict resolution",
+      preview:
+        "Resolved 3 overlapping PTO requests for next week...",
+      date: "Mar 14, 3:30 PM",
+      messageCount: 6,
+    },
+    {
+      id: "conv-6",
+      title: "Equipment scheduling - crane",
+      preview:
+        "Booked crane rental for Harbor View pour on Tuesday...",
+      date: "Mar 14, 10:15 AM",
+      messageCount: 3,
+    },
+    {
+      id: "conv-7",
+      title: "Rain delay reschedule",
+      preview:
+        "Rescheduled 3 exterior jobs due to Thursday rain forecast...",
+      date: "Mar 13, 2:00 PM",
+      messageCount: 7,
+    },
+  ],
+  estimation: [
+    {
+      id: "conv-1",
+      title: "Kitchen & bath reno - 742 Oak St",
+      preview:
+        "Generated $118.5K estimate for 2,500 sq ft renovation...",
+      date: "Today, 11:00 AM",
+      messageCount: 6,
+      active: true,
+    },
+    {
+      id: "conv-2",
+      title: "Commercial buildout - Meridian",
+      preview:
+        "Detailed $340K estimate with phased pricing breakdown...",
+      date: "Today, 8:30 AM",
+      messageCount: 10,
+    },
+    {
+      id: "conv-3",
+      title: "Material price update - lumber",
+      preview:
+        "Lumber prices up 6% this month. Updated 12 active estimates...",
+      date: "Yesterday, 3:00 PM",
+      messageCount: 5,
+    },
+    {
+      id: "conv-4",
+      title: "Comp analysis - 800 Elm renovation",
+      preview:
+        "Pulled 5 comparable projects to validate pricing...",
+      date: "Yesterday, 11:30 AM",
+      messageCount: 7,
+    },
+    {
+      id: "conv-5",
+      title: "Change order estimate - CO-005",
+      preview:
+        "Priced additional bathroom at $18,200 for Harbor View...",
+      date: "Mar 14, 4:00 PM",
+      messageCount: 4,
+    },
+    {
+      id: "conv-6",
+      title: "Bid comparison - Lakewood",
+      preview:
+        "Compared our bid vs 2 competitors. We're 4% higher on labor...",
+      date: "Mar 14, 9:45 AM",
+      messageCount: 8,
+    },
+    {
+      id: "conv-7",
+      title: "Permit fee calculation",
+      preview:
+        "Calculated permit fees for 3 pending projects. Total: $8,400...",
+      date: "Mar 13, 1:15 PM",
+      messageCount: 3,
+    },
+  ],
+  bookkeeping: [
+    {
+      id: "conv-1",
+      title: "March reconciliation discrepancy",
+      preview:
+        "Investigating $3,400 discrepancy in QuickBooks for March...",
+      date: "Today, 10:30 AM",
+      messageCount: 6,
+      active: true,
+    },
+    {
+      id: "conv-2",
+      title: "Invoice batch - 8 outstanding",
+      preview:
+        "Generated and sent 8 invoices totaling $142,600...",
+      date: "Today, 8:00 AM",
+      messageCount: 5,
+    },
+    {
+      id: "conv-3",
+      title: "Payroll review - biweekly",
+      preview:
+        "Reviewed payroll for 24 employees. Total: $87,400...",
+      date: "Yesterday, 4:00 PM",
+      messageCount: 7,
+    },
+    {
+      id: "conv-4",
+      title: "Tax prep - Q1 estimates",
+      preview:
+        "Calculated Q1 estimated tax payments. Federal: $12,800...",
+      date: "Yesterday, 1:45 PM",
+      messageCount: 9,
+    },
+    {
+      id: "conv-5",
+      title: "Expense report - Summit Heights",
+      preview:
+        "Categorized $23,400 in expenses across 6 cost codes...",
+      date: "Mar 14, 3:30 PM",
+      messageCount: 4,
+    },
+    {
+      id: "conv-6",
+      title: "Vendor payment schedule",
+      preview:
+        "Scheduled $67,200 in vendor payments for next week...",
+      date: "Mar 14, 10:00 AM",
+      messageCount: 6,
+    },
+    {
+      id: "conv-7",
+      title: "Cash flow forecast - April",
+      preview:
+        "Projected cash flow shows $28K surplus by end of April...",
+      date: "Mar 13, 2:30 PM",
+      messageCount: 8,
+    },
+  ],
+  "project-management": [
+    {
+      id: "conv-1",
+      title: "Active projects status review",
+      preview:
+        "Reviewing all 5 active projects. Lakewood flagged as at-risk...",
+      date: "Today, 9:15 AM",
+      messageCount: 6,
+      active: true,
+    },
+    {
+      id: "conv-2",
+      title: "Risk mitigation - Lakewood",
+      preview:
+        "Concrete sub no-showed twice. Escalating to backup...",
+      date: "Today, 7:45 AM",
+      messageCount: 8,
+    },
+    {
+      id: "conv-3",
+      title: "Client milestone update - Riverside",
+      preview:
+        "Sent progress report. 67% complete, on track for July...",
+      date: "Yesterday, 3:30 PM",
+      messageCount: 5,
+    },
+    {
+      id: "conv-4",
+      title: "Resource allocation review",
+      preview:
+        "Rebalanced crew hours across 5 projects for next sprint...",
+      date: "Yesterday, 11:00 AM",
+      messageCount: 10,
+    },
+    {
+      id: "conv-5",
+      title: "Change order tracking",
+      preview:
+        "3 pending change orders worth $42K. 2 need client approval...",
+      date: "Mar 14, 4:15 PM",
+      messageCount: 6,
+    },
+    {
+      id: "conv-6",
+      title: "Weekly standup prep",
+      preview:
+        "Compiled talking points and blockers for Monday standup...",
+      date: "Mar 14, 9:00 AM",
+      messageCount: 4,
+    },
+    {
+      id: "conv-7",
+      title: "Timeline adjustment - Harbor View",
+      preview:
+        "Extended timeline 5 days due to permit delay. Updated Gantt...",
+      date: "Mar 13, 3:00 PM",
+      messageCount: 7,
+    },
+  ],
+  "field-operations": [
+    {
+      id: "conv-1",
+      title: "Foundation inspection - Summit Heights",
+      preview:
+        "Logging foundation inspection. Soil compaction issue flagged...",
+      date: "Today, 2:00 PM",
+      messageCount: 6,
+      active: true,
+    },
+    {
+      id: "conv-2",
+      title: "Safety incident report - Riverside",
+      preview:
+        "Minor incident logged. Worker tripped on debris. No injury...",
+      date: "Today, 10:30 AM",
+      messageCount: 5,
+    },
+    {
+      id: "conv-3",
+      title: "Material delivery tracking",
+      preview:
+        "Tracked 3 deliveries. Lumber arrived, drywall delayed...",
+      date: "Today, 8:15 AM",
+      messageCount: 4,
+    },
+    {
+      id: "conv-4",
+      title: "Daily progress photos - Harbor View",
+      preview:
+        "Uploaded 12 photos documenting framing completion...",
+      date: "Yesterday, 4:30 PM",
+      messageCount: 7,
+    },
+    {
+      id: "conv-5",
+      title: "Equipment maintenance alert",
+      preview:
+        "Excavator #3 due for service. Scheduled for Saturday...",
+      date: "Yesterday, 1:00 PM",
+      messageCount: 3,
+    },
+    {
+      id: "conv-6",
+      title: "OSHA compliance check",
+      preview:
+        "Pre-inspection checklist completed. 2 items need attention...",
+      date: "Mar 14, 3:45 PM",
+      messageCount: 8,
+    },
+    {
+      id: "conv-7",
+      title: "Punch list - Castillo residence",
+      preview:
+        "Generated punch list: 14 items remaining before final walkthrough...",
+      date: "Mar 13, 11:00 AM",
+      messageCount: 6,
+    },
+    {
+      id: "conv-8",
+      title: "Weather delay plan",
+      preview:
+        "Created contingency plan for Thursday storm. 3 sites affected...",
+      date: "Mar 13, 9:00 AM",
+      messageCount: 5,
+    },
+  ],
+};
+
+// ---------------------------------------------------------------------------
+// Mock: Chat messages (per agent)
+// ---------------------------------------------------------------------------
+
+const messagesByAgent: Record<string, ChatMessage[]> = {
+  // ===================== CUSTOMER SUPPORT =====================
+  "customer-support": [
+    {
+      id: "m1",
+      role: "user",
+      content:
+        "A customer called about invoice #4521 \u2014 they say they were overcharged for the tile work on the Harbor View project. Can you look into this?",
+      timestamp: "2:31 PM",
+    },
+    {
+      id: "m2",
+      role: "agent",
+      content:
+        "I've pulled up invoice #4521 for Harbor View Kitchen Remodel. Here's what I found:",
+      timestamp: "2:31 PM",
+      card: {
+        type: "invoice",
+        data: {
+          invoiceNumber: "#4521",
+          project: "Harbor View Kitchen Remodel",
+          client: "Sarah Chen - Harbor View Construction",
+          rows: [
+            { label: "Original Estimate (Tile)", value: "$12,400.00" },
+            { label: "Invoiced Amount", value: "$14,800.00" },
+            {
+              label: "Variance",
+              value: "+$2,400.00 (19.4% over)",
+              highlight: true,
+            },
+          ],
+          note: 'The overage appears to stem from Change Order CO-002 which added premium backsplash tile (Carrara marble herringbone). However, the change order is currently marked as "Pending Approval" and may not have been signed off by the customer.',
+        },
+      },
+    },
+    {
+      id: "m3",
+      role: "user",
+      content:
+        "Can you draft a response email to the customer explaining this?",
+      timestamp: "2:32 PM",
+    },
+    {
+      id: "m4",
+      role: "agent",
+      content: "Here's a draft email to Sarah Chen at Harbor View Construction:",
+      timestamp: "2:32 PM",
+      card: {
+        type: "email",
+        data: {
+          to: "sarah.chen@harborview.co",
+          subject: "Re: Invoice #4521 - Harbor View Kitchen Remodel",
+          body: "Dear Sarah,\n\nThank you for reaching out regarding invoice #4521 for the Harbor View Kitchen Remodel project.\n\nAfter reviewing the invoice, we identified that the $2,400 difference between the original estimate ($12,400) and the invoiced amount ($14,800) is attributable to Change Order CO-002, which included an upgrade to premium Carrara marble herringbone backsplash tile.\n\nWe noticed that this change order is still marked as pending approval in our system. We want to ensure full transparency \u2014 if this upgrade was not explicitly authorized, we will adjust the invoice to reflect the original estimate.\n\nPlease let us know how you'd like to proceed, and we'll make the correction immediately.\n\nBest regards,\nApex Intelligence Team",
+        },
+      },
+      actions: [
+        { label: "Approve & Send", variant: "primary", icon: Check },
+        { label: "Edit Before Sending", variant: "secondary", icon: PenLine },
+        { label: "Reject", variant: "danger", icon: X },
+      ],
+    },
+    {
+      id: "m5",
+      role: "user",
+      content:
+        "Edit the tone to be more apologetic and offer a 5% discount",
+      timestamp: "2:33 PM",
+    },
+    {
+      id: "m6",
+      role: "agent",
+      content:
+        "Updated draft with a more apologetic tone and 5% discount offer:",
+      timestamp: "2:33 PM",
+      card: {
+        type: "email",
+        data: {
+          to: "sarah.chen@harborview.co",
+          subject:
+            "Re: Invoice #4521 - Harbor View Kitchen Remodel \u2014 Our Apologies",
+          body: "Dear Sarah,\n\nI sincerely apologize for the confusion and frustration caused by the discrepancy on invoice #4521. This is not the experience we want for our valued clients, and I appreciate you bringing it to our attention.\n\nAfter a thorough review, the $2,400 overage stems from Change Order CO-002 (premium Carrara marble herringbone backsplash). Our records show this change order was never fully approved, which means it should not have been included in the final invoice. This was an error on our part.\n\nTo make this right, we will:\n\n1. Immediately adjust the invoice to remove the unapproved charges\n2. Apply an additional 5% courtesy discount on the tile work as an apology for the inconvenience\n\nYour revised invoice total for tile work will be $11,780.00 (original $12,400 less 5% discount).\n\nWe value our relationship with Harbor View Construction and are committed to making sure this is resolved to your complete satisfaction.\n\nWith sincere apologies,\nApex Intelligence Team",
+        },
+      },
+      actions: [
+        { label: "Approve & Send", variant: "primary", icon: Check },
+        { label: "Edit Before Sending", variant: "secondary", icon: PenLine },
+        { label: "Reject", variant: "danger", icon: X },
+      ],
+    },
+    {
+      id: "m7",
+      role: "user",
+      content: "Perfect, send it",
+      timestamp: "2:34 PM",
+    },
+    {
+      id: "m8",
+      role: "agent",
+      content:
+        "Email sent to sarah.chen@harborview.co at 2:34 PM. I've also taken care of the follow-up items:",
+      timestamp: "2:34 PM",
+      statusItems: [
+        "Updated invoice notes in QuickBooks with discount and reason code",
+        "Created a follow-up task for March 19 to confirm customer satisfaction",
+        "Logged this interaction in the CRM under Harbor View Construction",
+        "Attached the revised invoice PDF to the email thread",
+      ],
+      statusComplete: true,
+      attachment: { name: "Invoice_4521_Revised.pdf", type: "pdf" },
+    },
+  ],
+
+  // ===================== SALES OUTREACH =====================
+  "sales-outreach": [
+    {
+      id: "m1",
+      role: "user",
+      content:
+        "We got 3 new leads from the website this morning. Can you qualify them?",
+      timestamp: "10:15 AM",
+    },
+    {
+      id: "m2",
+      role: "agent",
+      content:
+        'Based on my analysis, Lead #1 (Meridian Properties \u2014 $340K commercial buildout) is highest priority. They match our ideal customer profile and have budget approval.',
+      timestamp: "10:16 AM",
+      card: {
+        type: "leads",
+        data: {
+          leads: [
+            {
+              rank: 1,
+              company: "Meridian Properties",
+              contact: "James Thornton, VP Development",
+              project: "Commercial office buildout",
+              value: "$340,000",
+              score: 92,
+              scoreColor: "green",
+              notes: "Budget approved, timeline Q2, matches ICP",
+            },
+            {
+              rank: 2,
+              company: "Sunrise Senior Living",
+              contact: "Diana Moss, Facilities Dir.",
+              project: "Bathroom ADA retrofits (12 units)",
+              value: "$185,000",
+              score: 74,
+              scoreColor: "amber",
+              notes: "Budget pending board approval in April",
+            },
+            {
+              rank: 3,
+              company: "Parker Residence",
+              contact: "Tom Parker, Homeowner",
+              project: "Kitchen remodel",
+              value: "$45,000",
+              score: 51,
+              scoreColor: "red",
+              notes: "Early research phase, no timeline set",
+            },
+          ],
+        },
+      },
+    },
+    {
+      id: "m3",
+      role: "user",
+      content: "Draft a personalized outreach email for the Meridian lead",
+      timestamp: "10:17 AM",
+    },
+    {
+      id: "m4",
+      role: "agent",
+      content:
+        "Here's a personalized email for James Thornton at Meridian Properties. I referenced the Summit Heights commercial project we completed last quarter as a comparable:",
+      timestamp: "10:17 AM",
+      card: {
+        type: "email",
+        data: {
+          to: "j.thornton@meridianproperties.com",
+          subject:
+            "Apex Intelligence \u2014 Commercial Buildout Expertise for Meridian",
+          body: "Hi James,\n\nI came across Meridian Properties' expansion plans and wanted to reach out. At Apex Intelligence, we specialize in commercial buildouts exactly like what you're planning.\n\nWe recently completed a similar $380K commercial office buildout at Summit Heights \u2014 delivered 2 weeks early and 3% under budget. The project included open-concept workspace, conference rooms, and a full server room buildout.\n\nI'd love to share some photos and discuss how we could bring the same efficiency to your project. Are you available for a quick 15-minute call this week?\n\nA few things that set us apart:\n\u2022 AI-powered project scheduling that eliminates crew conflicts\n\u2022 Real-time budget tracking with no surprise overages\n\u2022 Average client satisfaction score of 4.9/5.0\n\nLooking forward to connecting.\n\nBest,\nApex Intelligence Team",
+        },
+      },
+      actions: [
+        { label: "Approve & Send", variant: "primary", icon: Check },
+        { label: "Edit Before Sending", variant: "secondary", icon: PenLine },
+        { label: "Reject", variant: "danger", icon: X },
+      ],
+    },
+    {
+      id: "m5",
+      role: "user",
+      content:
+        "Looks great, send it and schedule a follow-up for Thursday",
+      timestamp: "10:18 AM",
+    },
+    {
+      id: "m6",
+      role: "agent",
+      content:
+        "Done! Email sent and follow-up call scheduled for Thursday 2:00 PM. I've also added them to the CRM pipeline as 'Warm Lead'.",
+      timestamp: "10:18 AM",
+      statusItems: [
+        "Email sent to j.thornton@meridianproperties.com",
+        "Follow-up call scheduled: Thursday, Mar 20 at 2:00 PM",
+        "Added Meridian Properties to CRM pipeline \u2014 Stage: Warm Lead",
+        "Set automated reminder for Wednesday evening to prep call notes",
+      ],
+      statusComplete: true,
+    },
+  ],
+
+  // ===================== SCHEDULING =====================
+  scheduling: [
+    {
+      id: "m1",
+      role: "user",
+      content:
+        "Mike's crew can't make it to the Summit Heights job on Wednesday. We need to figure out coverage.",
+      timestamp: "9:00 AM",
+    },
+    {
+      id: "m2",
+      role: "agent",
+      content:
+        "I found 2 options to cover the Summit Heights gap on Wednesday:",
+      timestamp: "9:01 AM",
+      card: {
+        type: "schedule",
+        data: {
+          title: "Week of March 17 \u2014 Crew Assignments",
+          conflict: "Wednesday, Mar 19 \u2014 Summit Heights (Mike's Crew unavailable)",
+          rows: [
+            {
+              day: "Mon",
+              assignments: [
+                { crew: "Mike", site: "Summit Heights" },
+                { crew: "Carlos", site: "Lakewood" },
+                { crew: "David", site: "Riverside" },
+              ],
+            },
+            {
+              day: "Tue",
+              assignments: [
+                { crew: "Mike", site: "Summit Heights" },
+                { crew: "Carlos", site: "Lakewood" },
+                { crew: "David", site: "Riverside" },
+              ],
+            },
+            {
+              day: "Wed",
+              assignments: [
+                {
+                  crew: "Mike",
+                  site: "Summit Heights",
+                  highlight: true,
+                  label: "CONFLICT",
+                },
+                { crew: "Carlos", site: "Lakewood" },
+                { crew: "David", site: "Riverside" },
+              ],
+            },
+            {
+              day: "Thu",
+              assignments: [
+                { crew: "Mike", site: "Summit Heights" },
+                { crew: "Carlos", site: "Lakewood" },
+                { crew: "David", site: "Riverside" },
+              ],
+            },
+            {
+              day: "Fri",
+              assignments: [
+                { crew: "Mike", site: "Summit Heights" },
+                { crew: "Carlos", site: "Lakewood" },
+                { crew: "David", site: "Harbor View" },
+              ],
+            },
+          ],
+          options: [
+            {
+              label: "Option A",
+              description:
+                "Move Carlos's crew from Lakewood (lower priority) to Summit Heights for Wednesday",
+              impact: "Lakewood pauses 1 day \u2014 deadline not affected",
+              recommended: true,
+            },
+            {
+              label: "Option B",
+              description:
+                "Split David's crew between Riverside and Summit Heights",
+              impact:
+                "Both sites run at reduced capacity. Risk of slipping Riverside timeline",
+              recommended: false,
+            },
+          ],
+        },
+      },
+    },
+    {
+      id: "m3",
+      role: "user",
+      content:
+        "Go with Option A, but check if it affects Lakewood's deadline",
+      timestamp: "9:03 AM",
+    },
+    {
+      id: "m4",
+      role: "agent",
+      content:
+        "Confirmed. Lakewood's deadline isn't until June 29 \u2014 moving Carlos's crew back Thursday keeps them on track. Updated schedule:",
+      timestamp: "9:03 AM",
+      card: {
+        type: "schedule",
+        data: {
+          title: "Updated Week of March 17 \u2014 Crew Assignments",
+          conflict: null,
+          rows: [
+            {
+              day: "Mon",
+              assignments: [
+                { crew: "Mike", site: "Summit Heights" },
+                { crew: "Carlos", site: "Lakewood" },
+                { crew: "David", site: "Riverside" },
+              ],
+            },
+            {
+              day: "Tue",
+              assignments: [
+                { crew: "Mike", site: "Summit Heights" },
+                { crew: "Carlos", site: "Lakewood" },
+                { crew: "David", site: "Riverside" },
+              ],
+            },
+            {
+              day: "Wed",
+              assignments: [
+                { crew: "Mike", site: "\u2014", label: "OFF" },
+                {
+                  crew: "Carlos",
+                  site: "Summit Heights",
+                  highlight: true,
+                  label: "MOVED",
+                },
+                { crew: "David", site: "Riverside" },
+              ],
+            },
+            {
+              day: "Thu",
+              assignments: [
+                { crew: "Mike", site: "Summit Heights" },
+                { crew: "Carlos", site: "Lakewood" },
+                { crew: "David", site: "Riverside" },
+              ],
+            },
+            {
+              day: "Fri",
+              assignments: [
+                { crew: "Mike", site: "Summit Heights" },
+                { crew: "Carlos", site: "Lakewood" },
+                { crew: "David", site: "Harbor View" },
+              ],
+            },
+          ],
+          options: [],
+        },
+      },
+      actions: [
+        { label: "Apply Changes", variant: "primary", icon: Check },
+        { label: "Notify Crews", variant: "secondary", icon: Megaphone },
+      ],
+    },
+  ],
+
+  // ===================== ESTIMATION =====================
+  estimation: [
+    {
+      id: "m1",
+      role: "user",
+      content:
+        "I need a rough estimate for a 2,500 sq ft kitchen and bath renovation at 742 Oak Street",
+      timestamp: "11:00 AM",
+    },
+    {
+      id: "m2",
+      role: "agent",
+      content:
+        "Based on comparable projects in the area and current material pricing. Note: countertop pricing assumes quartz. Granite would reduce by ~$2,000.",
+      timestamp: "11:01 AM",
+      card: {
+        type: "estimate",
+        data: {
+          title: "Estimate \u2014 742 Oak Street Kitchen & Bath Renovation",
+          subtitle: "2,500 sq ft | Residential | Preliminary",
+          rows: [
+            { label: "Demolition", value: "$4,200" },
+            { label: "Plumbing", value: "$18,500" },
+            { label: "Electrical", value: "$12,300" },
+            { label: "Tile Work", value: "$15,800" },
+            { label: "Cabinets & Millwork", value: "$22,000" },
+            { label: "Countertops (Quartz)", value: "$8,500" },
+            { label: "Fixtures & Hardware", value: "$6,400" },
+            { label: "Labor", value: "$28,000" },
+            { label: "Permits & Fees", value: "$2,800" },
+          ],
+          total: "$118,500",
+        },
+      },
+    },
+    {
+      id: "m3",
+      role: "user",
+      content: "Client wants marble countertops instead. What's the impact?",
+      timestamp: "11:03 AM",
+    },
+    {
+      id: "m4",
+      role: "agent",
+      content:
+        "Marble upgrade adds $4,200. Revised total: $122,700. Here's the updated estimate:",
+      timestamp: "11:03 AM",
+      card: {
+        type: "estimate",
+        data: {
+          title: "Revised Estimate \u2014 742 Oak Street Kitchen & Bath",
+          subtitle: "2,500 sq ft | Residential | Updated: Marble countertops",
+          rows: [
+            { label: "Demolition", value: "$4,200" },
+            { label: "Plumbing", value: "$18,500" },
+            { label: "Electrical", value: "$12,300" },
+            { label: "Tile Work", value: "$15,800" },
+            { label: "Cabinets & Millwork", value: "$22,000" },
+            {
+              label: "Countertops (Marble)",
+              value: "$12,700",
+              highlight: true,
+              note: "+$4,200 from quartz",
+            },
+            { label: "Fixtures & Hardware", value: "$6,400" },
+            { label: "Labor", value: "$28,000" },
+            { label: "Permits & Fees", value: "$2,800" },
+          ],
+          total: "$122,700",
+          totalHighlight: true,
+        },
+      },
+      actions: [
+        { label: "Export PDF", variant: "primary", icon: FileText },
+        { label: "Send to Client", variant: "secondary", icon: PenLine },
+        { label: "Save Draft", variant: "secondary", icon: Check },
+      ],
+    },
+  ],
+
+  // ===================== BOOKKEEPING =====================
+  bookkeeping: [
+    {
+      id: "m1",
+      role: "user",
+      content:
+        "QuickBooks is showing a $3,400 discrepancy for March. Can you investigate?",
+      timestamp: "10:30 AM",
+    },
+    {
+      id: "m2",
+      role: "agent",
+      content:
+        "Found the issue. Two invoices were recorded under the wrong project:",
+      timestamp: "10:31 AM",
+      card: {
+        type: "financial",
+        data: {
+          title: "March Revenue Reconciliation",
+          summary: [
+            { label: "Expected Revenue", value: "$284,300" },
+            { label: "QB Recorded", value: "$280,900" },
+            {
+              label: "Discrepancy",
+              value: "-$3,400",
+              highlight: true,
+            },
+          ],
+          issues: [
+            {
+              invoice: "INV-1847",
+              amount: "$2,100",
+              wrongProject: "Riverside Remodel",
+              correctProject: "Summit Heights Buildout",
+            },
+            {
+              invoice: "INV-1852",
+              amount: "$1,300",
+              wrongProject: "Harbor View Kitchen",
+              correctProject: "Lakewood Commercial",
+            },
+          ],
+        },
+      },
+    },
+    {
+      id: "m3",
+      role: "user",
+      content: "Fix those and run the monthly P&L",
+      timestamp: "10:33 AM",
+    },
+    {
+      id: "m4",
+      role: "agent",
+      content:
+        "Invoices corrected in QuickBooks. Here's the March P&L:",
+      timestamp: "10:34 AM",
+      card: {
+        type: "pnl",
+        data: {
+          title: "March 2026 \u2014 Profit & Loss Summary",
+          rows: [
+            { label: "Revenue", value: "$284,300", bold: true },
+            { label: "Cost of Goods Sold", value: "$186,200", indent: true },
+            {
+              label: "Gross Profit",
+              value: "$98,100 (34.5%)",
+              bold: true,
+              separator: true,
+            },
+            {
+              label: "Operating Expenses",
+              value: "$52,300",
+              indent: true,
+            },
+            {
+              label: "Net Income",
+              value: "$45,800",
+              bold: true,
+              highlight: true,
+              separator: true,
+            },
+          ],
+        },
+      },
+      actions: [
+        {
+          label: "Download Full Report",
+          variant: "primary",
+          icon: FileText,
+        },
+        { label: "Export to Excel", variant: "secondary", icon: PenLine },
+      ],
+    },
+  ],
+
+  // ===================== PROJECT MANAGEMENT =====================
+  "project-management": [
+    {
+      id: "m1",
+      role: "user",
+      content:
+        "What's the status on all active projects? Any at risk?",
+      timestamp: "9:15 AM",
+    },
+    {
+      id: "m2",
+      role: "agent",
+      content:
+        "Lakewood Commercial Buildout is at risk \u2014 concrete subcontractor no-showed twice. Recommend escalating to backup sub.",
+      timestamp: "9:16 AM",
+      card: {
+        type: "dashboard",
+        data: {
+          title: "Active Projects Dashboard",
+          projects: [
+            {
+              name: "Riverside Remodel",
+              progress: 67,
+              status: "green",
+              statusLabel: "On Track",
+              detail: "Phase 3 of 5 \u2014 Electrical rough-in",
+              deadline: "Jul 15",
+            },
+            {
+              name: "Summit Heights Buildout",
+              progress: 42,
+              status: "amber",
+              statusLabel: "Material Delay",
+              detail: "Steel beams delayed 5 days from supplier",
+              deadline: "Aug 30",
+            },
+            {
+              name: "Harbor View Kitchen",
+              progress: 85,
+              status: "green",
+              statusLabel: "On Track",
+              detail: "Final finishes and punch list",
+              deadline: "Mar 28",
+            },
+            {
+              name: "Lakewood Commercial",
+              progress: 23,
+              status: "red",
+              statusLabel: "At Risk",
+              detail:
+                "Concrete sub no-showed 2x. 2 weeks behind schedule",
+              deadline: "Jun 29",
+            },
+            {
+              name: "Castillo Residence",
+              progress: 30,
+              status: "green",
+              statusLabel: "On Track",
+              detail: "Foundation complete, framing started",
+              deadline: "Sep 12",
+            },
+          ],
+        },
+      },
+    },
+    {
+      id: "m3",
+      role: "user",
+      content:
+        "Send an alert to Mike about Lakewood and draft a message to the backup subcontractor",
+      timestamp: "9:18 AM",
+    },
+    {
+      id: "m4",
+      role: "agent",
+      content:
+        "Alert sent to Mike Torres. Draft message to Pacific Concrete:",
+      timestamp: "9:18 AM",
+      card: {
+        type: "message",
+        data: {
+          to: "Pacific Concrete Services \u2014 dispatch@pacificconcrete.com",
+          subject: "Urgent: Concrete Work Available \u2014 Lakewood Commercial",
+          body: "Hi Pacific Concrete Team,\n\nWe have an immediate need for concrete work on our Lakewood Commercial Buildout project. The scope includes:\n\n\u2022 Foundation slab pour \u2014 4,200 sq ft\n\u2022 Grade beams and footings\n\u2022 Estimated 3-week engagement starting ASAP\n\nWe've worked together on the Riverside project last year and were impressed with your quality and reliability. Can you provide availability and a quote by end of day Wednesday?\n\nProject address: 1200 Lakewood Blvd, Suite 100\nProject Manager: Mike Torres (mike.t@apexintel.co)\n\nThank you,\nApex Intelligence Team",
+        },
+      },
+      actions: [
+        { label: "Send", variant: "primary", icon: Check },
+        { label: "Edit", variant: "secondary", icon: PenLine },
+      ],
+    },
+  ],
+
+  // ===================== FIELD OPERATIONS =====================
+  "field-operations": [
+    {
+      id: "m1",
+      role: "user",
+      content:
+        "I just finished the foundation inspection at Summit Heights. How do I log it?",
+      timestamp: "2:00 PM",
+    },
+    {
+      id: "m2",
+      role: "agent",
+      content:
+        "I'll help you create the inspection report. Here's what I've pre-filled from the project data. Any items that didn't pass?",
+      timestamp: "2:01 PM",
+      card: {
+        type: "inspection",
+        data: {
+          title: "Foundation Inspection Report",
+          fields: [
+            { label: "Project", value: "Summit Heights Buildout" },
+            { label: "Date", value: "March 16, 2026" },
+            { label: "Inspector", value: "Jason Wells" },
+            { label: "Type", value: "Foundation" },
+          ],
+          checklist: [
+            { item: "Footings depth \u2014 meets spec (36\")", passed: true },
+            { item: "Rebar spacing \u2014 12\" OC verified", passed: true },
+            { item: "Drainage \u2014 perimeter drains installed", passed: true },
+            { item: "Soil compaction \u2014 95% Proctor", passed: true },
+          ],
+        },
+      },
+    },
+    {
+      id: "m3",
+      role: "user",
+      content:
+        "Soil compaction on the east side was borderline. Also it's going to rain tomorrow, should we cover?",
+      timestamp: "2:03 PM",
+    },
+    {
+      id: "m4",
+      role: "agent",
+      content:
+        "Noted soil compaction issue on east side. I've taken the following actions:",
+      timestamp: "2:04 PM",
+      statusItems: [
+        "Flagged soil compaction on east side for re-test in the inspection report",
+        "Checked weather: 80% rain chance tomorrow, 0.4\" expected",
+        "Recommended tarping the foundation \u2014 notified crew lead (Carlos)",
+        "Added tarping to tomorrow's task list for Summit Heights",
+      ],
+      statusComplete: true,
+      card: {
+        type: "weather",
+        data: {
+          title: "Weather Forecast \u2014 Summit Heights Area",
+          days: [
+            {
+              day: "Tomorrow (Tue)",
+              condition: "Rain",
+              precipitation: "80%",
+              amount: '0.4"',
+              temp: "58\u00b0F",
+              alert: true,
+            },
+            {
+              day: "Wednesday",
+              condition: "Cloudy",
+              precipitation: "20%",
+              amount: '0.0"',
+              temp: "62\u00b0F",
+              alert: false,
+            },
+            {
+              day: "Thursday",
+              condition: "Sunny",
+              precipitation: "5%",
+              amount: '0.0"',
+              temp: "68\u00b0F",
+              alert: false,
+            },
+          ],
+        },
+      },
+      actions: [
+        { label: "Submit Report", variant: "primary", icon: Check },
+        { label: "Add Photos", variant: "secondary", icon: Paperclip },
+      ],
+    },
+  ],
+};
+
+// ---------------------------------------------------------------------------
+// Quick Actions (per agent)
+// ---------------------------------------------------------------------------
+
+const quickActionsByAgent: Record<
+  string,
+  { label: string; icon: LucideIcon }[]
+> = {
+  "customer-support": [
+    { label: "Draft Response", icon: PenLine },
+    { label: "Look Up Customer", icon: Sparkles },
+    { label: "Create Ticket", icon: FileText },
+    { label: "Escalate", icon: Megaphone },
+  ],
+  "sales-outreach": [
+    { label: "Qualify Lead", icon: Sparkles },
+    { label: "Draft Proposal", icon: PenLine },
+    { label: "Schedule Call", icon: CalendarClock },
+    { label: "Pipeline Report", icon: FileText },
+  ],
+  scheduling: [
+    { label: "Check Availability", icon: CalendarClock },
+    { label: "Resolve Conflict", icon: Sparkles },
+    { label: "Weekly Schedule", icon: FileText },
+    { label: "Notify Crew", icon: Megaphone },
+  ],
+  estimation: [
+    { label: "New Estimate", icon: Calculator },
+    { label: "Compare Materials", icon: Sparkles },
+    { label: "Pull Comps", icon: FileText },
+    { label: "Export PDF", icon: PenLine },
+  ],
+  bookkeeping: [
+    { label: "Reconcile", icon: BookOpen },
+    { label: "Generate Invoice", icon: FileText },
+    { label: "Run Report", icon: Sparkles },
+    { label: "Check Payments", icon: Calculator },
+  ],
+  "project-management": [
+    { label: "Status Update", icon: FolderKanban },
+    { label: "Risk Assessment", icon: Sparkles },
+    { label: "Resource Check", icon: CalendarClock },
+    { label: "Timeline Review", icon: FileText },
+  ],
+  "field-operations": [
+    { label: "Log Inspection", icon: FileText },
+    { label: "Safety Check", icon: HardHat },
+    { label: "Material Order", icon: Calculator },
+    { label: "Weather Report", icon: Sparkles },
+  ],
+};
+
+const defaultQuickActions = [
+  { label: "Draft Response", icon: PenLine },
+  { label: "Look Up Info", icon: Sparkles },
+  { label: "Create Report", icon: FileText },
+  { label: "Escalate", icon: Megaphone },
+];
+
+// ---------------------------------------------------------------------------
+// Conversation start times (per agent)
+// ---------------------------------------------------------------------------
+
+const conversationStartTimes: Record<string, string> = {
+  "customer-support": "Today, 2:31 PM",
+  "sales-outreach": "Today, 10:15 AM",
+  scheduling: "Today, 9:00 AM",
+  estimation: "Today, 11:00 AM",
+  bookkeeping: "Today, 10:30 AM",
+  "project-management": "Today, 9:15 AM",
+  "field-operations": "Today, 2:00 PM",
+};
+
+// ---------------------------------------------------------------------------
+// Sub-Components
+// ---------------------------------------------------------------------------
+
+function InvoiceCard({ data }: { data: Record<string, unknown> }) {
+  const rows = data.rows as Array<{
+    label: string;
+    value: string;
+    highlight?: boolean;
+  }>;
+  const note = data.note as string;
+
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
+      {/* Card header */}
+      <div className="flex items-center gap-2 border-b border-border px-4 py-3">
+        <FileText className="size-4 text-indigo-400" />
+        <span className="text-xs font-semibold text-foreground">
+          Invoice {data.invoiceNumber as string}
+        </span>
+        <span className="ml-auto text-[11px] text-muted-foreground">
+          {data.project as string}
+        </span>
+      </div>
+      {/* Rows */}
+      <div className="divide-y divide-border/50">
+        {rows.map((row, i) => (
+          <div
+            key={i}
+            className={`flex items-center justify-between px-4 py-2.5 ${
+              row.highlight ? "bg-amber-500/5" : ""
+            }`}
+          >
+            <span className="text-sm text-muted-foreground">{row.label}</span>
+            <span
+              className={`text-sm font-semibold ${
+                row.highlight ? "text-amber-400" : "text-foreground"
+              }`}
+            >
+              {row.value}
+            </span>
+          </div>
+        ))}
+      </div>
+      {/* Note */}
+      {note && (
+        <div className="border-t border-border bg-muted/10 px-4 py-3">
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            {note}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EmailCard({ data }: { data: Record<string, unknown> }) {
+  const to = data.to as string;
+  const subject = data.subject as string;
+  const body = data.body as string;
+
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
+      {/* Email header */}
+      <div className="space-y-1.5 border-b border-border px-4 py-3">
+        <div className="flex items-center gap-2 text-xs">
+          <span className="font-medium text-muted-foreground">To:</span>
+          <span className="text-foreground">{to}</span>
+        </div>
+        <div className="flex items-center gap-2 text-xs">
+          <span className="font-medium text-muted-foreground">Subject:</span>
+          <span className="font-medium text-foreground">{subject}</span>
+        </div>
+      </div>
+      {/* Email body */}
+      <div className="px-4 py-3">
+        <p className="whitespace-pre-line text-sm leading-relaxed text-foreground/85">
+          {body}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function LeadsCard({ data }: { data: Record<string, unknown> }) {
+  const leads = data.leads as Array<{
+    rank: number;
+    company: string;
+    contact: string;
+    project: string;
+    value: string;
+    score: number;
+    scoreColor: string;
+    notes: string;
+  }>;
+
+  const scoreColorMap: Record<string, string> = {
+    green: "bg-green-500/15 text-green-400 ring-green-500/20",
+    amber: "bg-amber-500/15 text-amber-400 ring-amber-500/20",
+    red: "bg-red-500/15 text-red-400 ring-red-500/20",
+  };
+
+  return (
+    <div className="mt-3 space-y-2">
+      {leads.map((lead) => (
+        <div
+          key={lead.rank}
+          className="overflow-hidden rounded-xl border border-border bg-muted/20"
+        >
+          <div className="flex items-center justify-between border-b border-border px-4 py-3">
+            <div className="flex items-center gap-2">
+              <span className="flex size-6 items-center justify-center rounded-full bg-muted/50 text-[11px] font-bold text-muted-foreground">
+                {lead.rank}
+              </span>
+              <span className="text-sm font-semibold text-foreground">
+                {lead.company}
+              </span>
+            </div>
+            <span
+              className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold ring-1 ${
+                scoreColorMap[lead.scoreColor]
+              }`}
+            >
+              Score: {lead.score}
+            </span>
+          </div>
+          <div className="space-y-1.5 px-4 py-3">
+            <div className="flex items-center gap-2 text-xs">
+              <span className="font-medium text-muted-foreground">
+                Contact:
+              </span>
+              <span className="text-foreground">{lead.contact}</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs">
+              <span className="font-medium text-muted-foreground">
+                Project:
+              </span>
+              <span className="text-foreground">{lead.project}</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs">
+              <span className="font-medium text-muted-foreground">
+                Est. Value:
+              </span>
+              <span className="font-semibold text-foreground">
+                {lead.value}
+              </span>
+            </div>
+            <p className="mt-1 text-[11px] text-muted-foreground/70">
+              {lead.notes}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ScheduleCard({ data }: { data: Record<string, unknown> }) {
+  const title = data.title as string;
+  const conflict = data.conflict as string | null;
+  const rows = data.rows as Array<{
+    day: string;
+    assignments: Array<{
+      crew: string;
+      site: string;
+      highlight?: boolean;
+      label?: string;
+    }>;
+  }>;
+  const options = (data.options || []) as Array<{
+    label: string;
+    description: string;
+    impact: string;
+    recommended: boolean;
+  }>;
+
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
+      <div className="border-b border-border px-4 py-3">
+        <p className="text-xs font-semibold text-foreground">{title}</p>
+        {conflict && (
+          <p className="mt-1 text-[11px] text-amber-400">{conflict}</p>
+        )}
+      </div>
+      {/* Schedule grid */}
+      <div className="divide-y divide-border/50">
+        {rows.map((row) => (
+          <div key={row.day} className="flex items-center gap-3 px-4 py-2">
+            <span className="w-8 shrink-0 text-xs font-bold text-muted-foreground">
+              {row.day}
+            </span>
+            <div className="flex flex-1 flex-wrap gap-2">
+              {row.assignments.map((a, i) => (
+                <span
+                  key={i}
+                  className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] ${
+                    a.highlight
+                      ? "bg-amber-500/10 text-amber-400 ring-1 ring-amber-500/20"
+                      : "bg-muted/30 text-foreground/70"
+                  }`}
+                >
+                  <span className="font-semibold">{a.crew}</span>
+                  <span className="text-muted-foreground/50">\u2192</span>
+                  <span>{a.site}</span>
+                  {a.label && (
+                    <span className="ml-1 rounded bg-amber-500/20 px-1 text-[9px] font-bold text-amber-400">
+                      {a.label}
+                    </span>
+                  )}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* Options */}
+      {options.length > 0 && (
+        <div className="border-t border-border px-4 py-3 space-y-2">
+          {options.map((opt) => (
+            <div
+              key={opt.label}
+              className={`rounded-lg border px-3 py-2 ${
+                opt.recommended
+                  ? "border-green-500/20 bg-green-500/5"
+                  : "border-border bg-muted/10"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-foreground">
+                  {opt.label}
+                </span>
+                {opt.recommended && (
+                  <span className="rounded bg-green-500/20 px-1.5 py-0.5 text-[9px] font-bold text-green-400">
+                    RECOMMENDED
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-xs text-foreground/80">
+                {opt.description}
+              </p>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">
+                Impact: {opt.impact}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EstimateCard({ data }: { data: Record<string, unknown> }) {
+  const title = data.title as string;
+  const subtitle = data.subtitle as string;
+  const rows = data.rows as Array<{
+    label: string;
+    value: string;
+    highlight?: boolean;
+    note?: string;
+  }>;
+  const total = data.total as string;
+  const totalHighlight = data.totalHighlight as boolean | undefined;
+
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
+      <div className="border-b border-border px-4 py-3">
+        <p className="text-xs font-semibold text-foreground">{title}</p>
+        <p className="mt-0.5 text-[11px] text-muted-foreground">{subtitle}</p>
+      </div>
+      <div className="divide-y divide-border/50">
+        {rows.map((row, i) => (
+          <div
+            key={i}
+            className={`flex items-center justify-between px-4 py-2.5 ${
+              row.highlight ? "bg-amber-500/5" : ""
+            }`}
+          >
+            <div>
+              <span className="text-sm text-muted-foreground">{row.label}</span>
+              {row.note && (
+                <span className="ml-2 text-[10px] text-amber-400">
+                  {row.note}
+                </span>
+              )}
+            </div>
+            <span
+              className={`text-sm font-semibold ${
+                row.highlight ? "text-amber-400" : "text-foreground"
+              }`}
+            >
+              {row.value}
+            </span>
+          </div>
+        ))}
+      </div>
+      {/* Total */}
+      <div
+        className={`flex items-center justify-between border-t border-border px-4 py-3 ${
+          totalHighlight ? "bg-amber-500/5" : "bg-muted/10"
+        }`}
+      >
+        <span className="text-sm font-bold text-foreground">Total</span>
+        <span
+          className={`text-base font-bold ${
+            totalHighlight ? "text-amber-400" : "text-foreground"
+          }`}
+        >
+          {total}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function FinancialCard({ data }: { data: Record<string, unknown> }) {
+  const title = data.title as string;
+  const summary = data.summary as Array<{
+    label: string;
+    value: string;
+    highlight?: boolean;
+  }>;
+  const issues = data.issues as Array<{
+    invoice: string;
+    amount: string;
+    wrongProject: string;
+    correctProject: string;
+  }>;
+
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
+      <div className="border-b border-border px-4 py-3">
+        <p className="text-xs font-semibold text-foreground">{title}</p>
+      </div>
+      {/* Summary rows */}
+      <div className="divide-y divide-border/50">
+        {summary.map((row, i) => (
+          <div
+            key={i}
+            className={`flex items-center justify-between px-4 py-2.5 ${
+              row.highlight ? "bg-red-500/5" : ""
+            }`}
+          >
+            <span className="text-sm text-muted-foreground">{row.label}</span>
+            <span
+              className={`text-sm font-semibold ${
+                row.highlight ? "text-red-400" : "text-foreground"
+              }`}
+            >
+              {row.value}
+            </span>
+          </div>
+        ))}
+      </div>
+      {/* Issue table */}
+      {issues && issues.length > 0 && (
+        <div className="border-t border-border px-4 py-3">
+          <p className="mb-2 text-[11px] font-semibold text-muted-foreground">
+            Misallocated Invoices
+          </p>
+          <div className="space-y-2">
+            {issues.map((issue) => (
+              <div
+                key={issue.invoice}
+                className="rounded-lg border border-border bg-muted/10 px-3 py-2"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-foreground">
+                    {issue.invoice}
+                  </span>
+                  <span className="text-xs font-semibold text-amber-400">
+                    {issue.amount}
+                  </span>
+                </div>
+                <div className="mt-1 flex items-center gap-2 text-[11px]">
+                  <span className="text-red-400/70 line-through">
+                    {issue.wrongProject}
+                  </span>
+                  <span className="text-muted-foreground/50">\u2192</span>
+                  <span className="text-green-400">{issue.correctProject}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PnlCard({ data }: { data: Record<string, unknown> }) {
+  const title = data.title as string;
+  const rows = data.rows as Array<{
+    label: string;
+    value: string;
+    bold?: boolean;
+    indent?: boolean;
+    highlight?: boolean;
+    separator?: boolean;
+  }>;
+
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
+      <div className="border-b border-border px-4 py-3">
+        <p className="text-xs font-semibold text-foreground">{title}</p>
+      </div>
+      <div className="divide-y divide-border/50">
+        {rows.map((row, i) => (
+          <div
+            key={i}
+            className={`flex items-center justify-between px-4 py-2.5 ${
+              row.highlight ? "bg-green-500/5" : ""
+            } ${row.separator ? "border-t border-border" : ""}`}
+          >
+            <span
+              className={`text-sm ${
+                row.indent ? "pl-4 " : ""
+              }${
+                row.bold
+                  ? "font-semibold text-foreground"
+                  : "text-muted-foreground"
+              }`}
+            >
+              {row.label}
+            </span>
+            <span
+              className={`text-sm ${
+                row.bold ? "font-bold" : "font-semibold"
+              } ${row.highlight ? "text-green-400" : "text-foreground"}`}
+            >
+              {row.value}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DashboardCard({ data }: { data: Record<string, unknown> }) {
+  const title = data.title as string;
+  const projects = data.projects as Array<{
+    name: string;
+    progress: number;
+    status: string;
+    statusLabel: string;
+    detail: string;
+    deadline: string;
+  }>;
+
+  const statusStyles: Record<string, string> = {
+    green: "bg-green-500/15 text-green-400 ring-green-500/20",
+    amber: "bg-amber-500/15 text-amber-400 ring-amber-500/20",
+    red: "bg-red-500/15 text-red-400 ring-red-500/20",
+  };
+
+  const barColors: Record<string, string> = {
+    green: "bg-green-500",
+    amber: "bg-amber-500",
+    red: "bg-red-500",
+  };
+
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
+      <div className="border-b border-border px-4 py-3">
+        <p className="text-xs font-semibold text-foreground">{title}</p>
+      </div>
+      <div className="divide-y divide-border/50">
+        {projects.map((project) => (
+          <div key={project.name} className="px-4 py-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-foreground">
+                {project.name}
+              </span>
+              <div className="flex items-center gap-2">
+                <span
+                  className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold ring-1 ${
+                    statusStyles[project.status]
+                  }`}
+                >
+                  {project.statusLabel}
+                </span>
+                <span className="text-[11px] text-muted-foreground">
+                  Due {project.deadline}
+                </span>
+              </div>
+            </div>
+            {/* Progress bar */}
+            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted/30">
+              <div
+                className={`h-full rounded-full transition-all ${
+                  barColors[project.status]
+                }`}
+                style={{ width: `${project.progress}%` }}
+              />
+            </div>
+            <div className="mt-1.5 flex items-center justify-between">
+              <span className="text-[11px] text-muted-foreground/70">
+                {project.detail}
+              </span>
+              <span className="text-[11px] font-semibold text-muted-foreground">
+                {project.progress}%
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MessageCard({ data }: { data: Record<string, unknown> }) {
+  const to = data.to as string;
+  const subject = data.subject as string;
+  const body = data.body as string;
+
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
+      <div className="space-y-1.5 border-b border-border px-4 py-3">
+        <div className="flex items-center gap-2 text-xs">
+          <span className="font-medium text-muted-foreground">To:</span>
+          <span className="text-foreground">{to}</span>
+        </div>
+        <div className="flex items-center gap-2 text-xs">
+          <span className="font-medium text-muted-foreground">Subject:</span>
+          <span className="font-medium text-foreground">{subject}</span>
+        </div>
+      </div>
+      <div className="px-4 py-3">
+        <p className="whitespace-pre-line text-sm leading-relaxed text-foreground/85">
+          {body}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function InspectionCard({ data }: { data: Record<string, unknown> }) {
+  const title = data.title as string;
+  const fields = data.fields as Array<{ label: string; value: string }>;
+  const checklist = data.checklist as Array<{
+    item: string;
+    passed: boolean;
+  }>;
+
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
+      <div className="border-b border-border px-4 py-3">
+        <p className="text-xs font-semibold text-foreground">{title}</p>
+      </div>
+      {/* Fields */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-b border-border px-4 py-3">
+        {fields.map((f) => (
+          <div key={f.label}>
+            <p className="text-[10px] font-medium text-muted-foreground">
+              {f.label}
+            </p>
+            <p className="text-xs font-semibold text-foreground">{f.value}</p>
+          </div>
+        ))}
+      </div>
+      {/* Checklist */}
+      <div className="px-4 py-3 space-y-2">
+        <p className="text-[11px] font-semibold text-muted-foreground">
+          Inspection Checklist
+        </p>
+        {checklist.map((item, i) => (
+          <div key={i} className="flex items-center gap-2">
+            {item.passed ? (
+              <CheckCircle2 className="size-4 shrink-0 text-green-400" />
+            ) : (
+              <X className="size-4 shrink-0 text-red-400" />
+            )}
+            <span className="text-xs text-foreground/80">{item.item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function WeatherCard({ data }: { data: Record<string, unknown> }) {
+  const title = data.title as string;
+  const days = data.days as Array<{
+    day: string;
+    condition: string;
+    precipitation: string;
+    amount: string;
+    temp: string;
+    alert: boolean;
+  }>;
+
+  return (
+    <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
+      <div className="border-b border-border px-4 py-3">
+        <p className="text-xs font-semibold text-foreground">{title}</p>
+      </div>
+      <div className="divide-y divide-border/50">
+        {days.map((day) => (
+          <div
+            key={day.day}
+            className={`flex items-center justify-between px-4 py-2.5 ${
+              day.alert ? "bg-amber-500/5" : ""
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <span
+                className={`text-xs font-semibold ${
+                  day.alert ? "text-amber-400" : "text-foreground"
+                }`}
+              >
+                {day.day}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {day.condition}
+              </span>
+            </div>
+            <div className="flex items-center gap-4 text-xs">
+              <span
+                className={
+                  day.alert
+                    ? "font-semibold text-amber-400"
+                    : "text-muted-foreground"
+                }
+              >
+                {day.precipitation} rain
+              </span>
+              <span className="text-muted-foreground">{day.amount}</span>
+              <span className="text-foreground">{day.temp}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function StatusCard({
+  items,
+  complete,
+}: {
+  items: string[];
+  complete: boolean;
+}) {
+  return (
+    <div className="mt-3 space-y-2">
+      {items.map((item, i) => (
+        <div key={i} className="flex items-start gap-2.5">
+          {complete ? (
+            <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-green-400" />
+          ) : (
+            <Loader2 className="mt-0.5 size-4 shrink-0 animate-spin text-indigo-400" />
+          )}
+          <span className="text-sm text-foreground/80">{item}</span>
+        </div>
+      ))}
+      {complete && (
+        <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-green-500/10 px-3 py-1.5 text-xs font-semibold text-green-400 ring-1 ring-green-500/20">
+          <CheckCircle2 className="size-3" />
+          All actions completed
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AttachmentChip({ name }: { name: string }) {
+  return (
+    <div className="mt-3 inline-flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2 transition-colors hover:bg-muted/50">
+      <div className="flex size-8 items-center justify-center rounded-md bg-red-500/15">
+        <FileText className="size-4 text-red-400" />
+      </div>
+      <div>
+        <p className="text-xs font-medium text-foreground">{name}</p>
+        <p className="text-[10px] text-muted-foreground">PDF Document</p>
+      </div>
+    </div>
+  );
+}
+
+function ActionButtons({ actions }: { actions: ActionButton[] }) {
+  const variantStyles: Record<string, string> = {
+    primary:
+      "bg-indigo-500/15 text-indigo-400 ring-1 ring-indigo-500/25 hover:bg-indigo-500/25 hover:ring-indigo-500/40",
+    secondary:
+      "bg-muted/50 text-foreground/80 ring-1 ring-border hover:bg-muted/80",
+    danger:
+      "bg-red-500/10 text-red-400 ring-1 ring-red-500/20 hover:bg-red-500/20",
+  };
+
+  return (
+    <div className="mt-3 flex flex-wrap gap-2">
+      {actions.map((action) => {
+        const Icon = action.icon;
+        return (
+          <button
+            key={action.label}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all duration-200 ${
+              variantStyles[action.variant]
+            }`}
+          >
+            {Icon && <Icon className="size-3.5" />}
+            {action.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function TypingIndicator({ agentColor }: { agentColor: string }) {
+  return (
+    <div className="flex items-start gap-3">
+      <div
+        className={`flex size-8 shrink-0 items-center justify-center rounded-full ring-1 ${agentColor}`}
+      >
+        <Bot className="size-4" />
+      </div>
+      <div className="glass rounded-2xl rounded-tl-md px-4 py-3">
+        <div className="flex items-center gap-1">
+          <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:0ms]" />
+          <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:150ms]" />
+          <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:300ms]" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Card Renderer
+// ---------------------------------------------------------------------------
+
+function renderCard(card: StructuredCard) {
+  switch (card.type) {
+    case "invoice":
+      return <InvoiceCard data={card.data} />;
+    case "email":
+      return <EmailCard data={card.data} />;
+    case "leads":
+      return <LeadsCard data={card.data} />;
+    case "schedule":
+      return <ScheduleCard data={card.data} />;
+    case "estimate":
+      return <EstimateCard data={card.data} />;
+    case "financial":
+      return <FinancialCard data={card.data} />;
+    case "pnl":
+      return <PnlCard data={card.data} />;
+    case "dashboard":
+      return <DashboardCard data={card.data} />;
+    case "message":
+      return <MessageCard data={card.data} />;
+    case "inspection":
+      return <InspectionCard data={card.data} />;
+    case "weather":
+      return <WeatherCard data={card.data} />;
+    default:
+      return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
+
+export default function AgentChatPage() {
+  const params = useParams();
+  const id = params.id as string;
+
+  // Resolve Plan v3 IDs to legacy data IDs for data lookups
+  const dataId = idAliasMap[id] || id;
+
+  // Use v3 canonical name/icon when available, otherwise fall back to legacy
+  const agentName = v3NameMap[id] || agentNameMap[id] || "Customer Support Agent";
+  const AgentIcon = v3IconMap[id] || agentIconMap[id] || Headset;
+  const colors = agentColorMap[dataId] || defaultColor;
+
+  const conversations = conversationsByAgent[dataId] || conversationsByAgent["customer-support"];
+  const mockMessages = messagesByAgent[dataId] || messagesByAgent["customer-support"];
+  const quickActions = quickActionsByAgent[dataId] || defaultQuickActions;
+  const startTime = conversationStartTimes[dataId] || "Today";
+
+  const [messages] = useState<ChatMessage[]>(mockMessages);
+  const [inputValue, setInputValue] = useState("");
+  const [selectedConversation, setSelectedConversation] = useState("conv-1");
+  const [isTyping] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-scroll to bottom
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
+
+  // Auto-resize textarea
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 160)}px`;
+    }
+  }, [inputValue]);
+
+  return (
+    <div className="flex h-full flex-col bg-background bg-mesh">
+      {/* ----------------------------------------------------------------- */}
+      {/* Header */}
+      {/* ----------------------------------------------------------------- */}
+      <div className="glass-strong z-10 flex items-center justify-between px-5 py-3">
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/dashboard/agents/${id}`}
+            className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted/30 hover:text-foreground"
+          >
+            <ArrowLeft className="size-4" />
+            <span className="hidden sm:inline">Back</span>
+          </Link>
+
+          <div className="h-6 w-px bg-border" />
+
+          <div className="flex items-center gap-3">
+            <div
+              className={`flex size-9 items-center justify-center rounded-xl ring-1 ${colors.icon}`}
+            >
+              <AgentIcon className="size-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-sm font-semibold text-foreground">
+                  {agentName}
+                </h1>
+                <span className="inline-flex items-center gap-1 rounded-full border border-green-500/20 bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-400">
+                  <span className="size-1.5 rounded-full bg-green-400" />
+                  Online
+                </span>
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                Avg response: 1.8s
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground ring-1 ring-border transition-all hover:bg-muted/30 hover:text-foreground sm:hidden"
+          >
+            <Clock className="size-3.5" />
+            History
+          </button>
+          <button className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-500/15 px-3.5 py-2 text-xs font-semibold text-indigo-400 ring-1 ring-indigo-500/25 transition-all hover:bg-indigo-500/25">
+            <MessageSquarePlus className="size-3.5" />
+            New Conversation
+          </button>
+        </div>
+      </div>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* Body: Sidebar + Chat */}
+      {/* ----------------------------------------------------------------- */}
+      <div className="flex min-h-0 flex-1">
+        {/* ----- Conversation Sidebar ----- */}
+        <aside
+          className={`glass-strong flex w-80 shrink-0 flex-col border-r border-border transition-all duration-300 ${
+            sidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full absolute inset-y-0 left-0 z-20 sm:relative sm:translate-x-0"
+          } hidden sm:flex`}
+        >
+          {/* Sidebar header */}
+          <div className="flex items-center justify-between px-4 py-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Conversations
+            </h2>
+            <span className="rounded-full bg-muted/50 px-2 py-0.5 text-[10px] font-bold text-muted-foreground">
+              {conversations.length}
+            </span>
+          </div>
+
+          {/* Search conversations */}
+          <div className="px-3 pb-2">
+            <div className="relative">
+              <Sparkles className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground/50" />
+              <input
+                type="text"
+                placeholder="Search conversations..."
+                className="h-8 w-full rounded-lg border border-border bg-muted/30 pl-8 pr-3 text-xs text-foreground placeholder:text-muted-foreground/50 outline-none transition-colors focus:border-indigo-500/40 focus:ring-1 focus:ring-indigo-500/20"
+              />
+            </div>
+          </div>
+
+          {/* Conversation list */}
+          <div className="flex-1 overflow-y-auto px-2 pb-2">
+            <div className="space-y-0.5">
+              {conversations.map((conv) => {
+                const isActive = conv.id === selectedConversation;
+                return (
+                  <button
+                    key={conv.id}
+                    onClick={() => setSelectedConversation(conv.id)}
+                    className={`group w-full rounded-lg px-3 py-3 text-left transition-all duration-150 ${
+                      isActive
+                        ? "bg-indigo-500/10 ring-1 ring-indigo-500/20"
+                        : "hover:bg-muted/30"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <p
+                        className={`text-sm font-medium leading-snug ${
+                          isActive
+                            ? "text-foreground"
+                            : "text-foreground/80 group-hover:text-foreground"
+                        }`}
+                      >
+                        {conv.title}
+                      </p>
+                      <span className="mt-0.5 shrink-0 text-[10px] text-muted-foreground/60">
+                        {conv.messageCount}
+                      </span>
+                    </div>
+                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground/70">
+                      {conv.preview}
+                    </p>
+                    <p className="mt-1.5 text-[10px] text-muted-foreground/50">
+                      {conv.date}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </aside>
+
+        {/* ----- Main Chat Area ----- */}
+        <div className="flex min-w-0 flex-1 flex-col">
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-3xl space-y-6">
+              {/* Conversation start marker */}
+              <div className="flex items-center gap-3 py-2">
+                <div className="h-px flex-1 bg-border" />
+                <span className="text-[10px] font-medium text-muted-foreground/50">
+                  {startTime}
+                </span>
+                <div className="h-px flex-1 bg-border" />
+              </div>
+
+              {messages.map((msg) => {
+                if (msg.role === "user") {
+                  return (
+                    <div key={msg.id} className="flex justify-end gap-3">
+                      <div className="max-w-[85%] space-y-1">
+                        <div className="rounded-2xl rounded-tr-md bg-indigo-500/15 px-4 py-3 ring-1 ring-indigo-500/20">
+                          <p className="text-sm leading-relaxed text-foreground">
+                            {msg.content}
+                          </p>
+                        </div>
+                        <p className="text-right text-[10px] text-muted-foreground/50">
+                          {msg.timestamp}
+                        </p>
+                      </div>
+                      <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 text-xs font-bold text-indigo-300 ring-1 ring-indigo-500/30">
+                        JW
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Agent message
+                return (
+                  <div key={msg.id} className="flex items-start gap-3">
+                    <div
+                      className={`flex size-8 shrink-0 items-center justify-center rounded-full ring-1 ${colors.icon}`}
+                    >
+                      <Bot className="size-4" />
+                    </div>
+                    <div className="max-w-[85%] space-y-1">
+                      <div
+                        className={`glass rounded-2xl rounded-tl-md px-4 py-3 ${colors.bubble}`}
+                      >
+                        <p className="text-sm leading-relaxed text-foreground/90">
+                          {msg.content}
+                        </p>
+
+                        {/* Structured cards */}
+                        {msg.card && renderCard(msg.card)}
+
+                        {/* Status items */}
+                        {msg.statusItems && (
+                          <StatusCard
+                            items={msg.statusItems}
+                            complete={msg.statusComplete ?? false}
+                          />
+                        )}
+
+                        {/* File attachment */}
+                        {msg.attachment && (
+                          <AttachmentChip name={msg.attachment.name} />
+                        )}
+
+                        {/* Action buttons */}
+                        {msg.actions && <ActionButtons actions={msg.actions} />}
+                      </div>
+                      <p className="text-[10px] text-muted-foreground/50">
+                        {msg.timestamp}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Typing indicator */}
+              {isTyping && <TypingIndicator agentColor={colors.icon} />}
+
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
+
+          {/* ----------------------------------------------------------------- */}
+          {/* Input Area */}
+          {/* ----------------------------------------------------------------- */}
+          <div className="border-t border-border bg-background/80 px-4 pb-4 pt-3 backdrop-blur-sm sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-3xl">
+              {/* Quick action chips */}
+              <div className="mb-3 flex flex-wrap gap-2">
+                {quickActions.map((action) => {
+                  const Icon = action.icon;
+                  return (
+                    <button
+                      key={action.label}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/20 px-3 py-1.5 text-[11px] font-medium text-muted-foreground transition-all duration-150 hover:border-indigo-500/30 hover:bg-indigo-500/10 hover:text-indigo-400"
+                    >
+                      <Icon className="size-3" />
+                      {action.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Text input */}
+              <div className="glass glow-primary relative rounded-xl transition-all duration-200 focus-within:ring-2 focus-within:ring-indigo-500/30">
+                <textarea
+                  ref={textareaRef}
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Ask the agent..."
+                  rows={1}
+                  className="block w-full resize-none bg-transparent px-4 py-3 pr-24 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className="absolute bottom-2 right-2 flex items-center gap-1.5">
+                  <button className="flex size-8 items-center justify-center rounded-lg text-muted-foreground/50 transition-colors hover:bg-muted/30 hover:text-muted-foreground">
+                    <Paperclip className="size-4" />
+                  </button>
+                  <button
+                    disabled={!inputValue.trim()}
+                    className={`flex size-8 items-center justify-center rounded-lg transition-all duration-200 ${
+                      inputValue.trim()
+                        ? "bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-600"
+                        : "bg-muted/50 text-muted-foreground/30 cursor-not-allowed"
+                    }`}
+                  >
+                    <ArrowUp className="size-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Subtle hint */}
+              <p className="mt-2 text-center text-[10px] text-muted-foreground/40">
+                Press Enter to send. Shift + Enter for new line. Agent actions
+                require your approval before executing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
