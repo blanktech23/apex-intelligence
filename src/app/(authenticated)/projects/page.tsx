@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PaginationBar } from "@/components/ui/pagination-bar";
 import Link from "next/link";
 import {
   FolderKanban,
@@ -31,6 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 
 const statusConfig: Record<
   string,
@@ -178,6 +180,7 @@ const projects = [
 export default function ProjectsPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const filtered = projects.filter((p) => {
     const matchesSearch =
@@ -199,7 +202,7 @@ export default function ProjectsPage() {
             Track and manage construction projects
           </p>
         </div>
-        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-primary-foreground gap-2">
+        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-primary-foreground gap-2" onClick={() => toast.success("Project created successfully")}>
           <Plus className="h-4 w-4" />
           New Project
         </Button>
@@ -362,6 +365,14 @@ export default function ProjectsPage() {
           );
         })}
       </div>
+
+      {/* Pagination */}
+      <PaginationBar
+        currentPage={currentPage}
+        totalItems={47}
+        itemsPerPage={25}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }

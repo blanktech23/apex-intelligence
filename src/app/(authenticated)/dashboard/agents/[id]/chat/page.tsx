@@ -116,7 +116,7 @@ const idAliasMap: Record<string, string> = {
   "estimate-engine": "estimation",
   "operations-controller": "bookkeeping",
   "executive-navigator": "project-management",
-  "design-spec-assistant": "field-operations",
+  "design-spec-assistant": "design-spec-assistant",
 };
 
 // Plan v3 canonical display names
@@ -2667,6 +2667,54 @@ function renderCard(card: StructuredCard) {
 // Page
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Mock AI Responses (per agent type)
+// ---------------------------------------------------------------------------
+
+const mockAgentResponses: Record<string, string[]> = {
+  "customer-support": [
+    "I've looked into this and found the relevant records. The client's account shows the issue was first reported 3 days ago. I've escalated it to priority status and drafted a follow-up email for your review.",
+    "I've checked our CRM and the customer has been with us for 2 years with 4 completed projects. Based on their history, I recommend offering a courtesy discount. Shall I draft the response?",
+    "The warranty claim is valid based on our records. I've prepared the documentation and notified the field team. The client will receive a confirmation email within the hour.",
+  ],
+  "sales-outreach": [
+    "I've analyzed the lead and they match our ideal customer profile. Revenue potential is estimated at $180K-$240K. I recommend scheduling a discovery call this week. Want me to draft the outreach email?",
+    "I've reviewed the pipeline and identified 3 deals that are likely to close this month, totaling approximately $520K. I've prepared a summary with next steps for each opportunity.",
+    "Based on market analysis, this prospect has been evaluating competitors. I suggest a value-first approach highlighting our 98% on-time completion rate. Shall I draft a proposal?",
+  ],
+  scheduling: [
+    "I've found an available crew for that time slot. Mike's team can cover Wednesday if we shift the Riverside job to Thursday morning. This keeps both projects on schedule. Want me to confirm the changes?",
+    "I've optimized next week's schedule to minimize travel time between sites. This saves approximately 4.5 crew-hours. The updated schedule is ready for your review.",
+    "The subcontractor confirmed availability for Tuesday. I've blocked the time and sent calendar invites to all parties. Equipment delivery is aligned for 7 AM.",
+  ],
+  estimation: [
+    "I've calculated the estimate based on current material costs and labor rates. The total comes to $127,500 with a 12% contingency buffer. I've broken it down by phase for your review.",
+    "After analyzing comparable projects in the area, I recommend pricing this at $85/sq ft for the renovation work. This is competitive while maintaining our target margins.",
+    "I've updated the estimate with the revised scope. The change order adds $18,200 to the original quote, primarily driven by upgraded fixtures. Shall I generate the client-facing proposal?",
+  ],
+  bookkeeping: [
+    "I've reconciled the accounts and found 3 discrepancies totaling $2,340. Two are duplicate vendor payments and one is a misclassified expense. I've prepared the journal entries for correction.",
+    "The monthly P&L report is ready. Revenue is up 12% month-over-month, and expenses are within budget across all categories. I've flagged one line item that needs your attention.",
+    "I've processed the invoices and scheduled payments according to terms. Three vendors are eligible for early payment discounts totaling $1,850 in savings. Want me to proceed?",
+  ],
+  "project-management": [
+    "I've reviewed the project timeline and identified a potential 3-day delay on the critical path due to material delivery. I recommend fast-tracking the interior work to compensate. Here's the revised schedule.",
+    "The weekly status report is ready. 4 out of 5 active projects are on track. The Harbor View project needs attention — I've outlined the issues and recommended actions.",
+    "I've analyzed resource allocation across all active projects. We have capacity for one more medium-sized job starting next month. I've prepared a resource loading chart for your review.",
+  ],
+  "field-operations": [
+    "I've completed the site inspection checklist. 12 of 14 items passed. The two flagged items are related to grading and drainage — I've created work orders for the corrections.",
+    "Weather forecast shows rain Thursday through Saturday. I've identified 3 exterior tasks that should be moved up and prepared an adjusted work plan for the affected crews.",
+    "Equipment utilization report is ready. The excavator has been idle for 4 days — I recommend reassigning it to the Summit Heights project or returning the rental to save $800/day.",
+  ],
+};
+
+const defaultMockResponses = [
+  "I've processed your request. Based on my analysis, here's what I found — the data looks consistent with recent trends and I've prepared a detailed summary for your review.",
+  "I've looked into this and have some recommendations. Let me walk you through the key findings and suggest next steps.",
+  "Got it. I've analyzed the information and prepared an action plan. Would you like me to proceed with the implementation or would you prefer to review the details first?",
+];
+
 export default function AgentChatPage() {
   const params = useParams();
   const id = params.id as string;
@@ -2684,10 +2732,52 @@ export default function AgentChatPage() {
   const quickActions = quickActionsByAgent[dataId] || defaultQuickActions;
   const startTime = conversationStartTimes[dataId] || "Today";
 
-  const [messages] = useState<ChatMessage[]>(mockMessages);
+  const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
   const [inputValue, setInputValue] = useState("");
   const [selectedConversation, setSelectedConversation] = useState("conv-1");
-  const [isTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+
+  // Send a message and get a mock AI response
+  const handleSend = () => {
+    const text = inputValue.trim();
+    if (!text || isTyping) return;
+
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+
+    // Add user message
+    const userMsg: ChatMessage = {
+      id: `user-${Date.now()}`,
+      role: "user",
+      content: text,
+      timestamp: timeStr,
+    };
+    setMessages((prev) => [...prev, userMsg]);
+    setInputValue("");
+
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+
+    // Show typing indicator, then respond
+    setIsTyping(true);
+    const delay = 1000 + Math.random() * 500; // 1-1.5s
+    setTimeout(() => {
+      const responses = mockAgentResponses[dataId] || defaultMockResponses;
+      const responseText = responses[Math.floor(Math.random() * responses.length)];
+      const replyTime = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+
+      const agentMsg: ChatMessage = {
+        id: `agent-${Date.now()}`,
+        role: "agent",
+        content: responseText,
+        timestamp: replyTime,
+      };
+      setIsTyping(false);
+      setMessages((prev) => [...prev, agentMsg]);
+    }, delay);
+  };
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [canvasOpen, setCanvasOpen] = useState(false);
   const [canvasTab, setCanvasTab] = useState<"2d" | "3d" | "materials">("2d");
@@ -2971,6 +3061,7 @@ export default function AgentChatPage() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
+                      handleSend();
                     }
                   }}
                 />
@@ -2979,9 +3070,10 @@ export default function AgentChatPage() {
                     <Paperclip className="size-4" />
                   </button>
                   <button
-                    disabled={!inputValue.trim()}
+                    disabled={!inputValue.trim() || isTyping}
+                    onClick={handleSend}
                     className={`flex size-8 items-center justify-center rounded-lg transition-all duration-200 ${
-                      inputValue.trim()
+                      inputValue.trim() && !isTyping
                         ? "bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-600"
                         : "bg-muted/50 text-muted-foreground/30 cursor-not-allowed"
                     }`}

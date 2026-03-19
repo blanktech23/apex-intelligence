@@ -33,6 +33,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 const customer = {
   id: "cust-005",
@@ -466,6 +467,7 @@ export default function CustomerDetailPage() {
                 <div className="flex justify-end mt-2">
                   <Button
                     size="sm"
+                    onClick={() => { if (noteText.trim()) { setNoteText(""); toast.success("Note added successfully"); } }}
                     className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs"
                   >
                     <Plus className="h-3 w-3 mr-1" />
@@ -638,6 +640,7 @@ export default function CustomerDetailPage() {
               <Badge
                 variant="outline"
                 className="bg-indigo-500/10 text-indigo-400 border-indigo-500/20 cursor-pointer hover:bg-indigo-500/20 transition-colors"
+                onClick={() => toast.info("Add tag dialog coming soon")}
               >
                 <Plus className="h-3 w-3 mr-1" />
                 Add Tag

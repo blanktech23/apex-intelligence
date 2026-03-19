@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { useRole } from "@/lib/role-context";
+import { toast } from "sonner";
 
 /* ------------------------------------------------------------------ */
 /*  Usage data                                                         */
@@ -340,6 +341,7 @@ export default function BillingSettingsPage() {
           <Button
             variant="outline"
             size="sm"
+            onClick={() => toast.info("Opening payment method settings...")}
             className="border-border text-xs"
           >
             Update
@@ -418,6 +420,7 @@ export default function BillingSettingsPage() {
                     <Button
                       variant="ghost"
                       size="sm"
+                      onClick={() => toast.success(`Downloading ${item.id}.pdf`)}
                       className="h-7 gap-1 text-xs text-muted-foreground hover:text-foreground"
                     >
                       <Download className="h-3.5 w-3.5" />

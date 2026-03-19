@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 import {
   Table,
   TableBody,
@@ -228,6 +229,7 @@ export default function SecuritySettingsPage() {
             <Button
               type="submit"
               className="h-10 rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_24px_rgba(99,102,241,0.3)]"
+              onClick={() => toast.success("Password updated successfully")}
             >
               Change password
             </Button>
@@ -301,6 +303,7 @@ export default function SecuritySettingsPage() {
                       variant="ghost"
                       size="sm"
                       className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
+                      onClick={() => { navigator.clipboard.writeText("APEX-4K7M-R2QN-X8FJ-LP3W"); toast.success("Code copied to clipboard"); }}
                     >
                       <Copy className="h-3.5 w-3.5" />
                     </Button>
@@ -315,7 +318,7 @@ export default function SecuritySettingsPage() {
               </p>
               <button
                 type="button"
-                onClick={() => alert("Recovery code regeneration coming soon.")}
+                onClick={() => toast.success("Recovery codes regenerated")}
                 className="text-sm font-medium text-primary transition-colors hover:text-primary/80"
               >
                 Regenerate recovery codes
@@ -335,7 +338,7 @@ export default function SecuritySettingsPage() {
           </h2>
           <button
             type="button"
-            onClick={() => alert("Session revocation coming soon.")}
+            onClick={() => toast.success("All other sessions revoked")}
             className="text-sm font-medium text-destructive transition-colors hover:text-destructive/80"
           >
             Revoke all other sessions
@@ -397,6 +400,7 @@ export default function SecuritySettingsPage() {
                           variant="ghost"
                           size="sm"
                           className="h-7 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
+                          onClick={() => toast.success("Session revoked")}
                         >
                           Revoke
                         </Button>
@@ -478,7 +482,7 @@ export default function SecuritySettingsPage() {
               API Keys
             </h2>
           </div>
-          <Button className="h-8 gap-1.5 rounded-lg bg-primary px-3 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_24px_rgba(99,102,241,0.3)]">
+          <Button className="h-8 gap-1.5 rounded-lg bg-primary px-3 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_24px_rgba(99,102,241,0.3)]" onClick={() => toast.success("New API key generated")}>
             <Plus className="h-3.5 w-3.5" />
             Generate new key
           </Button>
@@ -509,7 +513,7 @@ export default function SecuritySettingsPage() {
                       <code className="rounded bg-muted/40 px-2 py-0.5 font-mono text-xs text-muted-foreground">
                         {apiKey.key}
                       </code>
-                      <button className="text-muted-foreground transition-colors hover:text-foreground">
+                      <button className="text-muted-foreground transition-colors hover:text-foreground" onClick={() => toast.success("API key copied to clipboard")}>
                         <Copy className="h-3.5 w-3.5" />
                       </button>
                     </div>
@@ -525,6 +529,7 @@ export default function SecuritySettingsPage() {
                       variant="ghost"
                       size="sm"
                       className="h-7 gap-1 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => toast.success("API key revoked")}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                       Revoke

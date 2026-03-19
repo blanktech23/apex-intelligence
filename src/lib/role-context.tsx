@@ -60,7 +60,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     avatar: "MT",
     name: "Mike Torres",
     email: "mike@apexintelligence.ai",
-    sidebarItems: ["Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports"],
+    sidebarItems: ["Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Settings"],
     canApprove: true,
     canManageTeam: false,
     canViewBilling: false,
@@ -87,7 +87,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
   },
   bookkeeper: {
     label: "Bookkeeper",
-    description: "Financial operations. Works with Estimate Engine and Support Agent.",
+    description: "Financial operations. Works with Operations Controller and Support Agent.",
     color: "text-amber-400 bg-amber-500/15 ring-amber-500/20",
     avatar: "DK",
     name: "David Kim",
@@ -99,7 +99,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     canConfigureAgents: false,
     canViewReports: true,
     canEditProjects: false,
-    agents: ["Estimate Engine", "Support Agent"],
+    agents: ["Operations Controller", "Support Agent"],
   },
   viewer: {
     label: "Viewer",
@@ -115,7 +115,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     canConfigureAgents: false,
     canViewReports: true,
     canEditProjects: false,
-    agents: ["Discovery Concierge", "Estimate Engine", "Operations Controller", "Executive Navigator", "Project Orchestrator", "Design Spec Assistant", "Support Agent"],
+    agents: ["Support Agent", "Project Orchestrator"],
   },
 };
 

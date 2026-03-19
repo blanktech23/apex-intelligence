@@ -158,7 +158,7 @@ const agentDescriptionMap: Record<string, string> = {
   "estimate-engine":
     "Generates detailed project cost estimates from specs and verified pricing data. Produces material breakdowns, compares vendor pricing across 500+ materials, and flags potential budget overruns early.",
   "operations-controller":
-    "Monitors project timelines, resource allocation, and budget tracking. Identifies schedule risks, manages dependencies across projects, and alerts stakeholders to blockers proactively.",
+    "Manages billing memos, AP/AR tracking, lien waivers, and QuickBooks integration. Provides real-time financial visibility with budget variance alerts and invoice processing.",
   "executive-navigator":
     "Surfaces KPIs, financial insights, and strategic briefings for leadership. Generates daily morning summaries, revenue forecasts, and cross-agent performance analysis.",
   "project-orchestrator":
@@ -166,7 +166,7 @@ const agentDescriptionMap: Record<string, string> = {
   "design-spec-assistant":
     "Extracts specs and submittals from design documents. Parses architectural drawings, identifies material specifications, and generates structured submittal packages for contractor review.",
   "support-agent":
-    "Handles customer inquiries, ticket triage, warranty claims, and automated response drafting. Targets 40-60% autonomous resolution with smart escalation for complex issues.",
+    "AI-first customer support with knowledge base grounding. Targets 20-25% autonomous resolution at launch, scaling to 35-45% after 6 months. Uses confidence-gated responses and smart escalation.",
   "customer-support":
     "Handles customer inquiries, ticket triage, warranty claims, and automated response drafting. Monitors sentiment across all customer interactions and escalates critical issues.",
   "sales-outreach":
@@ -207,7 +207,7 @@ const agentStatusMap: Record<string, AgentStatus> = {
 const agentStatsMap: Record<string, AgentStat[]> = {
   "customer-support": [
     { label: "Total Conversations", value: "2,847", delta: "+12.4%", deltaType: "up", icon: MessageSquare, color: "text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
-    { label: "Resolution Rate", value: "94.2%", delta: "+3.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
+    { label: "Resolution Rate", value: "22.4%", delta: "+4.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
     { label: "Avg Response Time", value: "1.8s", delta: "-0.4s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
     { label: "Customer Satisfaction", value: "4.7/5", delta: "+0.2", deltaType: "up", icon: Star, color: "text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
   ],
@@ -246,6 +246,12 @@ const agentStatsMap: Record<string, AgentStat[]> = {
     { label: "Pass Rate", value: "96%", delta: "+2.8%", deltaType: "up", icon: CheckCircle2, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
     { label: "Avg Report Time", value: "45s", delta: "-8s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
     { label: "Safety Alerts", value: "12", delta: "+3", deltaType: "down", icon: Shield, color: "text-red-400", glowColor: "shadow-[0_0_12px_rgba(239,68,68,0.2)]" },
+  ],
+  "design-spec": [
+    { label: "Specs Processed", value: "234", delta: "+18.3%", deltaType: "up", icon: FileText, color: "text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
+    { label: "Submittals Generated", value: "89", delta: "+12.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
+    { label: "Avg Extraction Time", value: "8.2s", delta: "-2.1s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
+    { label: "Materials Identified", value: "1,847", delta: "+246", deltaType: "up", icon: Target, color: "text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
   ],
 };
 
@@ -373,6 +379,23 @@ const agentPerformanceMap: Record<string, PerformancePoint[]> = {
     { date: "Mar 13", conversations: 8, resolutionRate: 97 },
     { date: "Mar 15", conversations: 10, resolutionRate: 96 },
   ],
+  "design-spec": [
+    { date: "Feb 15", conversations: 8, resolutionRate: 91 },
+    { date: "Feb 17", conversations: 12, resolutionRate: 93 },
+    { date: "Feb 19", conversations: 10, resolutionRate: 92 },
+    { date: "Feb 21", conversations: 15, resolutionRate: 94 },
+    { date: "Feb 23", conversations: 11, resolutionRate: 93 },
+    { date: "Feb 25", conversations: 14, resolutionRate: 95 },
+    { date: "Feb 27", conversations: 13, resolutionRate: 94 },
+    { date: "Mar 01", conversations: 18, resolutionRate: 96 },
+    { date: "Mar 03", conversations: 16, resolutionRate: 95 },
+    { date: "Mar 05", conversations: 14, resolutionRate: 94 },
+    { date: "Mar 07", conversations: 19, resolutionRate: 96 },
+    { date: "Mar 09", conversations: 17, resolutionRate: 95 },
+    { date: "Mar 11", conversations: 20, resolutionRate: 97 },
+    { date: "Mar 13", conversations: 22, resolutionRate: 96 },
+    { date: "Mar 15", conversations: 18, resolutionRate: 95 },
+  ],
 };
 
 // ---------------------------------------------------------------------------
@@ -464,6 +487,18 @@ const agentActivityMap: Record<string, ActivityItem[]> = {
     { id: "a9", message: "Punch list generated: Harbor Point - 8 items remaining before closeout", timestamp: "2h ago", type: "success" },
     { id: "a10", message: "Weather damage assessment: 2 sites checked post-storm, no structural issues", timestamp: "3h ago", type: "success" },
   ],
+  "design-spec": [
+    { id: "a1", message: "Extracted 47 material specs from Johnson Kitchen architectural drawings", timestamp: "3 min ago", type: "success" },
+    { id: "a2", message: "Submittal package generated: Project Oak - plumbing fixtures (18 items)", timestamp: "10 min ago", type: "success" },
+    { id: "a3", message: "Material conflict detected: specified granite discontinued, suggesting alternatives", timestamp: "18 min ago", type: "warning" },
+    { id: "a4", message: "Parsed AutoCAD DXF: Westfield_Office_v3.dxf - 234 entities extracted", timestamp: "25 min ago", type: "info" },
+    { id: "a5", message: "Cut sheet compiled: Anderson Windows - Series 400 Woodwright (12 units)", timestamp: "32 min ago", type: "success" },
+    { id: "a6", message: "Spec discrepancy: floor plan shows 36\" door but schedule lists 32\"", timestamp: "40 min ago", type: "warning" },
+    { id: "a7", message: "Google Drive sync: 8 new design files imported from Shared/Designs", timestamp: "48 min ago", type: "info" },
+    { id: "a8", message: "Revit model processed: Harbor Point - extracted MEP specifications", timestamp: "55 min ago", type: "success" },
+    { id: "a9", message: "Submittal tracking update: 89 total, 72 approved, 12 pending, 5 revise & resubmit", timestamp: "1h ago", type: "info" },
+    { id: "a10", message: "Material database updated: 46 new products from BuilderTrend catalog import", timestamp: "2h ago", type: "info" },
+  ],
 };
 
 // ---------------------------------------------------------------------------
@@ -527,6 +562,14 @@ const agentConversationsMap: Record<string, Conversation[]> = {
     { id: "c5", customer: "OSHA Compliance", subject: "12-site compliance audit summary", status: "Resolved", duration: "1h 05m", sentiment: "Neutral", date: "Mar 16, 12:30 PM" },
     { id: "c6", customer: "Harbor Point Punch List", subject: "Closeout punch list - 8 items remaining", status: "In Progress", duration: "40m 45s", sentiment: "Neutral", date: "Mar 16, 11:45 AM" },
   ],
+  "design-spec": [
+    { id: "c1", customer: "Lisa Park", subject: "Johnson Kitchen - material spec extraction", status: "Resolved", duration: "8m 20s", sentiment: "Positive", date: "Mar 16, 2:40 PM" },
+    { id: "c2", customer: "Mike Torres", subject: "Project Oak - plumbing submittal package", status: "Resolved", duration: "12m 45s", sentiment: "Positive", date: "Mar 16, 2:15 PM" },
+    { id: "c3", customer: "Lisa Park", subject: "Westfield Office - DXF parsing and entity extraction", status: "In Progress", duration: "15m 30s", sentiment: "Neutral", date: "Mar 16, 1:50 PM" },
+    { id: "c4", customer: "Sarah Chen", subject: "Harbor Point - MEP spec review from Revit model", status: "Resolved", duration: "22m 10s", sentiment: "Positive", date: "Mar 16, 1:20 PM" },
+    { id: "c5", customer: "Mike Torres", subject: "Granite discontinuation - alternative materials", status: "Escalated", duration: "6m 15s", sentiment: "Neutral", date: "Mar 16, 12:45 PM" },
+    { id: "c6", customer: "Lisa Park", subject: "Anderson Windows cut sheet compilation", status: "Resolved", duration: "10m 30s", sentiment: "Positive", date: "Mar 16, 12:10 PM" },
+  ],
 };
 
 // ---------------------------------------------------------------------------
@@ -536,17 +579,14 @@ const agentConversationsMap: Record<string, Conversation[]> = {
 const agentConfigMap: Record<string, AgentConfig> = {
   "customer-support": {
     model: "claude-sonnet-4-20250514",
-    temperature: 0.3,
-    systemPrompt: "You are a professional customer support agent for Apex Intelligence, a construction technology company. You handle inquiries about project timelines, billing, warranty claims, scheduling, and general questions. Always maintain a helpful, empathetic tone. Escalate billing disputes over $5,000 and safety concerns immediately. Reference the knowledge base for warranty policies and standard procedures. Never make promises about timelines without checking the project management system first.",
+    temperature: 0,
+    systemPrompt: "You are a professional customer support agent for Apex Intelligence, a construction technology company. You handle inquiries about project timelines, billing, warranty claims, scheduling, and general questions. Always maintain a helpful, empathetic tone. Escalate billing disputes over $5,000 and safety concerns immediately. Reference the knowledge base for warranty policies and standard procedures. Never make promises about timelines without checking the project management system first. Use confidence-gated responses: >=0.85 high confidence (answer directly), 0.60-0.84 medium (hedge language), <0.60 low (escalate to human).",
     tools: [
-      { name: "Knowledge Base Search", enabled: true },
-      { name: "Ticket Management", enabled: true },
-      { name: "CRM Lookup", enabled: true },
-      { name: "Calendar Integration", enabled: true },
-      { name: "Email Drafting", enabled: true },
-      { name: "Sentiment Analysis", enabled: true },
-      { name: "Invoice Lookup", enabled: false },
-      { name: "Project Timeline API", enabled: true },
+      { name: "search_knowledge_base", enabled: true },
+      { name: "escalate_to_human", enabled: true },
+      { name: "check_account_status", enabled: true },
+      { name: "query_execution_logs", enabled: true },
+      { name: "check_integration_health", enabled: true },
     ],
     escalationRules: [
       { condition: "Billing disputes exceeding $5,000", action: "Route to Finance Team lead" },
@@ -597,7 +637,7 @@ const agentConfigMap: Record<string, AgentConfig> = {
     ],
   },
   "estimation": {
-    model: "claude-opus-4-20250514",
+    model: "claude-sonnet-4-20250514",
     temperature: 0.2,
     systemPrompt: "You are an estimation agent for Apex Intelligence. You generate detailed project cost estimates using material databases, labor rate tables, and historical project data. Break down estimates into line items with material, labor, equipment, and overhead categories. Always include a 10% contingency for projects over $100K. Flag any material costs that have changed >5% in the last 30 days. Compare estimates against similar completed projects for accuracy validation. Never round estimates - provide precise figures.",
     tools: [
@@ -677,6 +717,25 @@ const agentConfigMap: Record<string, AgentConfig> = {
       { condition: "3+ deficiencies on single inspection", action: "Flag for quality review meeting" },
       { condition: "Equipment maintenance overdue", action: "Alert fleet manager + restrict usage" },
       { condition: "Regulatory inspection scheduled <48hrs", action: "Priority prep alert to site foreman" },
+    ],
+  },
+  "design-spec": {
+    model: "claude-sonnet-4-20250514",
+    temperature: 0.2,
+    systemPrompt: "You are a design specification assistant for Apex Intelligence. You extract material specs, dimensions, and finishes from architectural drawings (AutoCAD DXF, Revit RVT). Parse floor plans to identify all specified materials, fixtures, and equipment. Generate structured submittal packages for contractor review. Cross-reference specs against material databases for pricing and availability. Flag discontinuations or spec conflicts (e.g., door size mismatches between plans and schedules). Integrate with Google Drive for document import.",
+    tools: [
+      { name: "query_jobtread_projects", enabled: true },
+      { name: "Google Drive Sync", enabled: true },
+      { name: "AutoCAD DXF Parser", enabled: true },
+      { name: "Revit Model Reader", enabled: true },
+      { name: "Material Database", enabled: true },
+      { name: "Submittal Generator", enabled: true },
+    ],
+    escalationRules: [
+      { condition: "Specified material discontinued", action: "Alert designer with 3 alternatives" },
+      { condition: "Spec conflict between plans and schedule", action: "Flag for architect review" },
+      { condition: "Material cost >20% above budget", action: "Escalate to Estimate Engine for re-evaluation" },
+      { condition: "Missing specs for structural elements", action: "Escalate to structural engineer" },
     ],
   },
 };
@@ -797,6 +856,20 @@ const agentLogsMap: Record<string, LogEntry[]> = {
     { id: "l14", timestamp: "2026-03-16 12:31:15", level: "info", message: "Photo upload retry successful - all 42 images synced" },
     { id: "l15", timestamp: "2026-03-16 12:00:00", level: "info", message: "Daily ops check: all inspection tools calibrated, checklists updated, GPS trackers online" },
   ],
+  "design-spec": [
+    { id: "l1", timestamp: "2026-03-16 14:40:00", level: "info", message: "Spec extraction complete: Johnson Kitchen DXF - 47 materials, 12 fixtures, 8 appliances identified" },
+    { id: "l2", timestamp: "2026-03-16 14:35:20", level: "info", message: "Submittal package generated: Project Oak plumbing (18 items, 24 pages PDF)" },
+    { id: "l3", timestamp: "2026-03-16 14:28:15", level: "warn", message: "Material conflict: Venetian Gold granite (SKU-4821) discontinued by supplier since Jan 2026" },
+    { id: "l4", timestamp: "2026-03-16 14:25:00", level: "info", message: "Alternatives found: 3 similar granite options (Colonial Gold, New Venetian, Giallo Ornamental)" },
+    { id: "l5", timestamp: "2026-03-16 14:18:30", level: "info", message: "AutoCAD DXF parsed: Westfield_Office_v3.dxf - 234 entities, 18 layers, 12 blocks" },
+    { id: "l6", timestamp: "2026-03-16 14:10:45", level: "warn", message: "Spec discrepancy: Floor plan shows 36\" door at Entry-B but door schedule lists 32\"" },
+    { id: "l7", timestamp: "2026-03-16 14:05:00", level: "info", message: "Google Drive sync: 8 files imported from Shared/Designs (3 DXF, 2 RVT, 3 PDF)" },
+    { id: "l8", timestamp: "2026-03-16 13:55:20", level: "info", message: "Revit model processed: Harbor Point MEP - extracted 156 MEP specs across 4 systems" },
+    { id: "l9", timestamp: "2026-03-16 13:45:00", level: "info", message: "Cut sheet compiled: Anderson Windows Series 400 Woodwright - 12 units, 4 sizes" },
+    { id: "l10", timestamp: "2026-03-16 13:30:00", level: "info", message: "Submittal status update: 72 approved, 12 pending review, 5 revise & resubmit" },
+    { id: "l11", timestamp: "2026-03-16 13:15:10", level: "info", message: "Material DB update: 46 products imported from BuilderTrend catalog (batch #BT-2026-Q1)" },
+    { id: "l12", timestamp: "2026-03-16 13:00:00", level: "info", message: "Daily digest: 18 specs processed, 3 submittals generated, 2 conflicts flagged" },
+  ],
 };
 
 // ---------------------------------------------------------------------------
@@ -810,7 +883,7 @@ const idAliasMap: Record<string, string> = {
   "estimate-engine": "estimation",
   "operations-controller": "bookkeeping",
   "executive-navigator": "project-management",
-  "design-spec-assistant": "field-operations",
+  "design-spec-assistant": "design-spec",
 };
 
 // ---------------------------------------------------------------------------

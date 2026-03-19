@@ -65,7 +65,7 @@ const initialAgents: Agent[] = [
   {
     id: "operations-controller",
     name: "Operations Controller",
-    description: "Monitors project timelines, resource allocation, and budget tracking",
+    description: "Manages billing, AP/AR tracking, lien waivers, and QuickBooks integration",
     icon: Wrench,
     status: "Active",
     lastRun: "30m ago",
@@ -117,7 +117,7 @@ const initialAgents: Agent[] = [
   {
     id: "support-agent",
     name: "Support Agent",
-    description: "Handles customer inquiries, ticket triage, and warranty claims",
+    description: "AI-first customer support targeting 20-25% autonomous resolution at launch",
     icon: Headset,
     status: "Active",
     lastRun: "2m ago",

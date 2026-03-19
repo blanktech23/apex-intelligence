@@ -55,6 +55,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { toast } from "sonner";
 
 // --- Mock Data ---
 
@@ -258,7 +259,7 @@ export default function ProjectDetailPage() {
             </div>
             <p className="mt-1 text-sm text-muted-foreground">{project.client}</p>
           </div>
-          <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-primary-foreground gap-2">
+          <Button onClick={() => toast.info("Opening project editor...")} className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-primary-foreground gap-2">
             <Edit className="h-4 w-4" />
             Edit Project
           </Button>
@@ -577,6 +578,7 @@ export default function ProjectDetailPage() {
                         <Button
                           variant="ghost"
                           size="sm"
+                          onClick={() => toast.success(`Downloading ${doc.name}...`)}
                           className="h-7 px-2 text-xs text-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-300"
                         >
                           <Download className="h-3.5 w-3.5 mr-1" />

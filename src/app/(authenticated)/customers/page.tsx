@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { PaginationBar } from "@/components/ui/pagination-bar";
 import { useRouter } from "next/navigation";
 import {
   Users,
@@ -36,6 +37,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
   Active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
@@ -201,6 +204,13 @@ export default function CustomersPage() {
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(t);
+  }, []);
 
   const filtered = customers.filter((c) => {
     const matchesSearch =
@@ -210,6 +220,64 @@ export default function CustomersPage() {
       filter === "all" || c.status.toLowerCase() === filter;
     return matchesSearch && matchesFilter;
   });
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        {/* Header skeleton */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <Skeleton className="h-9 w-44 bg-muted/40" />
+            <Skeleton className="mt-2 h-4 w-64 bg-muted/30" />
+          </div>
+          <Skeleton className="h-10 w-36 rounded-md bg-muted/30" />
+        </div>
+
+        {/* Stats row skeleton */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="glass border-border p-5 rounded-xl space-y-2">
+              <Skeleton className="h-3 w-28 bg-muted/20" />
+              <Skeleton className="h-7 w-16 bg-muted/40" />
+              <Skeleton className="h-3 w-24 bg-muted/20" />
+            </div>
+          ))}
+        </div>
+
+        {/* Search skeleton */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Skeleton className="h-10 flex-1 rounded-md bg-muted/30" />
+          <Skeleton className="h-10 w-[160px] rounded-md bg-muted/20" />
+        </div>
+
+        <Separator className="bg-border" />
+
+        {/* Table skeleton */}
+        <Card className="glass border-border overflow-hidden">
+          <div className="border-b border-border px-4 py-3 flex gap-6">
+            {["w-32", "w-40", "w-44", "w-28", "w-16", "w-16", "w-24", "w-24"].map((w, i) => (
+              <Skeleton key={i} className={`h-4 ${w} bg-muted/20`} />
+            ))}
+          </div>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-6 border-b border-border/50 px-4 py-3">
+              <div className="flex items-center gap-3 w-32">
+                <Skeleton className="h-8 w-8 rounded-full bg-muted/30" />
+                <Skeleton className="h-4 w-24 bg-muted/20" />
+              </div>
+              <Skeleton className="h-4 w-40 bg-muted/15" />
+              <Skeleton className="h-4 w-44 bg-muted/15" />
+              <Skeleton className="h-4 w-28 bg-muted/15" />
+              <Skeleton className="h-5 w-16 rounded-full bg-muted/20" />
+              <Skeleton className="h-4 w-8 bg-muted/15" />
+              <Skeleton className="h-4 w-20 bg-muted/20" />
+              <Skeleton className="h-4 w-20 bg-muted/15" />
+            </div>
+          ))}
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -221,7 +289,7 @@ export default function CustomersPage() {
             Manage your clients and track relationships
           </p>
         </div>
-        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2">
+        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => toast.success("Customer created successfully")}>
           <Plus className="h-4 w-4" />
           Add Customer
         </Button>
@@ -365,6 +433,14 @@ export default function CustomersPage() {
           </TableBody>
         </Table>
       </Card>
+
+      {/* Pagination */}
+      <PaginationBar
+        currentPage={currentPage}
+        totalItems={342}
+        itemsPerPage={25}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }

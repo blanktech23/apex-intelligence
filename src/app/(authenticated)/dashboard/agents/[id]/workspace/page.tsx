@@ -108,7 +108,7 @@ const idAliasMap: Record<string, string> = {
   "estimate-engine": "estimation",
   "operations-controller": "bookkeeping",
   "executive-navigator": "project-management",
-  "design-spec-assistant": "field-operations",
+  "design-spec-assistant": "design-spec-assistant",
 };
 
 // ---------------------------------------------------------------------------

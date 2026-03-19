@@ -28,7 +28,7 @@ export default function NotFound() {
             <Link href="/dashboard">
               <Button className="glow-primary bg-primary font-semibold hover:bg-primary/90">
                 <Home className="mr-2 h-4 w-4" />
-                Go to Dashboard
+                Back to Dashboard
               </Button>
             </Link>
             <Button
@@ -40,6 +40,13 @@ export default function NotFound() {
               Go Back
             </Button>
           </div>
+
+          <Link
+            href="/login"
+            className="text-sm text-muted-foreground transition-colors hover:text-primary"
+          >
+            Go to Login
+          </Link>
         </CardContent>
       </Card>
     </div>

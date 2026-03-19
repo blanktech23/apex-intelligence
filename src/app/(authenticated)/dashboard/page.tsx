@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Brain,
@@ -34,6 +34,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useRole, type Role } from "@/lib/role-context";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // ---------------------------------------------------------------------------
 // Mock Data
@@ -220,13 +221,13 @@ const bookkeeperStatsCards = [
 ];
 
 const chartData = [
-  { day: "Mon", support: 68, sales: 42, scheduling: 32, other: 18, resolutionRate: 91 },
-  { day: "Tue", support: 74, sales: 38, scheduling: 28, other: 22, resolutionRate: 93 },
-  { day: "Wed", support: 82, sales: 45, scheduling: 35, other: 20, resolutionRate: 89 },
-  { day: "Thu", support: 70, sales: 48, scheduling: 30, other: 24, resolutionRate: 94 },
-  { day: "Fri", support: 64, sales: 36, scheduling: 26, other: 16, resolutionRate: 96 },
-  { day: "Sat", support: 28, sales: 12, scheduling: 8, other: 6, resolutionRate: 92 },
-  { day: "Sun", support: 32, sales: 18, scheduling: 14, other: 10, resolutionRate: 90 },
+  { day: "Mon", discovery: 42, estimating: 18, executive: 3, operations: 32, support: 68 },
+  { day: "Tue", discovery: 38, estimating: 22, executive: 2, operations: 28, support: 74 },
+  { day: "Wed", discovery: 45, estimating: 20, executive: 4, operations: 35, support: 82 },
+  { day: "Thu", discovery: 48, estimating: 24, executive: 3, operations: 30, support: 70 },
+  { day: "Fri", discovery: 36, estimating: 16, executive: 2, operations: 26, support: 64 },
+  { day: "Sat", discovery: 12, estimating: 6, executive: 1, operations: 8, support: 28 },
+  { day: "Sun", discovery: 18, estimating: 10, executive: 1, operations: 14, support: 32 },
 ];
 
 const allEscalations = [
@@ -666,11 +667,95 @@ function EscalationAlertBanner({ role }: { role: Role }) {
 
 export default function DashboardPage() {
   const { role } = useRole();
+  const [loading, setLoading] = useState(true);
   const statsCards = getStatsForRole(role);
   const escalations = getEscalationsForRole(role);
   const visibleAgents = getAgentsForRole(role);
   const isViewer = role === "viewer";
   const showEscalationPanel = escalations.length > 0;
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background bg-mesh">
+        <div className="mx-auto max-w-7xl space-y-6 p-6">
+          {/* Header skeleton */}
+          <div>
+            <Skeleton className="h-8 w-48 bg-muted/40" />
+            <Skeleton className="mt-2 h-4 w-72 bg-muted/30" />
+          </div>
+
+          {/* Stats row skeleton */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="glass rounded-xl p-5 space-y-3">
+                <Skeleton className="h-10 w-10 rounded-lg bg-muted/40" />
+                <Skeleton className="h-8 w-24 bg-muted/40" />
+                <Skeleton className="h-4 w-32 bg-muted/30" />
+                <Skeleton className="h-3 w-20 bg-muted/20" />
+              </div>
+            ))}
+          </div>
+
+          {/* Briefing skeleton */}
+          <div className="glass rounded-xl p-5 space-y-3">
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-10 w-10 rounded-lg bg-muted/40" />
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-32 bg-muted/40" />
+                <Skeleton className="h-3 w-56 bg-muted/20" />
+              </div>
+            </div>
+          </div>
+
+          {/* Chart + Escalations skeleton */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+            <div className="glass rounded-xl p-5 lg:col-span-3">
+              <Skeleton className="mb-4 h-5 w-40 bg-muted/40" />
+              <Skeleton className="h-64 w-full rounded-lg bg-muted/20" />
+            </div>
+            <div className="glass rounded-xl p-5 lg:col-span-2 space-y-3">
+              <Skeleton className="h-5 w-28 bg-muted/40" />
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="flex items-start gap-3 p-3">
+                  <Skeleton className="h-8 w-8 rounded-md bg-muted/30" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-4 w-36 bg-muted/30" />
+                    <Skeleton className="h-3 w-full bg-muted/20" />
+                    <Skeleton className="h-3 w-16 bg-muted/15" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Agent grid skeleton */}
+          <div>
+            <Skeleton className="mb-4 h-5 w-28 bg-muted/40" />
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="glass rounded-xl border-l-2 border-l-muted/30 p-4 space-y-3">
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="h-9 w-9 rounded-lg bg-muted/30" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-4 w-36 bg-muted/30" />
+                      <Skeleton className="h-3 w-48 bg-muted/20" />
+                    </div>
+                    <Skeleton className="h-5 w-16 rounded-full bg-muted/20" />
+                  </div>
+                  <Skeleton className="h-3 w-40 bg-muted/15" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background bg-mesh">

@@ -5,6 +5,7 @@ import { Camera } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 export default function ProfileSettingsPage() {
   const [fullName, setFullName] = useState("Joseph Wells");
@@ -46,6 +47,7 @@ export default function ProfileSettingsPage() {
                 variant="outline"
                 size="sm"
                 className="mt-2 border-border text-xs"
+                onClick={() => toast.success("Avatar updated successfully")}
               >
                 Change avatar
               </Button>
@@ -151,6 +153,7 @@ export default function ProfileSettingsPage() {
                   variant="outline"
                   size="sm"
                   className="border-border text-xs"
+                  onClick={() => toast.info("Connecting to Microsoft...")}
                 >
                   Connect
                 </Button>
@@ -164,6 +167,7 @@ export default function ProfileSettingsPage() {
               type="submit"
               disabled={!modified}
               className="h-10 rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_24px_rgba(99,102,241,0.3)] disabled:opacity-40"
+              onClick={() => { setModified(false); toast.success("Profile changes saved successfully"); }}
             >
               Save changes
             </Button>

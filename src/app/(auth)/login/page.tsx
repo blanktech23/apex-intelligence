@@ -1,15 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, Sparkles } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff, Sparkles, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background bg-mesh px-4">
@@ -53,7 +56,13 @@ export default function LoginPage() {
         {/* Form */}
         <form
           className="space-y-4"
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(e) => {
+            e.preventDefault();
+            setIsLoading(true);
+            setTimeout(() => {
+              router.push("/dashboard");
+            }, 1000);
+          }}
         >
           {/* Email */}
           <div className="space-y-1.5">
@@ -83,7 +92,7 @@ export default function LoginPage() {
                 Password
               </label>
               <a
-                href="#"
+                href="/forgot-password"
                 className="text-sm text-muted-foreground transition-colors hover:text-primary"
               >
                 Forgot password?
@@ -115,9 +124,17 @@ export default function LoginPage() {
           {/* Sign in button */}
           <Button
             type="submit"
+            disabled={isLoading}
             className="h-10 w-full rounded-lg bg-primary text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_24px_rgba(99,102,241,0.3)]"
           >
-            Sign in
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Signing in...
+              </>
+            ) : (
+              "Sign in"
+            )}
           </Button>
         </form>
 
@@ -175,7 +192,7 @@ export default function LoginPage() {
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
           <a
-            href="#"
+            href="mailto:sales@apexintelligence.ai"
             className="font-medium text-primary transition-colors hover:text-primary/80"
           >
             Contact sales

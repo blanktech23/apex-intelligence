@@ -35,6 +35,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -273,21 +274,7 @@ const mockApprovals: ApprovalAction[] = [
 /* ------------------------------------------------------------------ */
 
 export default function ApprovalsPage() {
-  const { config } = useRole();
-
-  if (!config.canApprove) {
-    return (
-      <div className="min-h-screen bg-background bg-mesh">
-        <div className="mx-auto max-w-7xl p-6">
-          <div className="glass rounded-xl px-5 py-12 text-center">
-            <h2 className="text-lg font-semibold text-foreground">Access Restricted</h2>
-            <p className="mt-2 text-sm text-muted-foreground">You don't have permission to view approvals.</p>
-            <Link href="/dashboard" className="mt-4 inline-block text-sm text-indigo-400 hover:text-indigo-300">Back to Dashboard</Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const { role, config } = useRole();
 
   const [statuses, setStatuses] = useState<Record<string, ApprovalStatus>>(
     Object.fromEntries(mockApprovals.map((a) => [a.id, a.status]))
@@ -296,6 +283,26 @@ export default function ApprovalsPage() {
   const [rejectTarget, setRejectTarget] = useState<string | null>(null);
   const [rejectReason, setRejectReason] = useState("");
   const [flashApproved, setFlashApproved] = useState<string | null>(null);
+
+  // RBAC: Designer, Bookkeeper, Viewer cannot access approvals
+  if (!config.canApprove) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
+        <div className="text-center">
+          <h2 className="text-lg font-semibold text-foreground">Access Restricted</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            You don&apos;t have permission to view approvals. Contact your admin for access.
+          </p>
+        </div>
+        <Link
+          href="/dashboard"
+          className="mt-2 inline-flex h-9 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground"
+        >
+          Back to Dashboard
+        </Link>
+      </div>
+    );
+  }
 
   const counts = {
     all: mockApprovals.length,
@@ -314,6 +321,7 @@ export default function ApprovalsPage() {
     setTimeout(() => {
       setStatuses((prev) => ({ ...prev, [id]: "approved" }));
       setFlashApproved(null);
+      toast.success("Action approved successfully");
     }, 600);
   };
 
@@ -327,6 +335,7 @@ export default function ApprovalsPage() {
       setStatuses((prev) => ({ ...prev, [rejectTarget]: "rejected" }));
       setRejectTarget(null);
       setRejectReason("");
+      toast.success("Action rejected");
     }
   };
 
@@ -566,6 +575,7 @@ export default function ApprovalsPage() {
                       <Button
                         variant="outline"
                         size="sm"
+                        onClick={() => toast.info(`Opening approval review for ${action.id}...`)}
                         className="h-8 gap-1.5 rounded-lg border-amber-500/30 px-3 text-xs font-medium text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
                       >
                         {editButtonIcon(action.buttons.edit)}

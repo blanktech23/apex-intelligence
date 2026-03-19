@@ -30,6 +30,7 @@ import {
   Legend,
 } from "recharts";
 import { useRole } from "@/lib/role-context";
+import { toast } from "sonner";
 
 /* ------------------------------------------------------------------ */
 /*  Theme colors                                                       */
@@ -211,7 +212,7 @@ export default function ReportsPage() {
               </button>
             ))}
           </div>
-          <Button className="h-9 gap-2 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]">
+          <Button onClick={() => toast.success("Report exported successfully")} className="h-9 gap-2 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]">
             <Download className="h-3.5 w-3.5" />
             Export
           </Button>

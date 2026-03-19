@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRole } from "@/lib/role-context";
+import { toast } from "sonner";
 
 /* ------------------------------------------------------------------ */
 /*  Mock Data — Billing Dispute Escalation                            */
@@ -239,6 +240,16 @@ const statusStyles = {
     text: "text-emerald-400",
     ring: "ring-emerald-400/20",
   },
+  Approved: {
+    bg: "bg-green-400/10",
+    text: "text-green-400",
+    ring: "ring-green-400/20",
+  },
+  Rejected: {
+    bg: "bg-red-400/10",
+    text: "text-red-400",
+    ring: "ring-red-400/20",
+  },
 };
 
 /* ------------------------------------------------------------------ */
@@ -380,6 +391,18 @@ export default function EscalationDetailPage() {
           {config.canApprove && (
           <div className="glass rounded-xl p-4">
             <div className="flex flex-wrap items-center gap-3">
+              {/* Approve */}
+              <Button
+                onClick={() => {
+                  setCurrentStatus("Approved");
+                  toast?.("Escalation approved successfully");
+                }}
+                className="h-9 gap-2 rounded-lg bg-emerald-500 px-4 text-sm font-semibold text-white transition-all hover:bg-emerald-500/90 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+              >
+                <Check className="h-3.5 w-3.5" />
+                Approve
+              </Button>
+
               {/* Modify & Approve */}
               <Button
                 onClick={() => {
@@ -390,6 +413,18 @@ export default function EscalationDetailPage() {
               >
                 <Edit3 className="h-3.5 w-3.5" />
                 Modify &amp; Approve
+              </Button>
+
+              {/* Reject */}
+              <Button
+                onClick={() => {
+                  setCurrentStatus("Rejected");
+                  toast?.("Escalation rejected");
+                }}
+                className="h-9 gap-2 rounded-lg bg-red-500/15 px-4 text-sm font-semibold text-red-400 border border-red-500/25 transition-all hover:bg-red-500/25 hover:shadow-[0_0_20px_rgba(239,68,68,0.15)]"
+              >
+                <AlertTriangle className="h-3.5 w-3.5" />
+                Reject
               </Button>
 
               {/* Reassign */}
@@ -580,7 +615,7 @@ export default function EscalationDetailPage() {
                     <p className="text-[11px] text-muted-foreground/40">
                       Reply visible to customer
                     </p>
-                    <Button className="h-9 gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-white transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]">
+                    <Button onClick={() => { if (replyText.trim()) { setReplyText(""); toast.success("Reply sent successfully"); } }} className="h-9 gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-white transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]">
                       <Send className="h-3.5 w-3.5" />
                       Send Reply
                     </Button>
@@ -769,7 +804,7 @@ export default function EscalationDetailPage() {
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               {escalation.aiSummary}
             </p>
-            <button className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-primary transition-colors hover:text-primary/80">
+            <button onClick={() => { navigator.clipboard.writeText(escalation.aiSummary); toast.success("Summary copied to clipboard"); }} className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-primary transition-colors hover:text-primary/80">
               <Copy className="h-3 w-3" />
               Copy summary
             </button>
@@ -787,6 +822,7 @@ export default function EscalationDetailPage() {
                 return (
                   <button
                     key={action.label}
+                    onClick={() => toast.info(action.label)}
                     className="group flex w-full items-start gap-3 rounded-lg border border-border bg-muted/20 p-3 text-left transition-all hover:border-primary/25 hover:bg-primary/[0.06]"
                   >
                     <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 transition-colors group-hover:bg-primary/20">

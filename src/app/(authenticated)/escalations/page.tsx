@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { PaginationBar } from "@/components/ui/pagination-bar";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -25,6 +26,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useRole } from "@/lib/role-context";
 
 type Priority = "HIGH" | "MEDIUM" | "LOW";
 type Status = "Pending" | "Approved" | "Rejected" | "Modified";
@@ -130,12 +133,163 @@ const statusConfig: Record<
   },
 };
 
+const agentOptions = [
+  "All",
+  "Discovery Concierge",
+  "Estimate Engine",
+  "Operations Controller",
+  "Executive Navigator",
+  "Project Orchestrator",
+  "Design Spec Assistant",
+  "Support Agent",
+];
+
+const priorityOptions = ["All", "Critical", "High", "Medium", "Low"];
+
+const statusOptions = ["All", "Open", "In Progress", "Resolved"];
+
+type OpenDropdown = "agent" | "priority" | "status" | null;
+
 export default function EscalationsPage() {
   const router = useRouter();
+  const { role } = useRole();
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [selectedAgent, setSelectedAgent] = useState("All");
+  const [selectedPriority, setSelectedPriority] = useState("All");
+  const [selectedStatus, setSelectedStatus] = useState("All");
+  const [openDropdown, setOpenDropdown] = useState<OpenDropdown>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenDropdown(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleDropdown = (dropdown: OpenDropdown) => {
+    setOpenDropdown((prev) => (prev === dropdown ? null : dropdown));
+  };
+
+  // Filter escalations
+  const filteredEscalations = mockEscalations.filter((e) => {
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      const matchesSearch =
+        e.summary.toLowerCase().includes(q) ||
+        e.agent.name.toLowerCase().includes(q) ||
+        e.id.toLowerCase().includes(q);
+      if (!matchesSearch) return false;
+    }
+    if (selectedAgent !== "All" && e.agent.name !== selectedAgent) return false;
+    if (selectedPriority !== "All") {
+      const priorityMap: Record<string, Priority[]> = {
+        Critical: ["HIGH"],
+        High: ["HIGH"],
+        Medium: ["MEDIUM"],
+        Low: ["LOW"],
+      };
+      const allowed = priorityMap[selectedPriority];
+      if (allowed && !allowed.includes(e.priority)) return false;
+    }
+    if (selectedStatus !== "All") {
+      const statusMap: Record<string, Status[]> = {
+        Open: ["Pending"],
+        "In Progress": ["Modified"],
+        Resolved: ["Approved", "Rejected"],
+      };
+      const allowed = statusMap[selectedStatus];
+      if (allowed && !allowed.includes(e.status)) return false;
+    }
+    return true;
+  });
+
   const pendingCount = mockEscalations.filter(
     (e) => e.status === "Pending"
   ).length;
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(t);
+  }, []);
+
+  // RBAC: Designer, Bookkeeper, Viewer cannot access escalations
+  const restrictedRoles = new Set(["designer", "bookkeeper", "viewer"]);
+  if (restrictedRoles.has(role)) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted/50">
+          <AlertTriangle className="h-8 w-8 text-muted-foreground/50" />
+        </div>
+        <div className="text-center">
+          <h2 className="text-lg font-semibold text-foreground">Access Restricted</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            You don&apos;t have permission to view escalations. Contact your admin for access.
+          </p>
+        </div>
+        <Button
+          onClick={() => router.push("/dashboard")}
+          className="mt-2 h-9 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground"
+        >
+          Back to Dashboard
+        </Button>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        {/* Header skeleton */}
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-8 w-40 bg-muted/40" />
+          <Skeleton className="h-6 w-24 rounded-full bg-muted/30" />
+        </div>
+
+        {/* Filter bar skeleton */}
+        <div className="glass flex flex-wrap items-center gap-3 rounded-xl p-4">
+          <Skeleton className="h-9 min-w-[200px] flex-1 rounded-lg bg-muted/30" />
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-9 w-24 rounded-lg bg-muted/20" />
+          ))}
+        </div>
+
+        {/* Table skeleton */}
+        <div className="glass overflow-hidden rounded-xl">
+          <div className="border-b border-border px-4 py-3 flex gap-4">
+            {["w-[100px]", "w-[140px]", "flex-1", "w-[100px]", "w-[110px]", "w-[90px]"].map((w, i) => (
+              <Skeleton key={i} className={`h-4 ${w} bg-muted/20`} />
+            ))}
+          </div>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-4 border-b border-border/50 px-4 py-4">
+              <div className="flex items-center gap-2 w-[100px]">
+                <Skeleton className="h-2 w-2 rounded-full bg-muted/30" />
+                <Skeleton className="h-4 w-14 bg-muted/20" />
+              </div>
+              <div className="flex items-center gap-2.5 w-[140px]">
+                <Skeleton className="h-7 w-7 rounded-lg bg-muted/30" />
+                <Skeleton className="h-4 w-24 bg-muted/20" />
+              </div>
+              <Skeleton className="h-4 flex-1 bg-muted/15" />
+              <Skeleton className="h-4 w-[80px] bg-muted/20" />
+              <Skeleton className="h-5 w-[80px] rounded-full bg-muted/20" />
+              <Skeleton className="h-7 w-[60px] rounded-md bg-muted/20" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -148,7 +302,10 @@ export default function EscalationsPage() {
       </div>
 
       {/* Filter bar */}
-      <div className="glass flex flex-wrap items-center gap-3 rounded-xl p-4">
+      <div
+        className="glass flex flex-wrap items-center gap-3 rounded-xl p-4"
+        ref={dropdownRef}
+      >
         {/* Search */}
         <div className="relative min-w-[200px] flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -161,25 +318,122 @@ export default function EscalationsPage() {
         </div>
 
         {/* Agent filter */}
-        <button className="glass glass-hover flex h-9 items-center gap-2 rounded-lg px-3 text-sm text-muted-foreground transition-all hover:text-foreground">
-          <Brain className="h-3.5 w-3.5" />
-          <span>Agent</span>
-          <ChevronDown className="h-3 w-3 opacity-60" />
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => toggleDropdown("agent")}
+            className={`glass glass-hover flex h-9 items-center gap-2 rounded-lg px-3 text-sm transition-all ${
+              selectedAgent !== "All"
+                ? "text-primary ring-1 ring-primary/30"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Brain className="h-3.5 w-3.5" />
+            <span>{selectedAgent === "All" ? "Agent" : selectedAgent}</span>
+            <ChevronDown
+              className={`h-3 w-3 opacity-60 transition-transform ${openDropdown === "agent" ? "rotate-180" : ""}`}
+            />
+          </button>
+          {openDropdown === "agent" && (
+            <div className="glass absolute left-0 top-full z-50 mt-1.5 min-w-[220px] overflow-hidden rounded-lg border border-border/50 py-1 shadow-xl">
+              {agentOptions.map((option) => (
+                <button
+                  key={option}
+                  onClick={() => {
+                    setSelectedAgent(option);
+                    setOpenDropdown(null);
+                  }}
+                  className={`flex w-full items-center px-3 py-2 text-left text-sm transition-colors hover:bg-muted/40 ${
+                    selectedAgent === option
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Priority filter */}
-        <button className="glass glass-hover flex h-9 items-center gap-2 rounded-lg px-3 text-sm text-muted-foreground transition-all hover:text-foreground">
-          <AlertTriangle className="h-3.5 w-3.5" />
-          <span>Priority</span>
-          <ChevronDown className="h-3 w-3 opacity-60" />
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => toggleDropdown("priority")}
+            className={`glass glass-hover flex h-9 items-center gap-2 rounded-lg px-3 text-sm transition-all ${
+              selectedPriority !== "All"
+                ? "text-primary ring-1 ring-primary/30"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <AlertTriangle className="h-3.5 w-3.5" />
+            <span>
+              {selectedPriority === "All" ? "Priority" : selectedPriority}
+            </span>
+            <ChevronDown
+              className={`h-3 w-3 opacity-60 transition-transform ${openDropdown === "priority" ? "rotate-180" : ""}`}
+            />
+          </button>
+          {openDropdown === "priority" && (
+            <div className="glass absolute left-0 top-full z-50 mt-1.5 min-w-[160px] overflow-hidden rounded-lg border border-border/50 py-1 shadow-xl">
+              {priorityOptions.map((option) => (
+                <button
+                  key={option}
+                  onClick={() => {
+                    setSelectedPriority(option);
+                    setOpenDropdown(null);
+                  }}
+                  className={`flex w-full items-center px-3 py-2 text-left text-sm transition-colors hover:bg-muted/40 ${
+                    selectedPriority === option
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Status filter */}
-        <button className="glass glass-hover flex h-9 items-center gap-2 rounded-lg px-3 text-sm text-muted-foreground transition-all hover:text-foreground">
-          <Filter className="h-3.5 w-3.5" />
-          <span>Status</span>
-          <ChevronDown className="h-3 w-3 opacity-60" />
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => toggleDropdown("status")}
+            className={`glass glass-hover flex h-9 items-center gap-2 rounded-lg px-3 text-sm transition-all ${
+              selectedStatus !== "All"
+                ? "text-primary ring-1 ring-primary/30"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Filter className="h-3.5 w-3.5" />
+            <span>
+              {selectedStatus === "All" ? "Status" : selectedStatus}
+            </span>
+            <ChevronDown
+              className={`h-3 w-3 opacity-60 transition-transform ${openDropdown === "status" ? "rotate-180" : ""}`}
+            />
+          </button>
+          {openDropdown === "status" && (
+            <div className="glass absolute left-0 top-full z-50 mt-1.5 min-w-[160px] overflow-hidden rounded-lg border border-border/50 py-1 shadow-xl">
+              {statusOptions.map((option) => (
+                <button
+                  key={option}
+                  onClick={() => {
+                    setSelectedStatus(option);
+                    setOpenDropdown(null);
+                  }}
+                  className={`flex w-full items-center px-3 py-2 text-left text-sm transition-colors hover:bg-muted/40 ${
+                    selectedStatus === option
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Date range */}
         <button className="glass glass-hover flex h-9 items-center gap-2 rounded-lg px-3 text-sm text-muted-foreground transition-all hover:text-foreground">
@@ -215,82 +469,101 @@ export default function EscalationsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockEscalations.map((escalation) => {
-              const Icon = escalation.agent.icon;
-              const priority = priorityConfig[escalation.priority];
-              const status = statusConfig[escalation.status];
-
-              return (
-                <TableRow
-                  key={escalation.id}
-                  className="border-border/50 transition-colors hover:bg-muted/30 cursor-pointer"
-                  onClick={() => router.push(`/escalations/${escalation.id}`)}
+            {filteredEscalations.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={6}
+                  className="py-12 text-center text-sm text-muted-foreground"
                 >
-                  {/* Priority */}
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`h-2 w-2 rounded-full ${priority.dot}`}
-                      />
-                      <span className="text-sm text-muted-foreground">
-                        {priority.label}
-                      </span>
-                    </div>
-                  </TableCell>
+                  No escalations match the current filters.
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredEscalations.map((escalation) => {
+                const Icon = escalation.agent.icon;
+                const priority = priorityConfig[escalation.priority];
+                const status = statusConfig[escalation.status];
 
-                  {/* Agent */}
-                  <TableCell>
-                    <div className="flex items-center gap-2.5">
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                        <Icon className="h-3.5 w-3.5 text-primary" />
+                return (
+                  <TableRow
+                    key={escalation.id}
+                    className="border-border/50 transition-colors hover:bg-muted/30 cursor-pointer"
+                    onClick={() => router.push(`/escalations/${escalation.id}`)}
+                  >
+                    {/* Priority */}
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`h-2 w-2 rounded-full ${priority.dot}`}
+                        />
+                        <span className="text-sm text-muted-foreground">
+                          {priority.label}
+                        </span>
                       </div>
-                      <span className="text-sm font-medium text-foreground">
-                        {escalation.agent.name}
+                    </TableCell>
+
+                    {/* Agent */}
+                    <TableCell>
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                          <Icon className="h-3.5 w-3.5 text-primary" />
+                        </div>
+                        <span className="text-sm font-medium text-foreground">
+                          {escalation.agent.name}
+                        </span>
+                      </div>
+                    </TableCell>
+
+                    {/* Summary */}
+                    <TableCell className="max-w-[360px]">
+                      <p className="truncate text-sm text-muted-foreground">
+                        {escalation.summary}
+                      </p>
+                    </TableCell>
+
+                    {/* Created */}
+                    <TableCell>
+                      <span className="text-sm text-muted-foreground">
+                        {escalation.created}
                       </span>
-                    </div>
-                  </TableCell>
+                    </TableCell>
 
-                  {/* Summary */}
-                  <TableCell className="max-w-[360px]">
-                    <p className="truncate text-sm text-muted-foreground">
-                      {escalation.summary}
-                    </p>
-                  </TableCell>
-
-                  {/* Created */}
-                  <TableCell>
-                    <span className="text-sm text-muted-foreground">
-                      {escalation.created}
-                    </span>
-                  </TableCell>
-
-                  {/* Status */}
-                  <TableCell>
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ${status.bg} ${status.text} ${status.ring}`}
-                    >
-                      {escalation.status}
-                    </span>
-                  </TableCell>
-
-                  {/* Actions */}
-                  <TableCell>
-                    <Link href={`/escalations/${escalation.id}`} onClick={(e) => e.stopPropagation()}>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 rounded-md px-2.5 text-xs font-medium text-primary hover:bg-primary/10 hover:text-primary"
+                    {/* Status */}
+                    <TableCell>
+                      <span
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ${status.bg} ${status.text} ${status.ring}`}
                       >
-                        Review
-                      </Button>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                        {escalation.status}
+                      </span>
+                    </TableCell>
+
+                    {/* Actions */}
+                    <TableCell>
+                      <Link href={`/escalations/${escalation.id}`} onClick={(e) => e.stopPropagation()}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 rounded-md px-2.5 text-xs font-medium text-primary hover:bg-primary/10 hover:text-primary"
+                        >
+                          Review
+                        </Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
         </Table>
       </div>
+
+      {/* Pagination */}
+      <PaginationBar
+        currentPage={currentPage}
+        totalItems={filteredEscalations.length}
+        itemsPerPage={25}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }

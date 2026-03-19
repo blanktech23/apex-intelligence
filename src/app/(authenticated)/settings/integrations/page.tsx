@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRole } from "@/lib/role-context";
+import { toast } from "sonner";
 
 /* ------------------------------------------------------------------ */
 /*  Types & config                                                     */
@@ -423,6 +424,7 @@ export default function IntegrationsPage() {
                     <Button
                       variant="outline"
                       size="sm"
+                      onClick={() => toast.info(`Opening ${integration.name} settings...`)}
                       className="h-7 gap-1.5 rounded-md border-border px-3 text-xs font-medium text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground"
                     >
                       <Settings className="h-3 w-3" />
@@ -443,6 +445,7 @@ export default function IntegrationsPage() {
                 ) : (
                   <Button
                     size="sm"
+                    onClick={() => toast.info(`Connecting to ${integration.name}...`)}
                     className="h-7 gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]"
                   >
                     <ExternalLink className="h-3 w-3" />

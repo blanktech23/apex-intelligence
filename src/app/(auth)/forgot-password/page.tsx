@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Mail, CheckCircle } from "lucide-react";
+import { ArrowLeft, Mail, CheckCircle, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,11 +10,16 @@ import { Input } from "@/components/ui/input";
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (email.trim()) {
-      setSent(true);
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        setSent(true);
+      }, 1000);
     }
   }
 
@@ -87,9 +92,17 @@ export default function ForgotPasswordPage() {
 
               <Button
                 type="submit"
+                disabled={isLoading}
                 className="glow-primary w-full bg-primary font-semibold hover:bg-primary/90"
               >
-                Send Reset Link
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  "Send Reset Link"
+                )}
               </Button>
 
               <div className="text-center">

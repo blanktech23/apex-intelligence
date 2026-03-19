@@ -1,3 +1,5 @@
+"use client";
+
 import { Sparkles, ExternalLink } from "lucide-react";
 
 export default function MaintenancePage() {
@@ -38,13 +40,15 @@ export default function MaintenancePage() {
 
         {/* Status link */}
         <div>
-          <a
-            href="#"
+          <button
+            onClick={() => {
+              window.alert("Status page is not yet configured. Check back later.");
+            }}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
           >
             View status page
             <ExternalLink className="h-3.5 w-3.5" />
-          </a>
+          </button>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PaginationBar } from "@/components/ui/pagination-bar";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -18,6 +19,7 @@ import {
   CheckCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 /* ------------------------------------------------------------------ */
 /*  Types & config                                                     */
@@ -235,17 +237,27 @@ const categoryIcons: Record<string, React.ComponentType<{ className?: string }>>
 
 export default function NotificationsPage() {
   const [activeTab, setActiveTab] = useState<NotificationCategory>("all");
+  const [currentPage, setCurrentPage] = useState(1);
   const [readState, setReadState] = useState<Record<string, boolean>>(
     Object.fromEntries(notifications.map((n) => [n.id, n.read]))
   );
+  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
 
   const unreadCount = Object.values(readState).filter((v) => !v).length;
 
   const handleMarkAllRead = () => {
     setReadState(Object.fromEntries(Object.keys(readState).map((k) => [k, true])));
+    toast.success("All notifications marked as read");
+  };
+
+  const handleDismiss = (id: string) => {
+    setDismissed((prev) => new Set([...prev, id]));
+    setReadState((prev) => ({ ...prev, [id]: true }));
+    toast.success("Notification dismissed");
   };
 
   const filtered = notifications.filter((n) => {
+    if (dismissed.has(n.id)) return false;
     if (activeTab === "all") return true;
     if (activeTab === "unread") return !readState[n.id];
     return n.category === activeTab;
@@ -349,16 +361,48 @@ export default function NotificationsPage() {
                       {notification.description}
                     </p>
                     {notification.action && (
-                      <div className="mt-3">
-                        <Link href={notification.action.href}>
+                      <div className="mt-3 flex items-center gap-2">
+                        {notification.action.label === "Dismiss" ? (
                           <Button
                             variant="ghost"
                             size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDismiss(notification.id);
+                            }}
                             className="h-7 rounded-md px-3 text-xs font-medium text-primary hover:bg-primary/10 hover:text-primary"
                           >
-                            {notification.action.label}
+                            Dismiss
                           </Button>
-                        </Link>
+                        ) : (
+                          <Link href={notification.action.href}>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setReadState((prev) => ({ ...prev, [notification.id]: true }));
+                              }}
+                              className="h-7 rounded-md px-3 text-xs font-medium text-primary hover:bg-primary/10 hover:text-primary"
+                            >
+                              {notification.action.label}
+                            </Button>
+                          </Link>
+                        )}
+                        {isUnread && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setReadState((prev) => ({ ...prev, [notification.id]: true }));
+                              toast.success("Marked as read");
+                            }}
+                            className="h-7 rounded-md px-3 text-xs font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                          >
+                            Mark as read
+                          </Button>
+                        )}
                       </div>
                     )}
                   </div>
@@ -368,6 +412,14 @@ export default function NotificationsPage() {
           })
         )}
       </div>
+
+      {/* Pagination */}
+      <PaginationBar
+        currentPage={currentPage}
+        totalItems={notifications.length}
+        itemsPerPage={25}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }

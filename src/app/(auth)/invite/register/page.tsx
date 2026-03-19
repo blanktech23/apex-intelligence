@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Building2,
   Eye,
@@ -35,12 +36,20 @@ function getPasswordStrength(password: string): {
 }
 
 export default function InviteRegisterPage() {
+  const router = useRouter();
   const [state, setState] = useState<PageState>("form");
   const [showPassword, setShowPassword] = useState(false);
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
 
   const strength = getPasswordStrength(password);
+
+  useEffect(() => {
+    if (state === "success") {
+      const timer = setTimeout(() => router.push("/login"), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [state, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

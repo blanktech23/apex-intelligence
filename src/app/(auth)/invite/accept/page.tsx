@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Building2, Clock, Loader2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -8,6 +9,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 type InviteState = "pending" | "loading" | "accepted";
 
 export default function InviteAcceptPage() {
+  const router = useRouter();
   const [state, setState] = useState<InviteState>("pending");
 
   useEffect(() => {
@@ -16,6 +18,13 @@ export default function InviteAcceptPage() {
       return () => clearTimeout(timer);
     }
   }, [state]);
+
+  useEffect(() => {
+    if (state === "accepted") {
+      const timer = setTimeout(() => router.push("/login"), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [state, router]);
 
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background bg-mesh px-4">

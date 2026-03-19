@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Lock, Eye, EyeOff, CheckCircle } from "lucide-react";
+import { Lock, Eye, EyeOff, CheckCircle, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,10 +28,12 @@ function getPasswordStrength(password: string): {
 }
 
 export default function ResetPasswordPage() {
+  const router = useRouter();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const strength = useMemo(() => getPasswordStrength(password), [password]);
@@ -40,10 +43,21 @@ export default function ResetPasswordPage() {
   const canSubmit =
     password.length >= 8 && passwordsMatch && strength.score >= 50;
 
+  useEffect(() => {
+    if (submitted) {
+      const timer = setTimeout(() => router.push("/login"), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [submitted, router]);
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (canSubmit) {
-      setSubmitted(true);
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        setSubmitted(true);
+      }, 1000);
     }
   }
 
@@ -189,10 +203,17 @@ export default function ResetPasswordPage() {
 
               <Button
                 type="submit"
-                disabled={!canSubmit}
+                disabled={!canSubmit || isLoading}
                 className="glow-primary w-full bg-primary font-semibold hover:bg-primary/90 disabled:opacity-50"
               >
-                Reset Password
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Resetting...
+                  </>
+                ) : (
+                  "Reset Password"
+                )}
               </Button>
 
               <div className="text-center">
