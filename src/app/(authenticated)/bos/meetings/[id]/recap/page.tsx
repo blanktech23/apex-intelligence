@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 // ---------------------------------------------------------------------------
 // Mock recap data
@@ -295,6 +296,7 @@ export default function MeetingRecapPage() {
                 variant="ghost"
                 size="sm"
                 className="h-8 gap-1.5 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground"
+                onClick={() => toast.success('PDF export started. Check your downloads.')}
               >
                 <Download className="h-3.5 w-3.5" />
                 Export PDF
@@ -303,6 +305,7 @@ export default function MeetingRecapPage() {
                 variant="ghost"
                 size="sm"
                 className="h-8 gap-1.5 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground"
+                onClick={() => toast.success('Recap email sent to all 5 attendees.')}
               >
                 <Mail className="h-3.5 w-3.5" />
                 Share via Email

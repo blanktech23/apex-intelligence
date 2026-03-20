@@ -14,7 +14,6 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
   Sparkles,
   Menu,
   X,
@@ -31,6 +30,10 @@ import {
   TrendingUp,
   Star,
   Megaphone,
+  FileText,
+  ClipboardCheck,
+  UserCheck,
+  ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRole } from "@/lib/role-context";
@@ -46,11 +49,11 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
   href: string;
   badge?: number;
+  sidebarLabel?: string;
 }
 
-interface NavGroup {
+interface BosNavGroup {
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
   items: NavItem[];
 }
 
@@ -62,35 +65,54 @@ const navItems: NavItem[] = [
   { label: "Escalations", icon: AlertTriangle, href: "/escalations", badge: 3 },
   { label: "Approvals", icon: CheckSquare, href: "/approvals", badge: 12 },
   { label: "Reports", icon: BarChart3, href: "/reports" },
+  { label: "EOS", icon: Building2, href: "/bos" },
   { label: "Settings", icon: Settings, href: "/settings" },
 ];
 
-const bosGroup: NavGroup = {
-  label: "Business OS",
-  icon: Building2,
-  items: [
-    { label: "BOS Hub", icon: Building2, href: "/bos" },
-    { label: "KPI Dashboard", icon: Target, href: "/bos/kpis" },
-    { label: "Meetings", icon: CalendarDays, href: "/bos/meetings" },
-    { label: "Goals & Milestones", icon: Flag, href: "/bos/goals" },
-    { label: "Issues", icon: CircleAlert, href: "/bos/issues" },
-    { label: "Action Items", icon: ListChecks, href: "/bos/actions" },
-    { label: "Org Chart", icon: Network, href: "/bos/org-chart" },
-    { label: "People", icon: UserCircle, href: "/bos/people" },
-    { label: "Vision Plan", icon: Eye, href: "/bos/vision" },
-    { label: "Reviews", icon: Star, href: "/bos/reviews" },
-    { label: "Announcements", icon: Megaphone, href: "/bos/announcements" },
-    { label: "Knowledge Portal", icon: BookOpen, href: "/bos/knowledge" },
-    { label: "Analytics", icon: TrendingUp, href: "/bos/analytics" },
-  ],
-};
-
+const bosNavGroups: BosNavGroup[] = [
+  {
+    label: "Home",
+    items: [
+      { label: "Hub", icon: Building2, href: "/bos", sidebarLabel: "BOS Hub" },
+      { label: "Announcements", icon: Megaphone, href: "/bos/announcements", sidebarLabel: "Announcements" },
+      { label: "Analytics", icon: TrendingUp, href: "/bos/analytics", sidebarLabel: "Analytics" },
+    ],
+  },
+  {
+    label: "Execution",
+    items: [
+      { label: "Meetings", icon: CalendarDays, href: "/bos/meetings", sidebarLabel: "Meetings" },
+      { label: "Issues", icon: CircleAlert, href: "/bos/issues", sidebarLabel: "Issues" },
+      { label: "Actions", icon: ListChecks, href: "/bos/actions", sidebarLabel: "Action Items" },
+      { label: "KPIs", icon: Target, href: "/bos/kpis", sidebarLabel: "KPI Dashboard" },
+    ],
+  },
+  {
+    label: "Strategy",
+    items: [
+      { label: "Vision", icon: Eye, href: "/bos/vision", sidebarLabel: "Vision Plan" },
+      { label: "Goals", icon: Flag, href: "/bos/goals", sidebarLabel: "Goals & Milestones" },
+      { label: "Processes", icon: FileText, href: "/bos/processes", sidebarLabel: "Processes" },
+      { label: "Knowledge", icon: BookOpen, href: "/bos/knowledge", sidebarLabel: "Knowledge Portal" },
+    ],
+  },
+  {
+    label: "People",
+    items: [
+      { label: "People", icon: UserCircle, href: "/bos/people", sidebarLabel: "People" },
+      { label: "Org Chart", icon: Network, href: "/bos/org-chart", sidebarLabel: "Org Chart" },
+      { label: "Reviews", icon: Star, href: "/bos/reviews", sidebarLabel: "Reviews" },
+      { label: "Assessments", icon: ClipboardCheck, href: "/bos/assessments", sidebarLabel: "Assessments" },
+      { label: "Fit Check", icon: UserCheck, href: "/bos/fit-check", sidebarLabel: "Fit Check" },
+    ],
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  AI Usage indicator config                                          */
 /* ------------------------------------------------------------------ */
 
-const AI_USAGE_PERCENT = 68; // Hardcoded for mockup — matches dashboard "68% of budget"
+const AI_USAGE_PERCENT = 68;
 
 function getUsageStyle(percent: number) {
   if (percent >= 100) {
@@ -117,36 +139,41 @@ function getUsageStyle(percent: number) {
       pulse: false,
     };
   }
-  return null; // Below 60% — don't show
+  return null;
 }
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [bosOpen, setBosOpen] = useState(false);
   const pathname = usePathname();
   const { config } = useRole();
+
+  const isBosMode = pathname.startsWith("/bos") && !pathname.includes("/onboarding");
 
   const visibleNavItems = navItems.filter((item) =>
     config.sidebarItems.includes(item.label)
   );
 
-  const visibleBosItems = bosGroup.items.filter((item) =>
-    config.sidebarItems.includes(item.label)
-  );
-
-  const showBosGroup = visibleBosItems.length > 0;
-
-  // Auto-expand BOS group when user is on a BOS route
-  const isOnBosRoute = pathname.startsWith("/bos");
-  const isBosExpanded = bosOpen || isOnBosRoute;
+  const visibleBosGroups = bosNavGroups
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) =>
+        config.sidebarItems.includes(item.sidebarLabel!)
+      ),
+    }))
+    .filter((group) => group.items.length > 0);
 
   const usageStyle = getUsageStyle(AI_USAGE_PERCENT);
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
     if (href === "/dashboard/agents") return pathname.startsWith("/dashboard/agents");
-    if (href === "/bos") return pathname === "/bos";
+    if (href === "/bos") {
+      // In BOS mode, Hub is exact match only
+      if (isBosMode) return pathname === "/bos";
+      // In main nav, EOS link highlights for any /bos route
+      return pathname.startsWith("/bos");
+    }
     return pathname.startsWith(href);
   };
 
@@ -163,7 +190,7 @@ export function Sidebar() {
           isCollapsedDesktop && "justify-center px-0",
           indent && !isCollapsedDesktop && "pl-9",
           active
-            ? "bg-primary/10 text-primary-foreground glow-primary"
+            ? "bg-primary/10 text-foreground glow-primary"
             : "text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground"
         )}
       >
@@ -212,22 +239,79 @@ export function Sidebar() {
     return button;
   };
 
-  const sidebarContent = (
-    <>
-      {/* Logo */}
+  /* ---- Header content (Logo area) -------------------------------- */
+
+  const renderHeader = (isCollapsedDesktop: boolean) => {
+    if (isBosMode) {
+      return (
+        <div className="border-b border-border">
+          {/* Back button */}
+          <div className={cn("px-4 pt-4 pb-2", isCollapsedDesktop && "px-2")}>
+            {isCollapsedDesktop ? (
+              <Tooltip>
+                <TooltipTrigger className="w-full">
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center rounded-lg py-1.5 text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right" sideOffset={12}>
+                  Back to Dashboard
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              <Link
+                href="/dashboard"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back</span>
+              </Link>
+            )}
+          </div>
+          {/* EOS branding */}
+          <div
+            className={cn(
+              "flex items-center gap-2 px-4 pb-5 pt-2",
+              isCollapsedDesktop && "justify-center px-2"
+            )}
+          >
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/20">
+              <Building2 className="h-4 w-4 text-primary" />
+            </div>
+            {!isCollapsedDesktop && (
+              <div className="flex flex-col">
+                <span className="text-gradient text-lg font-bold leading-tight tracking-tight">
+                  EOS
+                </span>
+                <span className="text-[10px] font-medium leading-tight text-muted-foreground">
+                  Business OS
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // Default APEX header
+    return (
       <Link
         href="/dashboard"
         onClick={() => setMobileOpen(false)}
         className={cn(
           "flex items-center gap-2 border-b border-border px-4 py-5 transition-opacity hover:opacity-80",
-          collapsed && "justify-center px-2",
-          mobileOpen && "justify-start px-4"
+          isCollapsedDesktop && "justify-center px-2"
         )}
       >
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/20">
           <Sparkles className="h-4 w-4 text-primary" />
         </div>
-        {(!collapsed || mobileOpen) && (
+        {!isCollapsedDesktop && (
           <div className="flex flex-col">
             <span className="text-gradient text-lg font-bold leading-tight tracking-tight">
               APEX
@@ -238,47 +322,47 @@ export function Sidebar() {
           </div>
         )}
       </Link>
+    );
+  };
 
-      {/* Navigation */}
-      <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
-        {visibleNavItems.map((item) => {
-          const isCollapsedDesktop = collapsed && !mobileOpen;
-          return renderNavLink(item, isCollapsedDesktop);
-        })}
+  /* ---- Navigation content ---------------------------------------- */
 
-        {/* Business OS Group */}
-        {showBosGroup && (
-          <>
-            <div className="pb-1 pt-4">
-              {!(collapsed && !mobileOpen) && (
-                <button
-                  onClick={() => setBosOpen(!isBosExpanded)}
-                  className="flex w-full items-center justify-between px-3 py-1"
-                >
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
-                    Business OS
-                  </span>
-                  <ChevronDown
-                    className={cn(
-                      "h-3 w-3 text-muted-foreground/40 transition-transform duration-200",
-                      isBosExpanded && "rotate-180"
-                    )}
-                  />
-                </button>
+  const renderNav = (isCollapsedDesktop: boolean) => {
+    if (isBosMode) {
+      return (
+        <nav className="flex-1 overflow-y-auto px-2 py-3">
+          {visibleBosGroups.map((group, groupIdx) => (
+            <div key={group.label}>
+              {!isCollapsedDesktop && (
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60 px-3 pt-4 pb-1">
+                  {group.label}
+                </div>
               )}
-              {(collapsed && !mobileOpen) && (
-                <div className="mx-auto mb-1 h-px w-6 bg-border" />
+              {isCollapsedDesktop && groupIdx > 0 && (
+                <div className="my-2 border-t border-border" />
               )}
+              <div className="space-y-0.5">
+                {group.items.map((item) => renderNavLink(item, isCollapsedDesktop))}
+              </div>
             </div>
-            {(isBosExpanded || (collapsed && !mobileOpen)) &&
-              visibleBosItems.map((item) => {
-                const isCollapsedDesktop = collapsed && !mobileOpen;
-                return renderNavLink(item, isCollapsedDesktop, true);
-              })}
-          </>
-        )}
+          ))}
+        </nav>
+      );
+    }
 
+    return (
+      <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
+        {visibleNavItems.map((item) => renderNavLink(item, isCollapsedDesktop))}
       </nav>
+    );
+  };
+
+  /* ---- Build sidebar content ------------------------------------- */
+
+  const buildSidebarContent = (isCollapsedDesktop: boolean) => (
+    <>
+      {renderHeader(isCollapsedDesktop)}
+      {renderNav(isCollapsedDesktop)}
 
       {/* Bottom section */}
       <div className="border-t border-border p-2">
@@ -286,13 +370,13 @@ export function Sidebar() {
         <div
           className={cn(
             "mb-2 flex items-center gap-2 rounded-lg bg-primary/[0.06] px-3 py-2",
-            collapsed && !mobileOpen && "justify-center px-1"
+            isCollapsedDesktop && "justify-center px-1"
           )}
         >
           <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-primary/20">
             <Sparkles className="h-3 w-3 text-primary" />
           </div>
-          {(!collapsed || mobileOpen) && (
+          {!isCollapsedDesktop && (
             <div className="flex flex-col">
               <span className="text-xs font-semibold text-foreground">Professional</span>
               <span className="text-[10px] text-muted-foreground">5 agent seats</span>
@@ -307,7 +391,7 @@ export function Sidebar() {
             onClick={() => setMobileOpen(false)}
             className={cn(
               "mb-2 flex items-center gap-2 rounded-lg px-3 py-2 transition-colors hover:bg-foreground/[0.06]",
-              collapsed && !mobileOpen && "justify-center px-1"
+              isCollapsedDesktop && "justify-center px-1"
             )}
           >
             <div className="relative flex h-5 w-5 shrink-0 items-center justify-center">
@@ -319,7 +403,7 @@ export function Sidebar() {
                 )}
               />
             </div>
-            {(!collapsed || mobileOpen) && (
+            {!isCollapsedDesktop && (
               <span className={cn("text-xs font-medium", usageStyle.textColor)}>
                 {usageStyle.label}
               </span>
@@ -327,15 +411,15 @@ export function Sidebar() {
           </Link>
         )}
 
-        {/* Collapse toggle — desktop only */}
+        {/* Collapse toggle -- desktop only */}
         <button
           onClick={() => setCollapsed(!collapsed)}
           className={cn(
             "hidden lg:flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground",
-            collapsed && "justify-center px-0"
+            isCollapsedDesktop && "justify-center px-0"
           )}
         >
-          {collapsed ? (
+          {isCollapsedDesktop ? (
             <ChevronRight className="h-4 w-4" />
           ) : (
             <>
@@ -381,7 +465,7 @@ export function Sidebar() {
         >
           <X className="h-4 w-4" />
         </button>
-        {sidebarContent}
+        {buildSidebarContent(false)}
       </aside>
 
       {/* Desktop sidebar */}
@@ -391,7 +475,7 @@ export function Sidebar() {
           collapsed ? "w-16" : "w-60"
         )}
       >
-        {sidebarContent}
+        {buildSidebarContent(collapsed)}
       </aside>
     </TooltipProvider>
   );

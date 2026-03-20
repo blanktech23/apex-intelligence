@@ -29,8 +29,8 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     name: "Joseph Wells",
     email: "joseph@apexintelligence.ai",
     sidebarItems: [
-      "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Settings",
-      "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Vision Plan", "Reviews", "Announcements", "Knowledge Portal", "Analytics",
+      "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "EOS", "Settings",
+      "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Vision Plan", "Reviews", "Announcements", "Processes", "Knowledge Portal", "Assessments", "Fit Check", "Analytics",
     ],
     canApprove: true,
     canManageTeam: true,
@@ -48,8 +48,8 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     name: "Sarah Chen",
     email: "sarah@apexintelligence.ai",
     sidebarItems: [
-      "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Settings",
-      "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Vision Plan", "Reviews", "Announcements", "Knowledge Portal", "Analytics",
+      "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "EOS", "Settings",
+      "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Vision Plan", "Reviews", "Announcements", "Processes", "Knowledge Portal", "Assessments", "Fit Check", "Analytics",
     ],
     canApprove: true,
     canManageTeam: true,
@@ -67,8 +67,8 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     name: "Mike Torres",
     email: "mike@apexintelligence.ai",
     sidebarItems: [
-      "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Settings",
-      "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Reviews", "Announcements",
+      "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "EOS", "Settings",
+      "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Reviews", "Announcements", "Processes", "Fit Check",
     ],
     canApprove: true,
     canManageTeam: false,
@@ -86,7 +86,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     name: "Lisa Park",
     email: "lisa@apexintelligence.ai",
     sidebarItems: [
-      "Dashboard", "Agents", "Projects",
+      "Dashboard", "Agents", "Projects", "EOS",
       "BOS Hub", "Goals & Milestones",
     ],
     canApprove: false,
@@ -105,7 +105,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     name: "David Kim",
     email: "david@apexintelligence.ai",
     sidebarItems: [
-      "Dashboard", "Agents", "Customers", "Reports",
+      "Dashboard", "Agents", "Customers", "Reports", "EOS",
       "BOS Hub", "KPI Dashboard", "Analytics",
     ],
     canApprove: false,
@@ -124,7 +124,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     name: "Alex Nguyen",
     email: "alex@apexintelligence.ai",
     sidebarItems: [
-      "Dashboard", "Agents", "Projects", "Reports",
+      "Dashboard", "Agents", "Projects", "Reports", "EOS",
       "BOS Hub", "KPI Dashboard",
     ],
     canApprove: false,

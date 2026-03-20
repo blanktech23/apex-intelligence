@@ -198,16 +198,16 @@ export default function AnalyticsPage() {
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={goalCompletionData} margin={{ top: 4, right: 4, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis
                   dataKey="quarter"
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+                  axisLine={{ stroke: "var(--border)" }}
                   tickLine={false}
                 />
                 <YAxis
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+                  axisLine={{ stroke: "var(--border)" }}
                   tickLine={false}
                   tickFormatter={(v) => `${v}%`}
                   domain={[0, 100]}
@@ -230,17 +230,17 @@ export default function AnalyticsPage() {
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={meetingEffectivenessData} margin={{ top: 4, right: 4, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis
                   dataKey="week"
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+                  axisLine={{ stroke: "var(--border)" }}
                   tickLine={false}
                 />
                 <YAxis
                   domain={[5, 10]}
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+                  axisLine={{ stroke: "var(--border)" }}
                   tickLine={false}
                 />
                 <Tooltip content={<ChartTooltip />} />
@@ -273,17 +273,17 @@ export default function AnalyticsPage() {
                     <stop offset="100%" stopColor={COLORS.green} stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis
                   dataKey="week"
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+                  axisLine={{ stroke: "var(--border)" }}
                   tickLine={false}
                 />
                 <YAxis
                   domain={[50, 100]}
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+                  axisLine={{ stroke: "var(--border)" }}
                   tickLine={false}
                   tickFormatter={(v) => `${v}%`}
                 />
@@ -311,16 +311,16 @@ export default function AnalyticsPage() {
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={issueResolutionData} margin={{ top: 4, right: 4, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis
                   dataKey="category"
-                  tick={{ fill: "#64748b", fontSize: 11 }}
-                  axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+                  axisLine={{ stroke: "var(--border)" }}
                   tickLine={false}
                 />
                 <YAxis
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+                  axisLine={{ stroke: "var(--border)" }}
                   tickLine={false}
                   tickFormatter={(v) => `${v}d`}
                 />
@@ -342,17 +342,17 @@ export default function AnalyticsPage() {
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={teamHealthData} margin={{ top: 4, right: 4, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis
                   dataKey="team"
-                  tick={{ fill: "#64748b", fontSize: 11 }}
-                  axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+                  axisLine={{ stroke: "var(--border)" }}
                   tickLine={false}
                 />
                 <YAxis
                   domain={[0, 10]}
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+                  axisLine={{ stroke: "var(--border)" }}
                   tickLine={false}
                 />
                 <Tooltip content={<ChartTooltip />} />

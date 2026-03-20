@@ -36,6 +36,17 @@ yarn-error.log*
 # vercel
 .vercel
 
+# audit/test artifacts
+screenshots/
+tests/
+audit-crawler.mjs
+clickability-audit.mjs
+functional-test.mjs
+walkthrough.mjs
+RBAC-AUDIT-REPORT.md
+test-results/
+test-screenshots/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

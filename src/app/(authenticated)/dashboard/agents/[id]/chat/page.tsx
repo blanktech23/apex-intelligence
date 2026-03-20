@@ -2740,160 +2740,229 @@ const defaultMockResponses = [
 /* ------------------------------------------------------------------ */
 
 function FloorPlan2D() {
-  // Scale: 1 foot = 40px, origin offset for padding
-  const scale = 40;
-  const ox = 40;
-  const oy = 40;
+  // Elevation view — front-facing cabinet drawing (like installation book)
+  const ox = 70, oy = 50;
+
+  // Y positions (top to bottom): crown → upper cabs → light rail → backsplash → countertop → base cabs → toe kick → floor
+  const yCr = oy;
+  const yUT = oy + 8;       // upper cab top
+  const yUB = yUT + 84;     // upper cab bottom
+  const yLR = yUB + 4;      // light rail
+  const yBS = yLR + 50;     // backsplash bottom = countertop top
+  const yCT = yBS + 5;      // countertop bottom = base cab top
+  const yBB = yCT + 84;     // base cab bottom = toe kick top
+  const yFL = yBB + 13;     // floor
+
+  // X positions (left to right): cabinet starts
+  const c1 = ox;             // B21 (21" = 59px)
+  const c2 = c1 + 59;        // B24 wine (24" = 67px)
+  const c3 = c2 + 67;        // Sink B30 (30" = 84px)
+  const c4 = c3 + 84;        // DW (24" = 67px)
+  const c5 = c4 + 67;        // B30 (30" = 84px)
+  const c6 = c5 + 84;        // end of base run
+  const c7 = c6 + 14;        // Tall pantry start (36" = 101px)
+  const c8 = c7 + 101;       // end
+
+  // Shaker door panel — Cloud White with honey bronze pull
+  const SD = ({ x, y, w, h }: { x: number; y: number; w: number; h: number }) => (
+    <g>
+      <rect x={x} y={y} width={w} height={h} rx="1"
+        fill="rgba(245,243,238,0.12)" stroke="rgba(220,215,205,0.45)" strokeWidth="0.7" />
+      <rect x={x + 5} y={y + 5} width={w - 10} height={h - 10} rx="1"
+        fill="rgba(245,243,238,0.06)" stroke="rgba(210,205,195,0.3)" strokeWidth="0.5" />
+      <rect x={x + w / 2 - 6} y={y + h - 14} width={12} height={3} rx="1"
+        fill="rgba(195,155,70,0.45)" stroke="rgba(195,155,70,0.7)" strokeWidth="0.4" />
+    </g>
+  );
+
+  // Cabinet number badge (red, like installation book)
+  const N = ({ x, y, n }: { x: number; y: number; n: number }) => (
+    <g>
+      <rect x={x - 8} y={y - 9} width={16} height={16} rx="2"
+        fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.5)" strokeWidth="0.8" />
+      <text x={x} y={y + 3} fill="rgba(239,68,68,0.9)" fontSize="9" fontWeight="600"
+        textAnchor="middle" fontFamily="monospace">{n}</text>
+    </g>
+  );
 
   return (
-    <svg
-      viewBox="0 0 680 700"
-      className="h-full w-full"
-      style={{ maxHeight: "100%" }}
-    >
-      {/* Grid dots */}
+    <svg viewBox="0 0 720 400" className="h-full w-full" style={{ maxHeight: "100%" }}>
       <defs>
-        <pattern id="grid-dots" width={scale} height={scale} patternUnits="userSpaceOnUse">
-          <circle cx="0" cy="0" r="1" fill="rgba(255,255,255,0.06)" />
+        <pattern id="grid-dots" width="28" height="28" patternUnits="userSpaceOnUse">
+          <circle cx="0" cy="0" r="0.5" fill="rgba(255,255,255,0.04)" />
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#grid-dots)" />
 
-      {/* Room outline - L-shape: 12x14 with a notch */}
-      <path
-        d={`M ${ox} ${oy} L ${ox + 12 * scale} ${oy} L ${ox + 12 * scale} ${oy + 14 * scale} L ${ox} ${oy + 14 * scale} Z`}
-        fill="none"
-        stroke="rgba(255,255,255,0.3)"
-        strokeWidth="2"
-      />
+      {/* ═══ CEILING & FLOOR LINES ═══ */}
+      <line x1={c1} y1={oy} x2={c8} y2={oy} stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+      <line x1={c1} y1={yFL} x2={c8} y2={yFL} stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" />
 
-      {/* Base cabinets - south wall (bottom) */}
-      <rect x={ox} y={oy + 14 * scale - 24} width={36 * 3} height={24} rx="2"
-        fill="rgba(59,130,246,0.15)" stroke="rgba(96,165,250,0.6)" strokeWidth="1" />
-      <text x={ox + 54} y={oy + 14 * scale - 8} fill="rgba(96,165,250,0.8)" fontSize="9" textAnchor="middle" fontFamily="monospace">B36</text>
-      <text x={ox + 54 + 36} y={oy + 14 * scale - 8} fill="rgba(96,165,250,0.8)" fontSize="9" textAnchor="middle" fontFamily="monospace">B36</text>
+      {/* ═══ TOE KICK ═══ */}
+      <rect x={c1} y={yBB} width={c6 - c1} height={13} fill="rgba(30,28,25,0.5)" stroke="rgba(100,95,85,0.25)" strokeWidth="0.5" />
+      <rect x={c7} y={yBB} width={101} height={13} fill="rgba(30,28,25,0.5)" stroke="rgba(100,95,85,0.25)" strokeWidth="0.5" />
 
-      {/* Base cabinets - west wall (left) */}
-      <rect x={ox} y={oy + 2 * scale} width={24} height={36 * 3} rx="2"
-        fill="rgba(59,130,246,0.15)" stroke="rgba(96,165,250,0.6)" strokeWidth="1" />
-      <text x={ox + 12} y={oy + 2 * scale + 20} fill="rgba(96,165,250,0.8)" fontSize="8" textAnchor="middle" fontFamily="monospace">B24</text>
-      <text x={ox + 12} y={oy + 2 * scale + 56} fill="rgba(96,165,250,0.8)" fontSize="8" textAnchor="middle" fontFamily="monospace">B36</text>
-      <text x={ox + 12} y={oy + 2 * scale + 92} fill="rgba(96,165,250,0.8)" fontSize="8" textAnchor="middle" fontFamily="monospace">B36</text>
+      {/* ═══ BASE CABINETS ═══ */}
 
-      {/* Wall cabinets - west wall */}
-      <rect x={ox + 2} y={oy + 2 * scale} width={12} height={36 * 2.5} rx="1"
-        fill="rgba(99,102,241,0.15)" stroke="rgba(129,140,248,0.5)" strokeWidth="1" strokeDasharray="4 2" />
-      <text x={ox + 8} y={oy + 2 * scale + 44} fill="rgba(129,140,248,0.6)" fontSize="7" textAnchor="middle" fontFamily="monospace" transform={`rotate(-90, ${ox + 8}, ${oy + 2 * scale + 44})`}>W3612</text>
+      {/* 7 — B21 (Cloud White shaker) */}
+      <rect x={c1} y={yCT} width={59} height={84} rx="1" fill="rgba(240,237,230,0.1)" stroke="rgba(210,205,195,0.4)" strokeWidth="1" />
+      <SD x={c1 + 3} y={yCT + 3} w={53} h={78} />
+      <N x={c1 + 30} y={yBB + 14} n={7} />
 
-      {/* Wall cabinets - south wall */}
-      <rect x={ox} y={oy + 14 * scale - 14} width={36 * 2.5} height={12} rx="1"
-        fill="rgba(99,102,241,0.15)" stroke="rgba(129,140,248,0.5)" strokeWidth="1" strokeDasharray="4 2" />
-      <text x={ox + 45} y={oy + 14 * scale - 5} fill="rgba(129,140,248,0.6)" fontSize="7" textAnchor="middle" fontFamily="monospace">W3612</text>
+      {/* 8 — B24 Wine Cooler (stainless/glass) */}
+      <rect x={c2} y={yCT} width={67} height={84} rx="1" fill="rgba(160,165,170,0.08)" stroke="rgba(180,185,190,0.35)" strokeWidth="1" />
+      <rect x={c2 + 6} y={yCT + 6} width={55} height={72} rx="2" fill="rgba(140,150,160,0.06)" stroke="rgba(180,185,190,0.2)" strokeWidth="0.5" />
+      {[0.2, 0.4, 0.6, 0.8].map((f, i) => (
+        <line key={`wr-${i}`} x1={c2 + 10} y1={yCT + 6 + 72 * f} x2={c2 + 57} y2={yCT + 6 + 72 * f} stroke="rgba(180,185,190,0.18)" strokeWidth="0.5" />
+      ))}
+      <N x={c2 + 34} y={yBB + 14} n={8} />
 
-      {/* Sink - on north wall (top) under window */}
-      <rect x={ox + 4 * scale} y={oy} width={36} height={24} rx="2"
-        fill="rgba(34,211,238,0.15)" stroke="rgba(34,211,238,0.6)" strokeWidth="1.5" />
-      {/* Sink basin shape */}
-      <rect x={ox + 4 * scale + 4} y={oy + 4} width={12} height={16} rx="3"
-        fill="none" stroke="rgba(34,211,238,0.4)" strokeWidth="1" />
-      <rect x={ox + 4 * scale + 20} y={oy + 4} width={12} height={16} rx="3"
-        fill="none" stroke="rgba(34,211,238,0.4)" strokeWidth="1" />
-      <text x={ox + 4 * scale + 18} y={oy + 36} fill="rgba(34,211,238,0.8)" fontSize="8" textAnchor="middle" fontFamily="monospace">Sink</text>
-      {/* Window indicator */}
-      <line x1={ox + 3.5 * scale} y1={oy - 4} x2={ox + 5.5 * scale} y2={oy - 4}
-        stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
-      <text x={ox + 4.5 * scale} y={oy - 10} fill="rgba(255,255,255,0.3)" fontSize="7" textAnchor="middle">window</text>
+      {/* 10 — Sink B30 (Cloud White shaker) */}
+      <rect x={c3} y={yCT} width={84} height={84} rx="1" fill="rgba(240,237,230,0.1)" stroke="rgba(210,205,195,0.4)" strokeWidth="1" />
+      <SD x={c3 + 3} y={yCT + 3} w={36} h={78} />
+      <SD x={c3 + 42} y={yCT + 3} w={39} h={78} />
+      <N x={c3 + 42} y={yBB + 14} n={10} />
 
-      {/* Range - east wall */}
-      <rect x={ox + 12 * scale - 24} y={oy + 3 * scale} width={24} height={30} rx="2"
-        fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.6)" strokeWidth="1.5" />
-      {/* Burner circles */}
-      <circle cx={ox + 12 * scale - 16} cy={oy + 3 * scale + 8} r="4" fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
-      <circle cx={ox + 12 * scale - 8} cy={oy + 3 * scale + 8} r="4" fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
-      <circle cx={ox + 12 * scale - 16} cy={oy + 3 * scale + 20} r="4" fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
-      <circle cx={ox + 12 * scale - 8} cy={oy + 3 * scale + 20} r="4" fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
-      <text x={ox + 12 * scale - 12} y={oy + 3 * scale + 42} fill="rgba(245,158,11,0.8)" fontSize="8" textAnchor="middle" fontFamily="monospace">Range</text>
+      {/* Faucet profile (brushed nickel — above countertop) */}
+      <line x1={c3 + 42} y1={yBS} x2={c3 + 42} y2={yBS - 22} stroke="rgba(190,185,175,0.55)" strokeWidth="1.5" />
+      <line x1={c3 + 42} y1={yBS - 22} x2={c3 + 55} y2={yBS - 22} stroke="rgba(190,185,175,0.55)" strokeWidth="1.5" />
+      <circle cx={c3 + 55} cy={yBS - 20} r="2" fill="rgba(190,185,175,0.35)" />
 
-      {/* Refrigerator - east wall, top */}
-      <rect x={ox + 12 * scale - 28} y={oy + 8} width={28} height={36} rx="2"
-        fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.5)" strokeWidth="1.5" />
-      <text x={ox + 12 * scale - 14} y={oy + 30} fill="rgba(245,158,11,0.8)" fontSize="7" textAnchor="middle" fontFamily="monospace">Fridge</text>
+      {/* 11 — DW (Dishwasher — stainless steel) */}
+      <rect x={c4} y={yCT} width={67} height={84} rx="1" fill="rgba(170,175,180,0.08)" stroke="rgba(180,185,190,0.35)" strokeWidth="1" />
+      <rect x={c4 + 5} y={yCT + 5} width={57} height={74} rx="1" fill="none" stroke="rgba(180,185,190,0.2)" strokeWidth="0.5" />
+      <line x1={c4 + 10} y1={yCT + 14} x2={c4 + 57} y2={yCT + 14} stroke="rgba(180,185,190,0.2)" strokeWidth="0.5" />
+      <rect x={c4 + 22} y={yCT + 6} width={23} height={5} rx="1" fill="none" stroke="rgba(180,185,190,0.22)" strokeWidth="0.5" />
+      <N x={c4 + 34} y={yBB + 14} n={11} />
 
-      {/* Dishwasher - next to sink */}
-      <rect x={ox + 4 * scale + 40} y={oy} width={24} height={24} rx="2"
-        fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.5)" strokeWidth="1" />
-      <text x={ox + 4 * scale + 52} y={oy + 36} fill="rgba(245,158,11,0.7)" fontSize="7" textAnchor="middle" fontFamily="monospace">DW</text>
+      {/* 13 — B30 (Cloud White shaker) */}
+      <rect x={c5} y={yCT} width={84} height={84} rx="1" fill="rgba(240,237,230,0.1)" stroke="rgba(210,205,195,0.4)" strokeWidth="1" />
+      <SD x={c5 + 3} y={yCT + 3} w={36} h={78} />
+      <SD x={c5 + 42} y={yCT + 3} w={39} h={78} />
+      <N x={c5 + 42} y={yBB + 14} n={13} />
 
-      {/* Double oven - east wall below range */}
-      <rect x={ox + 12 * scale - 24} y={oy + 5.5 * scale} width={24} height={40} rx="2"
-        fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.5)" strokeWidth="1.5" />
-      <line x1={ox + 12 * scale - 22} y1={oy + 5.5 * scale + 20} x2={ox + 12 * scale - 2} y2={oy + 5.5 * scale + 20}
-        stroke="rgba(245,158,11,0.3)" strokeWidth="1" />
-      <text x={ox + 12 * scale - 12} y={oy + 5.5 * scale + 52} fill="rgba(245,158,11,0.7)" fontSize="7" textAnchor="middle" fontFamily="monospace">Dbl Oven</text>
+      {/* ═══ COUNTERTOP — Quartz Calacatta ═══ */}
+      <rect x={c1 - 3} y={yBS} width={c6 - c1 + 6} height={5} fill="rgba(235,228,215,0.22)" stroke="rgba(225,218,205,0.45)" strokeWidth="0.8" />
 
-      {/* Island */}
-      <rect x={ox + 3.5 * scale} y={oy + 7 * scale} width={60 * 2.4} height={36 * 2.4} rx="3"
-        fill="rgba(59,130,246,0.1)" stroke="rgba(96,165,250,0.5)" strokeWidth="1.5" />
-      <text x={ox + 3.5 * scale + 72} y={oy + 7 * scale + 46} fill="rgba(96,165,250,0.8)" fontSize="10" textAnchor="middle" fontFamily="monospace">Island 36x60</text>
-      {/* Seating indicators (3 circles at bottom of island) */}
-      <circle cx={ox + 3.5 * scale + 36} cy={oy + 7 * scale + 36 * 2.4 + 16} r="8" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="3 2" />
-      <circle cx={ox + 3.5 * scale + 72} cy={oy + 7 * scale + 36 * 2.4 + 16} r="8" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="3 2" />
-      <circle cx={ox + 3.5 * scale + 108} cy={oy + 7 * scale + 36 * 2.4 + 16} r="8" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="3 2" />
-      <text x={ox + 3.5 * scale + 72} y={oy + 7 * scale + 36 * 2.4 + 34} fill="rgba(255,255,255,0.2)" fontSize="7" textAnchor="middle">seating (3)</text>
+      {/* ═══ BACKSPLASH — Subway Tile ═══ */}
+      <rect x={c1} y={yLR} width={c6 - c1} height={50} fill="rgba(230,225,215,0.06)" stroke="rgba(210,205,195,0.15)" strokeWidth="0.5" />
+      {[0.33, 0.66].map((f, i) => (
+        <line key={`bs-${i}`} x1={c1 + 3} y1={yLR + 50 * f} x2={c6 - 3} y2={yLR + 50 * f} stroke="rgba(210,205,195,0.1)" strokeWidth="0.4" />
+      ))}
 
-      {/* Work triangle - dashed lines connecting sink, range, fridge */}
-      <line
-        x1={ox + 4 * scale + 18} y1={oy + 12}
-        x2={ox + 12 * scale - 12} y2={oy + 3 * scale + 15}
-        stroke="rgba(245,158,11,0.35)" strokeWidth="1.5" strokeDasharray="8 4"
-      />
-      <line
-        x1={ox + 12 * scale - 12} y1={oy + 3 * scale + 15}
-        x2={ox + 12 * scale - 14} y2={oy + 26}
-        stroke="rgba(245,158,11,0.35)" strokeWidth="1.5" strokeDasharray="8 4"
-      />
-      <line
-        x1={ox + 12 * scale - 14} y1={oy + 26}
-        x2={ox + 4 * scale + 18} y2={oy + 12}
-        stroke="rgba(245,158,11,0.35)" strokeWidth="1.5" strokeDasharray="8 4"
-      />
-      {/* Work triangle label */}
-      <text x={ox + 7.5 * scale} y={oy + 1.8 * scale} fill="rgba(245,158,11,0.5)" fontSize="8" textAnchor="middle" fontStyle="italic">work triangle 22.4&apos;</text>
+      {/* ═══ LIGHT RAIL ═══ */}
+      <rect x={c1} y={yUB} width={c6 - c1} height={4} fill="rgba(220,215,205,0.15)" stroke="rgba(210,205,195,0.3)" strokeWidth="0.5" />
+      <text x={(c1 + c6) / 2} y={yUB - 3} fill="rgba(200,195,185,0.35)" fontSize="6" textAnchor="middle" fontStyle="italic">Light Rail</text>
 
-      {/* Dimension lines - horizontal (top) */}
-      <line x1={ox} y1={oy - 20} x2={ox + 12 * scale} y2={oy - 20}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
-      <line x1={ox} y1={oy - 24} x2={ox} y2={oy - 16}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
-      <line x1={ox + 12 * scale} y1={oy - 24} x2={ox + 12 * scale} y2={oy - 16}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
-      <text x={ox + 6 * scale} y={oy - 26} fill="rgba(148,163,184,0.6)" fontSize="10" textAnchor="middle" fontFamily="monospace">12&apos;-0&quot;</text>
+      {/* ═══ UPPER CABINETS ═══ */}
 
-      {/* Dimension lines - vertical (right) */}
-      <line x1={ox + 12 * scale + 20} y1={oy} x2={ox + 12 * scale + 20} y2={oy + 14 * scale}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
-      <line x1={ox + 12 * scale + 16} y1={oy} x2={ox + 12 * scale + 24} y2={oy}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
-      <line x1={ox + 12 * scale + 16} y1={oy + 14 * scale} x2={ox + 12 * scale + 24} y2={oy + 14 * scale}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
-      <text x={ox + 12 * scale + 34} y={oy + 7 * scale} fill="rgba(148,163,184,0.6)" fontSize="10" textAnchor="middle" fontFamily="monospace" transform={`rotate(90, ${ox + 12 * scale + 34}, ${oy + 7 * scale})`}>14&apos;-0&quot;</text>
+      {/* 12 — W2130 (Cloud White shaker upper) */}
+      <rect x={c1} y={yUT} width={59} height={84} rx="1" fill="rgba(240,237,230,0.1)" stroke="rgba(210,205,195,0.35)" strokeWidth="1" />
+      <SD x={c1 + 3} y={yUT + 3} w={53} h={78} />
+      <N x={c1 + 30} y={yUT - 10} n={12} />
 
-      {/* Legend */}
-      <g transform={`translate(${ox}, ${oy + 14 * scale + 30})`}>
-        <rect x="0" y="0" width="10" height="10" rx="1" fill="rgba(59,130,246,0.15)" stroke="rgba(96,165,250,0.6)" strokeWidth="1" />
-        <text x="14" y="9" fill="rgba(148,163,184,0.6)" fontSize="8">Base Cabinets</text>
+      {/* Open shelving — natural wood (over wine + sink) */}
+      <rect x={c2} y={yUT} width={c4 - c2} height={84} rx="1" fill="none" stroke="rgba(175,150,120,0.15)" strokeWidth="0.5" strokeDasharray="3 2" />
+      {[0.25, 0.5, 0.75].map((f, i) => (
+        <line key={`sh-${i}`} x1={c2 + 4} y1={yUT + 84 * f} x2={c4 - 4} y2={yUT + 84 * f} stroke="rgba(175,150,120,0.35)" strokeWidth="0.8" />
+      ))}
+      <text x={(c2 + c4) / 2} y={yUT + 46} fill="rgba(175,150,120,0.3)" fontSize="7" textAnchor="middle" fontFamily="monospace">open shelving</text>
 
-        <rect x="90" y="0" width="10" height="10" rx="1" fill="rgba(99,102,241,0.15)" stroke="rgba(129,140,248,0.5)" strokeWidth="1" strokeDasharray="2 1" />
-        <text x="104" y="9" fill="rgba(148,163,184,0.6)" fontSize="8">Wall Cabinets</text>
+      {/* 14 — W3030 (Cloud White shaker upper) */}
+      <rect x={c4} y={yUT} width={c6 - c4} height={84} rx="1" fill="rgba(240,237,230,0.1)" stroke="rgba(210,205,195,0.35)" strokeWidth="1" />
+      <SD x={c4 + 3} y={yUT + 3} w={(c6 - c4) / 2 - 5} h={78} />
+      <SD x={c4 + (c6 - c4) / 2 + 2} y={yUT + 3} w={(c6 - c4) / 2 - 5} h={78} />
+      <N x={(c4 + c6) / 2} y={yUT - 10} n={14} />
 
-        <rect x="186" y="0" width="10" height="10" rx="1" fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.5)" strokeWidth="1" />
-        <text x="200" y="9" fill="rgba(148,163,184,0.6)" fontSize="8">Appliances</text>
+      {/* ═══ CROWN MOLDING ═══ */}
+      <rect x={c1} y={yCr} width={c6 - c1} height={8} fill="rgba(235,230,220,0.1)" stroke="rgba(210,205,195,0.25)" strokeWidth="0.5" />
+      <rect x={c7} y={yCr} width={101} height={8} fill="rgba(235,230,220,0.1)" stroke="rgba(210,205,195,0.25)" strokeWidth="0.5" />
 
-        <rect x="268" y="0" width="10" height="10" rx="1" fill="rgba(34,211,238,0.15)" stroke="rgba(34,211,238,0.6)" strokeWidth="1" />
-        <text x="282" y="9" fill="rgba(148,163,184,0.6)" fontSize="8">Fixtures</text>
+      {/* ═══ TALL PANTRY T2496 (Cloud White shaker) ═══ */}
+      <rect x={c7} y={yUT} width={101} height={yBB - yUT} rx="1" fill="rgba(240,237,230,0.1)" stroke="rgba(210,205,195,0.4)" strokeWidth="1" />
+      <SD x={c7 + 3} y={yUT + 3} w={45} h={yBB - yUT - 6} />
+      <SD x={c7 + 51} y={yUT + 3} w={47} h={yBB - yUT - 6} />
+      <line x1={c7 + 48} y1={yUT + 4} x2={c7 + 48} y2={yBB - 4} stroke="rgba(210,205,195,0.18)" strokeWidth="0.5" />
+      <N x={c7 + 50} y={yUT - 10} n={9} />
 
-        <line x1="350" y1="5" x2="380" y2="5" stroke="rgba(245,158,11,0.4)" strokeWidth="1.5" strokeDasharray="6 3" />
-        <text x="384" y="9" fill="rgba(148,163,184,0.6)" fontSize="8">Work Triangle</text>
+      {/* ═══ PENDANT LIGHTS — matte black dome fixtures ═══ */}
+      {[c3 + 10, c5 + 20].map((px, i) => (
+        <g key={`pnd-${i}`}>
+          <line x1={px} y1={oy} x2={px} y2={oy + 30} stroke="rgba(60,55,50,0.5)" strokeWidth="0.8" />
+          <path d={`M ${px - 14} ${oy + 42} Q ${px} ${oy + 28} ${px + 14} ${oy + 42}`} fill="rgba(40,38,35,0.45)" stroke="rgba(60,55,50,0.55)" strokeWidth="0.8" />
+          <circle cx={px} cy={oy + 40} r="3" fill="rgba(245,210,130,0.3)" stroke="rgba(245,210,130,0.55)" strokeWidth="0.5" />
+        </g>
+      ))}
+
+      {/* ═══ DIMENSION LINES ═══ */}
+
+      {/* Overall width (top) */}
+      <line x1={c1} y1={oy - 20} x2={c8} y2={oy - 20} stroke="rgba(148,163,184,0.35)" strokeWidth="0.8" />
+      <line x1={c1} y1={oy - 24} x2={c1} y2={oy - 16} stroke="rgba(148,163,184,0.35)" strokeWidth="0.8" />
+      <line x1={c8} y1={oy - 24} x2={c8} y2={oy - 16} stroke="rgba(148,163,184,0.35)" strokeWidth="0.8" />
+
+      {/* Individual cabinet widths */}
+      {[[c1, 59, '21"'], [c2, 67, '24"'], [c3, 84, '30"'], [c4, 67, '24"'], [c5, 84, '30"'], [c7, 101, '36"']].map(([x, w, label], i) => (
+        <g key={`dim-${i}`}>
+          <line x1={x as number} y1={oy - 12} x2={(x as number) + (w as number)} y2={oy - 12} stroke="rgba(148,163,184,0.25)" strokeWidth="0.5" />
+          <text x={(x as number) + (w as number) / 2} y={oy - 6} fill="rgba(148,163,184,0.45)" fontSize="7" textAnchor="middle" fontFamily="monospace">{label as string}</text>
+        </g>
+      ))}
+
+      {/* Height: counter (right side) */}
+      <line x1={c8 + 14} y1={yBS} x2={c8 + 14} y2={yFL} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <line x1={c8 + 10} y1={yBS} x2={c8 + 18} y2={yBS} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <line x1={c8 + 10} y1={yFL} x2={c8 + 18} y2={yFL} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <text x={c8 + 26} y={(yBS + yFL) / 2 + 3} fill="rgba(148,163,184,0.45)" fontSize="7" fontFamily="monospace">36&quot;</text>
+
+      {/* Height: total (far right) */}
+      <line x1={c8 + 38} y1={oy} x2={c8 + 38} y2={yFL} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <line x1={c8 + 34} y1={oy} x2={c8 + 42} y2={oy} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <line x1={c8 + 34} y1={yFL} x2={c8 + 42} y2={yFL} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <text x={c8 + 52} y={(oy + yFL) / 2 + 3} fill="rgba(148,163,184,0.45)" fontSize="7" fontFamily="monospace" transform={`rotate(90, ${c8 + 52}, ${(oy + yFL) / 2})`}>96&quot;</text>
+
+      {/* Height: upper cabs (left side) */}
+      <line x1={c1 - 14} y1={yUT} x2={c1 - 14} y2={yUB} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <line x1={c1 - 18} y1={yUT} x2={c1 - 10} y2={yUT} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <line x1={c1 - 18} y1={yUB} x2={c1 - 10} y2={yUB} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <text x={c1 - 26} y={(yUT + yUB) / 2 + 3} fill="rgba(148,163,184,0.45)" fontSize="7" fontFamily="monospace" transform={`rotate(-90, ${c1 - 26}, ${(yUT + yUB) / 2})`}>30&quot;</text>
+
+      {/* Height: base cabs (left side) */}
+      <line x1={c1 - 14} y1={yCT} x2={c1 - 14} y2={yBB} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <line x1={c1 - 18} y1={yCT} x2={c1 - 10} y2={yCT} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <line x1={c1 - 18} y1={yBB} x2={c1 - 10} y2={yBB} stroke="rgba(148,163,184,0.3)" strokeWidth="0.6" />
+      <text x={c1 - 26} y={(yCT + yBB) / 2 + 3} fill="rgba(148,163,184,0.45)" fontSize="7" fontFamily="monospace" transform={`rotate(-90, ${c1 - 26}, ${(yCT + yBB) / 2})`}>30&quot;</text>
+
+      {/* ═══ SPECIFICATIONS CALLOUT ═══ */}
+      <g transform={`translate(${c1}, ${yFL + 20})`}>
+        <text x={0} y={0} fill="rgba(255,255,255,0.4)" fontSize="8" fontWeight="600" letterSpacing="0.5">HARDWARE</text>
+        <text x={0} y={13} fill="rgba(148,163,184,0.4)" fontSize="7" fontStyle="italic">Top Knob Ascendra Pull, 6-5/16&quot;, Honey Bronze</text>
+        <text x={0} y={25} fill="rgba(148,163,184,0.4)" fontSize="7" fontWeight="600">INSTALL AS SHOWN</text>
+      </g>
+      <g transform={`translate(${c4}, ${yFL + 20})`}>
+        <text x={0} y={0} fill="rgba(255,255,255,0.4)" fontSize="8" fontWeight="600" letterSpacing="0.5">FINISHES</text>
+        <text x={0} y={13} fill="rgba(148,163,184,0.4)" fontSize="7">Door: Shaker, Cloud White &bull; Counter: Quartz Calacatta</text>
+        <text x={0} y={25} fill="rgba(148,163,184,0.4)" fontSize="7">Backsplash: Subway Tile &bull; Base Depth: 24&quot; &bull; Wall Depth: 12&quot;</text>
+      </g>
+
+      {/* Verify note */}
+      <text x={c8} y={yFL + 55} fill="rgba(239,68,68,0.45)" fontSize="7" textAnchor="end" fontWeight="600">
+        ALL DIMENSIONS ARE FINISHED DIMENSIONS. VERIFY IN FIELD.
+      </text>
+
+      {/* ═══ LEGEND ═══ */}
+      <g transform={`translate(${c1}, ${yFL + 55})`}>
+        <rect x="0" y="0" width="8" height="8" rx="1" fill="rgba(240,237,230,0.1)" stroke="rgba(210,205,195,0.45)" strokeWidth="0.8" />
+        <text x="11" y="7" fill="rgba(200,195,185,0.55)" fontSize="7">Base/Tall</text>
+
+        <rect x="60" y="0" width="8" height="8" rx="1" fill="rgba(240,237,230,0.1)" stroke="rgba(210,205,195,0.35)" strokeWidth="0.8" />
+        <text x="71" y="7" fill="rgba(200,195,185,0.55)" fontSize="7">Wall</text>
+
+        <rect x="100" y="0" width="8" height="8" rx="1" fill="rgba(170,175,180,0.08)" stroke="rgba(180,185,190,0.4)" strokeWidth="0.8" />
+        <text x="111" y="7" fill="rgba(200,195,185,0.55)" fontSize="7">Appliances</text>
+
+        <rect x="172" y="0" width="8" height="8" rx="1" fill="rgba(175,150,120,0.12)" stroke="rgba(175,150,120,0.45)" strokeWidth="0.8" />
+        <text x="183" y="7" fill="rgba(200,195,185,0.55)" fontSize="7">Shelving</text>
       </g>
     </svg>
   );
@@ -2903,33 +2972,113 @@ function FloorPlan2D() {
 /*  K&B Designer: 3D Placeholder                                       */
 /* ------------------------------------------------------------------ */
 
-function View3DPlaceholder() {
+function View3DKitchen() {
+  const [activeMode, setActiveMode] = useState("Orbit");
+
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="glass rounded-2xl p-12 text-center max-w-md">
-        <div className="inline-flex rounded-xl bg-indigo-500/10 p-4 mb-4">
-          <Box className="size-10 text-indigo-400" />
-        </div>
-        <h3 className="text-lg font-semibold text-foreground mb-2">3D View</h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          Three.js rendering engine loads here. Interactive 3D walkthrough with
-          PBR materials, real-time lighting, and camera controls.
-        </p>
-        <div className="mt-4 flex flex-wrap justify-center gap-2">
-          {["Orbit", "Pan", "Zoom", "First-Person"].map((mode) => (
-            <span
-              key={mode}
-              className="rounded-md bg-muted/40 px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
-            >
-              {mode}
-            </span>
-          ))}
-        </div>
+    <div className="relative h-full w-full overflow-hidden" style={{ background: '#090b10' }}>
+      {/* ---------- Photorealistic Kitchen Render ---------- */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: 'url(/kitchen-3d-render.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 40%',
+        }}
+      />
+
+      {/* Subtle top/bottom fade for HUD readability only */}
+      <div
+        className="absolute inset-x-0 top-0 h-10 pointer-events-none"
+        style={{ background: 'linear-gradient(180deg, rgba(9,11,16,0.45) 0%, transparent 100%)' }}
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 h-10 pointer-events-none"
+        style={{ background: 'linear-gradient(0deg, rgba(9,11,16,0.45) 0%, transparent 100%)' }}
+      />
+
+      {/* ---------- HUD Overlays ---------- */}
+
+      {/* Top-left: render status */}
+      <div className="absolute top-3 left-3 flex items-center gap-2">
+        <span className="rounded bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-400 backdrop-blur-sm">
+          REALTIME
+        </span>
+        <span className="text-[10px] text-white/60">
+          PBR &bull; Path Tracing
+        </span>
+      </div>
+
+      {/* Top-right: resolution & FPS */}
+      <div className="absolute top-3 right-3 flex items-center gap-2 text-[10px] text-white/60">
+        <span>60 FPS</span>
+        <span className="h-3 w-px bg-white/20" />
+        <span>1920&times;1080</span>
+      </div>
+
+      {/* Material callouts — positioned on actual elements in the image */}
+      {/* Countertop: the beige surface running across center of image */}
+      <div
+        className="absolute flex items-center gap-1.5 rounded-md border border-white/10 bg-black/40 px-2.5 py-1.5 backdrop-blur-md"
+        style={{ top: '42%', left: '12%' }}
+      >
+        <div className="h-2 w-2 rounded-full bg-amber-400/80" />
+        <span className="text-[10px] font-medium text-white/80">Quartz Calacatta</span>
+      </div>
+
+      {/* Shaker Cabinets: the white base cabinets visible on the left */}
+      <div
+        className="absolute flex items-center gap-1.5 rounded-md border border-white/10 bg-black/40 px-2.5 py-1.5 backdrop-blur-md"
+        style={{ top: '58%', left: '3%' }}
+      >
+        <div className="h-2 w-2 rounded-full bg-sky-400/80" />
+        <span className="text-[10px] font-medium text-white/80">Shaker — Cloud White</span>
+      </div>
+
+      {/* Pendant Lights: the two dark fixtures hanging center-left */}
+      <div
+        className="absolute flex items-center gap-1.5 rounded-md border border-white/10 bg-black/40 px-2.5 py-1.5 backdrop-blur-md"
+        style={{ top: '18%', left: '28%' }}
+      >
+        <div className="h-2 w-2 rounded-full bg-orange-400/80" />
+        <span className="text-[10px] font-medium text-white/80">Pendant Fixtures</span>
+      </div>
+
+      {/* Tall pantry: the tall white cabinets on the right */}
+      <div
+        className="absolute flex items-center gap-1.5 rounded-md border border-white/10 bg-black/40 px-2.5 py-1.5 backdrop-blur-md"
+        style={{ top: '35%', right: '8%' }}
+      >
+        <div className="h-2 w-2 rounded-full bg-sky-400/80" />
+        <span className="text-[10px] font-medium text-white/80">T2496 Pantry</span>
+      </div>
+
+      {/* Bottom-left: camera modes */}
+      <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
+        {["Orbit", "Pan", "Zoom", "Walk"].map((mode) => (
+          <button
+            key={mode}
+            onClick={() => setActiveMode(mode)}
+            className={`rounded-md px-2 py-1 text-[10px] font-medium backdrop-blur-sm transition-colors ${
+              mode === activeMode
+                ? "bg-primary/30 text-primary border border-primary/30"
+                : "text-white/50 hover:text-white/80 hover:bg-white/10 border border-transparent"
+            }`}
+          >
+            {mode}
+          </button>
+        ))}
+      </div>
+
+      {/* Bottom-right: engine info */}
+      <div className="absolute bottom-3 right-3 flex items-center gap-2 text-[10px] text-white/50">
+        <span>Three.js r168</span>
+        <span className="h-3 w-px bg-white/20" />
+        <span>WebGPU</span>
       </div>
     </div>
   );
 }
-
 /* ------------------------------------------------------------------ */
 /*  K&B Designer: Mock selected item                                   */
 /* ------------------------------------------------------------------ */
@@ -3329,7 +3478,27 @@ export default function AgentChatPage() {
 
         {/* ----- Design Canvas Panel ----- */}
         {canvasOpen && id === "design-spec-assistant" && (
-          <div className={`flex flex-col border-l border-border bg-[#080e1a] transition-all duration-300 ${canvasFullscreen ? "fixed inset-0 z-50" : "w-[55%] shrink-0"}`}>
+          <div
+            className={`flex flex-col border-l transition-all duration-300 ${canvasFullscreen ? "fixed inset-0 z-50" : "w-[55%] shrink-0"}`}
+            style={{
+              backgroundColor: '#080e1a',
+              color: '#e8eaf0',
+              '--background': '#0a0e1a',
+              '--foreground': '#e8eaf0',
+              '--card': 'rgba(255,255,255,0.05)',
+              '--card-foreground': '#e8eaf0',
+              '--popover': '#151d2e',
+              '--popover-foreground': '#e8eaf0',
+              '--muted': 'rgba(255,255,255,0.06)',
+              '--muted-foreground': '#64748b',
+              '--border': 'rgba(255,255,255,0.08)',
+              '--input': 'rgba(255,255,255,0.1)',
+              '--glass': 'rgba(255,255,255,0.05)',
+              '--glass-border': 'rgba(255,255,255,0.1)',
+              '--glass-hover': 'rgba(255,255,255,0.08)',
+              borderColor: 'rgba(255,255,255,0.08)',
+            } as React.CSSProperties}
+          >
             {/* ============================================================= */}
             {/* K&B DESIGNER VIEWPORT                                          */}
             {/* ============================================================= */}
@@ -3459,7 +3628,7 @@ export default function AgentChatPage() {
                   backgroundSize: "20px 20px",
                 }}
               >
-                {viewMode === "2d" ? <FloorPlan2D /> : <View3DPlaceholder />}
+                {viewMode === "2d" ? <FloorPlan2D /> : <View3DKitchen />}
               </div>
 
               {/* Right properties panel */}
