@@ -8,12 +8,18 @@ import {
   ArrowUp,
   BarChart3,
   Bot,
+  Box,
   Calendar,
+  Camera,
   Check,
   CheckCircle2,
   Clock,
+  Download,
+  Eye,
   FileText,
+  Grid3X3,
   Headset,
+  Image as ImageIcon,
   Mail,
   Megaphone,
   CalendarClock,
@@ -28,20 +34,34 @@ import {
   Minimize2,
   MousePointer2,
   Move,
+  Package,
   Palette,
   Paperclip,
   PenLine,
+  RefreshCw,
   Ruler,
   RotateCcw,
   RotateCw,
   Sparkles,
   Square,
+  Trash2,
+  Undo2,
+  Redo2,
   Wrench,
   X,
   ZoomIn,
   ZoomOut,
   type LucideIcon,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { BomPreview } from "@/components/kb/bom-preview";
 
 // ---------------------------------------------------------------------------
 // Agent Maps
@@ -2715,6 +2735,215 @@ const defaultMockResponses = [
   "Got it. I've analyzed the information and prepared an action plan. Would you like me to proceed with the implementation or would you prefer to review the details first?",
 ];
 
+/* ------------------------------------------------------------------ */
+/*  K&B Designer: SVG Floor Plan (2D Mock)                             */
+/* ------------------------------------------------------------------ */
+
+function FloorPlan2D() {
+  // Scale: 1 foot = 40px, origin offset for padding
+  const scale = 40;
+  const ox = 40;
+  const oy = 40;
+
+  return (
+    <svg
+      viewBox="0 0 680 700"
+      className="h-full w-full"
+      style={{ maxHeight: "100%" }}
+    >
+      {/* Grid dots */}
+      <defs>
+        <pattern id="grid-dots" width={scale} height={scale} patternUnits="userSpaceOnUse">
+          <circle cx="0" cy="0" r="1" fill="rgba(255,255,255,0.06)" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid-dots)" />
+
+      {/* Room outline - L-shape: 12x14 with a notch */}
+      <path
+        d={`M ${ox} ${oy} L ${ox + 12 * scale} ${oy} L ${ox + 12 * scale} ${oy + 14 * scale} L ${ox} ${oy + 14 * scale} Z`}
+        fill="none"
+        stroke="rgba(255,255,255,0.3)"
+        strokeWidth="2"
+      />
+
+      {/* Base cabinets - south wall (bottom) */}
+      <rect x={ox} y={oy + 14 * scale - 24} width={36 * 3} height={24} rx="2"
+        fill="rgba(59,130,246,0.15)" stroke="rgba(96,165,250,0.6)" strokeWidth="1" />
+      <text x={ox + 54} y={oy + 14 * scale - 8} fill="rgba(96,165,250,0.8)" fontSize="9" textAnchor="middle" fontFamily="monospace">B36</text>
+      <text x={ox + 54 + 36} y={oy + 14 * scale - 8} fill="rgba(96,165,250,0.8)" fontSize="9" textAnchor="middle" fontFamily="monospace">B36</text>
+
+      {/* Base cabinets - west wall (left) */}
+      <rect x={ox} y={oy + 2 * scale} width={24} height={36 * 3} rx="2"
+        fill="rgba(59,130,246,0.15)" stroke="rgba(96,165,250,0.6)" strokeWidth="1" />
+      <text x={ox + 12} y={oy + 2 * scale + 20} fill="rgba(96,165,250,0.8)" fontSize="8" textAnchor="middle" fontFamily="monospace">B24</text>
+      <text x={ox + 12} y={oy + 2 * scale + 56} fill="rgba(96,165,250,0.8)" fontSize="8" textAnchor="middle" fontFamily="monospace">B36</text>
+      <text x={ox + 12} y={oy + 2 * scale + 92} fill="rgba(96,165,250,0.8)" fontSize="8" textAnchor="middle" fontFamily="monospace">B36</text>
+
+      {/* Wall cabinets - west wall */}
+      <rect x={ox + 2} y={oy + 2 * scale} width={12} height={36 * 2.5} rx="1"
+        fill="rgba(99,102,241,0.15)" stroke="rgba(129,140,248,0.5)" strokeWidth="1" strokeDasharray="4 2" />
+      <text x={ox + 8} y={oy + 2 * scale + 44} fill="rgba(129,140,248,0.6)" fontSize="7" textAnchor="middle" fontFamily="monospace" transform={`rotate(-90, ${ox + 8}, ${oy + 2 * scale + 44})`}>W3612</text>
+
+      {/* Wall cabinets - south wall */}
+      <rect x={ox} y={oy + 14 * scale - 14} width={36 * 2.5} height={12} rx="1"
+        fill="rgba(99,102,241,0.15)" stroke="rgba(129,140,248,0.5)" strokeWidth="1" strokeDasharray="4 2" />
+      <text x={ox + 45} y={oy + 14 * scale - 5} fill="rgba(129,140,248,0.6)" fontSize="7" textAnchor="middle" fontFamily="monospace">W3612</text>
+
+      {/* Sink - on north wall (top) under window */}
+      <rect x={ox + 4 * scale} y={oy} width={36} height={24} rx="2"
+        fill="rgba(34,211,238,0.15)" stroke="rgba(34,211,238,0.6)" strokeWidth="1.5" />
+      {/* Sink basin shape */}
+      <rect x={ox + 4 * scale + 4} y={oy + 4} width={12} height={16} rx="3"
+        fill="none" stroke="rgba(34,211,238,0.4)" strokeWidth="1" />
+      <rect x={ox + 4 * scale + 20} y={oy + 4} width={12} height={16} rx="3"
+        fill="none" stroke="rgba(34,211,238,0.4)" strokeWidth="1" />
+      <text x={ox + 4 * scale + 18} y={oy + 36} fill="rgba(34,211,238,0.8)" fontSize="8" textAnchor="middle" fontFamily="monospace">Sink</text>
+      {/* Window indicator */}
+      <line x1={ox + 3.5 * scale} y1={oy - 4} x2={ox + 5.5 * scale} y2={oy - 4}
+        stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
+      <text x={ox + 4.5 * scale} y={oy - 10} fill="rgba(255,255,255,0.3)" fontSize="7" textAnchor="middle">window</text>
+
+      {/* Range - east wall */}
+      <rect x={ox + 12 * scale - 24} y={oy + 3 * scale} width={24} height={30} rx="2"
+        fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.6)" strokeWidth="1.5" />
+      {/* Burner circles */}
+      <circle cx={ox + 12 * scale - 16} cy={oy + 3 * scale + 8} r="4" fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
+      <circle cx={ox + 12 * scale - 8} cy={oy + 3 * scale + 8} r="4" fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
+      <circle cx={ox + 12 * scale - 16} cy={oy + 3 * scale + 20} r="4" fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
+      <circle cx={ox + 12 * scale - 8} cy={oy + 3 * scale + 20} r="4" fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
+      <text x={ox + 12 * scale - 12} y={oy + 3 * scale + 42} fill="rgba(245,158,11,0.8)" fontSize="8" textAnchor="middle" fontFamily="monospace">Range</text>
+
+      {/* Refrigerator - east wall, top */}
+      <rect x={ox + 12 * scale - 28} y={oy + 8} width={28} height={36} rx="2"
+        fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.5)" strokeWidth="1.5" />
+      <text x={ox + 12 * scale - 14} y={oy + 30} fill="rgba(245,158,11,0.8)" fontSize="7" textAnchor="middle" fontFamily="monospace">Fridge</text>
+
+      {/* Dishwasher - next to sink */}
+      <rect x={ox + 4 * scale + 40} y={oy} width={24} height={24} rx="2"
+        fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.5)" strokeWidth="1" />
+      <text x={ox + 4 * scale + 52} y={oy + 36} fill="rgba(245,158,11,0.7)" fontSize="7" textAnchor="middle" fontFamily="monospace">DW</text>
+
+      {/* Double oven - east wall below range */}
+      <rect x={ox + 12 * scale - 24} y={oy + 5.5 * scale} width={24} height={40} rx="2"
+        fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.5)" strokeWidth="1.5" />
+      <line x1={ox + 12 * scale - 22} y1={oy + 5.5 * scale + 20} x2={ox + 12 * scale - 2} y2={oy + 5.5 * scale + 20}
+        stroke="rgba(245,158,11,0.3)" strokeWidth="1" />
+      <text x={ox + 12 * scale - 12} y={oy + 5.5 * scale + 52} fill="rgba(245,158,11,0.7)" fontSize="7" textAnchor="middle" fontFamily="monospace">Dbl Oven</text>
+
+      {/* Island */}
+      <rect x={ox + 3.5 * scale} y={oy + 7 * scale} width={60 * 2.4} height={36 * 2.4} rx="3"
+        fill="rgba(59,130,246,0.1)" stroke="rgba(96,165,250,0.5)" strokeWidth="1.5" />
+      <text x={ox + 3.5 * scale + 72} y={oy + 7 * scale + 46} fill="rgba(96,165,250,0.8)" fontSize="10" textAnchor="middle" fontFamily="monospace">Island 36x60</text>
+      {/* Seating indicators (3 circles at bottom of island) */}
+      <circle cx={ox + 3.5 * scale + 36} cy={oy + 7 * scale + 36 * 2.4 + 16} r="8" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="3 2" />
+      <circle cx={ox + 3.5 * scale + 72} cy={oy + 7 * scale + 36 * 2.4 + 16} r="8" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="3 2" />
+      <circle cx={ox + 3.5 * scale + 108} cy={oy + 7 * scale + 36 * 2.4 + 16} r="8" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="3 2" />
+      <text x={ox + 3.5 * scale + 72} y={oy + 7 * scale + 36 * 2.4 + 34} fill="rgba(255,255,255,0.2)" fontSize="7" textAnchor="middle">seating (3)</text>
+
+      {/* Work triangle - dashed lines connecting sink, range, fridge */}
+      <line
+        x1={ox + 4 * scale + 18} y1={oy + 12}
+        x2={ox + 12 * scale - 12} y2={oy + 3 * scale + 15}
+        stroke="rgba(245,158,11,0.35)" strokeWidth="1.5" strokeDasharray="8 4"
+      />
+      <line
+        x1={ox + 12 * scale - 12} y1={oy + 3 * scale + 15}
+        x2={ox + 12 * scale - 14} y2={oy + 26}
+        stroke="rgba(245,158,11,0.35)" strokeWidth="1.5" strokeDasharray="8 4"
+      />
+      <line
+        x1={ox + 12 * scale - 14} y1={oy + 26}
+        x2={ox + 4 * scale + 18} y2={oy + 12}
+        stroke="rgba(245,158,11,0.35)" strokeWidth="1.5" strokeDasharray="8 4"
+      />
+      {/* Work triangle label */}
+      <text x={ox + 7.5 * scale} y={oy + 1.8 * scale} fill="rgba(245,158,11,0.5)" fontSize="8" textAnchor="middle" fontStyle="italic">work triangle 22.4&apos;</text>
+
+      {/* Dimension lines - horizontal (top) */}
+      <line x1={ox} y1={oy - 20} x2={ox + 12 * scale} y2={oy - 20}
+        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+      <line x1={ox} y1={oy - 24} x2={ox} y2={oy - 16}
+        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+      <line x1={ox + 12 * scale} y1={oy - 24} x2={ox + 12 * scale} y2={oy - 16}
+        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+      <text x={ox + 6 * scale} y={oy - 26} fill="rgba(148,163,184,0.6)" fontSize="10" textAnchor="middle" fontFamily="monospace">12&apos;-0&quot;</text>
+
+      {/* Dimension lines - vertical (right) */}
+      <line x1={ox + 12 * scale + 20} y1={oy} x2={ox + 12 * scale + 20} y2={oy + 14 * scale}
+        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+      <line x1={ox + 12 * scale + 16} y1={oy} x2={ox + 12 * scale + 24} y2={oy}
+        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+      <line x1={ox + 12 * scale + 16} y1={oy + 14 * scale} x2={ox + 12 * scale + 24} y2={oy + 14 * scale}
+        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+      <text x={ox + 12 * scale + 34} y={oy + 7 * scale} fill="rgba(148,163,184,0.6)" fontSize="10" textAnchor="middle" fontFamily="monospace" transform={`rotate(90, ${ox + 12 * scale + 34}, ${oy + 7 * scale})`}>14&apos;-0&quot;</text>
+
+      {/* Legend */}
+      <g transform={`translate(${ox}, ${oy + 14 * scale + 30})`}>
+        <rect x="0" y="0" width="10" height="10" rx="1" fill="rgba(59,130,246,0.15)" stroke="rgba(96,165,250,0.6)" strokeWidth="1" />
+        <text x="14" y="9" fill="rgba(148,163,184,0.6)" fontSize="8">Base Cabinets</text>
+
+        <rect x="90" y="0" width="10" height="10" rx="1" fill="rgba(99,102,241,0.15)" stroke="rgba(129,140,248,0.5)" strokeWidth="1" strokeDasharray="2 1" />
+        <text x="104" y="9" fill="rgba(148,163,184,0.6)" fontSize="8">Wall Cabinets</text>
+
+        <rect x="186" y="0" width="10" height="10" rx="1" fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.5)" strokeWidth="1" />
+        <text x="200" y="9" fill="rgba(148,163,184,0.6)" fontSize="8">Appliances</text>
+
+        <rect x="268" y="0" width="10" height="10" rx="1" fill="rgba(34,211,238,0.15)" stroke="rgba(34,211,238,0.6)" strokeWidth="1" />
+        <text x="282" y="9" fill="rgba(148,163,184,0.6)" fontSize="8">Fixtures</text>
+
+        <line x1="350" y1="5" x2="380" y2="5" stroke="rgba(245,158,11,0.4)" strokeWidth="1.5" strokeDasharray="6 3" />
+        <text x="384" y="9" fill="rgba(148,163,184,0.6)" fontSize="8">Work Triangle</text>
+      </g>
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  K&B Designer: 3D Placeholder                                       */
+/* ------------------------------------------------------------------ */
+
+function View3DPlaceholder() {
+  return (
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="glass rounded-2xl p-12 text-center max-w-md">
+        <div className="inline-flex rounded-xl bg-indigo-500/10 p-4 mb-4">
+          <Box className="size-10 text-indigo-400" />
+        </div>
+        <h3 className="text-lg font-semibold text-foreground mb-2">3D View</h3>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Three.js rendering engine loads here. Interactive 3D walkthrough with
+          PBR materials, real-time lighting, and camera controls.
+        </p>
+        <div className="mt-4 flex flex-wrap justify-center gap-2">
+          {["Orbit", "Pan", "Zoom", "First-Person"].map((mode) => (
+            <span
+              key={mode}
+              className="rounded-md bg-muted/40 px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+            >
+              {mode}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  K&B Designer: Mock selected item                                   */
+/* ------------------------------------------------------------------ */
+
+const mockSelectedItem = {
+  name: "Base Cabinet - B36",
+  manufacturer: "KraftMaid",
+  sku: "B36-QUAJ-QUMD",
+  dimensions: "36\"W x 24\"D x 34.5\"H",
+  finish: "Quartersawn Oak - Aged Brandy",
+  price: "$842.00",
+  category: "Base Cabinet",
+};
+
 export default function AgentChatPage() {
   const params = useParams();
   const id = params.id as string;
@@ -2782,6 +3011,12 @@ export default function AgentChatPage() {
   const [canvasOpen, setCanvasOpen] = useState(false);
   const [canvasTab, setCanvasTab] = useState<"2d" | "3d" | "materials">("2d");
   const [canvasFullscreen, setCanvasFullscreen] = useState(false);
+  const [viewMode, setViewMode] = useState<"2d" | "3d">("2d");
+  const [snapGrid, setSnapGrid] = useState(true);
+  const [units, setUnits] = useState<"in" | "cm">("in");
+  const [renderLevel, setRenderLevel] = useState<1 | 2>(1);
+  const [showSelected, setShowSelected] = useState(true);
+  const [bomOpen, setBomOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -3096,832 +3331,343 @@ export default function AgentChatPage() {
         {canvasOpen && id === "design-spec-assistant" && (
           <div className={`flex flex-col border-l border-border bg-[#080e1a] transition-all duration-300 ${canvasFullscreen ? "fixed inset-0 z-50" : "w-[55%] shrink-0"}`}>
             {/* ============================================================= */}
-            {/* AUTOCAD 2D TAB — Realistic AutoCAD Web Viewer                  */}
+            {/* K&B DESIGNER VIEWPORT                                          */}
             {/* ============================================================= */}
-            {canvasTab === "2d" && (
-              <>
-                {/* AutoCAD-style ribbon toolbar */}
-                <div className="flex items-center border-b border-[#3a3a3a] bg-[#2d2d2d]">
-                  {/* File tab */}
-                  <div className="flex items-center border-r border-[#3a3a3a]">
-                    <button className="px-3 py-1.5 text-[10px] font-medium text-[#e8e8e8] bg-[#3574f0] hover:bg-[#4a82f0]">File</button>
-                  </div>
-                  {/* Ribbon tabs */}
-                  {["Home", "Insert", "Annotate", "View"].map((t, i) => (
-                    <button key={t} className={`px-3 py-1.5 text-[10px] font-medium transition-colors ${i === 0 ? "text-white bg-[#383838] border-b-2 border-[#3574f0]" : "text-[#b0b0b0] hover:text-white hover:bg-[#383838]"}`}>{t}</button>
-                  ))}
-                  <div className="flex-1" />
-                  <div className="flex items-center gap-1 px-2">
-                    <button onClick={() => setCanvasFullscreen(!canvasFullscreen)} className="flex size-6 items-center justify-center rounded text-[#909090] hover:text-white hover:bg-[#484848]">
-                      {canvasFullscreen ? <Minimize2 className="size-3" /> : <Maximize2 className="size-3" />}
-                    </button>
-                    <button onClick={() => { setCanvasOpen(false); setCanvasFullscreen(false); }} className="flex size-6 items-center justify-center rounded text-[#909090] hover:text-white hover:bg-[#c42b1c]">
-                      <X className="size-3" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Ribbon panel — Draw / Modify / Layers / Annotation */}
-                <div className="flex items-end border-b border-[#3a3a3a] bg-[#383838] px-1 py-1 gap-px">
-                  {/* Draw group */}
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center gap-0.5 px-1.5 py-0.5">
-                      {[
-                        { label: "Line", path: "M4 18L18 4" },
-                        { label: "Polyline", path: "M4 18L10 6L14 14L20 4" },
-                        { label: "Rectangle", path: "M5 5h14v10H5z" },
-                        { label: "Circle", path: "M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" },
-                        { label: "Arc", path: "M5 17A8 8 0 0 1 19 17" },
-                      ].map((tool) => (
-                        <button key={tool.label} title={tool.label} className="flex size-7 items-center justify-center rounded hover:bg-[#4a4a4a] text-[#c0c0c0] hover:text-white">
-                          <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.5"><path d={tool.path} /></svg>
-                        </button>
-                      ))}
-                    </div>
-                    <span className="text-[8px] text-[#808080] pb-0.5">Draw</span>
-                  </div>
-                  <div className="w-px h-8 bg-[#4a4a4a] mx-0.5" />
-                  {/* Modify group */}
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center gap-0.5 px-1.5 py-0.5">
-                      {[
-                        { label: "Move", icon: Move },
-                        { label: "Copy", icon: Square },
-                        { label: "Rotate", icon: RotateCw },
-                        { label: "Trim", icon: X },
-                      ].map((tool) => (
-                        <button key={tool.label} title={tool.label} className="flex size-7 items-center justify-center rounded hover:bg-[#4a4a4a] text-[#c0c0c0] hover:text-white">
-                          <tool.icon className="size-3.5" />
-                        </button>
-                      ))}
-                    </div>
-                    <span className="text-[8px] text-[#808080] pb-0.5">Modify</span>
-                  </div>
-                  <div className="w-px h-8 bg-[#4a4a4a] mx-0.5" />
-                  {/* Layers group */}
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center gap-1 px-1.5 py-0.5">
-                      <select className="h-6 rounded bg-[#2d2d2d] border border-[#555] text-[9px] text-[#e0e0e0] px-1 pr-4 appearance-none">
-                        <option>0 — Default</option>
-                        <option>A-WALL</option>
-                        <option>A-FLOR-FIXT</option>
-                        <option>A-FLOR-CASE</option>
-                        <option>A-FLOR-APPL</option>
-                        <option>A-ANNO-DIMS</option>
-                      </select>
-                      <button title="Layer Properties" className="flex size-7 items-center justify-center rounded hover:bg-[#4a4a4a] text-[#c0c0c0] hover:text-white">
-                        <Layers className="size-3.5" />
-                      </button>
-                    </div>
-                    <span className="text-[8px] text-[#808080] pb-0.5">Layers</span>
-                  </div>
-                  <div className="w-px h-8 bg-[#4a4a4a] mx-0.5" />
-                  {/* Annotation group */}
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center gap-0.5 px-1.5 py-0.5">
-                      <button title="Linear Dimension" className="flex size-7 items-center justify-center rounded hover:bg-[#4a4a4a] text-[#c0c0c0] hover:text-white">
-                        <Ruler className="size-3.5" />
-                      </button>
-                      <button title="Text" className="flex size-7 items-center justify-center rounded hover:bg-[#4a4a4a] text-[#c0c0c0] hover:text-white">
-                        <PenLine className="size-3.5" />
-                      </button>
-                    </div>
-                    <span className="text-[8px] text-[#808080] pb-0.5">Annotate</span>
-                  </div>
-                </div>
-
-                {/* Main viewport area */}
-                <div className="flex-1 relative overflow-hidden flex">
-                  {/* Layer panel (collapsible side) */}
-                  <div className="w-44 shrink-0 border-r border-[#3a3a3a] bg-[#2d2d2d] flex flex-col text-[10px]">
-                    <div className="px-2 py-1.5 border-b border-[#3a3a3a] text-[9px] font-semibold text-[#b0b0b0] uppercase tracking-wider">Layers</div>
-                    <div className="flex-1 overflow-y-auto">
-                      {[
-                        { name: "A-WALL", color: "#ffffff", on: true, items: 12 },
-                        { name: "A-FLOR-CASE", color: "#00ff00", on: true, items: 18 },
-                        { name: "A-FLOR-FIXT", color: "#00ffff", on: true, items: 6 },
-                        { name: "A-FLOR-APPL", color: "#ffff00", on: true, items: 4 },
-                        { name: "A-FLOR-STOR", color: "#ff00ff", on: true, items: 2 },
-                        { name: "A-ANNO-DIMS", color: "#ff0000", on: true, items: 8 },
-                        { name: "A-ANNO-NOTE", color: "#ff0000", on: true, items: 3 },
-                        { name: "A-DOOR", color: "#00ffff", on: true, items: 1 },
-                        { name: "A-GLAZ", color: "#00ffff", on: true, items: 1 },
-                        { name: "A-WORK-TRI", color: "#ffff00", on: false, items: 3 },
-                      ].map((layer) => (
-                        <div key={layer.name} className="flex items-center gap-1.5 px-2 py-1 hover:bg-[#383838] cursor-pointer">
-                          <div className="size-2.5 rounded-sm border border-[#555]" style={{ backgroundColor: layer.on ? layer.color : "transparent" }} />
-                          <span className={`flex-1 truncate ${layer.on ? "text-[#d0d0d0]" : "text-[#606060]"}`} style={{ fontFamily: "monospace" }}>{layer.name}</span>
-                          <span className="text-[8px] text-[#606060]">{layer.items}</span>
-                        </div>
-                      ))}
-                    </div>
-                    {/* Properties panel */}
-                    <div className="border-t border-[#3a3a3a]">
-                      <div className="px-2 py-1.5 border-b border-[#3a3a3a] text-[9px] font-semibold text-[#b0b0b0] uppercase tracking-wider">Properties</div>
-                      <div className="p-2 space-y-1">
-                        <div className="flex justify-between"><span className="text-[#808080]">Color</span><span className="text-[#d0d0d0]">ByLayer</span></div>
-                        <div className="flex justify-between"><span className="text-[#808080]">Linetype</span><span className="text-[#d0d0d0]">Continuous</span></div>
-                        <div className="flex justify-between"><span className="text-[#808080]">Lineweight</span><span className="text-[#d0d0d0]">0.30 mm</span></div>
-                        <div className="flex justify-between"><span className="text-[#808080]">Scale</span><span className="text-[#d0d0d0]">1/4&quot; = 1&apos;-0&quot;</span></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Drawing canvas — true black like AutoCAD */}
-                  <div className="flex-1 relative bg-black">
-                    {/* Crosshair cursor overlay */}
-                    <div className="absolute inset-0 cursor-crosshair">
-                      {/* Grid */}
-                      <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                          <pattern id="acad-grid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-                            <circle cx="12" cy="12" r="0.4" fill="#1a2a1a" />
-                          </pattern>
-                        </defs>
-                        <rect width="100%" height="100%" fill="url(#acad-grid)" />
-                      </svg>
-
-                      {/* The architectural floor plan — AutoCAD style */}
-                      <svg viewBox="0 0 600 450" className="absolute inset-0 w-full h-full p-4" xmlns="http://www.w3.org/2000/svg">
-                        {/* === WALLS (white, heavy lineweight — Layer A-WALL) === */}
-                        {/* Outer walls */}
-                        <rect x="80" y="60" width="440" height="310" fill="none" stroke="#ffffff" strokeWidth="3.5" />
-                        {/* Wall fills (poche) — hatched */}
-                        <rect x="80" y="60" width="440" height="6" fill="#2a2a2a" />
-                        <rect x="80" y="364" width="440" height="6" fill="#2a2a2a" />
-                        <rect x="80" y="60" width="6" height="310" fill="#2a2a2a" />
-                        <rect x="514" y="60" width="6" height="310" fill="#2a2a2a" />
-                        {/* Interior wall stub */}
-                        <line x1="80" y1="220" x2="155" y2="220" stroke="#ffffff" strokeWidth="3.5" />
-                        <rect x="80" y="218" width="75" height="6" fill="#2a2a2a" />
-
-                        {/* === DOOR (cyan — Layer A-DOOR) === */}
-                        {/* Door opening */}
-                        <line x1="80" y1="110" x2="80" y2="190" stroke="black" strokeWidth="4" />
-                        <line x1="80" y1="110" x2="80" y2="190" stroke="#00ffff" strokeWidth="1" />
-                        {/* Door swing arc */}
-                        <path d="M 80 110 A 80 80 0 0 0 80 190" fill="none" stroke="#00ffff" strokeWidth="0.6" strokeDasharray="4 2" transform="translate(-1,0)" />
-                        {/* Door leaf */}
-                        <line x1="80" y1="110" x2="60" y2="150" stroke="#00ffff" strokeWidth="0.8" />
-
-                        {/* === WINDOW (cyan — Layer A-GLAZ) === */}
-                        {/* Window on north wall - architectural convention: 3 parallel lines */}
-                        <line x1="200" y1="60" x2="340" y2="60" stroke="black" strokeWidth="4" />
-                        <line x1="200" y1="57" x2="340" y2="57" stroke="#00ffff" strokeWidth="0.7" />
-                        <line x1="200" y1="60" x2="340" y2="60" stroke="#00ffff" strokeWidth="0.7" />
-                        <line x1="200" y1="63" x2="340" y2="63" stroke="#00ffff" strokeWidth="0.7" />
-
-                        {/* === BASE CABINETS — south wall (green — Layer A-FLOR-CASE) === */}
-                        {/* 24" deep base cabs */}
-                        <rect x="95" y="330" width="55" height="30" fill="none" stroke="#00ff00" strokeWidth="0.8" />
-                        <line x1="95" y1="330" x2="150" y2="360" stroke="#00ff00" strokeWidth="0.3" opacity="0.4" />
-                        <rect x="152" y="330" width="55" height="30" fill="none" stroke="#00ff00" strokeWidth="0.8" />
-                        <line x1="152" y1="330" x2="207" y2="360" stroke="#00ff00" strokeWidth="0.3" opacity="0.4" />
-                        {/* Sink cabinet */}
-                        <rect x="209" y="330" width="80" height="30" fill="none" stroke="#00ffff" strokeWidth="0.8" />
-                        {/* Sink basin — double oval */}
-                        <ellipse cx="235" cy="347" rx="10" ry="7" fill="none" stroke="#00ffff" strokeWidth="0.6" />
-                        <ellipse cx="263" cy="347" rx="10" ry="7" fill="none" stroke="#00ffff" strokeWidth="0.6" />
-                        {/* Faucet dot */}
-                        <circle cx="249" cy="335" r="1.5" fill="#00ffff" />
-                        <rect x="291" y="330" width="55" height="30" fill="none" stroke="#00ff00" strokeWidth="0.8" />
-                        <line x1="291" y1="330" x2="346" y2="360" stroke="#00ff00" strokeWidth="0.3" opacity="0.4" />
-                        <rect x="348" y="330" width="55" height="30" fill="none" stroke="#00ff00" strokeWidth="0.8" />
-                        <line x1="348" y1="330" x2="403" y2="360" stroke="#00ff00" strokeWidth="0.3" opacity="0.4" />
-                        {/* DW = dishwasher */}
-                        <rect x="405" y="330" width="45" height="30" fill="none" stroke="#00ffff" strokeWidth="0.8" />
-                        <text x="427" y="349" textAnchor="middle" fontSize="7" fill="#00ffff" fontFamily="monospace">DW</text>
-
-                        {/* === UPPER CABINETS — south wall (green dashed) === */}
-                        <rect x="95" y="323" width="358" height="5" fill="none" stroke="#00ff00" strokeWidth="0.5" strokeDasharray="3 2" />
-
-                        {/* === CABINETS — east wall === */}
-                        <rect x="480" y="80" width="30" height="55" fill="none" stroke="#00ff00" strokeWidth="0.8" />
-                        <line x1="480" y1="80" x2="510" y2="135" stroke="#00ff00" strokeWidth="0.3" opacity="0.4" />
-                        {/* Range/Cooktop (yellow — Layer A-FLOR-APPL) */}
-                        <rect x="480" y="140" width="30" height="65" fill="none" stroke="#ffff00" strokeWidth="0.8" />
-                        {/* 4 burner circles */}
-                        <circle cx="492" cy="155" r="5" fill="none" stroke="#ffff00" strokeWidth="0.5" />
-                        <circle cx="505" cy="155" r="5" fill="none" stroke="#ffff00" strokeWidth="0.5" />
-                        <circle cx="492" cy="175" r="6" fill="none" stroke="#ffff00" strokeWidth="0.5" />
-                        <circle cx="505" cy="175" r="4" fill="none" stroke="#ffff00" strokeWidth="0.5" />
-                        <circle cx="492" cy="155" r="1" fill="#ffff00" opacity="0.4" />
-                        <circle cx="505" cy="155" r="1" fill="#ffff00" opacity="0.4" />
-                        <circle cx="492" cy="175" r="1" fill="#ffff00" opacity="0.4" />
-                        <circle cx="505" cy="175" r="1" fill="#ffff00" opacity="0.4" />
-                        {/* Refrigerator (yellow) */}
-                        <rect x="480" y="210" width="30" height="50" fill="none" stroke="#ffff00" strokeWidth="0.8" />
-                        <line x1="480" y1="210" x2="510" y2="260" stroke="#ffff00" strokeWidth="0.4" />
-                        <line x1="510" y1="210" x2="480" y2="260" stroke="#ffff00" strokeWidth="0.4" />
-                        <text x="495" y="238" textAnchor="middle" fontSize="6" fill="#ffff00" fontFamily="monospace">REF</text>
-                        {/* Pantry (magenta — Layer A-FLOR-STOR) */}
-                        <rect x="480" y="265" width="30" height="55" fill="none" stroke="#ff00ff" strokeWidth="0.8" />
-                        <text x="495" y="296" textAnchor="middle" fontSize="6" fill="#ff00ff" fontFamily="monospace">PANTRY</text>
-
-                        {/* === ISLAND (cyan dashed — Layer A-FLOR-FIXT) === */}
-                        <rect x="195" y="175" width="175" height="70" fill="none" stroke="#00ffff" strokeWidth="0.8" strokeDasharray="5 3" />
-                        <text x="282" y="213" textAnchor="middle" fontSize="8" fill="#808080" fontFamily="monospace">ISLAND</text>
-                        <text x="282" y="225" textAnchor="middle" fontSize="6" fill="#606060" fontFamily="monospace">42&quot; x 84&quot;</text>
-                        {/* Bar seating lines on north side */}
-                        <line x1="210" y1="172" x2="210" y2="168" stroke="#00ffff" strokeWidth="0.4" />
-                        <line x1="240" y1="172" x2="240" y2="168" stroke="#00ffff" strokeWidth="0.4" />
-                        <line x1="270" y1="172" x2="270" y2="168" stroke="#00ffff" strokeWidth="0.4" />
-                        <line x1="300" y1="172" x2="300" y2="168" stroke="#00ffff" strokeWidth="0.4" />
-                        <line x1="330" y1="172" x2="330" y2="168" stroke="#00ffff" strokeWidth="0.4" />
-                        <line x1="355" y1="172" x2="355" y2="168" stroke="#00ffff" strokeWidth="0.4" />
-
-                        {/* === DIMENSION LINES (red — Layer A-ANNO-DIMS) === */}
-                        {/* Bottom dimension — overall width */}
-                        <line x1="80" y1="395" x2="80" y2="385" stroke="#ff0000" strokeWidth="0.4" />
-                        <line x1="520" y1="395" x2="520" y2="385" stroke="#ff0000" strokeWidth="0.4" />
-                        <line x1="80" y1="390" x2="520" y2="390" stroke="#ff0000" strokeWidth="0.4" />
-                        {/* Arrowheads */}
-                        <polygon points="80,390 86,388 86,392" fill="#ff0000" />
-                        <polygon points="520,390 514,388 514,392" fill="#ff0000" />
-                        <text x="300" y="388" textAnchor="middle" fontSize="8" fill="#ff0000" fontFamily="monospace">14&apos;-6&quot;</text>
-
-                        {/* Right dimension — overall height */}
-                        <line x1="540" y1="60" x2="548" y2="60" stroke="#ff0000" strokeWidth="0.4" />
-                        <line x1="540" y1="370" x2="548" y2="370" stroke="#ff0000" strokeWidth="0.4" />
-                        <line x1="545" y1="60" x2="545" y2="370" stroke="#ff0000" strokeWidth="0.4" />
-                        <polygon points="545,60 543,66 547,66" fill="#ff0000" />
-                        <polygon points="545,370 543,364 547,364" fill="#ff0000" />
-                        <text x="555" y="218" textAnchor="middle" fontSize="8" fill="#ff0000" fontFamily="monospace" transform="rotate(90, 555, 218)">12&apos;-0&quot;</text>
-
-                        {/* Interior dimension — sink to range */}
-                        <line x1="249" y1="330" x2="249" y2="298" stroke="#ff0000" strokeWidth="0.3" />
-                        <line x1="480" y1="165" x2="456" y2="165" stroke="#ff0000" strokeWidth="0.3" />
-                        <line x1="249" y1="300" x2="458" y2="165" stroke="#ff0000" strokeWidth="0.3" strokeDasharray="2 1" />
-                        <text x="360" y="224" textAnchor="middle" fontSize="7" fill="#ff0000" fontFamily="monospace" transform="rotate(-30, 360, 224)">8&apos;-3&quot;</text>
-
-                        {/* Cabinet run dimension */}
-                        <line x1="95" y1="375" x2="453" y2="375" stroke="#ff0000" strokeWidth="0.3" />
-                        <line x1="95" y1="370" x2="95" y2="378" stroke="#ff0000" strokeWidth="0.3" />
-                        <line x1="453" y1="370" x2="453" y2="378" stroke="#ff0000" strokeWidth="0.3" />
-                        <polygon points="95,375 100,373 100,377" fill="#ff0000" />
-                        <polygon points="453,375 448,373 448,377" fill="#ff0000" />
-                        <text x="274" y="373" textAnchor="middle" fontSize="7" fill="#ff0000" fontFamily="monospace">11&apos;-10&quot;</text>
-
-                        {/* === WORK TRIANGLE (yellow dashed) === */}
-                        <line x1="249" y1="345" x2="495" y2="165" stroke="#ffff00" strokeWidth="0.5" strokeDasharray="4 3" opacity="0.3" />
-                        <line x1="495" y1="165" x2="495" y2="235" stroke="#ffff00" strokeWidth="0.5" strokeDasharray="4 3" opacity="0.3" />
-                        <line x1="495" y1="235" x2="249" y2="345" stroke="#ffff00" strokeWidth="0.5" strokeDasharray="4 3" opacity="0.3" />
-
-                        {/* === ANNOTATIONS (red — Layer A-ANNO-NOTE) === */}
-                        <text x="249" y="322" textAnchor="middle" fontSize="6" fill="#ff0000" fontFamily="monospace">SINK (KRAUS KWU110-33)</text>
-                        <text x="495" y="136" textAnchor="middle" fontSize="6" fill="#ff0000" fontFamily="monospace">OVEN/RANGE</text>
-                        <text x="495" y="280" textAnchor="middle" fontSize="6" fill="#ff0000" fontFamily="monospace">36&quot; PANTRY</text>
-
-                        {/* UCS icon — bottom left */}
-                        <g transform="translate(30, 410)">
-                          <line x1="0" y1="0" x2="20" y2="0" stroke="#ff0000" strokeWidth="0.8" />
-                          <line x1="0" y1="0" x2="0" y2="-20" stroke="#00ff00" strokeWidth="0.8" />
-                          <polygon points="20,0 17,-2 17,2" fill="#ff0000" />
-                          <polygon points="0,-20 -2,-17 2,-17" fill="#00ff00" />
-                          <text x="22" y="3" fontSize="6" fill="#ff0000" fontFamily="monospace">X</text>
-                          <text x="-4" y="-22" fontSize="6" fill="#00ff00" fontFamily="monospace">Y</text>
-                        </g>
-                      </svg>
-                    </div>
-
-                    {/* AutoCAD command line — bottom */}
-                    <div className="absolute bottom-0 left-44 right-0 bg-[#1e1e1e] border-t border-[#3a3a3a]">
-                      <div className="px-2 py-0.5 text-[9px] font-mono text-[#808080] border-b border-[#2a2a2a]">
-                        <span className="text-[#c0c0c0]">Command:</span> _SELECT
-                      </div>
-                      <div className="px-2 py-0.5 text-[9px] font-mono text-[#808080]">
-                        <span className="text-[#00ff00]">Specify opposite corner:</span> 3 found
-                      </div>
-                    </div>
-
-                    {/* Coordinate readout */}
-                    <div className="absolute bottom-0 left-0 w-44 bg-[#2d2d2d] border-t border-[#3a3a3a] px-2 py-1 flex items-center gap-3">
-                      <span className="text-[8px] font-mono text-[#808080]">X: <span className="text-[#d0d0d0]">7&apos;-3&quot;</span></span>
-                      <span className="text-[8px] font-mono text-[#808080]">Y: <span className="text-[#d0d0d0]">4&apos;-6&quot;</span></span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Status bar */}
-                <div className="flex items-center justify-between border-t border-[#3a3a3a] bg-[#2d2d2d] px-3 py-1">
-                  <div className="flex items-center gap-2 text-[9px] font-mono">
-                    {["SNAP", "GRID", "ORTHO", "POLAR", "OSNAP", "OTRACK", "LWT"].map((mode, i) => (
-                      <button key={mode} className={`px-1.5 py-0.5 rounded ${[0,1,4].includes(i) ? "text-[#3574f0] bg-[#3574f0]/10" : "text-[#606060] hover:text-[#909090]"}`}>{mode}</button>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-3 text-[9px] font-mono text-[#808080]">
-                    <span className="flex items-center gap-1 rounded bg-emerald-500/15 px-1.5 py-0.5 text-emerald-400 border border-emerald-500/20">
-                      <Check className="size-2.5" />NKBA Compliant
-                    </span>
-                    <span>|</span>
-                    <span>15 items &middot; $24,350</span>
-                    <span>|</span>
-                    <span>Scale: 1/4&quot; = 1&apos;-0&quot;</span>
-                    <span>|</span>
-                    <span>Johnson_Kitchen_v2.dxf</span>
-                    <span>|</span>
-                    <button className="rounded bg-indigo-500/20 px-2 py-0.5 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/30 transition-colors">Generate Estimate</button>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* ============================================================= */}
-            {/* REVIT 3D TAB — Realistic APS Viewer (Forge Viewer v7)         */}
-            {/* ============================================================= */}
-            {canvasTab === "3d" && (
-              <>
-                <div className="flex-1 relative overflow-hidden flex">
-                  {/* Model Browser panel — left side */}
-                  <div className="w-52 shrink-0 border-r border-[#3a3a3a] bg-[#2b2b2b] flex flex-col text-[10px]">
-                    <div className="px-2 py-2 border-b border-[#3a3a3a] flex items-center justify-between">
-                      <span className="text-[9px] font-semibold text-[#b0b0b0] uppercase tracking-wider">Model Browser</span>
-                      <button className="text-[9px] text-[#808080] hover:text-white">Filter</button>
-                    </div>
-                    <div className="flex-1 overflow-y-auto py-1">
-                      {/* Tree structure */}
-                      {[
-                        { name: "Johnson_Kitchen_v2.rvt", indent: 0, bold: true, expanded: true },
-                        { name: "Walls (8)", indent: 1, expanded: true },
-                        { name: "Basic Wall - Interior - 5\"", indent: 2 },
-                        { name: "Basic Wall - Exterior - 8\"", indent: 2 },
-                        { name: "Floors (1)", indent: 1 },
-                        { name: "Ceilings (1)", indent: 1 },
-                        { name: "Casework (18)", indent: 1, expanded: true, selected: true },
-                        { name: "Base Cabinet - 24\"x24\"", indent: 2, count: "x4" },
-                        { name: "Base Cabinet - 24\"x36\" Sink", indent: 2, count: "x1" },
-                        { name: "Wall Cabinet - 12\"x30\"", indent: 2, count: "x6" },
-                        { name: "Island - 42\"x84\"", indent: 2, count: "x1" },
-                        { name: "Tall Cabinet - 24\"x84\" Pantry", indent: 2, count: "x1" },
-                        { name: "Plumbing Fixtures (3)", indent: 1 },
-                        { name: "Mechanical Equipment (3)", indent: 1 },
-                        { name: "Generic Models (2)", indent: 1 },
-                      ].map((node, i) => (
-                        <div
-                          key={i}
-                          className={`flex items-center gap-1 px-2 py-0.5 cursor-pointer ${node.selected ? "bg-[#3574f0]/20 text-white" : "text-[#c0c0c0] hover:bg-[#363636]"}`}
-                          style={{ paddingLeft: `${8 + node.indent * 12}px` }}
-                        >
-                          {node.expanded !== undefined && <span className="text-[8px] text-[#808080]">{node.expanded ? "▼" : "▶"}</span>}
-                          {node.expanded === undefined && node.indent > 0 && <span className="w-2" />}
-                          <span className={`truncate ${node.bold ? "font-semibold" : ""}`} style={{ fontFamily: "system-ui" }}>{node.name}</span>
-                          {node.count && <span className="text-[8px] text-[#606060] ml-auto shrink-0">{node.count}</span>}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 3D Viewport */}
-                  <div className="flex-1 relative" style={{ background: "linear-gradient(180deg, #2a3a4a 0%, #1a2a3a 40%, #1e2e3e 100%)" }}>
-                    {/* APS Viewer toolbar — bottom center */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-0.5 rounded-lg bg-[#3c3c3c]/95 p-1 shadow-xl backdrop-blur-sm border border-[#555]">
-                      {[
-                        { label: "Home", path: "M3 12l9-9 9 9M5 10v10h4v-6h6v6h4V10" },
-                        { label: "Orbit", path: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 3v4M12 17v4M3 12h4M17 12h4" },
-                        { label: "Pan", path: "M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3" },
-                        { label: "Zoom", path: "M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" },
-                        null,
-                        { label: "Section", path: "M3 3h18v18H3zM3 12h18" },
-                        { label: "Measure", path: "M2 20L20 2M6 20l-4-4M10 20l-4-4M14 20l-4-4M18 20l-4-4M20 16l-2-2" },
-                        { label: "Explode", path: "M8 2l4 4-4 4M16 2l-4 4 4 4M8 18l4-4-4-4M16 18l-4-4 4-4" },
-                        null,
-                        { label: "Properties", path: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 8v4M12 16h.01" },
-                      ].map((tool, i) => tool === null ? (
-                        <div key={i} className="w-px h-5 bg-[#555] mx-0.5" />
-                      ) : (
-                        <button key={i} title={tool.label} className={`flex size-8 items-center justify-center rounded-md transition-colors ${tool.label === "Orbit" ? "bg-[#5a5a5a] text-white" : "text-[#b0b0b0] hover:bg-[#5a5a5a] hover:text-white"}`}>
-                          <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={tool.path} /></svg>
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* ViewCube — top right (signature Autodesk element) */}
-                    <div className="absolute top-4 right-4">
-                      <svg viewBox="0 0 100 100" className="size-16 drop-shadow-lg" xmlns="http://www.w3.org/2000/svg">
-                        {/* Cube faces — isometric projection */}
-                        {/* Top face */}
-                        <polygon points="50,15 85,30 50,45 15,30" fill="#4a6a8a" stroke="#7a9aba" strokeWidth="0.5" />
-                        <text x="50" y="34" textAnchor="middle" fontSize="7" fill="#c0d0e0" fontWeight="bold">TOP</text>
-                        {/* Left face */}
-                        <polygon points="15,30 50,45 50,80 15,65" fill="#3a5a7a" stroke="#6a8aaa" strokeWidth="0.5" />
-                        <text x="32" y="58" textAnchor="middle" fontSize="6" fill="#a0b8d0" fontWeight="bold" transform="rotate(-30,32,58)">LEFT</text>
-                        {/* Right face */}
-                        <polygon points="85,30 50,45 50,80 85,65" fill="#2a4a6a" stroke="#5a7a9a" strokeWidth="0.5" />
-                        <text x="68" y="58" textAnchor="middle" fontSize="6" fill="#90a8c0" fontWeight="bold" transform="rotate(30,68,58)">FRONT</text>
-                        {/* Compass directions */}
-                        <text x="50" y="10" textAnchor="middle" fontSize="6" fill="#808080">N</text>
-                        <text x="92" y="34" textAnchor="middle" fontSize="6" fill="#808080">E</text>
-                        <text x="50" y="95" textAnchor="middle" fontSize="6" fill="#808080">S</text>
-                        <text x="8" y="34" textAnchor="middle" fontSize="6" fill="#808080">W</text>
-                      </svg>
-                    </div>
-
-                    {/* 3D Kitchen Rendering — isometric perspective */}
-                    <svg viewBox="0 0 700 500" className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                      <defs>
-                        <linearGradient id="floorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#3a2a1a" />
-                          <stop offset="100%" stopColor="#2a1a0a" />
-                        </linearGradient>
-                        <linearGradient id="wallGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#e8e0d8" />
-                          <stop offset="100%" stopColor="#c8c0b8" />
-                        </linearGradient>
-                        <linearGradient id="cabinetFace" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#d4b896" />
-                          <stop offset="30%" stopColor="#c4a880" />
-                          <stop offset="100%" stopColor="#a8906a" />
-                        </linearGradient>
-                        <linearGradient id="cabinetSide" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#a08060" />
-                          <stop offset="100%" stopColor="#907050" />
-                        </linearGradient>
-                        <linearGradient id="counterTop" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#f0ebe5" />
-                          <stop offset="50%" stopColor="#e8e0d8" />
-                          <stop offset="100%" stopColor="#d8d0c8" />
-                        </linearGradient>
-                        <linearGradient id="counterSide" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#e0d8d0" />
-                          <stop offset="100%" stopColor="#c8c0b8" />
-                        </linearGradient>
-                        <linearGradient id="steelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#d0d0d0" />
-                          <stop offset="50%" stopColor="#a0a0a0" />
-                          <stop offset="100%" stopColor="#808080" />
-                        </linearGradient>
-                        <linearGradient id="backsplash" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#f8f4f0" />
-                          <stop offset="100%" stopColor="#e8e4e0" />
-                        </linearGradient>
-                        {/* Floor tile pattern */}
-                        <pattern id="floorPattern" x="0" y="0" width="30" height="15" patternUnits="userSpaceOnUse" patternTransform="skewX(-30)">
-                          <rect width="29" height="14" fill="#4a3520" stroke="#3a2510" strokeWidth="0.5" />
-                        </pattern>
-                        {/* Shadow filter */}
-                        <filter id="dropShadow3d">
-                          <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.3" />
-                        </filter>
-                      </defs>
-
-                      {/* ---- ROOM SHELL ---- */}
-                      {/* Floor */}
-                      <polygon points="100,340 400,440 650,340 350,240" fill="url(#floorPattern)" opacity="0.8" />
-
-                      {/* Back wall */}
-                      <polygon points="100,340 350,240 350,70 100,170" fill="url(#wallGrad)" opacity="0.6" />
-                      {/* Left wall partial */}
-                      <polygon points="100,340 400,440 400,270 100,170" fill="#d0c8c0" opacity="0.3" />
-
-                      {/* ---- BACK WALL CABINETS (oak, left to right) ---- */}
-                      {/* Lower cabs — row of 5 */}
-                      {[0, 1, 2, 3, 4].map((i) => (
-                        <g key={`bcab${i}`} transform={`translate(${115 + i * 42}, 0)`} filter="url(#dropShadow3d)">
-                          {/* Front face */}
-                          <polygon points="0,280 38,267 38,215 0,228" fill="url(#cabinetFace)" stroke="#8a7050" strokeWidth="0.5" />
-                          {/* Top face (countertop) */}
-                          <polygon points="0,228 38,215 58,225 20,238" fill="url(#counterTop)" stroke="#b0a890" strokeWidth="0.5" />
-                          {/* Side face */}
-                          <polygon points="38,267 58,257 58,225 38,215" fill="url(#cabinetSide)" stroke="#8a7050" strokeWidth="0.5" />
-                          {/* Door lines */}
-                          <line x1="18" y1="278" x2="18" y2="230" stroke="#a08868" strokeWidth="0.3" />
-                          {/* Handle */}
-                          <line x1="15" y1="252" x2="15" y2="258" stroke="#c9a84c" strokeWidth="1.2" strokeLinecap="round" />
-                          <line x1="22" y1="250" x2="22" y2="256" stroke="#c9a84c" strokeWidth="1.2" strokeLinecap="round" />
-                        </g>
-                      ))}
-
-                      {/* Sink area (3rd cabinet) */}
-                      <g transform="translate(199, 0)">
-                        <ellipse cx="20" cy="220" rx="12" ry="4" fill="#909090" stroke="#707070" strokeWidth="0.5" />
-                        <ellipse cx="20" cy="220" rx="9" ry="3" fill="#a0a0a0" />
-                        <circle cx="20" cy="214" r="2" fill="#c9a84c" />
-                      </g>
-
-                      {/* Backsplash behind cabs */}
-                      <polygon points="115,228 325,180 325,155 115,203" fill="url(#backsplash)" stroke="#d0c8c0" strokeWidth="0.3" opacity="0.9" />
-                      {/* Tile lines on backsplash */}
-                      {[0, 1, 2, 3].map((i) => (
-                        <line key={`bt${i}`} x1="115" y1={208 + i * -6} x2="325" y2={160 + i * -6} stroke="#c8c0b8" strokeWidth="0.2" />
-                      ))}
-
-                      {/* Upper cabs on back wall */}
-                      {[0, 1, 2, 3, 4].map((i) => (
-                        <g key={`ucab${i}`} transform={`translate(${115 + i * 42}, 0)`}>
-                          <polygon points="0,200 38,188 38,150 0,162" fill="url(#cabinetFace)" stroke="#8a7050" strokeWidth="0.5" opacity="0.9" />
-                          <polygon points="38,188 56,180 56,142 38,150" fill="url(#cabinetSide)" stroke="#8a7050" strokeWidth="0.5" opacity="0.8" />
-                        </g>
-                      ))}
-
-                      {/* ---- RIGHT WALL APPLIANCES ---- */}
-                      {/* Range */}
-                      <g transform="translate(330, 0)" filter="url(#dropShadow3d)">
-                        <polygon points="0,268 50,288 50,235 0,215" fill="url(#steelGrad)" stroke="#707070" strokeWidth="0.5" />
-                        <polygon points="0,215 50,235 80,220 30,200" fill="#c0c0c0" stroke="#909090" strokeWidth="0.5" />
-                        <polygon points="50,288 80,273 80,220 50,235" fill="#909090" stroke="#707070" strokeWidth="0.5" />
-                        {/* Burners */}
-                        <ellipse cx="18" cy="207" rx="6" ry="3" fill="none" stroke="#505050" strokeWidth="0.8" />
-                        <ellipse cx="38" cy="212" rx="6" ry="3" fill="none" stroke="#505050" strokeWidth="0.8" />
-                        <ellipse cx="55" cy="215" rx="5" ry="2.5" fill="none" stroke="#505050" strokeWidth="0.8" />
-                        {/* Oven door line */}
-                        <line x1="5" y1="258" x2="45" y2="278" stroke="#808080" strokeWidth="0.5" />
-                        <line x1="25" y1="272" x2="25" y2="268" stroke="#a0a0a0" strokeWidth="1" strokeLinecap="round" />
-                      </g>
-
-                      {/* Refrigerator */}
-                      <g transform="translate(370, 0)" filter="url(#dropShadow3d)">
-                        <polygon points="0,256 50,276 50,180 0,160" fill="url(#steelGrad)" stroke="#707070" strokeWidth="0.5" />
-                        <polygon points="50,276 78,263 78,168 50,180" fill="#808080" stroke="#606060" strokeWidth="0.5" />
-                        <polygon points="0,160 50,180 78,168 28,148" fill="#d0d0d0" stroke="#909090" strokeWidth="0.3" />
-                        {/* Door split */}
-                        <line x1="0" y1="215" x2="50" y2="235" stroke="#909090" strokeWidth="0.5" />
-                        {/* Handles */}
-                        <line x1="40" y1="200" x2="40" y2="230" stroke="#b0b0b0" strokeWidth="1.5" strokeLinecap="round" />
-                        <line x1="40" y1="245" x2="40" y2="265" stroke="#b0b0b0" strokeWidth="1.5" strokeLinecap="round" />
-                      </g>
-
-                      {/* ---- ISLAND ---- */}
-                      <g transform="translate(210, 0)" filter="url(#dropShadow3d)">
-                        {/* Front */}
-                        <polygon points="0,360 130,400 130,370 0,330" fill="url(#cabinetFace)" stroke="#8a7050" strokeWidth="0.5" />
-                        {/* Top = countertop */}
-                        <polygon points="0,330 130,370 175,350 45,310" fill="url(#counterTop)" stroke="#b0a890" strokeWidth="0.5" />
-                        {/* Side */}
-                        <polygon points="130,400 175,380 175,350 130,370" fill="url(#cabinetSide)" stroke="#8a7050" strokeWidth="0.5" />
-                        {/* Cabinet doors */}
-                        <line x1="43" y1="358" x2="43" y2="332" stroke="#a08868" strokeWidth="0.3" />
-                        <line x1="86" y1="374" x2="86" y2="348" stroke="#a08868" strokeWidth="0.3" />
-                        {/* Handles */}
-                        <line x1="40" y1="345" x2="40" y2="350" stroke="#c9a84c" strokeWidth="1" strokeLinecap="round" />
-                        <line x1="83" y1="361" x2="83" y2="366" stroke="#c9a84c" strokeWidth="1" strokeLinecap="round" />
-                        {/* Prep sink */}
-                        <ellipse cx="60" cy="335" rx="10" ry="4" fill="#a0a0a0" stroke="#808080" strokeWidth="0.3" />
-                      </g>
-
-                      {/* ---- WINDOW (back wall, high) ---- */}
-                      <polygon points="160,180 280,140 280,110 160,150" fill="#87CEEB" opacity="0.3" stroke="#b0a890" strokeWidth="0.5" />
-                      <line x1="220" y1="160" x2="220" y2="125" stroke="#b0a890" strokeWidth="0.5" />
-                      <line x1="160" y1="165" x2="280" y2="125" stroke="#b0a890" strokeWidth="0.5" />
-
-                      {/* ---- LIGHTING ---- */}
-                      {/* Pendant lights over island */}
-                      <line x1="250" y1="100" x2="250" y2="270" stroke="#404040" strokeWidth="0.5" />
-                      <ellipse cx="250" cy="272" rx="8" ry="3" fill="#f0e0c0" stroke="#d0c0a0" strokeWidth="0.3" />
-                      <ellipse cx="250" cy="272" rx="4" ry="1.5" fill="#fff8e0" opacity="0.6" />
-                      <line x1="310" y1="90" x2="310" y2="282" stroke="#404040" strokeWidth="0.5" />
-                      <ellipse cx="310" cy="284" rx="8" ry="3" fill="#f0e0c0" stroke="#d0c0a0" strokeWidth="0.3" />
-                      <ellipse cx="310" cy="284" rx="4" ry="1.5" fill="#fff8e0" opacity="0.6" />
-
-                      {/* Ground shadow */}
-                      <ellipse cx="350" cy="420" rx="200" ry="20" fill="black" opacity="0.1" />
-                    </svg>
-
-                    {/* Selection highlight overlay */}
-                    <div className="absolute top-4 left-4 rounded-md bg-black/60 px-3 py-2 backdrop-blur-sm border border-[#555]/50">
-                      <p className="text-[10px] text-[#b0b0b0]">Selected: <span className="text-white font-medium">Casework (18 objects)</span></p>
-                      <p className="text-[9px] text-[#808080] mt-0.5">Category: Casework | Family: Base Cabinet</p>
-                    </div>
-
-                    {/* Autodesk watermark */}
-                    <div className="absolute bottom-14 right-4 text-[9px] text-[#404040] font-medium">
-                      Powered by Autodesk
-                    </div>
-                  </div>
-
-                  {/* Properties panel — right side */}
-                  <div className="w-48 shrink-0 border-l border-[#3a3a3a] bg-[#2b2b2b] flex flex-col text-[10px]">
-                    <div className="px-2 py-2 border-b border-[#3a3a3a]">
-                      <span className="text-[9px] font-semibold text-[#b0b0b0] uppercase tracking-wider">Properties</span>
-                    </div>
-                    <div className="flex-1 overflow-y-auto p-2 space-y-2">
-                      <div>
-                        <p className="text-[9px] text-[#3574f0] font-semibold mb-1">Identity</p>
-                        {[
-                          ["Family", "Base Cabinet"],
-                          ["Type", "24\"x24\" - Oak"],
-                          ["Level", "Level 1"],
-                          ["Phase", "New Construction"],
-                        ].map(([k, v]) => (
-                          <div key={k} className="flex justify-between py-0.5 border-b border-[#333]">
-                            <span className="text-[#808080]">{k}</span>
-                            <span className="text-[#d0d0d0] text-right">{v}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <div>
-                        <p className="text-[9px] text-[#3574f0] font-semibold mb-1">Dimensions</p>
-                        {[
-                          ["Width", "24\""],
-                          ["Depth", "24\""],
-                          ["Height", "34.5\""],
-                          ["Toe Kick", "4\""],
-                        ].map(([k, v]) => (
-                          <div key={k} className="flex justify-between py-0.5 border-b border-[#333]">
-                            <span className="text-[#808080]">{k}</span>
-                            <span className="text-[#d0d0d0] text-right">{v}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <div>
-                        <p className="text-[9px] text-[#3574f0] font-semibold mb-1">Materials</p>
-                        {[
-                          ["Door", "White Oak - Natural"],
-                          ["Carcass", "Birch Plywood"],
-                          ["Counter", "Calacatta Quartz"],
-                          ["Hardware", "Brushed Brass"],
-                        ].map(([k, v]) => (
-                          <div key={k} className="flex justify-between py-0.5 border-b border-[#333]">
-                            <span className="text-[#808080]">{k}</span>
-                            <span className="text-[#d0d0d0] text-right">{v}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <div>
-                        <p className="text-[9px] text-[#3574f0] font-semibold mb-1">Cost</p>
-                        {[
-                          ["Unit Cost", "$340/lf"],
-                          ["Total", "$2,720"],
-                          ["Markup", "35%"],
-                        ].map(([k, v]) => (
-                          <div key={k} className="flex justify-between py-0.5 border-b border-[#333]">
-                            <span className="text-[#808080]">{k}</span>
-                            <span className="text-[#d0d0d0] text-right">{v}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="border-t border-[#3a3a3a] p-2">
-                      <p className="text-[8px] text-[#606060]">Johnson_Kitchen_v2.rvt</p>
-                      <p className="text-[8px] text-[#606060]">227 elements | 18.4 MB</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Viewer status bar */}
-                <div className="flex items-center justify-between border-t border-[#3a3a3a] bg-[#2d2d2d] px-3 py-1">
-                  <div className="flex items-center gap-3 text-[9px] text-[#808080]">
-                    <span className="flex items-center gap-1"><span className="size-1.5 rounded-full bg-green-400" /> Revit 2026</span>
-                    <span>|</span>
-                    <span>LOD: Fine</span>
-                    <span>|</span>
-                    <span>Render: Realistic</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-[9px] text-[#808080]">
-                    <span>APS Viewer v7.98</span>
-                    <span>|</span>
-                    <span>Generated in 2m 14s</span>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* ============================================================= */}
-            {/* MATERIALS TAB — Enhanced with realistic swatches               */}
-            {/* ============================================================= */}
-            {canvasTab === "materials" && (
-              <>
-                <div className="flex-1 overflow-hidden flex">
-                  {/* Material list */}
-                  <div className="flex-1 overflow-y-auto p-5">
-                    <div className="max-w-lg mx-auto space-y-3">
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <p className="text-sm font-semibold text-foreground">Material Schedule</p>
-                          <p className="text-[11px] text-muted-foreground">Johnson Kitchen Remodel — 7 specifications</p>
-                        </div>
-                        <button className="rounded-md bg-amber-500/15 px-2.5 py-1 text-[10px] font-semibold text-amber-400 ring-1 ring-amber-500/25 hover:bg-amber-500/25 transition-colors">
-                          Export Schedule
-                        </button>
-                      </div>
-                      {[
-                        { name: "Countertops", material: "Caesarstone Calacatta Maximus", color: "#e8e0d4", code: "5114", price: "$75/sf", qty: "52 sf", total: "$3,900", lead: "3-4 wks", gradient: "linear-gradient(135deg, #f0ebe5 0%, #e0d5c5 40%, #ddd0c0 60%, #e8e0d4 100%)" },
-                        { name: "Base Cabinets", material: "Shaker Style — White Oak Natural", color: "#c4a972", code: "WO-2240", price: "$340/lf", qty: "18 lf", total: "$6,120", lead: "6-8 wks", gradient: "linear-gradient(135deg, #d4b896 0%, #c4a878 30%, #b89868 60%, #d0b090 100%)" },
-                        { name: "Upper Cabinets", material: "Shaker Style — White Oak Natural", color: "#c4a972", code: "WO-2240", price: "$280/lf", qty: "12 lf", total: "$3,360", lead: "6-8 wks", gradient: "linear-gradient(135deg, #d4b896 0%, #c4a878 30%, #b89868 60%, #d0b090 100%)" },
-                        { name: "Backsplash", material: "Zellige Tile — Weathered White", color: "#f0ece4", code: "ZT-100", price: "$22/sf", qty: "28 sf", total: "$616", lead: "In stock", gradient: "linear-gradient(135deg, #f8f4f0 0%, #ece4dc 40%, #f0ece4 70%, #e8e0d8 100%)" },
-                        { name: "Flooring", material: "Engineered Hardwood — European Oak", color: "#a08260", code: "EO-7714", price: "$12/sf", qty: "120 sf", total: "$1,440", lead: "2-3 wks", gradient: "repeating-linear-gradient(90deg, #a08260 0px, #b09270 8px, #907050 12px, #a08060 20px)" },
-                        { name: "Sink", material: "Kraus Workstation 33\" Undermount SS", color: "#8a8a8a", code: "KWU110-33", price: "$429", qty: "1 ea", total: "$429", lead: "In stock", gradient: "linear-gradient(135deg, #d0d0d0 0%, #a0a0a0 40%, #b0b0b0 70%, #909090 100%)" },
-                        { name: "Faucet", material: "Brizo Litze Pull-Down — Luxe Gold", color: "#d4a843", code: "63064LF-GL", price: "$620", qty: "1 ea", total: "$620", lead: "In stock", gradient: "linear-gradient(135deg, #e8c868 0%, #d4a843 40%, #c49838 70%, #d8b050 100%)" },
-                        { name: "Hardware", material: "Top Knobs Brushed Brass Pulls 6\"", color: "#c9a84c", code: "TK-BB6", price: "$18/ea", qty: "24 ea", total: "$432", lead: "In stock", gradient: "linear-gradient(135deg, #d8b860 0%, #c9a84c 50%, #b89840 100%)" },
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center gap-3 rounded-lg bg-[#0c1222] p-3 ring-1 ring-border/30 hover:ring-border/50 transition-all cursor-pointer group">
-                          <div
-                            className="size-14 rounded-lg ring-1 ring-white/10 shrink-0 shadow-inner"
-                            style={{ background: item.gradient }}
-                          />
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2">
-                              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{item.name}</p>
-                              <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-muted/20 text-muted-foreground/70">{item.lead}</span>
-                            </div>
-                            <p className="text-sm font-medium text-foreground truncate">{item.material}</p>
-                            <div className="flex items-center gap-3 mt-0.5">
-                              <span className="text-[10px] text-muted-foreground font-mono">SKU: {item.code}</span>
-                              <span className="text-[10px] text-muted-foreground">{item.price} &times; {item.qty}</span>
-                            </div>
-                          </div>
-                          <div className="text-right shrink-0">
-                            <p className="text-sm font-bold text-foreground">{item.total}</p>
-                            <button className="text-[10px] text-cyan-400 hover:text-cyan-300 transition-colors opacity-0 group-hover:opacity-100">Change</button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Summary sidebar */}
-                  <div className="w-56 shrink-0 border-l border-border/40 bg-[#0c1222] p-4 flex flex-col">
-                    <p className="text-xs font-semibold text-foreground mb-3">Cost Summary</p>
-                    <div className="space-y-2 flex-1">
-                      {[
-                        ["Countertops", "$3,900"],
-                        ["Base Cabinets", "$6,120"],
-                        ["Upper Cabinets", "$3,360"],
-                        ["Backsplash", "$616"],
-                        ["Flooring", "$1,440"],
-                        ["Sink", "$429"],
-                        ["Faucet", "$620"],
-                        ["Hardware", "$432"],
-                      ].map(([label, cost]) => (
-                        <div key={label} className="flex justify-between text-[10px]">
-                          <span className="text-muted-foreground">{label}</span>
-                          <span className="text-foreground font-mono">{cost}</span>
-                        </div>
-                      ))}
-                      <div className="h-px bg-border/40 my-2" />
-                      <div className="flex justify-between text-xs">
-                        <span className="text-muted-foreground font-medium">Materials Subtotal</span>
-                        <span className="text-foreground font-bold font-mono">$16,917</span>
-                      </div>
-                      <div className="flex justify-between text-[10px]">
-                        <span className="text-muted-foreground">Labor (estimated)</span>
-                        <span className="text-foreground font-mono">$8,450</span>
-                      </div>
-                      <div className="flex justify-between text-[10px]">
-                        <span className="text-muted-foreground">Markup (35%)</span>
-                        <span className="text-foreground font-mono">$8,878</span>
-                      </div>
-                      <div className="h-px bg-border/40 my-2" />
-                      <div className="flex justify-between text-sm">
-                        <span className="text-foreground font-semibold">Project Total</span>
-                        <span className="text-foreground font-bold font-mono">$34,245</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2 mt-4 pt-4 border-t border-border/40">
-                      <button className="w-full rounded-md bg-indigo-500/20 py-2 text-[11px] font-semibold text-indigo-400 ring-1 ring-indigo-500/30 hover:bg-indigo-500/30 transition-colors">
-                        Generate Estimate PDF
-                      </button>
-                      <button className="w-full rounded-md bg-muted/20 py-2 text-[11px] font-medium text-muted-foreground ring-1 ring-border/40 hover:bg-muted/30 transition-colors">
-                        Export to QuickBooks
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Materials footer */}
-                <div className="flex items-center justify-between border-t border-border/40 bg-[#0c1222] px-4 py-1.5">
-                  <div className="flex items-center gap-3 text-[9px] text-muted-foreground">
-                    <span>8 specifications</span>
-                    <span>|</span>
-                    <span>Room: 12&apos; &times; 10&apos; (120 sf)</span>
-                    <span>|</span>
-                    <span className="flex items-center gap-1">NKBA Compliant <span className="inline-flex items-center gap-0.5 text-green-400"><Check className="size-2.5" /> 31/31</span></span>
-                  </div>
-                  <span className="text-[9px] text-muted-foreground">Last updated: 2 min ago</span>
-                </div>
-              </>
-            )}
-
-            {/* Canvas tab selector — bottom tabs */}
-            <div className="flex items-center border-t border-[#3a3a3a] bg-[#2d2d2d]">
-              {(["2d", "3d", "materials"] as const).map((tab) => (
+            {/* Top toolbar */}
+            <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+              {/* View toggle */}
+              <div className="glass flex items-center gap-0.5 rounded-lg p-0.5">
                 <button
-                  key={tab}
-                  onClick={() => setCanvasTab(tab)}
-                  className={`px-4 py-1.5 text-[10px] font-medium transition-colors border-r border-[#3a3a3a] ${
-                    canvasTab === tab
-                      ? "bg-[#1e1e1e] text-white border-t-2 border-t-[#3574f0]"
-                      : "text-[#808080] hover:text-[#c0c0c0] hover:bg-[#383838]"
+                  onClick={() => setViewMode("2d")}
+                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+                    viewMode === "2d"
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {tab === "2d" ? "AutoCAD 2D — Johnson_Kitchen_v2.dxf" : tab === "3d" ? "Revit 3D — Johnson_Kitchen_v2.rvt" : "Materials Schedule"}
+                  2D
                 </button>
-              ))}
+                <button
+                  onClick={() => setViewMode("3d")}
+                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+                    viewMode === "3d"
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  3D
+                </button>
+              </div>
+
+              <div className="h-4 w-px bg-border" />
+
+              {/* Zoom controls */}
+              <Button variant="ghost" size="icon-sm" title="Zoom in" onClick={() => toast("Zoomed in")}>
+                <ZoomIn className="size-4" />
+              </Button>
+              <Button variant="ghost" size="icon-sm" title="Zoom out" onClick={() => toast("Zoomed out")}>
+                <ZoomOut className="size-4" />
+              </Button>
+              <Button variant="ghost" size="icon-sm" title="Fit to view" onClick={() => toast("Fit to view")}>
+                <Maximize2 className="size-4" />
+              </Button>
+
+              <div className="h-4 w-px bg-border" />
+
+              {/* Undo / Redo */}
+              <Button variant="ghost" size="icon-sm" title="Undo" onClick={() => toast("Undo")}>
+                <Undo2 className="size-4" />
+              </Button>
+              <Button variant="ghost" size="icon-sm" title="Redo" onClick={() => toast("Redo")}>
+                <Redo2 className="size-4" />
+              </Button>
+
+              <div className="h-4 w-px bg-border" />
+
+              {/* Snap-to-grid */}
+              <button
+                onClick={() => setSnapGrid(!snapGrid)}
+                className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-all ${
+                  snapGrid
+                    ? "bg-indigo-500/15 text-indigo-400"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                title="Snap to grid"
+              >
+                <Grid3X3 className="size-3.5" />
+                Snap
+              </button>
+
+              {/* Units */}
+              <button
+                onClick={() => setUnits(units === "in" ? "cm" : "in")}
+                className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-all"
+                title="Toggle units"
+              >
+                <Ruler className="size-3.5" />
+                {units === "in" ? "inches" : "cm"}
+              </button>
+
               <div className="flex-1" />
-              <div className="flex items-center gap-2 px-3">
-                <button className="rounded-md bg-muted/20 px-2 py-0.5 text-[9px] font-medium text-[#808080] hover:text-white hover:bg-[#484848] transition-colors">
+
+              {/* Render quality */}
+              <div className="glass flex items-center gap-0.5 rounded-lg p-0.5">
+                <button
+                  onClick={() => setRenderLevel(1)}
+                  className={`rounded-md px-2 py-1 text-xs font-medium transition-all ${
+                    renderLevel === 1
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Eye className="mr-1 inline size-3" />
+                  Level 1
+                </button>
+                <button
+                  onClick={() => setRenderLevel(2)}
+                  className={`rounded-md px-2 py-1 text-xs font-medium transition-all ${
+                    renderLevel === 2
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Camera className="mr-1 inline size-3" />
+                  Level 2
+                </button>
+              </div>
+
+              <div className="h-4 w-px bg-border" />
+
+              {/* Fullscreen / Close */}
+              <Button variant="ghost" size="icon-sm" title={canvasFullscreen ? "Exit fullscreen" : "Fullscreen"} onClick={() => setCanvasFullscreen(!canvasFullscreen)}>
+                {canvasFullscreen ? <Minimize2 className="size-4" /> : <Maximize2 className="size-4" />}
+              </Button>
+              <Button variant="ghost" size="icon-sm" title="Close canvas" onClick={() => { setCanvasOpen(false); setCanvasFullscreen(false); }}>
+                <X className="size-4" />
+              </Button>
+            </div>
+
+            {/* Canvas + Properties row */}
+            <div className="flex flex-1 overflow-hidden">
+              {/* Canvas area */}
+              <div
+                className="flex-1 overflow-hidden"
+                style={{
+                  background: "#0d1117",
+                  backgroundImage:
+                    "radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)",
+                  backgroundSize: "20px 20px",
+                }}
+              >
+                {viewMode === "2d" ? <FloorPlan2D /> : <View3DPlaceholder />}
+              </div>
+
+              {/* Right properties panel */}
+              <div className="w-72 shrink-0 overflow-y-auto border-l border-border bg-[var(--background)]">
+                {showSelected ? (
+                  /* Selected item properties */
+                  <div className="p-4 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-sm font-semibold text-foreground">Properties</h3>
+                      <button
+                        onClick={() => setShowSelected(false)}
+                        className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                      >
+                        <X className="size-3.5" />
+                      </button>
+                    </div>
+
+                    {/* Category badge */}
+                    <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-medium text-blue-400">
+                      {mockSelectedItem.category}
+                    </span>
+
+                    {/* Name */}
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider text-muted-foreground/60">
+                        Name
+                      </label>
+                      <p className="text-sm font-medium text-foreground">{mockSelectedItem.name}</p>
+                    </div>
+
+                    {/* Details */}
+                    <div className="space-y-3">
+                      {[
+                        { label: "Manufacturer", value: mockSelectedItem.manufacturer },
+                        { label: "SKU", value: mockSelectedItem.sku, mono: true },
+                        { label: "Dimensions", value: mockSelectedItem.dimensions },
+                        { label: "Finish", value: mockSelectedItem.finish },
+                        { label: "Price", value: mockSelectedItem.price, highlight: true },
+                      ].map((field) => (
+                        <div key={field.label}>
+                          <label className="text-[10px] uppercase tracking-wider text-muted-foreground/60">
+                            {field.label}
+                          </label>
+                          <p
+                            className={`text-sm ${
+                              field.highlight
+                                ? "font-semibold text-green-400"
+                                : field.mono
+                                  ? "font-mono text-xs text-muted-foreground"
+                                  : "text-foreground"
+                            }`}
+                          >
+                            {field.value}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="h-px bg-border" />
+
+                    {/* Actions */}
+                    <div className="space-y-2">
+                      <Button
+                        variant="outline"
+                        className="w-full gap-2 text-xs"
+                        onClick={() => toast.success("Opening product swap dialog")}
+                      >
+                        <RefreshCw className="size-3.5" />
+                        Swap Product
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        className="w-full gap-2 text-xs"
+                        onClick={() => {
+                          toast.success("Item removed from design");
+                          setShowSelected(false);
+                        }}
+                      >
+                        <Trash2 className="size-3.5" />
+                        Remove
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  /* Design summary (nothing selected) */
+                  <div className="p-4 space-y-4">
+                    <h3 className="text-sm font-semibold text-foreground">Design Summary</h3>
+
+                    {/* Room dimensions */}
+                    <div className="glass rounded-lg p-3">
+                      <label className="text-[10px] uppercase tracking-wider text-muted-foreground/60">
+                        Room Dimensions
+                      </label>
+                      <p className="text-sm font-medium text-foreground mt-0.5">
+                        12&apos;-0&quot; x 14&apos;-0&quot; (168 sq ft)
+                      </p>
+                    </div>
+
+                    {/* Item counts */}
+                    <div className="glass rounded-lg p-3 space-y-2">
+                      <label className="text-[10px] uppercase tracking-wider text-muted-foreground/60">
+                        Items by Category
+                      </label>
+                      {[
+                        { cat: "Base Cabinets", count: 5, color: "bg-blue-400" },
+                        { cat: "Wall Cabinets", count: 4, color: "bg-indigo-400" },
+                        { cat: "Tall Cabinets", count: 1, color: "bg-violet-400" },
+                        { cat: "Appliances", count: 4, color: "bg-amber-400" },
+                        { cat: "Fixtures", count: 2, color: "bg-cyan-400" },
+                        { cat: "Lighting", count: 1, color: "bg-yellow-400" },
+                      ].map((item) => (
+                        <div key={item.cat} className="flex items-center justify-between text-xs">
+                          <div className="flex items-center gap-2">
+                            <span className={`size-2 rounded-full ${item.color}`} />
+                            <span className="text-muted-foreground">{item.cat}</span>
+                          </div>
+                          <span className="font-medium text-foreground">{item.count}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Material cost */}
+                    <div className="glass rounded-lg p-3">
+                      <label className="text-[10px] uppercase tracking-wider text-muted-foreground/60">
+                        Material Cost Estimate
+                      </label>
+                      <p className="text-lg font-bold text-foreground mt-0.5">$24,350</p>
+                    </div>
+
+                    {/* NKBA Compliance */}
+                    <div className="glass rounded-lg p-3 space-y-2">
+                      <label className="text-[10px] uppercase tracking-wider text-muted-foreground/60">
+                        NKBA Compliance
+                      </label>
+                      {[
+                        { rule: "Work Triangle", pass: true },
+                        { rule: "Clearances", pass: true },
+                        { rule: "Landing Zones", pass: true },
+                        { rule: "Ventilation", pass: true },
+                        { rule: "Door Clearance", pass: true },
+                        { rule: "Counter Heights", pass: true },
+                      ].map((item) => (
+                        <div key={item.rule} className="flex items-center justify-between text-xs">
+                          <span className="text-muted-foreground">{item.rule}</span>
+                          <span
+                            className={`flex items-center gap-1 font-medium ${
+                              item.pass ? "text-green-400" : "text-red-400"
+                            }`}
+                          >
+                            <Check className="size-3" />
+                            Pass
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Select prompt */}
+                    <p className="text-center text-xs text-muted-foreground/50 italic">
+                      Click an item in the viewport to see its properties
+                    </p>
+                    <Button
+                      variant="outline"
+                      className="w-full gap-2 text-xs"
+                      onClick={() => setShowSelected(true)}
+                    >
+                      <Eye className="size-3.5" />
+                      Select B36 Cabinet (demo)
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Status bar */}
+            <div className="flex items-center gap-4 border-t border-border bg-muted/20 px-4 py-1.5 text-xs text-muted-foreground">
+              <span className="font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-400">
+                <Check className="size-3" />
+                NKBA Compliant
+              </span>
+              <span>15 items | $24,350 material cost</span>
+              <div className="flex-1" />
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => toast.success("Exported as DXF")}
+                  className="rounded-md bg-muted/30 px-2 py-0.5 text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                >
                   Export DXF
                 </button>
-                <button className="rounded-md bg-muted/20 px-2 py-0.5 text-[9px] font-medium text-[#808080] hover:text-white hover:bg-[#484848] transition-colors">
+                <button
+                  onClick={() => toast.success("Exported as RVT")}
+                  className="rounded-md bg-muted/30 px-2 py-0.5 text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                >
                   Export RVT
                 </button>
-                <button className="rounded-md bg-[#3574f0]/20 px-2 py-0.5 text-[9px] font-semibold text-[#3574f0] hover:bg-[#3574f0]/30 transition-colors">
+                <button
+                  onClick={() => setBomOpen(true)}
+                  className="rounded-md bg-primary/20 px-2 py-0.5 text-[10px] font-semibold text-primary hover:bg-primary/30 transition-colors"
+                >
                   Generate Estimate
                 </button>
               </div>
+              <span className="font-medium text-foreground/60">Design v3 (3 AI iterations)</span>
             </div>
           </div>
         )}
       </div>
+      <BomPreview open={bomOpen} onOpenChange={setBomOpen} />
     </div>
   );
 }
