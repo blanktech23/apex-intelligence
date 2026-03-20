@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useRole, type Role } from "@/lib/role-context";
 import {
   TrendingUp,
   TrendingDown,
@@ -437,6 +438,57 @@ function quarterMultiplier(q: string): number {
   const idx = quarters.indexOf(q);
   if (idx <= 0) return 1;
   return 1 + idx * 0.08; // simulates slight growth each quarter
+}
+
+/* ------------------------------------------------------------------ */
+/*  Helper: derive current value & trend from period data              */
+/* ------------------------------------------------------------------ */
+
+function derivePeriodMetrics(
+  weeklyValues: number[],
+  period: TimePeriod
+): { periodValue: number; periodTrend: number } {
+  const data = getDataForPeriod(weeklyValues, period);
+  if (data.length === 0) return { periodValue: 0, periodTrend: 0 };
+
+  const periodValue = data[data.length - 1];
+
+  // Trend: compare last value to previous value in the period set
+  let periodTrend = 0;
+  if (data.length >= 2) {
+    const prev = data[data.length - 2];
+    if (prev !== 0) {
+      periodTrend = Math.round(((periodValue - prev) / prev) * 1000) / 10;
+    }
+  }
+  return { periodValue, periodTrend };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Helper: role-specific data seed (deterministic variation)          */
+/* ------------------------------------------------------------------ */
+
+const roleSeedMap: Record<Role, number[]> = {
+  owner:      [1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00],
+  admin:      [0.97, 1.03, 0.95, 1.08, 0.92, 1.05, 1.02, 0.88, 1.04, 0.98],
+  manager:    [1.05, 0.96, 1.08, 0.90, 1.12, 0.94, 0.98, 1.06, 0.93, 1.01],
+  designer:   [0.92, 1.05, 0.88, 1.12, 0.85, 1.10, 1.04, 0.95, 1.08, 0.96],
+  bookkeeper: [1.03, 0.98, 1.02, 0.95, 1.08, 0.97, 0.94, 1.10, 0.96, 1.03],
+  viewer:     [0.98, 1.01, 0.97, 1.04, 0.96, 1.02, 1.00, 0.97, 1.01, 0.99],
+};
+
+function applyRoleVariation(kpis: Measurable[], role: Role): Measurable[] {
+  if (role === "owner") return kpis;
+  const seeds = roleSeedMap[role];
+  return kpis.map((kpi, idx) => {
+    const seed = seeds[idx % seeds.length];
+    return {
+      ...kpi,
+      currentValue: Math.round(kpi.currentValue * seed * 100) / 100,
+      weeklyValues: kpi.weeklyValues.map((v) => Math.round(v * seed * 100) / 100),
+      trend: Math.round(kpi.trend * seed * 10) / 10,
+    };
+  });
 }
 
 /* ------------------------------------------------------------------ */
@@ -1111,6 +1163,7 @@ function CreateScorecardModal({
 /* ------------------------------------------------------------------ */
 
 export default function KPIsPage() {
+  const { role } = useRole();
   const [quarter, setQuarter] = useState("Q1 2026");
   const [team, setTeam] = useState("All Teams");
   const [search, setSearch] = useState("");
@@ -1146,8 +1199,11 @@ export default function KPIsPage() {
     setTimeout(() => setToast((prev) => ({ ...prev, visible: false })), 3000);
   }
 
+  // Apply role-based variation
+  const roleAdjusted = useMemo(() => applyRoleVariation(allKpis, role), [allKpis, role]);
+
   // Apply quarter multiplier to simulate data per quarter
-  const adjustedKpis = allKpis.map((kpi) => {
+  const quarterAdjusted = useMemo(() => roleAdjusted.map((kpi) => {
     const mult = quarterMultiplier(quarter);
     if (quarter === "Q1 2026") return kpi; // base data
     return {
@@ -1155,7 +1211,25 @@ export default function KPIsPage() {
       currentValue: Math.round(kpi.currentValue * mult * 100) / 100,
       weeklyValues: kpi.weeklyValues.map((v) => Math.round(v * mult * 100) / 100),
     };
-  });
+  }), [roleAdjusted, quarter]);
+
+  // Apply period-specific currentValue and trend derivation
+  const adjustedKpis = useMemo(() => quarterAdjusted.map((kpi) => {
+    if (timePeriod === "weekly") {
+      // Weekly uses the raw current value (last entry)
+      return kpi;
+    }
+    const { periodValue, periodTrend } = derivePeriodMetrics(kpi.weeklyValues, timePeriod);
+    // Scale periodValue to match the unit's magnitude
+    const scale = kpi.currentValue !== 0 && kpi.weeklyValues[kpi.weeklyValues.length - 1] !== 0
+      ? kpi.currentValue / kpi.weeklyValues[kpi.weeklyValues.length - 1]
+      : 1;
+    return {
+      ...kpi,
+      currentValue: Math.round(periodValue * scale * 100) / 100,
+      trend: periodTrend,
+    };
+  }), [quarterAdjusted, timePeriod]);
 
   // Filter by team (respecting scorecard selection)
   const filteredByScorecard = activeScorecard === "all"
@@ -1307,7 +1381,7 @@ export default function KPIsPage() {
             KPI Scorecard
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Weekly measurables across the organization
+            {timePeriods.find((t) => t.key === timePeriod)?.label} measurables across the organization
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
