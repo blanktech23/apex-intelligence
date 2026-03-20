@@ -14,9 +14,24 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Sparkles,
   Menu,
   X,
+  Building2,
+  Target,
+  CalendarDays,
+  Flag,
+  CircleAlert,
+  ListChecks,
+  Network,
+  UserCircle,
+  Eye,
+  BookOpen,
+  TrendingUp,
+  Star,
+  PenTool,
+  Megaphone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRole } from "@/lib/role-context";
@@ -34,6 +49,12 @@ interface NavItem {
   badge?: number;
 }
 
+interface NavGroup {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  items: NavItem[];
+}
+
 const navItems: NavItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { label: "Agents", icon: Brain, href: "/dashboard/agents" },
@@ -43,6 +64,30 @@ const navItems: NavItem[] = [
   { label: "Approvals", icon: CheckSquare, href: "/approvals", badge: 12 },
   { label: "Reports", icon: BarChart3, href: "/reports" },
   { label: "Settings", icon: Settings, href: "/settings" },
+];
+
+const bosGroup: NavGroup = {
+  label: "Business OS",
+  icon: Building2,
+  items: [
+    { label: "BOS Hub", icon: Building2, href: "/bos" },
+    { label: "KPI Dashboard", icon: Target, href: "/bos/kpis" },
+    { label: "Meetings", icon: CalendarDays, href: "/bos/meetings" },
+    { label: "Goals & Milestones", icon: Flag, href: "/bos/goals" },
+    { label: "Issues", icon: CircleAlert, href: "/bos/issues" },
+    { label: "Action Items", icon: ListChecks, href: "/bos/actions" },
+    { label: "Org Chart", icon: Network, href: "/bos/org-chart" },
+    { label: "People", icon: UserCircle, href: "/bos/people" },
+    { label: "Vision Plan", icon: Eye, href: "/bos/vision" },
+    { label: "Reviews", icon: Star, href: "/bos/reviews" },
+    { label: "Announcements", icon: Megaphone, href: "/bos/announcements" },
+    { label: "Knowledge Portal", icon: BookOpen, href: "/bos/knowledge" },
+    { label: "Analytics", icon: TrendingUp, href: "/bos/analytics" },
+  ],
+};
+
+const designItems: NavItem[] = [
+  { label: "K&B Designer", icon: PenTool, href: "/design/kitchen-bath" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -82,6 +127,7 @@ function getUsageStyle(percent: number) {
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [bosOpen, setBosOpen] = useState(false);
   const pathname = usePathname();
   const { config } = useRole();
 
@@ -89,12 +135,90 @@ export function Sidebar() {
     config.sidebarItems.includes(item.label)
   );
 
+  const visibleBosItems = bosGroup.items.filter((item) =>
+    config.sidebarItems.includes(item.label)
+  );
+
+  const visibleDesignItems = designItems.filter((item) =>
+    config.sidebarItems.includes(item.label)
+  );
+
+  const showBosGroup = visibleBosItems.length > 0;
+  const showDesignGroup = visibleDesignItems.length > 0;
+
+  // Auto-expand BOS group when user is on a BOS route
+  const isOnBosRoute = pathname.startsWith("/bos");
+  const isBosExpanded = bosOpen || isOnBosRoute;
+
   const usageStyle = getUsageStyle(AI_USAGE_PERCENT);
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
     if (href === "/dashboard/agents") return pathname.startsWith("/dashboard/agents");
+    if (href === "/bos") return pathname === "/bos";
     return pathname.startsWith(href);
+  };
+
+  const renderNavLink = (item: NavItem, isCollapsedDesktop: boolean, indent = false) => {
+    const Icon = item.icon;
+    const active = isActive(item.href);
+    const button = (
+      <Link
+        key={item.label}
+        href={item.href}
+        onClick={() => setMobileOpen(false)}
+        className={cn(
+          "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+          isCollapsedDesktop && "justify-center px-0",
+          indent && !isCollapsedDesktop && "pl-9",
+          active
+            ? "bg-primary/10 text-primary-foreground glow-primary"
+            : "text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground"
+        )}
+      >
+        {/* Active indicator bar */}
+        {active && (
+          <div className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-primary" />
+        )}
+
+        <Icon
+          className={cn(
+            "h-[18px] w-[18px] shrink-0 transition-colors",
+            active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+          )}
+        />
+
+        {!isCollapsedDesktop && (
+          <>
+            <span>{item.label}</span>
+            {item.badge !== undefined && item.badge > 0 && (
+              <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500/20 px-1.5 text-[11px] font-semibold text-amber-400">
+                {item.badge}
+              </span>
+            )}
+          </>
+        )}
+
+        {isCollapsedDesktop && item.badge !== undefined && item.badge > 0 && (
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-white">
+            {item.badge}
+          </span>
+        )}
+      </Link>
+    );
+
+    if (isCollapsedDesktop) {
+      return (
+        <Tooltip key={item.label}>
+          <TooltipTrigger className="w-full">{button}</TooltipTrigger>
+          <TooltipContent side="right" sideOffset={12}>
+            <span>{item.label}</span>
+          </TooltipContent>
+        </Tooltip>
+      );
+    }
+
+    return button;
   };
 
   const sidebarContent = (
@@ -125,68 +249,63 @@ export function Sidebar() {
       </Link>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 px-2 py-4">
+      <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
         {visibleNavItems.map((item) => {
-          const Icon = item.icon;
-          const active = isActive(item.href);
           const isCollapsedDesktop = collapsed && !mobileOpen;
-          const button = (
-            <Link
-              key={item.label}
-              href={item.href}
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                isCollapsedDesktop && "justify-center px-0",
-                active
-                  ? "bg-primary/10 text-primary-foreground glow-primary"
-                  : "text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground"
-              )}
-            >
-              {/* Active indicator bar */}
-              {active && (
-                <div className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-primary" />
-              )}
+          return renderNavLink(item, isCollapsedDesktop);
+        })}
 
-              <Icon
-                className={cn(
-                  "h-[18px] w-[18px] shrink-0 transition-colors",
-                  active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
-                )}
-              />
-
-              {!isCollapsedDesktop && (
-                <>
-                  <span>{item.label}</span>
-                  {item.badge !== undefined && item.badge > 0 && (
-                    <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500/20 px-1.5 text-[11px] font-semibold text-amber-400">
-                      {item.badge}
-                    </span>
-                  )}
-                </>
+        {/* Business OS Group */}
+        {showBosGroup && (
+          <>
+            <div className="pb-1 pt-4">
+              {!(collapsed && !mobileOpen) && (
+                <button
+                  onClick={() => setBosOpen(!isBosExpanded)}
+                  className="flex w-full items-center justify-between px-3 py-1"
+                >
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                    Business OS
+                  </span>
+                  <ChevronDown
+                    className={cn(
+                      "h-3 w-3 text-muted-foreground/40 transition-transform duration-200",
+                      isBosExpanded && "rotate-180"
+                    )}
+                  />
+                </button>
               )}
+              {(collapsed && !mobileOpen) && (
+                <div className="mx-auto mb-1 h-px w-6 bg-border" />
+              )}
+            </div>
+            {(isBosExpanded || (collapsed && !mobileOpen)) &&
+              visibleBosItems.map((item) => {
+                const isCollapsedDesktop = collapsed && !mobileOpen;
+                return renderNavLink(item, isCollapsedDesktop, true);
+              })}
+          </>
+        )}
 
-              {isCollapsedDesktop && item.badge !== undefined && item.badge > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-white">
-                  {item.badge}
+        {/* Design Tools Group */}
+        {showDesignGroup && (
+          <>
+            <div className="pb-1 pt-4">
+              {!(collapsed && !mobileOpen) && (
+                <span className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                  Design Tools
                 </span>
               )}
-            </Link>
-          );
-
-          if (isCollapsedDesktop) {
-            return (
-              <Tooltip key={item.label}>
-                <TooltipTrigger className="w-full">{button}</TooltipTrigger>
-                <TooltipContent side="right" sideOffset={12}>
-                  <span>{item.label}</span>
-                </TooltipContent>
-              </Tooltip>
-            );
-          }
-
-          return button;
-        })}
+              {(collapsed && !mobileOpen) && (
+                <div className="mx-auto mb-1 h-px w-6 bg-border" />
+              )}
+            </div>
+            {visibleDesignItems.map((item) => {
+              const isCollapsedDesktop = collapsed && !mobileOpen;
+              return renderNavLink(item, isCollapsedDesktop);
+            })}
+          </>
+        )}
       </nav>
 
       {/* Bottom section */}
