@@ -31,7 +31,6 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     sidebarItems: [
       "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Settings",
       "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Vision Plan", "Reviews", "Announcements", "Knowledge Portal", "Analytics",
-      "K&B Designer",
     ],
     canApprove: true,
     canManageTeam: true,
@@ -51,7 +50,6 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     sidebarItems: [
       "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Settings",
       "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Vision Plan", "Reviews", "Announcements", "Knowledge Portal", "Analytics",
-      "K&B Designer",
     ],
     canApprove: true,
     canManageTeam: true,
@@ -90,7 +88,6 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     sidebarItems: [
       "Dashboard", "Agents", "Projects",
       "BOS Hub", "Goals & Milestones",
-      "K&B Designer",
     ],
     canApprove: false,
     canManageTeam: false,

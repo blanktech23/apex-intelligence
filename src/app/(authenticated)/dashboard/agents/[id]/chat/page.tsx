@@ -3410,9 +3410,17 @@ export default function AgentChatPage() {
                     ))}
                   </div>
                   <div className="flex items-center gap-3 text-[9px] font-mono text-[#808080]">
+                    <span className="flex items-center gap-1 rounded bg-emerald-500/15 px-1.5 py-0.5 text-emerald-400 border border-emerald-500/20">
+                      <Check className="size-2.5" />NKBA Compliant
+                    </span>
+                    <span>|</span>
+                    <span>15 items &middot; $24,350</span>
+                    <span>|</span>
                     <span>Scale: 1/4&quot; = 1&apos;-0&quot;</span>
                     <span>|</span>
                     <span>Johnson_Kitchen_v2.dxf</span>
+                    <span>|</span>
+                    <button className="rounded bg-indigo-500/20 px-2 py-0.5 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/30 transition-colors">Generate Estimate</button>
                   </div>
                 </div>
               </>

@@ -30,7 +30,6 @@ import {
   BookOpen,
   TrendingUp,
   Star,
-  PenTool,
   Megaphone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -86,9 +85,6 @@ const bosGroup: NavGroup = {
   ],
 };
 
-const designItems: NavItem[] = [
-  { label: "K&B Designer", icon: PenTool, href: "/design/kitchen-bath" },
-];
 
 /* ------------------------------------------------------------------ */
 /*  AI Usage indicator config                                          */
@@ -139,12 +135,7 @@ export function Sidebar() {
     config.sidebarItems.includes(item.label)
   );
 
-  const visibleDesignItems = designItems.filter((item) =>
-    config.sidebarItems.includes(item.label)
-  );
-
   const showBosGroup = visibleBosItems.length > 0;
-  const showDesignGroup = visibleDesignItems.length > 0;
 
   // Auto-expand BOS group when user is on a BOS route
   const isOnBosRoute = pathname.startsWith("/bos");
@@ -287,25 +278,6 @@ export function Sidebar() {
           </>
         )}
 
-        {/* Design Tools Group */}
-        {showDesignGroup && (
-          <>
-            <div className="pb-1 pt-4">
-              {!(collapsed && !mobileOpen) && (
-                <span className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
-                  Design Tools
-                </span>
-              )}
-              {(collapsed && !mobileOpen) && (
-                <div className="mx-auto mb-1 h-px w-6 bg-border" />
-              )}
-            </div>
-            {visibleDesignItems.map((item) => {
-              const isCollapsedDesktop = collapsed && !mobileOpen;
-              return renderNavLink(item, isCollapsedDesktop);
-            })}
-          </>
-        )}
       </nav>
 
       {/* Bottom section */}
