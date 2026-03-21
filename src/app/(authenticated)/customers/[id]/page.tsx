@@ -218,7 +218,7 @@ export default function CustomerDetailPage() {
   const [noteText, setNoteText] = useState("");
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6 lg:p-8">
       {/* Header */}
       <div>
         <Link

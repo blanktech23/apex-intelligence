@@ -1267,7 +1267,7 @@ export default function GoalsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 p-6" onClick={() => { if (openDropdown) setOpenDropdown(null); if (showExportDropdown) setShowExportDropdown(false); }}>
+    <div className="space-y-6" onClick={() => { if (openDropdown) setOpenDropdown(null); if (showExportDropdown) setShowExportDropdown(false); }}>
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>

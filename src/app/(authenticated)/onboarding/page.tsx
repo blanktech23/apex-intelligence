@@ -710,7 +710,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 py-8">
+    <div className="mx-auto max-w-3xl space-y-8 px-6 py-8">
       {/* Step indicator */}
       <StepIndicator currentStep={currentStep} />
 

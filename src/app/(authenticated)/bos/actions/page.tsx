@@ -534,7 +534,7 @@ export default function ActionsPage() {
   const teamFilterOptions = ["All", ...Array.from(new Set(actions.map((a) => a.team)))];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 p-6">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>

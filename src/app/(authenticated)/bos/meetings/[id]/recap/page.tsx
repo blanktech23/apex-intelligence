@@ -240,8 +240,8 @@ export default function MeetingRecapPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background bg-mesh">
-      <div className="mx-auto max-w-4xl space-y-6 p-6">
+    <div>
+      <div className="space-y-6">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <Link

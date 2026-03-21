@@ -344,7 +344,7 @@ export default function AnnouncementsPage() {
   const teamOptions = ["All", "Leadership", "Sales", "Operations", "Finance", "HR", ...Array.from(new Set(announcements.map((a) => a.scope).filter((s) => !["Company-wide", "All"].includes(s) && !["Leadership", "Sales", "Operations", "Finance", "HR"].includes(s))))];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 p-6">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
