@@ -729,9 +729,11 @@ function StreamingMessage({
 function ChatBubble({
   msg,
   onFeedback,
+  onLinkClick,
 }: {
   msg: ChatMessage;
   onFeedback?: () => void;
+  onLinkClick?: () => void;
 }) {
   const [feedbackGiven, setFeedbackGiven] = useState(false);
   const isUser = msg.role === "user";
@@ -783,6 +785,7 @@ function ChatBubble({
           <div className={isUser ? "flex justify-end" : ""}>
             <Link
               href={msg.link.href}
+              onClick={onLinkClick}
               className="inline-flex items-center gap-1.5 rounded-lg border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
             >
               {msg.link.label}
@@ -1322,6 +1325,7 @@ export function HelpPanel() {
                       ? () => markRevealed(msg.id)
                       : undefined
                   }
+                  onLinkClick={handleClose}
                 />
               ))}
 
