@@ -3188,67 +3188,66 @@ export default function AgentChatPage() {
       {/* ----------------------------------------------------------------- */}
       {/* Header */}
       {/* ----------------------------------------------------------------- */}
-      <div className="glass-strong z-10 flex items-center justify-between pl-16 pr-5 py-3 lg:pl-5">
-        <div className="flex items-center gap-3">
-          <Link
-            href={`/dashboard/agents/${id}`}
-            className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted/30 hover:text-foreground"
-          >
-            <ArrowLeft className="size-4" />
-            <span className="hidden sm:inline">Back</span>
-          </Link>
+      <div className="glass-strong z-10 pl-14 pr-3 py-2 lg:pl-5 lg:pr-5 lg:py-3">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <Link
+              href={`/dashboard/agents/${id}`}
+              className="flex items-center rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted/30 hover:text-foreground shrink-0"
+            >
+              <ArrowLeft className="size-4" />
+            </Link>
 
-          <div className="h-6 w-px bg-border" />
+            <div className="hidden sm:block h-6 w-px bg-border shrink-0" />
 
-          <div className="flex items-center gap-3">
             <div
-              className={`flex size-9 items-center justify-center rounded-xl ring-1 ${colors.icon}`}
+              className={`hidden sm:flex size-9 items-center justify-center rounded-xl ring-1 shrink-0 ${colors.icon}`}
             >
               <AgentIcon className="size-5" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="truncate max-w-[120px] sm:max-w-none text-sm font-semibold text-foreground">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5">
+                <h1 className="truncate text-sm font-semibold text-foreground">
                   {agentName}
                 </h1>
-                <span className="hidden sm:inline-flex items-center gap-1 rounded-full border border-green-500/20 bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-400">
-                  <span className="size-1.5 rounded-full bg-green-400" />
-                  Online
-                </span>
-                <span className="sm:hidden size-2 rounded-full bg-green-400" />
+                <span className="size-2 rounded-full bg-green-400 shrink-0" />
               </div>
               <p className="hidden sm:block text-[11px] text-muted-foreground">
                 Avg response: 1.8s
               </p>
             </div>
           </div>
-        </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground ring-1 ring-border transition-all hover:bg-muted/30 hover:text-foreground sm:hidden"
-          >
-            <Clock className="size-3.5" />
-            History
-          </button>
-          {id === "design-spec-assistant" && (
+          <div className="flex items-center gap-1.5 shrink-0">
             <button
-              onClick={() => setCanvasOpen(!canvasOpen)}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all ${
-                canvasOpen
-                  ? "bg-cyan-500/25 text-cyan-300 ring-1 ring-cyan-400/40"
-                  : "bg-cyan-500/15 text-cyan-400 ring-1 ring-cyan-500/25 hover:bg-cyan-500/25"
-              }`}
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="flex items-center rounded-lg p-2 text-muted-foreground ring-1 ring-border transition-all hover:bg-muted/30 hover:text-foreground sm:hidden"
+              title="History"
             >
-              <Palette className="size-3.5" />
-              <span className="hidden sm:inline">{canvasOpen ? "Close Canvas" : "Open Canvas"}</span>
+              <Clock className="size-4" />
             </button>
-          )}
-          <button className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-500/15 px-3.5 py-2 text-xs font-semibold text-indigo-400 ring-1 ring-indigo-500/25 transition-all hover:bg-indigo-500/25">
-            <MessageSquarePlus className="size-3.5" />
-            <span className="hidden sm:inline">New Conversation</span>
-          </button>
+            {id === "design-spec-assistant" && (
+              <button
+                onClick={() => setCanvasOpen(!canvasOpen)}
+                className={`inline-flex items-center gap-1.5 rounded-lg p-2 sm:px-3.5 sm:py-2 text-xs font-semibold transition-all ${
+                  canvasOpen
+                    ? "bg-cyan-500/25 text-cyan-300 ring-1 ring-cyan-400/40"
+                    : "bg-cyan-500/15 text-cyan-400 ring-1 ring-cyan-500/25 hover:bg-cyan-500/25"
+                }`}
+                title={canvasOpen ? "Close Canvas" : "Open Canvas"}
+              >
+                <Palette className="size-4" />
+                <span className="hidden sm:inline">{canvasOpen ? "Close Canvas" : "Open Canvas"}</span>
+              </button>
+            )}
+            <button
+              className="inline-flex items-center rounded-lg bg-indigo-500/15 p-2 sm:gap-1.5 sm:px-3.5 sm:py-2 text-xs font-semibold text-indigo-400 ring-1 ring-indigo-500/25 transition-all hover:bg-indigo-500/25"
+              title="New Conversation"
+            >
+              <MessageSquarePlus className="size-4" />
+              <span className="hidden sm:inline">New Conversation</span>
+            </button>
+          </div>
         </div>
       </div>
 
