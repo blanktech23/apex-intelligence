@@ -34,6 +34,11 @@ import {
   ClipboardCheck,
   UserCheck,
   ArrowLeft,
+  User,
+  Shield,
+  Bell,
+  CreditCard,
+  Plug,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRole } from "@/lib/role-context";
@@ -149,6 +154,20 @@ export function Sidebar() {
   const { config } = useRole();
 
   const isBosMode = pathname.startsWith("/bos") && !pathname.includes("/onboarding");
+  const isSettingsMode = pathname.startsWith("/settings");
+
+  const settingsNavItems: NavItem[] = [
+    { label: "Profile", icon: User, href: "/settings/profile" },
+    { label: "Security", icon: Shield, href: "/settings/security" },
+    { label: "Notifications", icon: Bell, href: "/settings/notifications" },
+    ...(config.canManageTeam
+      ? [{ label: "Team", icon: Users, href: "/settings/team" }]
+      : []),
+    ...(config.canViewBilling
+      ? [{ label: "Billing", icon: CreditCard, href: "/settings/billing" }]
+      : []),
+    { label: "Integrations", icon: Plug, href: "/settings/integrations" },
+  ];
 
   const visibleNavItems = navItems.filter((item) =>
     config.sidebarItems.includes(item.label)
@@ -174,6 +193,12 @@ export function Sidebar() {
       // In main nav, EOS link highlights for any /bos route
       return pathname.startsWith("/bos");
     }
+    // Settings sub-routes: exact match or nested
+    if (isSettingsMode && href.startsWith("/settings/")) {
+      return pathname === href || pathname.startsWith(href + "/");
+    }
+    // In main nav, Settings link highlights for any /settings route
+    if (href === "/settings") return pathname.startsWith("/settings");
     return pathname.startsWith(href);
   };
 
@@ -298,6 +323,59 @@ export function Sidebar() {
       );
     }
 
+    if (isSettingsMode) {
+      return (
+        <div className="border-b border-border">
+          {/* Back button */}
+          <div className={cn("px-4 pt-4 pb-2", isCollapsedDesktop && "px-2")}>
+            {isCollapsedDesktop ? (
+              <Tooltip>
+                <TooltipTrigger className="w-full">
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center rounded-lg py-1.5 text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right" sideOffset={12}>
+                  Back to Dashboard
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              <Link
+                href="/dashboard"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back</span>
+              </Link>
+            )}
+          </div>
+          {/* Settings branding */}
+          <div
+            className={cn(
+              "flex items-center gap-2 px-4 pb-5 pt-2",
+              isCollapsedDesktop && "justify-center px-2"
+            )}
+          >
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/20">
+              <Settings className="h-4 w-4 text-primary" />
+            </div>
+            {!isCollapsedDesktop && (
+              <div className="flex flex-col">
+                <span className="text-gradient text-lg font-bold leading-tight tracking-tight">
+                  Settings
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
     // Default APEX header
     return (
       <Link
@@ -346,6 +424,14 @@ export function Sidebar() {
               </div>
             </div>
           ))}
+        </nav>
+      );
+    }
+
+    if (isSettingsMode) {
+      return (
+        <nav className="flex-1 space-y-0.5 overflow-y-auto px-2 py-3">
+          {settingsNavItems.map((item) => renderNavLink(item, isCollapsedDesktop))}
         </nav>
       );
     }
