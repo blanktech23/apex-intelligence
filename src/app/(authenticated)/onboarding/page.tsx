@@ -103,7 +103,7 @@ interface TeamInvite {
 
 function StepIndicator({ currentStep }: { currentStep: number }) {
   return (
-    <div className="flex items-center justify-center gap-0">
+    <div className="flex items-center justify-center gap-0 overflow-x-auto px-4 py-2">
       {steps.map((step, i) => {
         const isCompleted = currentStep > step.number;
         const isActive = currentStep === step.number;
@@ -114,7 +114,7 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
             {/* Circle */}
             <div className="flex flex-col items-center">
               <div
-                className={`flex size-10 items-center justify-center rounded-full border-2 text-sm font-bold transition-all duration-300 ${
+                className={`flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-full border-2 text-xs sm:text-sm font-bold transition-all duration-300 ${
                   isCompleted
                     ? "border-green-500 bg-green-500/20 text-green-400"
                     : isActive
@@ -136,7 +136,7 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
             {/* Connecting line */}
             {!isLast && (
               <div
-                className={`mx-3 mb-6 h-0.5 w-12 rounded-full transition-colors sm:w-20 ${
+                className={`mx-1.5 sm:mx-3 mb-6 h-0.5 w-6 sm:w-12 md:w-20 rounded-full transition-colors ${
                   isCompleted ? "bg-green-500/50" : "bg-muted"
                 }`}
               />

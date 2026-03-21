@@ -493,7 +493,7 @@ export default function KitchenBathDesignerPage() {
       {/* ============================================================ */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Top toolbar */}
-        <div className="flex items-center gap-2 border-b border-border px-3 py-2 overflow-x-auto">
+        <div className="flex items-center gap-2 border-b border-border pl-16 pr-3 py-2 lg:px-3 overflow-x-auto">
           {/* View toggle */}
           <div className="glass flex items-center gap-0.5 rounded-lg p-0.5">
             <button

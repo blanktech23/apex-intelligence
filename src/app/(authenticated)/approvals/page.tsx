@@ -400,7 +400,7 @@ export default function ApprovalsPage() {
   };
 
   return (
-    <div className="space-y-6 p-6 lg:p-8">
+    <div className="space-y-6 p-6 pb-24 lg:p-8 lg:pb-8">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
@@ -627,7 +627,7 @@ export default function ApprovalsPage() {
 
                   {/* Fix 5: Action buttons — fully hidden when not pending, replaced by status */}
                   {isPending && !isFlashing && (
-                    <div className="mt-4 flex flex-wrap items-center gap-2">
+                    <div className="mt-4 mb-1 flex flex-wrap items-center gap-2">
                       <Button
                         size="sm"
                         onClick={() => handleApprove(action.id)}

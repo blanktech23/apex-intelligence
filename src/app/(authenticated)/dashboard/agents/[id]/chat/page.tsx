@@ -3156,7 +3156,7 @@ export default function AgentChatPage() {
       setMessages((prev) => [...prev, agentMsg]);
     }, delay);
   };
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [canvasOpen, setCanvasOpen] = useState(false);
   const [canvasTab, setCanvasTab] = useState<"2d" | "3d" | "materials">("2d");
   const [canvasFullscreen, setCanvasFullscreen] = useState(false);
@@ -3188,7 +3188,7 @@ export default function AgentChatPage() {
       {/* ----------------------------------------------------------------- */}
       {/* Header */}
       {/* ----------------------------------------------------------------- */}
-      <div className="glass-strong z-10 flex items-center justify-between px-5 py-3">
+      <div className="glass-strong z-10 flex items-center justify-between pl-16 pr-5 py-3 lg:pl-5">
         <div className="flex items-center gap-3">
           <Link
             href={`/dashboard/agents/${id}`}
@@ -3264,7 +3264,7 @@ export default function AgentChatPage() {
           />
         )}
         <aside
-          className={`glass-strong flex w-80 shrink-0 flex-col border-r border-border transition-all duration-300 fixed inset-y-0 left-0 z-30 sm:relative sm:z-auto ${
+          className={`glass-strong flex w-80 shrink-0 flex-col border-r border-border transition-all duration-300 fixed inset-y-0 left-0 z-30 sm:relative sm:z-auto !bg-background sm:!bg-[var(--glass-hover)] ${
             sidebarOpen
               ? "translate-x-0"
               : "-translate-x-full sm:translate-x-0"
