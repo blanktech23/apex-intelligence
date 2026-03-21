@@ -385,7 +385,7 @@ const defaultContext: RouteContext = {
 const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
   [
     {
-      pattern: /upgrade|change plan|billing|subscription|pricing/i,
+      pattern: /upgrade|downgrade|change.*plan|update.*plan|my plan|billing|subscription|pricing|payment|invoice|cost|how much|price/i,
       response: {
         message:
           "You can manage your subscription from the Billing page. Click the button below to go there directly.",
@@ -393,56 +393,95 @@ const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
       },
     },
     {
-      pattern: /connect|integration|jobtread|quickbooks|oauth/i,
+      pattern: /usage|how much.*(used|using|spent)|ai.*(cost|usage|spend)|token|seat/i,
       response: {
         message:
-          "You can connect and manage your integrations from the Integrations settings page.",
-        link: {
-          label: "Go to Integrations \u2192",
-          href: "/settings/integrations",
-        },
+          "View your detailed usage breakdown including AI costs, agent seats, and execution history.",
+        link: { label: "Go to Usage \u2192", href: "/settings/billing/usage" },
       },
     },
     {
-      pattern: /invite|team|member|role/i,
+      pattern: /connect.*gmail|gmail|set.?up.*email|email.*integrat/i,
       response: {
         message:
-          "You can invite team members and manage roles from the Team settings page.",
+          "You can connect Gmail from the Integrations page. Click 'Connect' on the Gmail card to authorize Apex to create and send email drafts on your behalf.",
+        link: { label: "Go to Integrations \u2192", href: "/settings/integrations" },
+      },
+    },
+    {
+      pattern: /connect.*calendar|google.*calendar|calendar.*integrat|scheduling/i,
+      response: {
+        message:
+          "Connect Google Calendar from the Integrations page. This lets agents check availability and manage appointments.",
+        link: { label: "Go to Integrations \u2192", href: "/settings/integrations" },
+      },
+    },
+    {
+      pattern: /connect.*quickbooks|quickbooks|qb|accounting/i,
+      response: {
+        message:
+          "Connect QuickBooks from the Integrations page. This gives agents access to financial reports, invoices, and payment data.",
+        link: { label: "Go to Integrations \u2192", href: "/settings/integrations" },
+      },
+    },
+    {
+      pattern: /connect.*jobtread|jobtread|job.*tread/i,
+      response: {
+        message:
+          "Connect JobTread from the Integrations page. Click 'Connect' on the JobTread card to authorize Apex to access your project, estimate, and contact data.",
+        link: { label: "Go to Integrations \u2192", href: "/settings/integrations" },
+      },
+    },
+    {
+      pattern: /connect|integration|disconnect|reconnect|sync|oauth/i,
+      response: {
+        message:
+          "You can connect and manage all your integrations from the Integrations settings page. Each card shows the connection status and which agents use it.",
+        link: { label: "Go to Integrations \u2192", href: "/settings/integrations" },
+      },
+    },
+    {
+      pattern: /invite|add.*member|add.*user|team|manage.*team|remove.*member/i,
+      response: {
+        message:
+          "You can invite team members, assign roles, and manage your team from the Team settings page.",
         link: { label: "Go to Team Settings \u2192", href: "/settings/team" },
       },
     },
     {
-      pattern: /agent|enable|disable|configure/i,
+      pattern: /role|permission|access|owner|admin|manager|designer|bookkeeper|viewer|who can/i,
       response: {
         message:
-          "You can view and configure all your agents from the Agents page. Toggle agents on/off or click one for detailed settings.",
+          "Apex has 6 roles: Owner (full access), Admin (full access), Manager (approvals + reports), Designer (projects only), Bookkeeper (financial views), and Viewer (read-only). Manage roles in Team settings.",
+        link: { label: "Go to Team Settings \u2192", href: "/settings/team" },
+      },
+    },
+    {
+      pattern: /agent|enable|disable|configure|turn.*(on|off)|activate|deactivate|set.?up.*agent/i,
+      response: {
+        message:
+          "You can view and configure all your agents from the Agents page. Toggle agents on/off or click one for detailed settings and execution history.",
         link: { label: "Go to Agents \u2192", href: "/dashboard/agents" },
       },
     },
     {
-      pattern: /password|security|2fa|mfa/i,
+      pattern: /password|change.*password|reset.*password|security|2fa|mfa|two.?factor|authenticat/i,
       response: {
         message:
           "You can update your password, enable two-factor authentication, and manage security settings from the Security page.",
-        link: {
-          label: "Go to Security Settings \u2192",
-          href: "/settings/security",
-        },
+        link: { label: "Go to Security Settings \u2192", href: "/settings/security" },
       },
     },
     {
-      pattern: /notification|alert|email notification/i,
+      pattern: /notification|alert|email.*notification|push|digest|how.*notif/i,
       response: {
         message:
-          "Configure which notifications you receive and how they're delivered from the Notifications settings.",
-        link: {
-          label: "Go to Notification Settings \u2192",
-          href: "/settings/notifications",
-        },
+          "Configure which notifications you receive and how they're delivered (in-app, email, or both) from the Notification settings.",
+        link: { label: "Go to Notification Settings \u2192", href: "/settings/notifications" },
       },
     },
     {
-      pattern: /escalation|escalate|urgent/i,
+      pattern: /escalation|escalate|urgent|critical|needs.*attention/i,
       response: {
         message:
           "View and manage all escalations from the Escalations page. Each escalation shows the agent, severity, and recommended action.",
@@ -450,65 +489,98 @@ const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
       },
     },
     {
-      pattern: /approv(al|e)|reject|pending/i,
+      pattern: /approv(al|e)|reject|pending|review.*action|action.*review|draft/i,
       response: {
         message:
-          "Review and manage pending approvals. You can approve, edit, or reject agent-generated actions.",
+          "Review and manage pending approvals. You can approve, edit, or reject agent-generated actions like emails, estimates, and financial transactions.",
         link: { label: "Go to Approvals \u2192", href: "/approvals" },
       },
     },
     {
-      pattern: /report|analytics|roi/i,
+      pattern: /report|analytics|roi|performance|how.*doing|metric|stat/i,
       response: {
         message:
-          "View reports on agent performance, ROI analysis, and cost breakdowns.",
+          "View reports on agent performance, ROI analysis, cost breakdowns, and execution history.",
         link: { label: "Go to Reports \u2192", href: "/reports" },
       },
     },
     {
-      pattern: /eos|bos|meeting|scorecard|kpi|goal|rock/i,
+      pattern: /eos|bos|business.*os|meeting|scorecard|kpi|goal|rock|l10|quarterly|weekly|issue.*track/i,
       response: {
         message:
-          "The Business Operating System helps you run your company with the EOS methodology. Manage meetings, track KPIs, and align your team.",
+          "The Business Operating System helps you run your company with the EOS methodology. Manage meetings, track KPIs, set goals, and align your team.",
         link: { label: "Go to Business OS \u2192", href: "/bos" },
       },
     },
     {
-      pattern: /project(?!s?[\s]*synced)/i,
+      pattern: /project|job|work.*order/i,
       response: {
         message:
-          "View all your synced projects, their status, and associated agent activity.",
+          "View all your synced projects, their status, timelines, and associated agent activity.",
         link: { label: "Go to Projects \u2192", href: "/projects" },
       },
     },
     {
-      pattern: /customer|lead|crm/i,
+      pattern: /customer|client|lead|contact|crm|pipeline/i,
       response: {
         message:
-          "View your customer pipeline, lead scores, and contact history.",
+          "View your customer pipeline, lead scores, contact history, and communication timeline.",
         link: { label: "Go to Customers \u2192", href: "/customers" },
       },
     },
     {
-      pattern: /profile|name|email|avatar/i,
+      pattern: /profile|my name|my email|avatar|photo|picture/i,
       response: {
         message:
-          "Update your profile information, avatar, and contact details.",
-        link: {
-          label: "Go to Profile \u2192",
-          href: "/settings/profile",
-        },
+          "Update your profile information, avatar, and contact details from the Profile page.",
+        link: { label: "Go to Profile \u2192", href: "/settings/profile" },
       },
     },
     {
-      pattern: /design|kitchen|bath|3d/i,
+      pattern: /design|kitchen|bath|3d|layout|cabinet|render/i,
       response: {
         message:
-          "Use the AI-powered design tool to create kitchen and bathroom layouts.",
-        link: {
-          label: "Go to Design Tool \u2192",
-          href: "/design/kitchen-bath",
-        },
+          "Use the AI-powered design tool to create kitchen and bathroom layouts with 3D rendering.",
+        link: { label: "Go to Design Tool \u2192", href: "/design/kitchen-bath" },
+      },
+    },
+    {
+      pattern: /dashboard|overview|home|main/i,
+      response: {
+        message:
+          "The Dashboard shows a real-time overview of your AI agent workforce — active agents, pending escalations, today's conversations, and the daily briefing.",
+        link: { label: "Go to Dashboard \u2192", href: "/dashboard" },
+      },
+    },
+    {
+      pattern: /onboarding|get.*start|set.?up|first.*time|new.*here|tutorial|guide|walkthrough/i,
+      response: {
+        message:
+          "The onboarding wizard walks you through connecting integrations, configuring agents, and inviting your team. You can restart it anytime.",
+        link: { label: "Go to Onboarding \u2192", href: "/onboarding" },
+      },
+    },
+    {
+      pattern: /help|support|contact|phone|call|chat|talk.*human|real.*person/i,
+      response: {
+        message:
+          "You can email us at support@apexintelligence.ai for direct support. Owners and Admins can also schedule a call from the Help panel.",
+      },
+    },
+    {
+      pattern: /estimate|bid|quote|proposal/i,
+      response: {
+        message:
+          "The Estimate Engine agent generates detailed project cost estimates from specs and pricing data. View pending estimates in Approvals or check the agent's history.",
+        link: { label: "Go to Approvals \u2192", href: "/approvals" },
+      },
+    },
+    {
+      pattern: /webhook|api|developer|automation|zapier|slack/i,
+      response: {
+        message:
+          "Manage external integrations and automation tools like Slack and Zapier from the Integrations page.",
+        link: { label: "Go to Integrations \u2192", href: "/settings/integrations" },
       },
     },
   ];
