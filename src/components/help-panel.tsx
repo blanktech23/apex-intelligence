@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   MessageCircleQuestion,
   X,
@@ -708,15 +709,13 @@ function ChatBubble({
         {/* Deep link button */}
         {msg.link && (
           <div className={isUser ? "flex justify-end" : ""}>
-            <button
-              onClick={() => {
-                /* In a real app: router.push(msg.link.href) */
-              }}
+            <Link
+              href={msg.link.href}
               className="inline-flex items-center gap-1.5 rounded-lg border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
             >
               {msg.link.label}
               <ExternalLink className="h-3 w-3" />
-            </button>
+            </Link>
           </div>
         )}
 
@@ -777,6 +776,7 @@ export function HelpPanel() {
 
   const { role } = useRole();
   const pathname = usePathname();
+  const router = useRouter();
   const canScheduleCall = role === "owner" || role === "admin";
 
   const panelRef = useRef<HTMLDivElement>(null);
@@ -1089,14 +1089,16 @@ export function HelpPanel() {
                 {quickLinks.map((link) => {
                   const Icon = link.icon;
                   return (
-                    <button
+                    <Link
                       key={link.label}
+                      href={link.href}
+                      onClick={handleClose}
                       className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[13px] text-foreground transition-colors hover:bg-muted/80"
                     >
                       <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
                       <span className="flex-1">{link.label}</span>
-                      <ExternalLink className="h-3 w-3 text-muted-foreground/40" />
-                    </button>
+                      <ChevronRight className="h-3 w-3 text-muted-foreground/40" />
+                    </Link>
                   );
                 })}
               </div>
@@ -1129,12 +1131,22 @@ export function HelpPanel() {
                 Contact Support
               </h3>
               <div className="space-y-2 rounded-lg border border-border bg-muted/20 p-3.5">
-                <div className="flex items-center gap-2.5 text-[13px] text-foreground">
+                <a
+                  href="mailto:support@apexintelligence.ai"
+                  className="flex items-center gap-2.5 text-[13px] text-foreground transition-colors hover:text-primary"
+                >
                   <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
                   <span>support@apexintelligence.ai</span>
-                </div>
+                  <ExternalLink className="ml-auto h-3 w-3 text-muted-foreground/40" />
+                </a>
                 {canScheduleCall && (
-                  <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary/10 px-4 py-2 text-[13px] font-medium text-primary transition-colors hover:bg-primary/20">
+                  <button
+                    onClick={() => {
+                      toast.success("Opening scheduling page...");
+                      handleClose();
+                    }}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary/10 px-4 py-2 text-[13px] font-medium text-primary transition-colors hover:bg-primary/20"
+                  >
                     <Calendar className="h-3.5 w-3.5" />
                     Schedule a call
                   </button>
