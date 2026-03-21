@@ -1276,7 +1276,7 @@ export default function GoalsPage() {
             Track quarterly Rocks and milestone progress
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* AI Assist */}
           <Button
             variant="outline"
@@ -1329,12 +1329,13 @@ export default function GoalsPage() {
 
       {/* Quarter Tabs + View Toggle */}
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <div className="glass rounded-xl p-1.5 inline-flex gap-1">
+        <div className="glass rounded-xl p-1.5 overflow-x-auto">
+          <div className="inline-flex gap-1 whitespace-nowrap">
           {quarters.map((q) => (
             <button
               key={q}
               onClick={() => setActiveQuarter(q)}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+              className={`shrink-0 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
                 activeQuarter === q
                   ? "bg-indigo-600 text-primary-foreground shadow-lg shadow-indigo-500/25"
                   : "text-muted-foreground hover:text-foreground hover:bg-card"
@@ -1343,6 +1344,7 @@ export default function GoalsPage() {
               {q}
             </button>
           ))}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {/* View toggle */}

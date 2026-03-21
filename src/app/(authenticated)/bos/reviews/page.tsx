@@ -1317,12 +1317,13 @@ export default function ReviewsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 rounded-lg bg-muted/50 p-1 w-fit">
+      <div className="overflow-x-auto rounded-lg bg-muted/50 p-1 w-fit max-w-full">
+        <div className="inline-flex items-center gap-1 whitespace-nowrap">
         {(['current', 'past', 'templates'] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
+            className={`shrink-0 rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
               activeTab === tab
                 ? 'bg-background text-foreground shadow-sm'
                 : 'text-muted-foreground hover:text-foreground'
@@ -1333,6 +1334,7 @@ export default function ReviewsPage() {
             {tab === 'templates' && 'Templates'}
           </button>
         ))}
+        </div>
       </div>
 
       {/* Current Cycle */}
@@ -1364,7 +1366,7 @@ export default function ReviewsPage() {
                   Review period: January 1 - March 31, 2026
                 </p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <div className="text-right">
                   <p className="text-sm font-medium text-foreground">
                     {completedCount} of {totalCount} reviews completed
@@ -1373,7 +1375,7 @@ export default function ReviewsPage() {
                     {Math.round((completedCount / totalCount) * 100)}% complete
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <Button
                     size="sm"
                     variant="ghost"
@@ -1549,14 +1551,14 @@ export default function ReviewsPage() {
                 className="glass rounded-xl transition-all duration-300"
               >
                 <div
-                  className="flex items-center justify-between p-5 cursor-pointer hover:bg-muted/20 rounded-xl transition-colors"
+                  className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between p-5 cursor-pointer hover:bg-muted/20 rounded-xl transition-colors"
                   onClick={() => setPastCycleExpanded(isExpanded ? null : cycle.period)}
                 >
                   <div>
                     <h3 className="text-sm font-semibold text-foreground">
                       {cycle.period} Review Cycle
                     </h3>
-                    <div className="mt-1 flex items-center gap-4 text-xs text-muted-foreground">
+                    <div className="mt-1 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1.5">
                         <Users className="h-3.5 w-3.5" />
                         {cycle.completed} reviews
@@ -1573,7 +1575,7 @@ export default function ReviewsPage() {
                       </Badge>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <Button
                       variant="ghost"
                       size="sm"

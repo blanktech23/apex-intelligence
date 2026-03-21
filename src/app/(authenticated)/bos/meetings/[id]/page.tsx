@@ -810,7 +810,7 @@ function IDSContent({
       <p className="text-sm text-muted-foreground">
         Identify, Discuss, Solve. Vote to prioritize issues, then work through them one at a time.
       </p>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <Input
           placeholder="Add an issue..."
           value={newIssue}
@@ -821,7 +821,7 @@ function IDSContent({
               setNewIssue('');
             }
           }}
-          className="h-9 rounded-lg border-border bg-muted/30 text-sm"
+          className="h-9 min-w-0 flex-1 rounded-lg border-border bg-muted/30 text-sm"
         />
         <div className="flex items-center rounded-lg border border-border bg-muted/30 overflow-hidden">
           {(['High', 'Medium', 'Low'] as const).map((p) => (

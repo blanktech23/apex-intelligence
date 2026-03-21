@@ -257,9 +257,9 @@ export default function MeetingRecapPage() {
 
         {/* Header */}
         <div className="glass rounded-xl p-6">
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <h1 className="text-xl font-bold text-foreground">
                   Leadership Team Weekly Sync
                 </h1>
@@ -291,7 +291,7 @@ export default function MeetingRecapPage() {
             </div>
 
             {/* Export buttons */}
-            <div className="flex shrink-0 gap-2">
+            <div className="flex flex-wrap shrink-0 gap-2">
               <Button
                 variant="ghost"
                 size="sm"

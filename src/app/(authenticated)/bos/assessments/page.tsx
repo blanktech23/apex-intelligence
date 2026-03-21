@@ -776,7 +776,8 @@ export default function AssessmentsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 rounded-lg bg-muted/50 p-1 w-fit">
+      <div className="overflow-x-auto rounded-lg bg-muted/50 p-1 w-fit max-w-full">
+        <div className="inline-flex items-center gap-1 whitespace-nowrap">
         {([
           { key: 'baseline' as const, label: 'Baseline Assessment' },
           { key: 'org-fit' as const, label: 'Organizational Fit' },
@@ -785,7 +786,7 @@ export default function AssessmentsPage() {
           <button
             key={key}
             onClick={() => setActiveTab(key)}
-            className={`rounded-md px-4 py-1.5 text-sm font-medium transition-all flex items-center gap-1.5 ${
+            className={`shrink-0 rounded-md px-4 py-1.5 text-sm font-medium transition-all flex items-center gap-1.5 ${
               activeTab === key
                 ? 'bg-background text-foreground shadow-sm'
                 : 'text-muted-foreground hover:text-foreground'
@@ -802,6 +803,7 @@ export default function AssessmentsPage() {
             )}
           </button>
         ))}
+        </div>
       </div>
 
       {/* ================================================================ */}

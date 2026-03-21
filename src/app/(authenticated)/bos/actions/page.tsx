@@ -543,7 +543,7 @@ export default function ActionsPage() {
             Track tasks, to-dos, and follow-ups across your team
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="outline"
             className="gap-2 text-sm border-border bg-muted/30 hover:bg-muted/50"
@@ -622,12 +622,13 @@ export default function ActionsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="glass rounded-xl p-1.5 inline-flex gap-1">
+      <div className="glass rounded-xl p-1.5 overflow-x-auto">
+        <div className="inline-flex gap-1 whitespace-nowrap">
         {tabItems.map((tab) => (
           <button
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
-            className={`rounded-lg px-4 py-2 text-sm font-medium transition-all flex items-center gap-2 ${
+            className={`shrink-0 rounded-lg px-4 py-2 text-sm font-medium transition-all flex items-center gap-2 ${
               activeTab === tab.value
                 ? "bg-indigo-600 text-primary-foreground shadow-lg shadow-indigo-500/25"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
@@ -645,6 +646,7 @@ export default function ActionsPage() {
             </span>
           </button>
         ))}
+        </div>
       </div>
 
       {/* Filters */}

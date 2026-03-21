@@ -602,7 +602,7 @@ export default function MeetingsPage() {
     <div>
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
               Meeting Hub
@@ -728,12 +728,13 @@ export default function MeetingsPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex items-center gap-1 rounded-lg bg-muted/50 p-1 w-fit">
+        <div className="overflow-x-auto rounded-lg bg-muted/50 p-1 w-fit max-w-full">
+          <div className="inline-flex items-center gap-1 whitespace-nowrap">
           {(['upcoming', 'past', 'templates'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
+              className={`shrink-0 rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
                 activeTab === tab
                   ? 'bg-background text-foreground shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
@@ -744,6 +745,7 @@ export default function MeetingsPage() {
               {tab === 'templates' && 'Templates'}
             </button>
           ))}
+          </div>
         </div>
 
         {/* Content */}

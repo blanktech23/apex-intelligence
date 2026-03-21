@@ -470,8 +470,8 @@ export default function AnnouncementsPage() {
                 )}
 
                 {/* Author header */}
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
                     <Avatar className="h-9 w-9">
                       <AvatarFallback className={`${ann.author.color} text-xs`}>
                         {ann.author.initials}
@@ -491,7 +491,7 @@ export default function AnnouncementsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
+                  <div className="flex flex-wrap items-center gap-2 shrink-0">
                     {/* Pin button */}
                     <button
                       onClick={() => togglePin(ann.id)}

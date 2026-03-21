@@ -809,7 +809,7 @@ export default function IssuesPage() {
       </div>
 
       {/* Short-term / Long-term toggle */}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <div className="glass rounded-xl p-1 inline-flex gap-1">
           {([
             { label: "All Issues", value: "all_issues" as ListMode },
@@ -864,7 +864,8 @@ export default function IssuesPage() {
       </div>
 
       {/* Tabs */}
-      <div className="glass rounded-xl p-1.5 inline-flex gap-1">
+      <div className="glass rounded-xl p-1.5 overflow-x-auto">
+        <div className="inline-flex gap-1 whitespace-nowrap">
         {tabs.map((tab) => (
           <button
             key={tab.value}
@@ -873,7 +874,7 @@ export default function IssuesPage() {
               setOpenDropdown(null);
               setActiveTab(tab.value);
             }}
-            className={`rounded-lg px-4 py-2 text-sm font-medium transition-all flex items-center gap-2 ${
+            className={`shrink-0 rounded-lg px-4 py-2 text-sm font-medium transition-all flex items-center gap-2 ${
               activeTab === tab.value
                 ? "bg-indigo-600 text-primary-foreground shadow-lg shadow-indigo-500/25"
                 : "text-muted-foreground hover:text-foreground hover:bg-card"
@@ -891,6 +892,7 @@ export default function IssuesPage() {
             </span>
           </button>
         ))}
+        </div>
       </div>
 
       {/* Filters */}
