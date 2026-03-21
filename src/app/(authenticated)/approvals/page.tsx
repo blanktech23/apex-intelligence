@@ -24,6 +24,7 @@ import {
   Eye,
   PauseCircle,
   Users,
+  Save,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -270,6 +271,16 @@ const mockApprovals: ApprovalAction[] = [
 ];
 
 /* ------------------------------------------------------------------ */
+/*  Helper: build editable content from an approval item               */
+/* ------------------------------------------------------------------ */
+
+function getEditableContent(action: ApprovalAction): string {
+  if (action.preview) return action.preview;
+  if (action.details && action.details.length > 0) return action.details.join("\n");
+  return action.title;
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -283,6 +294,17 @@ export default function ApprovalsPage() {
   const [rejectTarget, setRejectTarget] = useState<string | null>(null);
   const [rejectReason, setRejectReason] = useState("");
   const [flashApproved, setFlashApproved] = useState<string | null>(null);
+
+  /* Fix 2: Store rejection reasons per item */
+  const [rejectionReasons, setRejectionReasons] = useState<Record<string, string>>({});
+
+  /* Fix 1: Edit dialog state */
+  const [editTarget, setEditTarget] = useState<ApprovalAction | null>(null);
+  const [editedContent, setEditedContent] = useState("");
+
+  /* Fix 1 & 5: Track which items have been edited, and status timestamps */
+  const [editedItems, setEditedItems] = useState<Set<string>>(new Set());
+  const [statusTimestamps, setStatusTimestamps] = useState<Record<string, string>>({});
 
   // RBAC: Designer, Bookkeeper, Viewer cannot access approvals
   if (!config.canApprove) {
@@ -320,6 +342,7 @@ export default function ApprovalsPage() {
     setFlashApproved(id);
     setTimeout(() => {
       setStatuses((prev) => ({ ...prev, [id]: "approved" }));
+      setStatusTimestamps((prev) => ({ ...prev, [id]: "just now" }));
       setFlashApproved(null);
       toast.success("Action approved successfully");
     }, 600);
@@ -330,12 +353,35 @@ export default function ApprovalsPage() {
     setRejectReason("");
   };
 
+  /* Fix 2: Store rejection reason and include in toast */
   const confirmReject = () => {
     if (rejectTarget) {
+      const reason = rejectReason.trim();
       setStatuses((prev) => ({ ...prev, [rejectTarget]: "rejected" }));
+      setStatusTimestamps((prev) => ({ ...prev, [rejectTarget]: "just now" }));
+      if (reason) {
+        setRejectionReasons((prev) => ({ ...prev, [rejectTarget]: reason }));
+      }
       setRejectTarget(null);
       setRejectReason("");
-      toast.success("Action rejected");
+      const truncated = reason.length > 60 ? reason.slice(0, 60) + "..." : reason;
+      toast.success(reason ? `Action rejected: ${truncated}` : "Action rejected");
+    }
+  };
+
+  /* Fix 1: Open the edit dialog */
+  const handleEdit = (action: ApprovalAction) => {
+    setEditTarget(action);
+    setEditedContent(getEditableContent(action));
+  };
+
+  /* Fix 1: Save edits */
+  const handleSaveEdit = () => {
+    if (editTarget) {
+      setEditedItems((prev) => new Set(prev).add(editTarget.id));
+      setEditTarget(null);
+      setEditedContent("");
+      toast.success("Changes saved \u2014 ready for approval");
     }
   };
 
@@ -412,27 +458,27 @@ export default function ApprovalsPage() {
           </div>
         </div>
 
-        {/* Approved today */}
+        {/* Fix 3: Approved today — reactive count */}
         <div className="glass glow-primary rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-green-500/10">
               <CheckCircle2 className="h-5 w-5 text-green-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">34</p>
+              <p className="text-2xl font-bold text-foreground">{counts.approved}</p>
               <p className="text-xs text-muted-foreground">Approved Today</p>
             </div>
           </div>
         </div>
 
-        {/* Avg response time */}
+        {/* Fix 3: Avg response time — realistic static value */}
         <div className="glass glow-primary rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10">
               <BarChart3 className="h-5 w-5 text-blue-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">4.2 min</p>
+              <p className="text-2xl font-bold text-foreground">&lt; 5 min</p>
               <p className="text-xs text-muted-foreground">
                 Avg Response Time
               </p>
@@ -460,11 +506,14 @@ export default function ApprovalsPage() {
             const isRejected = status === "rejected";
             const isPending = status === "pending";
             const isFlashing = flashApproved === action.id;
+            const isEdited = editedItems.has(action.id);
+            const rejectionReason = rejectionReasons[action.id];
+            const statusTime = statusTimestamps[action.id];
 
             return (
               <div
                 key={action.id}
-                className={`glass rounded-xl border transition-all duration-300 ${
+                className={`glass rounded-xl border transition-all duration-500 ${
                   isFlashing
                     ? "border-green-500/60 bg-green-500/5 scale-[0.99]"
                     : isApproved
@@ -472,7 +521,7 @@ export default function ApprovalsPage() {
                     : isRejected
                     ? "border-red-500/30 opacity-60"
                     : "border-border"
-                }`}
+                } ${!isPending && !isFlashing ? "animate-in fade-in slide-in-from-bottom-2 duration-500" : ""}`}
               >
                 <div className="p-5">
                   {/* Top bar: type icon + agent + priority + timestamp + status */}
@@ -500,17 +549,25 @@ export default function ApprovalsPage() {
                       {priority.label}
                     </span>
 
-                    {/* Status badge (when not pending) */}
+                    {/* Fix 1: Edited badge */}
+                    {isEdited && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/10 px-2 py-0.5 text-[11px] font-semibold text-amber-400 ring-1 ring-amber-400/20">
+                        <Pencil className="h-2.5 w-2.5" />
+                        Edited
+                      </span>
+                    )}
+
+                    {/* Fix 5: Status badge with timestamp (when not pending) */}
                     {isApproved && (
                       <span className="inline-flex items-center gap-1 rounded-full bg-green-400/10 px-2 py-0.5 text-[11px] font-semibold text-green-400 ring-1 ring-green-400/20">
                         <CheckCircle2 className="h-3 w-3" />
-                        Approved
+                        Approved {statusTime && <span className="font-normal opacity-70">{statusTime}</span>}
                       </span>
                     )}
                     {isRejected && (
                       <span className="inline-flex items-center gap-1 rounded-full bg-red-400/10 px-2 py-0.5 text-[11px] font-semibold text-red-400 ring-1 ring-red-400/20">
                         <XCircle className="h-3 w-3" />
-                        Rejected
+                        Rejected {statusTime && <span className="font-normal opacity-70">{statusTime}</span>}
                       </span>
                     )}
 
@@ -530,6 +587,13 @@ export default function ApprovalsPage() {
                   >
                     {action.title}
                   </h3>
+
+                  {/* Fix 2: Show rejection reason below title */}
+                  {isRejected && rejectionReason && (
+                    <p className="mt-1.5 text-xs text-muted-foreground/70 italic">
+                      Reason: {rejectionReason}
+                    </p>
+                  )}
 
                   {/* Preview text */}
                   {action.preview && (
@@ -561,7 +625,7 @@ export default function ApprovalsPage() {
                     </div>
                   )}
 
-                  {/* Action buttons */}
+                  {/* Fix 5: Action buttons — fully hidden when not pending, replaced by status */}
                   {isPending && !isFlashing && (
                     <div className="mt-4 flex flex-wrap items-center gap-2">
                       <Button
@@ -575,7 +639,7 @@ export default function ApprovalsPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => toast.info(`Opening approval review for ${action.id}...`)}
+                        onClick={() => handleEdit(action)}
                         className="h-8 gap-1.5 rounded-lg border-amber-500/30 px-3 text-xs font-medium text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
                       >
                         {editButtonIcon(action.buttons.edit)}
@@ -625,6 +689,7 @@ export default function ApprovalsPage() {
             className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
           />
           <DialogFooter>
+            {/* Fix 4: Use correct DialogClose pattern — wrap button as child */}
             <DialogClose
               render={
                 <Button
@@ -645,6 +710,153 @@ export default function ApprovalsPage() {
               Reject Action
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Fix 1: Edit dialog */}
+      <Dialog
+        open={editTarget !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setEditTarget(null);
+            setEditedContent("");
+          }
+        }}
+      >
+        <DialogContent className="sm:max-w-lg">
+          {editTarget && (() => {
+            const EditTypeIcon = editTarget.typeIcon;
+            const EditAgentIcon = editTarget.agent.icon;
+            return (
+              <>
+                <DialogHeader>
+                  <DialogTitle className="text-sm leading-snug">
+                    {editTarget.title}
+                  </DialogTitle>
+                  <DialogDescription>
+                    <span className="flex items-center gap-2 mt-1">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-primary/[0.06] px-2 py-0.5">
+                        <EditAgentIcon className="h-3 w-3 text-primary" />
+                        <span className="text-xs font-medium text-primary">{editTarget.agent.name}</span>
+                      </span>
+                      <span className="inline-flex items-center gap-1 rounded-md bg-muted/50 px-2 py-0.5">
+                        <EditTypeIcon className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs font-medium text-muted-foreground">{editTarget.type}</span>
+                      </span>
+                    </span>
+                  </DialogDescription>
+                </DialogHeader>
+
+                {/* Edit area — adapts to content type */}
+                <div className="space-y-3">
+                  {editTarget.type === "Email Send" ? (
+                    /* Email: subject/recipient/body fields */
+                    <div className="space-y-2">
+                      <div>
+                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Recipient</label>
+                        <input
+                          type="text"
+                          defaultValue={
+                            editTarget.id === "apr-001" ? "Sarah Chen" :
+                            editTarget.id === "apr-007" ? "Mark & Lisa Thompson" :
+                            "Recipient"
+                          }
+                          className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Subject</label>
+                        <input
+                          type="text"
+                          defaultValue={editTarget.title}
+                          className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Body</label>
+                        <textarea
+                          value={editedContent}
+                          onChange={(e) => setEditedContent(e.target.value)}
+                          rows={5}
+                          className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+                        />
+                      </div>
+                    </div>
+                  ) : editTarget.type === "Estimate Generation" || editTarget.type === "Invoice Creation" ? (
+                    /* Estimates/Invoices: editable line items */
+                    <div className="space-y-2">
+                      <label className="text-xs font-medium text-muted-foreground mb-1 block">Line Items</label>
+                      <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-3">
+                        {editedContent.split("\n").map((line, idx) => {
+                          const parts = line.split(" \u2014 ");
+                          const name = parts[0] || "";
+                          const amount = parts[1] || "";
+                          return (
+                            <div key={idx} className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                defaultValue={name}
+                                className="flex-1 rounded-md border border-border bg-background px-2 py-1.5 text-xs text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+                              />
+                              <input
+                                type="text"
+                                defaultValue={amount}
+                                className="w-28 rounded-md border border-border bg-background px-2 py-1.5 text-xs text-foreground text-right focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : editTarget.type === "Schedule Change" ? (
+                    /* Schedule: editable text block */
+                    <div className="space-y-2">
+                      <label className="text-xs font-medium text-muted-foreground mb-1 block">Schedule Details</label>
+                      <textarea
+                        value={editedContent}
+                        onChange={(e) => setEditedContent(e.target.value)}
+                        rows={4}
+                        className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+                      />
+                    </div>
+                  ) : (
+                    /* Default: generic textarea */
+                    <div className="space-y-2">
+                      <label className="text-xs font-medium text-muted-foreground mb-1 block">Content</label>
+                      <textarea
+                        value={editedContent}
+                        onChange={(e) => setEditedContent(e.target.value)}
+                        rows={5}
+                        className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <DialogFooter>
+                  <DialogClose
+                    render={
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 rounded-lg text-xs"
+                      />
+                    }
+                  >
+                    Cancel
+                  </DialogClose>
+                  <Button
+                    size="sm"
+                    onClick={handleSaveEdit}
+                    className="h-8 gap-1.5 rounded-lg bg-primary px-4 text-xs font-medium text-primary-foreground hover:bg-primary/90"
+                  >
+                    <Save className="h-3.5 w-3.5" />
+                    Save Changes
+                  </Button>
+                </DialogFooter>
+              </>
+            );
+          })()}
         </DialogContent>
       </Dialog>
     </div>
