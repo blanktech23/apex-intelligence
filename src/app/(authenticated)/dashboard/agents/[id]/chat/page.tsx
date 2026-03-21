@@ -3211,10 +3211,11 @@ export default function AgentChatPage() {
                 <h1 className="truncate max-w-[120px] sm:max-w-none text-sm font-semibold text-foreground">
                   {agentName}
                 </h1>
-                <span className="inline-flex items-center gap-1 rounded-full border border-green-500/20 bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-400">
+                <span className="hidden sm:inline-flex items-center gap-1 rounded-full border border-green-500/20 bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-400">
                   <span className="size-1.5 rounded-full bg-green-400" />
                   Online
                 </span>
+                <span className="sm:hidden size-2 rounded-full bg-green-400" />
               </div>
               <p className="hidden sm:block text-[11px] text-muted-foreground">
                 Avg response: 1.8s
@@ -3241,7 +3242,7 @@ export default function AgentChatPage() {
               }`}
             >
               <Palette className="size-3.5" />
-              {canvasOpen ? "Close Canvas" : "Open Canvas"}
+              <span className="hidden sm:inline">{canvasOpen ? "Close Canvas" : "Open Canvas"}</span>
             </button>
           )}
           <button className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-500/15 px-3.5 py-2 text-xs font-semibold text-indigo-400 ring-1 ring-indigo-500/25 transition-all hover:bg-indigo-500/25">

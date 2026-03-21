@@ -16,7 +16,7 @@ export function DegradedBanner() {
   if (!visible) return null;
 
   return (
-    <div className="relative z-50 flex items-center justify-center gap-3 bg-amber-500/15 border-b border-amber-500/20 px-4 py-2.5 pt-[max(0.625rem,env(safe-area-inset-top))]">
+    <div className="relative z-50 flex items-center justify-center gap-3 bg-amber-500/15 border-b border-amber-500/20 pl-16 pr-4 lg:px-4 py-2.5 pt-[max(0.625rem,env(safe-area-inset-top))]">
       <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
       <p
         className="cursor-pointer text-sm font-medium text-amber-700 dark:text-amber-300"
