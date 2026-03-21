@@ -3227,18 +3227,29 @@ export default function AgentChatPage() {
               <Clock className="size-4" />
             </button>
             {id === "design-spec-assistant" && (
-              <button
-                onClick={() => setCanvasOpen(!canvasOpen)}
-                className={`inline-flex items-center gap-1.5 rounded-lg p-2 sm:px-3.5 sm:py-2 text-xs font-semibold transition-all ${
-                  canvasOpen
-                    ? "bg-cyan-500/25 text-cyan-300 ring-1 ring-cyan-400/40"
-                    : "bg-cyan-500/15 text-cyan-400 ring-1 ring-cyan-500/25 hover:bg-cyan-500/25"
-                }`}
-                title={canvasOpen ? "Close Canvas" : "Open Canvas"}
-              >
-                <Palette className="size-4" />
-                <span className="hidden sm:inline">{canvasOpen ? "Close Canvas" : "Open Canvas"}</span>
-              </button>
+              <>
+                {/* Mobile: show toast instead of opening canvas */}
+                <button
+                  onClick={() => toast.info("Canvas is only available on desktop. Please log into your computer to access this feature.")}
+                  className="inline-flex items-center rounded-lg p-2 text-xs font-semibold bg-cyan-500/15 text-cyan-400 ring-1 ring-cyan-500/25 transition-all hover:bg-cyan-500/25 lg:hidden"
+                  title="Open Canvas"
+                >
+                  <Palette className="size-4" />
+                </button>
+                {/* Desktop: open canvas normally */}
+                <button
+                  onClick={() => setCanvasOpen(!canvasOpen)}
+                  className={`hidden lg:inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all ${
+                    canvasOpen
+                      ? "bg-cyan-500/25 text-cyan-300 ring-1 ring-cyan-400/40"
+                      : "bg-cyan-500/15 text-cyan-400 ring-1 ring-cyan-500/25 hover:bg-cyan-500/25"
+                  }`}
+                  title={canvasOpen ? "Close Canvas" : "Open Canvas"}
+                >
+                  <Palette className="size-4" />
+                  {canvasOpen ? "Close Canvas" : "Open Canvas"}
+                </button>
+              </>
             )}
             <button
               className="inline-flex items-center rounded-lg bg-indigo-500/15 p-2 sm:gap-1.5 sm:px-3.5 sm:py-2 text-xs font-semibold text-indigo-400 ring-1 ring-indigo-500/25 transition-all hover:bg-indigo-500/25"
