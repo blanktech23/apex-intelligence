@@ -25,7 +25,7 @@ export function AiUsageBanner({ percent }: AiUsageBannerProps) {
           AI usage limit reached. Agent execution paused.
         </span>
         <Link
-          href="/settings/billing/usage"
+          href="/reports/agent-roi"
           className="ml-1 font-medium text-red-400 underline underline-offset-2 transition-colors hover:text-red-300"
         >
           Upgrade plan

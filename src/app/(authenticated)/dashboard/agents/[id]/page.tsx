@@ -30,6 +30,10 @@ import {
   FileText,
   FolderKanban,
   ClipboardCheck,
+  Plug,
+  ExternalLink,
+  CreditCard,
+  HardDrive,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -873,6 +877,50 @@ const agentLogsMap: Record<string, LogEntry[]> = {
 };
 
 // ---------------------------------------------------------------------------
+// Integration dependency data (shared with agents list)
+// ---------------------------------------------------------------------------
+
+type IntegrationStatus = "connected" | "not_connected";
+
+interface AgentIntegrationInfo {
+  name: string;
+  icon: LucideIcon;
+  iconBg: string;
+  status: IntegrationStatus;
+  lastSync?: string;
+}
+
+const integrationRegistry: Record<
+  string,
+  { icon: LucideIcon; iconBg: string; status: IntegrationStatus; lastSync?: string }
+> = {
+  QuickBooks: { icon: Plug, iconBg: "bg-emerald-500/15", status: "connected", lastSync: "2 min ago" },
+  "Google Calendar": { icon: Calendar, iconBg: "bg-blue-500/15", status: "connected", lastSync: "5 min ago" },
+  Gmail: { icon: Mail, iconBg: "bg-red-500/15", status: "connected", lastSync: "1 min ago" },
+  Stripe: { icon: CreditCard, iconBg: "bg-indigo-500/15", status: "connected", lastSync: "10 min ago" },
+  JobTread: { icon: HardDrive, iconBg: "bg-orange-500/15", status: "not_connected" },
+  Slack: { icon: MessageSquare, iconBg: "bg-purple-500/15", status: "not_connected" },
+};
+
+const agentIntegrationMap: Record<string, string[]> = {
+  "discovery-concierge": ["JobTread", "Google Calendar", "Gmail"],
+  "estimate-engine": ["JobTread", "QuickBooks"],
+  "operations-controller": ["QuickBooks", "Stripe"],
+  "executive-navigator": ["QuickBooks", "JobTread"],
+  "project-orchestrator": ["JobTread", "Google Calendar"],
+  "design-spec-assistant": ["JobTread", "Google Calendar"],
+  "support-agent": [],
+};
+
+function getIntegrationsForAgent(agentId: string): AgentIntegrationInfo[] {
+  const names = agentIntegrationMap[agentId] || [];
+  return names.map((name) => ({
+    name,
+    ...integrationRegistry[name],
+  }));
+}
+
+// ---------------------------------------------------------------------------
 // New ID → Legacy Data ID Mapping
 // ---------------------------------------------------------------------------
 
@@ -1078,6 +1126,120 @@ function OverviewTab({ agent }: { agent: AgentDetail }) {
           </ResponsiveContainer>
         </div>
       </div>
+
+      {/* Connected Integrations */}
+      {(() => {
+        const integrations = getIntegrationsForAgent(agent.id);
+        if (integrations.length === 0) return null;
+        const allConnected = integrations.every((i) => i.status === "connected");
+        const disconnected = integrations.filter((i) => i.status === "not_connected");
+        return (
+          <div className="glass rounded-xl p-6">
+            <div className="mb-4 flex items-center gap-2">
+              <Plug className="size-4 text-primary" />
+              <h3 className="text-sm font-semibold text-foreground">
+                Connected Integrations
+              </h3>
+              <span className="ml-1 text-[11px] text-muted-foreground/50">
+                {integrations.filter((i) => i.status === "connected").length}/{integrations.length} active
+              </span>
+            </div>
+
+            {/* Status banner */}
+            {allConnected ? (
+              <div className="mb-4 flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5">
+                <CheckCircle2 className="size-4 text-emerald-400" />
+                <span className="text-sm font-medium text-emerald-400">
+                  All integrations healthy
+                </span>
+              </div>
+            ) : (
+              <div className="mb-4 space-y-2">
+                {disconnected.map((d) => (
+                  <div
+                    key={d.name}
+                    className="flex items-center gap-2 rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-2.5"
+                  >
+                    <AlertTriangle className="size-4 shrink-0 text-amber-400" />
+                    <span className="text-sm text-amber-400">
+                      This agent requires <span className="font-semibold">{d.name}</span> to function.{" "}
+                      <Link
+                        href="/settings/integrations"
+                        className="underline underline-offset-2 transition-colors hover:text-amber-300"
+                      >
+                        Connect it in Settings &gt; Integrations
+                      </Link>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Integration cards */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {integrations.map((integration) => {
+                const IntIcon = integration.icon;
+                const isConnected = integration.status === "connected";
+                return (
+                  <div
+                    key={integration.name}
+                    className={`rounded-xl border p-4 transition-all ${
+                      isConnected
+                        ? "border-emerald-500/20 bg-emerald-500/5"
+                        : "border-red-500/20 bg-red-500/5"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`flex size-9 items-center justify-center rounded-lg ${integration.iconBg}`}
+                        >
+                          <IntIcon
+                            className={`size-4 ${isConnected ? "text-foreground" : "text-muted-foreground"}`}
+                          />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-foreground">
+                            {integration.name}
+                          </p>
+                          {isConnected && integration.lastSync && (
+                            <p className="mt-0.5 text-[11px] text-muted-foreground/60">
+                              Last sync {integration.lastSync}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                          isConnected
+                            ? "bg-emerald-400/10 text-emerald-400"
+                            : "bg-red-400/10 text-red-400"
+                        }`}
+                      >
+                        <span
+                          className={`size-1.5 rounded-full ${
+                            isConnected ? "bg-emerald-400" : "bg-red-400"
+                          }`}
+                        />
+                        {isConnected ? "Connected" : "Not Connected"}
+                      </span>
+                    </div>
+                    {!isConnected && (
+                      <Link
+                        href="/settings/integrations"
+                        className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]"
+                      >
+                        <ExternalLink className="size-3" />
+                        Connect {integration.name}
+                      </Link>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Recent Activity Feed */}
       <div className="glass rounded-xl p-6">

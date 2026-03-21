@@ -43,8 +43,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 const ownerStatsCards = [
   {
     label: "Active Agents",
-    value: "5 of 7",
-    subtitle: "2 paused",
+    value: "6 of 7",
+    subtitle: "1 paused",
     subtitleColor: "text-muted-foreground",
     trend: "neutral" as const,
     icon: Brain,
@@ -78,24 +78,24 @@ const ownerStatsCards = [
     href: "/reports",
   },
   {
-    label: "Monthly AI Spend",
-    value: "$2,847",
-    subtitle: "68% of budget",
-    subtitleColor: "text-amber-400",
+    label: "Monthly Savings",
+    value: "$9,240",
+    subtitle: "326 hrs saved this month",
+    subtitleColor: "text-green-400",
     trend: "up" as const,
     icon: DollarSign,
-    glowClass: "",
-    iconColor: "text-indigo-400",
-    iconBg: "bg-indigo-500/10",
-    href: "/settings/billing",
+    glowClass: "glow-success",
+    iconColor: "text-green-400",
+    iconBg: "bg-green-500/10",
+    href: "/reports/agent-roi",
   },
 ];
 
 const managerStatsCards = [
   {
     label: "Active Agents",
-    value: "5 of 7",
-    subtitle: "2 paused",
+    value: "6 of 7",
+    subtitle: "1 paused",
     subtitleColor: "text-muted-foreground",
     trend: "neutral" as const,
     icon: Brain,
@@ -638,22 +638,22 @@ function EscalationAlertBanner({ role }: { role: Role }) {
   if (dismissed || count === 0 || !canSeeEscalationBanner(role)) return null;
 
   return (
-    <div className="flex items-center justify-between rounded-xl border border-amber-500/20 bg-amber-500/10 px-5 py-3">
+    <div className="flex items-center justify-between rounded-xl border border-amber-600/30 bg-amber-500/15 px-5 py-3">
       <div className="flex items-center gap-3">
-        <AlertTriangle className="size-4 text-amber-400" />
-        <span className="text-sm font-medium text-amber-400">
+        <AlertTriangle className="size-4 text-amber-700 dark:text-amber-300" />
+        <span className="text-sm font-medium text-amber-900 dark:text-amber-100">
           {count} escalation{count !== 1 ? "s" : ""} need{count === 1 ? "s" : ""} your attention
         </span>
         <Link
           href="/escalations"
-          className="text-sm font-medium text-amber-300 underline underline-offset-2 transition-colors hover:text-amber-200"
+          className="text-sm font-semibold text-amber-800 dark:text-amber-200 underline underline-offset-2 transition-colors hover:text-amber-950 dark:hover:text-white"
         >
           View escalations
         </Link>
       </div>
       <button
         onClick={() => setDismissed(true)}
-        className="rounded-md p-1 text-amber-400 transition-colors hover:bg-amber-500/20 hover:text-amber-300"
+        className="rounded-md p-1 text-amber-700 dark:text-amber-300 transition-colors hover:bg-amber-500/20"
       >
         <X className="size-4" />
       </button>

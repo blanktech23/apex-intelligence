@@ -67,6 +67,7 @@ interface QuickStat {
   iconBg: string;
   change?: string;
   changePositive?: boolean;
+  href: string;
 }
 
 interface ChecklistItem {
@@ -89,6 +90,7 @@ const quickStats: QuickStat[] = [
     iconBg: "bg-indigo-500/10",
     change: "+2 this month",
     changePositive: true,
+    href: "/bos/people",
   },
   {
     label: "Active Goals",
@@ -98,6 +100,7 @@ const quickStats: QuickStat[] = [
     iconBg: "bg-green-500/10",
     change: "8 on track",
     changePositive: true,
+    href: "/bos/goals",
   },
   {
     label: "Upcoming Meetings",
@@ -106,6 +109,7 @@ const quickStats: QuickStat[] = [
     iconColor: "text-cyan-400",
     iconBg: "bg-cyan-500/10",
     change: "Next: Tomorrow 9 AM",
+    href: "/bos/meetings",
   },
   {
     label: "Open Issues",
@@ -115,6 +119,7 @@ const quickStats: QuickStat[] = [
     iconBg: "bg-amber-500/10",
     change: "2 overdue",
     changePositive: false,
+    href: "/bos/issues",
   },
 ];
 
@@ -317,33 +322,33 @@ export default function BosHubPage() {
         {quickStats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div
-              key={stat.label}
-              className="glass rounded-xl p-5 transition-all duration-300 glass-hover"
-            >
-              <div className="flex items-start justify-between">
-                <div className={`inline-flex rounded-lg p-2.5 ${stat.iconBg}`}>
-                  <Icon className={`size-5 ${stat.iconColor}`} />
+            <Link key={stat.label} href={stat.href} className="block">
+              <div className="glass rounded-xl p-5 transition-all duration-300 glass-hover cursor-pointer">
+                <div className="flex items-start justify-between">
+                  <div className={`inline-flex rounded-lg p-2.5 ${stat.iconBg}`}>
+                    <Icon className={`size-5 ${stat.iconColor}`} />
+                  </div>
+                  <ArrowRight className="size-4 text-muted-foreground/40" />
                 </div>
-              </div>
-              <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
-                {stat.value}
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
-              {stat.change && (
-                <p
-                  className={`mt-1.5 text-xs font-medium ${
-                    stat.changePositive === true
-                      ? "text-green-600 dark:text-green-400"
-                      : stat.changePositive === false
-                        ? "text-amber-600 dark:text-amber-400"
-                        : "text-muted-foreground"
-                  }`}
-                >
-                  {stat.change}
+                <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
+                  {stat.value}
                 </p>
-              )}
-            </div>
+                <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
+                {stat.change && (
+                  <p
+                    className={`mt-1.5 text-xs font-medium ${
+                      stat.changePositive === true
+                        ? "text-green-600 dark:text-green-400"
+                        : stat.changePositive === false
+                          ? "text-amber-600 dark:text-amber-400"
+                          : "text-muted-foreground"
+                    }`}
+                  >
+                    {stat.change}
+                  </p>
+                )}
+              </div>
+            </Link>
           );
         })}
       </div>

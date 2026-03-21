@@ -10,10 +10,17 @@ import {
   Palette,
   Headset,
   Search,
+  Plug,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useRole } from "@/lib/role-context";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip";
 
 // ---------------------------------------------------------------------------
 // Types & Data
@@ -145,6 +152,45 @@ const filterOptions: Array<{ label: string; value: AgentStatus | "All" }> = [
   { label: "Paused", value: "Paused" },
   { label: "Error", value: "Error" },
 ];
+
+// ---------------------------------------------------------------------------
+// Integration dependency data
+// ---------------------------------------------------------------------------
+
+type IntegrationStatus = "connected" | "not_connected";
+
+interface AgentIntegration {
+  name: string;
+  status: IntegrationStatus;
+  lastSync?: string;
+}
+
+const integrationConnectionStatus: Record<string, { status: IntegrationStatus; lastSync?: string }> = {
+  QuickBooks: { status: "connected", lastSync: "2 min ago" },
+  "Google Calendar": { status: "connected", lastSync: "5 min ago" },
+  Gmail: { status: "connected", lastSync: "1 min ago" },
+  Stripe: { status: "connected", lastSync: "10 min ago" },
+  JobTread: { status: "not_connected" },
+  Slack: { status: "not_connected" },
+};
+
+const agentIntegrations: Record<string, string[]> = {
+  "discovery-concierge": ["JobTread", "Google Calendar", "Gmail"],
+  "estimate-engine": ["JobTread", "QuickBooks"],
+  "operations-controller": ["QuickBooks", "Stripe"],
+  "executive-navigator": ["QuickBooks", "JobTread"],
+  "project-orchestrator": ["JobTread", "Google Calendar"],
+  "design-spec-assistant": ["JobTread", "Google Calendar"],
+  "support-agent": [],
+};
+
+function getAgentIntegrations(agentId: string): AgentIntegration[] {
+  const names = agentIntegrations[agentId] || [];
+  return names.map((name) => ({
+    name,
+    ...integrationConnectionStatus[name],
+  }));
+}
 
 // ---------------------------------------------------------------------------
 // Toggle Component
@@ -287,6 +333,41 @@ export default function AgentsListPage() {
                     {agent.status}
                   </span>
                 </div>
+
+                {/* Integration Dependencies */}
+                {(() => {
+                  const integrations = getAgentIntegrations(agent.id);
+                  if (integrations.length === 0) return null;
+                  return (
+                    <div className="mt-3 flex flex-wrap items-center gap-1.5" onClick={(e) => e.preventDefault()}>
+                      <TooltipProvider>
+                        {integrations.map((integration) => {
+                          const isConnected = integration.status === "connected";
+                          return (
+                            <Tooltip key={integration.name}>
+                              <TooltipTrigger
+                                className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium transition-colors ${
+                                  isConnected
+                                    ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400/90"
+                                    : "border-red-500/20 bg-red-500/10 text-red-400/90"
+                                }`}
+                              >
+                                <Plug className="size-2.5" />
+                                <span className={`size-1.5 rounded-full ${isConnected ? "bg-emerald-400" : "bg-red-400"}`} />
+                                {integration.name}
+                              </TooltipTrigger>
+                              <TooltipContent side="bottom">
+                                {isConnected
+                                  ? `Connected \u2014 Last sync ${integration.lastSync}`
+                                  : "Not connected \u2014 Go to Settings > Integrations"}
+                              </TooltipContent>
+                            </Tooltip>
+                          );
+                        })}
+                      </TooltipProvider>
+                    </div>
+                  );
+                })()}
 
                 <div className="mt-4 grid grid-cols-3 gap-3">
                   <div className="rounded-lg bg-muted/30 px-3 py-2">

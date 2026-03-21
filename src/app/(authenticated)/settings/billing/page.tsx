@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   Sparkles,
   Download,
@@ -13,6 +14,9 @@ import {
   Server,
   X,
   Check,
+  Clock,
+  TrendingUp,
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -53,18 +57,18 @@ const usageBreakdown = [
     format: (n: number) => `${n}`,
   },
   {
-    label: "AI Spend This Month",
+    label: "AI Inference Cost",
     icon: DollarSign,
-    used: 127,
+    used: 59.85,
     limit: 200,
     color: "bg-cyan-400",
     textColor: "text-cyan-400",
-    format: (n: number) => `$${n}`,
+    format: (n: number) => `$${n % 1 === 0 ? n : n.toFixed(2)}`,
   },
   {
     label: "Team Seats",
     icon: Users,
-    used: 8,
+    used: 6,
     limit: 15,
     color: "bg-amber-400",
     textColor: "text-amber-400",
@@ -324,6 +328,56 @@ export default function BillingSettingsPage() {
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* ============================================================ */}
+      {/*  Agent ROI summary                                            */}
+      {/* ============================================================ */}
+      <div className="glass rounded-xl p-6">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4 text-green-400" />
+            <h2 className="text-base font-semibold text-foreground">
+              Agent ROI This Month
+            </h2>
+          </div>
+          <Link
+            href="/reports/agent-roi"
+            className="flex items-center gap-1 text-xs font-medium text-primary transition-colors hover:text-primary/80"
+          >
+            View full breakdown
+            <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Clock className="h-4 w-4 text-green-400" />
+              <span className="text-xs text-muted-foreground">Time Saved</span>
+            </div>
+            <p className="text-2xl font-bold text-foreground">326 hrs</p>
+            <p className="text-xs text-green-600 dark:text-green-400">~41 work days reclaimed</p>
+          </div>
+
+          <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <DollarSign className="h-4 w-4 text-emerald-400" />
+              <span className="text-xs text-muted-foreground">Net Savings</span>
+            </div>
+            <p className="text-2xl font-bold text-foreground">$9,240</p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400">~$111K/yr projected savings</p>
+          </div>
+
+          <div className="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Zap className="h-4 w-4 text-cyan-400" />
+              <span className="text-xs text-muted-foreground">Cost Reduction</span>
+            </div>
+            <p className="text-2xl font-bold text-foreground">94%</p>
+            <p className="text-xs text-cyan-600 dark:text-cyan-400">$560 total vs $9,800 human labor</p>
+          </div>
         </div>
       </div>
 

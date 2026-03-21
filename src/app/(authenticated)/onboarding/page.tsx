@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   Building2,
   Plug,
@@ -23,6 +23,10 @@ import {
   Sparkles,
   X,
   Plus,
+  Loader2,
+  CheckCircle2,
+  ExternalLink,
+  Shield,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,19 +57,22 @@ const steps: StepConfig[] = [
   { number: 5, title: "Review & Launch", description: "Confirm and go live", icon: Rocket },
 ];
 
+type ConnectionStatus = "idle" | "connecting" | "connected";
+
 interface Integration {
   name: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
   iconBg: string;
-  connected: boolean;
+  iconColor: string;
+  scopes: string[];
 }
 
 const integrations: Integration[] = [
-  { name: "QuickBooks", description: "Accounting & invoicing", icon: PlugZap, iconBg: "bg-emerald-500/15", connected: false },
-  { name: "Google Calendar", description: "Scheduling & availability", icon: Calendar, iconBg: "bg-blue-500/15", connected: false },
-  { name: "Gmail", description: "Email communication", icon: Mail, iconBg: "bg-red-500/15", connected: false },
-  { name: "JobTread", description: "Project management", icon: HardDrive, iconBg: "bg-orange-500/15", connected: false },
+  { name: "JobTread", description: "Construction project management", icon: HardDrive, iconBg: "bg-orange-500/15", iconColor: "text-orange-400", scopes: ["Projects", "Estimates", "Contacts"] },
+  { name: "QuickBooks", description: "Accounting & financial reporting", icon: PlugZap, iconBg: "bg-emerald-500/15", iconColor: "text-emerald-400", scopes: ["Reports", "Invoices", "Payments"] },
+  { name: "Google Calendar", description: "Scheduling & availability", icon: Calendar, iconBg: "bg-blue-500/15", iconColor: "text-blue-400", scopes: ["Events", "Free/Busy"] },
+  { name: "Gmail", description: "Email communication", icon: Mail, iconBg: "bg-red-500/15", iconColor: "text-red-400", scopes: ["Drafts", "Send"] },
 ];
 
 interface Agent {
@@ -224,82 +231,127 @@ function CompanyProfileStep() {
 
 function IntegrationsStep({
   connectionState,
-  onToggle,
+  onConnect,
+  onDisconnect,
 }: {
-  connectionState: Record<string, boolean>;
-  onToggle: (name: string) => void;
+  connectionState: Record<string, ConnectionStatus>;
+  onConnect: (name: string) => void;
+  onDisconnect: (name: string) => void;
 }) {
+  const connectedCount = Object.values(connectionState).filter(
+    (s) => s === "connected"
+  ).length;
+
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-semibold text-foreground">
-          Connect Integrations
+          Connect Your Tools
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Link your tools so agents can work across your business systems
+          Connect the services your team uses. Agents will automatically access
+          data from connected services.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="space-y-3">
         {integrations.map((integration) => {
           const Icon = integration.icon;
-          const isConnected = connectionState[integration.name] ?? false;
+          const status = connectionState[integration.name] ?? "idle";
 
           return (
             <div
               key={integration.name}
-              className={`glass rounded-xl border-l-2 p-5 transition-all duration-200 ${
-                isConnected
-                  ? "border-l-green-500/60 bg-muted/30"
-                  : "border-l-border"
+              className={`glass rounded-xl border p-4 transition-all duration-300 ${
+                status === "connected"
+                  ? "border-green-500/30 bg-green-500/[0.03]"
+                  : status === "connecting"
+                    ? "border-indigo-500/30 bg-indigo-500/[0.03]"
+                    : "border-border"
               }`}
             >
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between gap-4">
+                {/* Left: icon + info */}
+                <div className="flex items-center gap-3.5 min-w-0">
                   <div
-                    className={`flex size-10 items-center justify-center rounded-lg ${integration.iconBg}`}
+                    className={`flex size-11 shrink-0 items-center justify-center rounded-xl ${integration.iconBg}`}
                   >
-                    <Icon className="size-5 text-foreground" />
+                    <Icon className={`size-5 ${integration.iconColor}`} />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <h3 className="text-sm font-semibold text-foreground">
                       {integration.name}
                     </h3>
                     <p className="text-xs text-muted-foreground">
                       {integration.description}
                     </p>
+                    {status === "idle" && (
+                      <div className="mt-1.5 flex items-center gap-1">
+                        <Shield className="size-3 text-muted-foreground/50" />
+                        <span className="text-[10px] text-muted-foreground/60">
+                          {integration.scopes.join(" \u00b7 ")}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-              <div className="mt-4">
-                {isConnected ? (
-                  <Button
-                    onClick={() => onToggle(integration.name)}
-                    variant="outline"
-                    size="sm"
-                    className="h-8 gap-1.5 rounded-md border-green-500/20 bg-green-500/10 text-xs font-medium text-green-400 hover:bg-green-500/20"
-                  >
-                    <Check className="size-3.5" />
-                    Connected
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => onToggle(integration.name)}
-                    size="sm"
-                    className="h-8 rounded-md bg-primary px-4 text-xs font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_16px_rgba(99,102,241,0.25)]"
-                  >
-                    Connect
-                  </Button>
-                )}
+
+                {/* Right: status + action */}
+                <div className="flex shrink-0 items-center gap-3">
+                  {status === "idle" && (
+                    <Button
+                      onClick={() => onConnect(integration.name)}
+                      variant="outline"
+                      size="sm"
+                      className="h-8 gap-1.5 rounded-lg border-border px-4 text-xs font-medium text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
+                    >
+                      <ExternalLink className="size-3" />
+                      Connect
+                    </Button>
+                  )}
+
+                  {status === "connecting" && (
+                    <div className="flex items-center gap-2 pr-1">
+                      <Loader2 className="size-4 animate-spin text-indigo-400" />
+                      <span className="text-xs font-medium text-indigo-400">
+                        Connecting...
+                      </span>
+                    </div>
+                  )}
+
+                  {status === "connected" && (
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <CheckCircle2 className="size-4 text-green-400" />
+                        <span className="text-xs font-medium text-green-400">
+                          Connected
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => onDisconnect(integration.name)}
+                        className="text-[11px] text-muted-foreground/60 hover:text-red-400 transition-colors"
+                      >
+                        Disconnect
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           );
         })}
       </div>
 
-      <p className="text-xs text-muted-foreground/60">
-        You can always connect more integrations later from Settings.
-      </p>
+      {/* Progress indicator */}
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-muted-foreground/60">
+          You can always connect more integrations later from{" "}
+          <span className="text-muted-foreground">Settings</span>.
+        </p>
+        <span className="text-xs font-medium text-muted-foreground">
+          {connectedCount} of {integrations.length} connected
+        </span>
+      </div>
     </div>
   );
 }
@@ -460,12 +512,15 @@ function ReviewStep({
   invites,
 }: {
   agentState: Record<string, boolean>;
-  connectionState: Record<string, boolean>;
+  connectionState: Record<string, ConnectionStatus>;
   invites: TeamInvite[];
 }) {
   const enabledAgents = defaultAgents.filter((a) => agentState[a.name] ?? a.enabled);
   const connectedIntegrations = integrations.filter(
-    (i) => connectionState[i.name]
+    (i) => connectionState[i.name] === "connected"
+  );
+  const skippedIntegrations = integrations.filter(
+    (i) => connectionState[i.name] !== "connected"
   );
   const validInvites = invites.filter((i) => i.email.trim().length > 0);
 
@@ -537,6 +592,63 @@ function ReviewStep({
         </div>
       </div>
 
+      {/* Integrations detail */}
+      <div className="glass rounded-xl p-5">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-foreground">Integrations</h3>
+          {skippedIntegrations.length > 0 && (
+            <a
+              href="/settings/integrations"
+              className="text-[11px] font-medium text-primary hover:text-primary/80 transition-colors"
+            >
+              Connect more in Settings
+            </a>
+          )}
+        </div>
+        <div className="space-y-2">
+          {connectedIntegrations.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {connectedIntegrations.map((integration) => {
+                const Icon = integration.icon;
+                return (
+                  <div
+                    key={integration.name}
+                    className="flex items-center gap-2 rounded-lg border border-green-500/20 bg-green-500/5 px-3 py-1.5"
+                  >
+                    <Icon className={`size-3.5 ${integration.iconColor}`} />
+                    <span className="text-xs font-medium text-foreground">
+                      {integration.name}
+                    </span>
+                    <CheckCircle2 className="size-3 text-green-400" />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          {skippedIntegrations.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {skippedIntegrations.map((integration) => {
+                const Icon = integration.icon;
+                return (
+                  <div
+                    key={integration.name}
+                    className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-3 py-1.5 opacity-60"
+                  >
+                    <Icon className="size-3.5 text-muted-foreground" />
+                    <span className="text-xs font-medium text-muted-foreground">
+                      {integration.name}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground/60">
+                      Skipped
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Launch button */}
       <div className="flex justify-center pt-4">
         <Button className="h-12 gap-3 rounded-xl bg-primary px-10 text-base font-bold text-primary-foreground shadow-[0_0_40px_rgba(99,102,241,0.3)] transition-all hover:bg-primary/90 hover:shadow-[0_0_60px_rgba(99,102,241,0.5)]">
@@ -554,8 +666,8 @@ function ReviewStep({
 
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [connectionState, setConnectionState] = useState<Record<string, boolean>>(
-    Object.fromEntries(integrations.map((i) => [i.name, i.connected]))
+  const [connectionState, setConnectionState] = useState<Record<string, ConnectionStatus>>(
+    Object.fromEntries(integrations.map((i) => [i.name, "idle" as ConnectionStatus]))
   );
   const [agentState, setAgentState] = useState<Record<string, boolean>>(
     Object.fromEntries(defaultAgents.map((a) => [a.name, a.enabled]))
@@ -566,9 +678,16 @@ export default function OnboardingPage() {
     { email: "", role: "Viewer" },
   ]);
 
-  const handleToggleIntegration = (name: string) => {
-    setConnectionState((prev) => ({ ...prev, [name]: !prev[name] }));
-  };
+  const handleConnectIntegration = useCallback((name: string) => {
+    setConnectionState((prev) => ({ ...prev, [name]: "connecting" as ConnectionStatus }));
+    setTimeout(() => {
+      setConnectionState((prev) => ({ ...prev, [name]: "connected" as ConnectionStatus }));
+    }, 2000);
+  }, []);
+
+  const handleDisconnectIntegration = useCallback((name: string) => {
+    setConnectionState((prev) => ({ ...prev, [name]: "idle" as ConnectionStatus }));
+  }, []);
 
   const handleToggleAgent = (name: string) => {
     setAgentState((prev) => ({ ...prev, [name]: !prev[name] }));
@@ -601,7 +720,8 @@ export default function OnboardingPage() {
         {currentStep === 2 && (
           <IntegrationsStep
             connectionState={connectionState}
-            onToggle={handleToggleIntegration}
+            onConnect={handleConnectIntegration}
+            onDisconnect={handleDisconnectIntegration}
           />
         )}
         {currentStep === 3 && (
@@ -625,43 +745,60 @@ export default function OnboardingPage() {
       </div>
 
       {/* Navigation */}
-      <div className="flex items-center justify-between">
-        <Button
-          onClick={() => setCurrentStep((s) => Math.max(1, s - 1))}
-          disabled={currentStep === 1}
-          variant="outline"
-          className="h-10 gap-2 rounded-lg border-border px-5 text-sm font-medium text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground disabled:opacity-30"
-        >
-          <ChevronLeft className="size-4" />
-          Back
-        </Button>
+      <div className="flex flex-col items-center gap-3">
+        <div className="flex w-full items-center justify-between">
+          <Button
+            onClick={() => setCurrentStep((s) => Math.max(1, s - 1))}
+            disabled={currentStep === 1}
+            variant="outline"
+            className="h-10 gap-2 rounded-lg border-border px-5 text-sm font-medium text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground disabled:opacity-30"
+          >
+            <ChevronLeft className="size-4" />
+            Back
+          </Button>
 
-        <div className="flex items-center gap-2">
-          {steps.map((step) => (
-            <span
-              key={step.number}
-              className={`size-1.5 rounded-full transition-colors ${
-                step.number === currentStep
-                  ? "bg-primary"
-                  : step.number < currentStep
-                    ? "bg-green-500/60"
-                    : "bg-muted"
-              }`}
-            />
-          ))}
+          <div className="flex items-center gap-2">
+            {steps.map((step) => (
+              <span
+                key={step.number}
+                className={`size-1.5 rounded-full transition-colors ${
+                  step.number === currentStep
+                    ? "bg-primary"
+                    : step.number < currentStep
+                      ? "bg-green-500/60"
+                      : "bg-muted"
+                }`}
+              />
+            ))}
+          </div>
+
+          {currentStep < 5 ? (
+            <Button
+              onClick={() => setCurrentStep((s) => Math.min(5, s + 1))}
+              className="h-10 gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]"
+            >
+              {currentStep === 2
+                ? Object.values(connectionState).some((s) => s === "connected")
+                  ? "Continue"
+                  : "Skip Integrations"
+                : "Next"}
+              <ChevronRight className="size-4" />
+            </Button>
+          ) : (
+            <div className="w-[88px]" />
+          )}
         </div>
 
-        {currentStep < 5 ? (
-          <Button
-            onClick={() => setCurrentStep((s) => Math.min(5, s + 1))}
-            className="h-10 gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]"
-          >
-            Next
-            <ChevronRight className="size-4" />
-          </Button>
-        ) : (
-          <div className="w-[88px]" />
-        )}
+        {/* Skip for now link on Step 2 */}
+        {currentStep === 2 &&
+          Object.values(connectionState).some((s) => s === "connected") && (
+            <button
+              onClick={() => setCurrentStep(3)}
+              className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            >
+              Skip for now
+            </button>
+          )}
       </div>
     </div>
   );
