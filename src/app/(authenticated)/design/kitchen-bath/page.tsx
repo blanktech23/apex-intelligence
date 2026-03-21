@@ -77,7 +77,7 @@ const mockMessages: ChatMessage[] = [
     id: "m1",
     role: "agent",
     content:
-      "I'm your AI design assistant. Describe your kitchen or bathroom layout, and I'll generate a design using NKBA-compliant constraints.",
+      "I'm your AI design assistant. Describe your kitchen or bathroom layout, and I'll generate a design using industry-standard dimensional constraints.",
     timestamp: "2:00 PM",
   },
   {
@@ -94,7 +94,7 @@ const mockMessages: ChatMessage[] = [
     timestamp: "2:03 PM",
     toolCalls: [
       { label: "Generating layout...", status: "done" },
-      { label: "Validating NKBA constraints...", status: "done" },
+      { label: "Validating dimensional constraints...", status: "done" },
       { label: "Rendering preview...", status: "done" },
       { label: "Evaluating design...", status: "done" },
     ],
@@ -106,7 +106,7 @@ const mockMessages: ChatMessage[] = [
         { label: "Island Clearance", value: "44\" all sides", pass: true },
         { label: "Landing Zones", value: "15\"+ at all appliances", pass: true },
         { label: "Ventilation", value: "30\" hood over range", pass: true },
-        { label: "NKBA Rules", value: "31/31 pass", pass: true },
+        { label: "Compliance Rules", value: "31/31 pass", pass: true },
         { label: "Cabinets", value: "8 base + 6 wall + 1 tall + island" },
         { label: "Material Cost (est.)", value: "$24,350" },
         { label: "AI Iterations", value: "3 (auto-optimized island placement)" },
@@ -614,7 +614,7 @@ export default function KitchenBathDesignerPage() {
           <span className="hidden sm:inline font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
           <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-400">
             <Check className="size-3" />
-            NKBA Compliant
+            Clearance Verified
           </span>
           <span>15 items | $24,350 material cost</span>
           <div className="flex-1" />
@@ -770,7 +770,7 @@ export default function KitchenBathDesignerPage() {
             {/* NKBA Compliance */}
             <div className="glass rounded-lg p-3 space-y-2">
               <label className="text-[10px] uppercase tracking-wider text-muted-foreground/60">
-                NKBA Compliance
+                Dimensional Compliance
               </label>
               {[
                 { rule: "Work Triangle", pass: true },

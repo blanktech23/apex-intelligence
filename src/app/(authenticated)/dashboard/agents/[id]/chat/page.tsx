@@ -1302,7 +1302,7 @@ const messagesByAgent: Record<string, ChatMessage[]> = {
       id: "m2",
       role: "agent",
       content:
-        "I've generated 2 layout options based on the Johnson kitchen specs. Both comply with NKBA guidelines and maintain proper work triangle distances. These are AutoCAD 2D floor plans (DXF) \u2014 I can generate a full Revit 3D model once you approve a layout.",
+        "I've generated 2 layout options based on the Johnson kitchen specs. Both comply with industry dimensional guidelines and maintain proper work triangle distances. These are AutoCAD 2D floor plans (DXF) \u2014 I can generate a full Revit 3D model once you approve a layout.",
       timestamp: "2:01 PM",
       card: {
         type: "design-preview",
@@ -1312,7 +1312,7 @@ const messagesByAgent: Record<string, ChatMessage[]> = {
             {
               name: "Option A \u2014 Classic L",
               description:
-                'Standard L-shaped with 42" \u00d7 84" center island. Work triangle: 21ft. All clearances pass NKBA minimums.',
+                'Standard L-shaped with 42" \u00d7 84" center island. Work triangle: 21ft. All clearances pass industry-standard minimums.',
               specs: [
                 { label: "Cabinets", value: "14 base + 10 wall" },
                 { label: "Island", value: '42" \u00d7 84" with overhang' },
@@ -1346,7 +1346,7 @@ const messagesByAgent: Record<string, ChatMessage[]> = {
       id: "m4",
       role: "agent",
       content:
-        'Updated. Island shifted 6" north toward the window \u2014 clearance is now 44" (NKBA min 42" \u2713). Added a 24" pantry tall cabinet east of the range with 15" landing space between them.',
+        'Updated. Island shifted 6" north toward the window \u2014 clearance is now 44" (industry min 42" \u2713). Added a 24" pantry tall cabinet east of the range with 15" landing space between them.',
       timestamp: "2:04 PM",
       card: {
         type: "design-preview",
@@ -1362,7 +1362,7 @@ const messagesByAgent: Record<string, ChatMessage[]> = {
                 { label: "Island Clearance", value: '44" south, 42" east \u2713' },
                 { label: "Countertop", value: "48.2 sq ft quartz" },
                 { label: "Pantry", value: '24"W \u00d7 84"H \u00d7 24"D' },
-                { label: "NKBA Check", value: "31/31 rules pass \u2713" },
+                { label: "Compliance Check", value: "31/31 rules pass \u2713" },
               ],
             },
           ],
@@ -3779,7 +3779,7 @@ export default function AgentChatPage() {
                     {/* NKBA Compliance */}
                     <div className="glass rounded-lg p-3 space-y-2">
                       <label className="text-[10px] uppercase tracking-wider text-muted-foreground/60">
-                        NKBA Compliance
+                        Dimensional Compliance
                       </label>
                       {[
                         { rule: "Work Triangle", pass: true },
@@ -3825,7 +3825,7 @@ export default function AgentChatPage() {
               <span className="hidden sm:inline font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
               <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-400">
                 <Check className="size-3" />
-                NKBA Compliant
+                Clearance Verified
               </span>
               <span>15 items | $24,350 material cost</span>
               <div className="flex-1" />
