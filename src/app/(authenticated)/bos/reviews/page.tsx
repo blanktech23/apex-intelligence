@@ -1317,13 +1317,13 @@ export default function ReviewsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="overflow-x-auto rounded-lg bg-muted/50 p-1 w-fit max-w-full">
-        <div className="inline-flex items-center gap-1 whitespace-nowrap">
+      <div className="rounded-lg bg-muted/50 p-1 w-fit max-w-full">
+        <div className="flex flex-wrap items-center gap-1">
         {(['current', 'past', 'templates'] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`shrink-0 rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
+            className={`rounded-md px-2.5 sm:px-4 py-1.5 text-xs sm:text-sm font-medium transition-all ${
               activeTab === tab
                 ? 'bg-background text-foreground shadow-sm'
                 : 'text-muted-foreground hover:text-foreground'

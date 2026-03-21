@@ -387,14 +387,14 @@ export default function AnnouncementsPage() {
         <div className="h-5 w-px bg-border" />
 
         {/* Category filter */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-wider">Category</span>
-          <div className="inline-flex gap-1 rounded-lg bg-muted/50 p-1">
+          <div className="flex flex-wrap gap-1 rounded-lg bg-muted/50 p-1">
             {categoryFilterOptions.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => setCategoryFilter(opt.value)}
-                className={`rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
+                className={`rounded-md px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-medium transition-all ${
                   categoryFilter === opt.value
                     ? "bg-indigo-600 text-primary-foreground shadow-lg shadow-indigo-500/25"
                     : "text-muted-foreground hover:text-foreground"

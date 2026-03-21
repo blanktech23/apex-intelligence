@@ -776,8 +776,8 @@ export default function AssessmentsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="overflow-x-auto rounded-lg bg-muted/50 p-1 w-fit max-w-full">
-        <div className="inline-flex items-center gap-1 whitespace-nowrap">
+      <div className="rounded-lg bg-muted/50 p-1 w-fit max-w-full">
+        <div className="flex flex-wrap items-center gap-1">
         {([
           { key: 'baseline' as const, label: 'Baseline Assessment' },
           { key: 'org-fit' as const, label: 'Organizational Fit' },
@@ -786,7 +786,7 @@ export default function AssessmentsPage() {
           <button
             key={key}
             onClick={() => setActiveTab(key)}
-            className={`shrink-0 rounded-md px-4 py-1.5 text-sm font-medium transition-all flex items-center gap-1.5 ${
+            className={`rounded-md px-2.5 sm:px-4 py-1.5 text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 ${
               activeTab === key
                 ? 'bg-background text-foreground shadow-sm'
                 : 'text-muted-foreground hover:text-foreground'
@@ -1269,56 +1269,65 @@ export default function AssessmentsPage() {
                 <div key={assessment.id} className="glass rounded-xl transition-all duration-300">
                   {/* Main row */}
                   <div
-                    className="flex items-center gap-4 p-4 cursor-pointer hover:bg-muted/20 rounded-xl transition-colors"
+                    className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-4 cursor-pointer hover:bg-muted/20 rounded-xl transition-colors"
                     onClick={() => setExpandedCustom(isExpanded ? null : assessment.id)}
                   >
-                    <div className="inline-flex rounded-lg p-2.5 bg-indigo-500/10 shrink-0">
-                      <ClipboardCheck className="h-5 w-5 text-indigo-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-sm font-semibold text-foreground truncate">{assessment.title}</h3>
-                        <Badge
-                          variant="outline"
-                          className={`text-[10px] shrink-0 ${
-                            assessment.status === 'Active'
-                              ? 'bg-green-400/10 text-green-600 dark:text-green-400 border-green-400/20'
-                              : assessment.status === 'Draft'
-                                ? 'bg-gray-400/10 text-gray-600 dark:text-gray-400 border-gray-400/20'
-                                : 'bg-red-400/10 text-red-600 dark:text-red-400 border-red-400/20'
-                          }`}
-                        >
-                          {assessment.status}
-                        </Badge>
+                    {/* Icon + Title + Badge row */}
+                    <div className="flex items-start sm:items-center gap-3 sm:flex-1 min-w-0">
+                      <div className="inline-flex rounded-lg p-2.5 bg-indigo-500/10 shrink-0">
+                        <ClipboardCheck className="h-5 w-5 text-indigo-400" />
                       </div>
-                      <div className="mt-1 flex items-center gap-4 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <FileText className="h-3 w-3" />
-                          {assessment.questions.length} questions
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Users className="h-3 w-3" />
-                          {assessment.respondents}/{assessment.totalRecipients} responses
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {assessment.createdAt}
-                        </span>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-sm font-semibold text-foreground truncate">{assessment.title}</h3>
+                          <Badge
+                            variant="outline"
+                            className={`text-[10px] shrink-0 ${
+                              assessment.status === 'Active'
+                                ? 'bg-green-400/10 text-green-600 dark:text-green-400 border-green-400/20'
+                                : assessment.status === 'Draft'
+                                  ? 'bg-gray-400/10 text-gray-600 dark:text-gray-400 border-gray-400/20'
+                                  : 'bg-red-400/10 text-red-600 dark:text-red-400 border-red-400/20'
+                            }`}
+                          >
+                            {assessment.status}
+                          </Badge>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Completion progress */}
-                    <div className="hidden sm:flex items-center gap-3 shrink-0">
-                      <div className="w-20">
-                        <Progress value={completionPct} className="h-1.5 bg-muted/30" />
-                      </div>
-                      <span className="text-xs font-medium text-muted-foreground w-8">
-                        {completionPct}%
+                    {/* Stats row (questions, responses) */}
+                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-muted-foreground pl-[52px] sm:pl-0">
+                      <span className="flex items-center gap-1">
+                        <FileText className="h-3 w-3" />
+                        {assessment.questions.length} questions
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Users className="h-3 w-3" />
+                        {assessment.respondents}/{assessment.totalRecipients} responses
                       </span>
                     </div>
 
+                    {/* Date + Progress + Action row */}
+                    <div className="flex items-center justify-between sm:justify-end gap-3 pl-[52px] sm:pl-0">
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Calendar className="h-3 w-3" />
+                        {assessment.createdAt}
+                      </span>
+
+                      {/* Completion progress */}
+                      <div className="hidden sm:flex items-center gap-3 shrink-0">
+                        <div className="w-20">
+                          <Progress value={completionPct} className="h-1.5 bg-muted/30" />
+                        </div>
+                        <span className="text-xs font-medium text-muted-foreground w-8">
+                          {completionPct}%
+                        </span>
+                      </div>
+                    </div>
+
                     {/* Status actions */}
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-2 shrink-0 pl-[52px] sm:pl-0">
                       {assessment.status === 'Draft' && (
                         <Button
                           size="sm"

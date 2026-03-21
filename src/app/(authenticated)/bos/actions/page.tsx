@@ -622,13 +622,13 @@ export default function ActionsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="glass rounded-xl p-1.5 overflow-x-auto">
-        <div className="inline-flex gap-1 whitespace-nowrap">
+      <div className="glass rounded-xl p-1.5">
+        <div className="flex flex-wrap gap-1">
         {tabItems.map((tab) => (
           <button
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
-            className={`shrink-0 rounded-lg px-4 py-2 text-sm font-medium transition-all flex items-center gap-2 ${
+            className={`rounded-lg px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 sm:gap-2 ${
               activeTab === tab.value
                 ? "bg-indigo-600 text-primary-foreground shadow-lg shadow-indigo-500/25"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/40"

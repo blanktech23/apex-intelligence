@@ -1497,13 +1497,13 @@ export default function KPIsPage() {
       {/* Time Period Selector + View + Actions Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         {/* Time period toggle */}
-        <div className="glass overflow-x-auto rounded-lg p-1">
-          <div className="inline-flex items-center whitespace-nowrap">
+        <div className="glass rounded-lg p-1">
+          <div className="flex flex-wrap items-center gap-0.5">
           {timePeriods.map((tp) => (
             <button
               key={tp.key}
               onClick={() => setTimePeriod(tp.key)}
-              className={`shrink-0 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+              className={`rounded-md px-2.5 sm:px-3 py-1.5 text-xs font-medium transition-all ${
                 timePeriod === tp.key
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"

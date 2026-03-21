@@ -1329,13 +1329,13 @@ export default function GoalsPage() {
 
       {/* Quarter Tabs + View Toggle */}
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <div className="glass rounded-xl p-1.5 overflow-x-auto">
-          <div className="inline-flex gap-1 whitespace-nowrap">
+        <div className="glass rounded-xl p-1.5">
+          <div className="flex flex-wrap gap-1">
           {quarters.map((q) => (
             <button
               key={q}
               onClick={() => setActiveQuarter(q)}
-              className={`shrink-0 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+              className={`rounded-lg px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition-all ${
                 activeQuarter === q
                   ? "bg-indigo-600 text-primary-foreground shadow-lg shadow-indigo-500/25"
                   : "text-muted-foreground hover:text-foreground hover:bg-card"
