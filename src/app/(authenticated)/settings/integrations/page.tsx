@@ -979,7 +979,7 @@ export default function IntegrationsPage() {
               />
 
               {/* Footer: last sync + actions */}
-              <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
+              <div className="mt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between border-t border-border pt-4 gap-2 sm:gap-0">
                 {isConnected && integration.lastSync ? (
                   <div className="flex items-center gap-1.5">
                     <RefreshCw className="h-3 w-3 text-muted-foreground/50" />
@@ -992,7 +992,7 @@ export default function IntegrationsPage() {
                 )}
 
                 {isConnected ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     {/* Test Connection */}
                     {config.canConfigureAgents && (
                       <Button

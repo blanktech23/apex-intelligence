@@ -602,14 +602,14 @@ function TeamSettingsContent({
               return (
                 <div
                   key={invite.email}
-                  className="flex items-center justify-between rounded-lg border border-border bg-muted/20 px-4 py-3"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between rounded-lg border border-border bg-muted/20 px-4 py-3 gap-2 sm:gap-0"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 min-w-0">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
                       ?
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">
                         {invite.email}
                       </p>
                       <p className="text-xs text-muted-foreground">
@@ -617,7 +617,7 @@ function TeamSettingsContent({
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 self-end sm:self-auto">
                     <Badge className={`border-0 ${style.bg} ${style.text}`}>
                       {invite.role}
                     </Badge>

@@ -55,26 +55,39 @@ export function TopBar() {
   return (
     <header className="glass flex h-14 shrink-0 items-center justify-between border-b border-border pl-16 pr-6 lg:px-6">
       {/* Left: Breadcrumbs */}
-      <nav className="flex items-center gap-1.5 text-sm">
-        {breadcrumbs.map((crumb, index) => (
-          <div key={crumb.href} className="flex items-center gap-1.5">
-            {index > 0 && (
-              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
-            )}
-            {crumb.isLast ? (
-              <span className="font-medium text-foreground">
-                {crumb.label}
-              </span>
-            ) : (
-              <Link
-                href={crumb.href}
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {crumb.label}
-              </Link>
-            )}
-          </div>
-        ))}
+      <nav className="flex items-center gap-1.5 text-sm overflow-hidden whitespace-nowrap sm:whitespace-normal">
+        {breadcrumbs.map((crumb, index) => {
+          // On mobile, only show the last 2 segments
+          const isMobileHidden = breadcrumbs.length > 2 && index < breadcrumbs.length - 2;
+          return (
+            <div
+              key={crumb.href}
+              className={cn(
+                "flex items-center gap-1.5",
+                isMobileHidden && "hidden sm:flex"
+              )}
+            >
+              {index > 0 && (
+                <ChevronRight className={cn(
+                  "h-3.5 w-3.5 shrink-0 text-muted-foreground/50",
+                  isMobileHidden && "hidden sm:block"
+                )} />
+              )}
+              {crumb.isLast ? (
+                <span className="font-medium text-foreground max-w-[120px] sm:max-w-none truncate">
+                  {crumb.label}
+                </span>
+              ) : (
+                <Link
+                  href={crumb.href}
+                  className="text-muted-foreground transition-colors hover:text-foreground max-w-[120px] sm:max-w-none truncate"
+                >
+                  {crumb.label}
+                </Link>
+              )}
+            </div>
+          );
+        })}
       </nav>
 
       {/* Right section */}
