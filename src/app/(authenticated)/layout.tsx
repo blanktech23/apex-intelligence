@@ -23,7 +23,7 @@ export default function AuthenticatedLayout({
           <Sidebar />
           <div className="flex flex-1 flex-col overflow-hidden">
             <TopBar />
-            <main className="flex-1 overflow-y-auto">{children}</main>
+            <main className="flex-1 overflow-y-auto overflow-x-hidden">{children}</main>
           </div>
         </div>
       </div>

@@ -336,7 +336,7 @@ export default function KitchenBathDesignerPage() {
   const [mobilePropsOpen, setMobilePropsOpen] = useState(false);
 
   return (
-    <div className="flex h-full overflow-hidden relative">
+    <div className="flex h-full overflow-hidden relative pb-16 lg:pb-0">
       {/* ============================================================ */}
       {/* LEFT PANEL — Agent Chat                                       */}
       {/* ============================================================ */}

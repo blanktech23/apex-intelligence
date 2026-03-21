@@ -3486,7 +3486,7 @@ export default function AgentChatPage() {
         {/* ----- Design Canvas Panel ----- */}
         {canvasOpen && id === "design-spec-assistant" && (
           <div
-            className={`flex flex-col border-l transition-all duration-300 ${canvasFullscreen ? "fixed inset-0 z-50" : "fixed inset-0 z-50 sm:relative sm:inset-auto sm:z-auto sm:w-[55%] sm:shrink-0"}`}
+            className={`flex flex-col border-l transition-all duration-300 ${canvasFullscreen ? "fixed inset-0 z-50" : "fixed inset-0 z-50 lg:relative lg:inset-auto lg:z-auto lg:w-[55%] lg:shrink-0"}`}
             style={{
               backgroundColor: '#080e1a',
               color: '#e8eaf0',

@@ -37,7 +37,7 @@ export function ConnectionStatus() {
   const { label, dotClass } = stateConfig[state];
 
   return (
-    <div className="fixed bottom-[5.5rem] right-5 z-50">
+    <div className="fixed bottom-[5.5rem] right-5 z-50 hidden lg:block">
       <button
         onClick={cycle}
         className={cn(

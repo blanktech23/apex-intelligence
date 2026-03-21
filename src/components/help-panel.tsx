@@ -1016,7 +1016,7 @@ export function HelpPanel() {
       <button
         onClick={open ? handleClose : handleOpen}
         className={cn(
-          "fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all duration-300",
+          "fixed bottom-20 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full shadow-lg transition-all duration-300 sm:bottom-6 sm:h-14 sm:w-14",
           open
             ? "bg-muted text-foreground hover:bg-muted/80"
             : "bg-primary text-primary-foreground hover:scale-105 hover:shadow-primary/25 hover:shadow-xl"

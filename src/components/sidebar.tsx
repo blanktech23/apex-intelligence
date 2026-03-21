@@ -523,7 +523,7 @@ export function Sidebar() {
       {/* Mobile hamburger button */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="fixed left-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-[var(--background)] text-muted-foreground shadow-md transition-colors hover:text-foreground lg:hidden"
+        className="fixed left-4 top-[0.875rem] z-50 flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-[var(--background)] text-muted-foreground shadow-md transition-colors hover:text-foreground lg:hidden"
         aria-label="Open menu"
       >
         <Menu className="h-5 w-5" />
