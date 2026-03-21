@@ -96,7 +96,7 @@ export function NotificationPanel({ open, onClose }: NotificationPanelProps) {
       <div className="fixed inset-0 z-40" onClick={onClose} />
 
       {/* Panel */}
-      <div className="absolute right-0 top-full z-50 mt-2 w-[380px] origin-top-right animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200">
+      <div className="absolute right-0 top-full z-50 mt-2 w-[min(380px,calc(100vw-2rem))] origin-top-right animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200">
         <div className="overflow-hidden rounded-xl border border-border bg-[var(--background)] shadow-2xl shadow-black/30">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-border px-4 py-3">

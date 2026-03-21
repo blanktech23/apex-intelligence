@@ -3208,7 +3208,7 @@ export default function AgentChatPage() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-sm font-semibold text-foreground">
+                <h1 className="truncate max-w-[120px] sm:max-w-none text-sm font-semibold text-foreground">
                   {agentName}
                 </h1>
                 <span className="inline-flex items-center gap-1 rounded-full border border-green-500/20 bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-400">
@@ -3216,7 +3216,7 @@ export default function AgentChatPage() {
                   Online
                 </span>
               </div>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="hidden sm:block text-[11px] text-muted-foreground">
                 Avg response: 1.8s
               </p>
             </div>
@@ -3246,7 +3246,7 @@ export default function AgentChatPage() {
           )}
           <button className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-500/15 px-3.5 py-2 text-xs font-semibold text-indigo-400 ring-1 ring-indigo-500/25 transition-all hover:bg-indigo-500/25">
             <MessageSquarePlus className="size-3.5" />
-            New Conversation
+            <span className="hidden sm:inline">New Conversation</span>
           </button>
         </div>
       </div>
@@ -3256,12 +3256,19 @@ export default function AgentChatPage() {
       {/* ----------------------------------------------------------------- */}
       <div className="flex min-h-0 flex-1">
         {/* ----- Conversation Sidebar ----- */}
+        {/* Backdrop overlay for mobile sidebar */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 z-20 bg-black/50 sm:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
         <aside
-          className={`glass-strong flex w-80 shrink-0 flex-col border-r border-border transition-all duration-300 ${
+          className={`glass-strong flex w-80 shrink-0 flex-col border-r border-border transition-all duration-300 fixed inset-y-0 left-0 z-30 sm:relative sm:z-auto ${
             sidebarOpen
               ? "translate-x-0"
-              : "-translate-x-full absolute inset-y-0 left-0 z-20 sm:relative sm:translate-x-0"
-          } hidden sm:flex`}
+              : "-translate-x-full sm:translate-x-0"
+          }`}
         >
           {/* Sidebar header */}
           <div className="flex items-center justify-between px-4 py-3">
@@ -3415,16 +3422,16 @@ export default function AgentChatPage() {
           {/* ----------------------------------------------------------------- */}
           {/* Input Area */}
           {/* ----------------------------------------------------------------- */}
-          <div className="border-t border-border bg-background/80 px-4 pb-4 pt-3 backdrop-blur-sm sm:px-6 lg:px-8">
+          <div className="border-t border-border bg-background/80 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-sm sm:px-6 lg:px-8">
             <div className="mx-auto max-w-3xl">
               {/* Quick action chips */}
-              <div className="mb-3 flex flex-wrap gap-2">
+              <div className="mb-3 flex gap-2 overflow-x-auto sm:flex-wrap">
                 {quickActions.map((action) => {
                   const Icon = action.icon;
                   return (
                     <button
                       key={action.label}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/20 px-3 py-1.5 text-[11px] font-medium text-muted-foreground transition-all duration-150 hover:border-indigo-500/30 hover:bg-indigo-500/10 hover:text-indigo-400"
+                      className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/20 px-3 py-1.5 text-[11px] font-medium text-muted-foreground transition-all duration-150 hover:border-indigo-500/30 hover:bg-indigo-500/10 hover:text-indigo-400"
                     >
                       <Icon className="size-3" />
                       {action.label}
@@ -3450,13 +3457,13 @@ export default function AgentChatPage() {
                   }}
                 />
                 <div className="absolute bottom-2 right-2 flex items-center gap-1.5">
-                  <button className="flex size-8 items-center justify-center rounded-lg text-muted-foreground/50 transition-colors hover:bg-muted/30 hover:text-muted-foreground">
+                  <button className="flex size-10 sm:size-8 items-center justify-center rounded-lg text-muted-foreground/50 transition-colors hover:bg-muted/30 hover:text-muted-foreground">
                     <Paperclip className="size-4" />
                   </button>
                   <button
                     disabled={!inputValue.trim() || isTyping}
                     onClick={handleSend}
-                    className={`flex size-8 items-center justify-center rounded-lg transition-all duration-200 ${
+                    className={`flex size-10 sm:size-8 items-center justify-center rounded-lg transition-all duration-200 ${
                       inputValue.trim() && !isTyping
                         ? "bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-600"
                         : "bg-muted/50 text-muted-foreground/30 cursor-not-allowed"
@@ -3479,7 +3486,7 @@ export default function AgentChatPage() {
         {/* ----- Design Canvas Panel ----- */}
         {canvasOpen && id === "design-spec-assistant" && (
           <div
-            className={`flex flex-col border-l transition-all duration-300 ${canvasFullscreen ? "fixed inset-0 z-50" : "w-[55%] shrink-0"}`}
+            className={`flex flex-col border-l transition-all duration-300 ${canvasFullscreen ? "fixed inset-0 z-50" : "fixed inset-0 z-50 sm:relative sm:inset-auto sm:z-auto sm:w-[55%] sm:shrink-0"}`}
             style={{
               backgroundColor: '#080e1a',
               color: '#e8eaf0',
@@ -3503,7 +3510,7 @@ export default function AgentChatPage() {
             {/* K&B DESIGNER VIEWPORT                                          */}
             {/* ============================================================= */}
             {/* Top toolbar */}
-            <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+            <div className="flex items-center gap-2 overflow-x-auto border-b border-border px-3 py-2">
               {/* View toggle */}
               <div className="glass flex items-center gap-0.5 rounded-lg p-0.5">
                 <button
@@ -3632,7 +3639,7 @@ export default function AgentChatPage() {
               </div>
 
               {/* Right properties panel */}
-              <div className="w-72 shrink-0 overflow-y-auto border-l border-border bg-[var(--background)]">
+              <div className="w-full sm:w-72 shrink-0 overflow-y-auto border-t sm:border-t-0 sm:border-l border-border bg-[var(--background)] max-h-[40vh] sm:max-h-none">
                 {showSelected ? (
                   /* Selected item properties */
                   <div className="p-4 space-y-4">
@@ -3804,7 +3811,7 @@ export default function AgentChatPage() {
 
             {/* Status bar */}
             <div className="flex items-center gap-4 border-t border-border bg-muted/20 px-4 py-1.5 text-xs text-muted-foreground">
-              <span className="font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
+              <span className="hidden sm:inline font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
               <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-400">
                 <Check className="size-3" />
                 NKBA Compliant
@@ -3831,7 +3838,7 @@ export default function AgentChatPage() {
                   Generate Estimate
                 </button>
               </div>
-              <span className="font-medium text-foreground/60">Design v3 (3 AI iterations)</span>
+              <span className="hidden sm:inline font-medium text-foreground/60">Design v3 (3 AI iterations)</span>
             </div>
           </div>
         )}

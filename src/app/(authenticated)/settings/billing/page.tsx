@@ -258,7 +258,7 @@ export default function BillingSettingsPage() {
             </p>
 
             {/* Feature bullets */}
-            <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 pt-1">
               {planFeatures.map((feature) => (
                 <div key={feature} className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary/70" />
@@ -429,7 +429,8 @@ export default function BillingSettingsPage() {
           Billing history
         </h2>
 
-        <div className="overflow-hidden rounded-lg border border-border">
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-hidden rounded-lg border border-border">
           <Table>
             <TableHeader>
               <TableRow className="border-border hover:bg-transparent">
@@ -485,6 +486,33 @@ export default function BillingSettingsPage() {
               ))}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Mobile card view */}
+        <div className="md:hidden space-y-3">
+          {billingHistory.map((item) => (
+            <div key={item.id} className="rounded-lg border border-border bg-muted/20 p-4 space-y-2">
+              <div>
+                <p className="text-xs text-muted-foreground">{item.date}</p>
+                <p className="text-sm text-foreground">{item.description}</p>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-foreground">{item.amount}</span>
+                <Badge className="border-0 bg-emerald-500/15 text-emerald-400">
+                  Paid
+                </Badge>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => toast.success(`Downloading ${item.id}.pdf`)}
+                className="h-7 gap-1 px-0 text-xs text-muted-foreground hover:text-foreground"
+              >
+                <Download className="h-3.5 w-3.5" />
+                Download PDF
+              </Button>
+            </div>
+          ))}
         </div>
       </div>
 

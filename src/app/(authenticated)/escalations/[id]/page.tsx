@@ -397,7 +397,7 @@ export default function EscalationDetailPage() {
                   setCurrentStatus("Approved");
                   toast?.("Escalation approved successfully");
                 }}
-                className="h-9 gap-2 rounded-lg bg-emerald-500 px-4 text-sm font-semibold text-white transition-all hover:bg-emerald-500/90 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                className="h-9 w-full sm:w-auto gap-2 rounded-lg bg-emerald-500 px-4 text-sm font-semibold text-white transition-all hover:bg-emerald-500/90 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]"
               >
                 <Check className="h-3.5 w-3.5" />
                 Approve
@@ -409,7 +409,7 @@ export default function EscalationDetailPage() {
                   setShowModifyEditor(!showModifyEditor);
                   setShowReassignDropdown(false);
                 }}
-                className="h-9 gap-2 rounded-lg bg-emerald-500/15 px-4 text-sm font-semibold text-emerald-400 border border-emerald-500/25 transition-all hover:bg-emerald-500/25 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]"
+                className="h-9 w-full sm:w-auto gap-2 rounded-lg bg-emerald-500/15 px-4 text-sm font-semibold text-emerald-400 border border-emerald-500/25 transition-all hover:bg-emerald-500/25 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]"
               >
                 <Edit3 className="h-3.5 w-3.5" />
                 Modify &amp; Approve
@@ -421,7 +421,7 @@ export default function EscalationDetailPage() {
                   setCurrentStatus("Rejected");
                   toast?.("Escalation rejected");
                 }}
-                className="h-9 gap-2 rounded-lg bg-red-500/15 px-4 text-sm font-semibold text-red-400 border border-red-500/25 transition-all hover:bg-red-500/25 hover:shadow-[0_0_20px_rgba(239,68,68,0.15)]"
+                className="h-9 w-full sm:w-auto gap-2 rounded-lg bg-red-500/15 px-4 text-sm font-semibold text-red-400 border border-red-500/25 transition-all hover:bg-red-500/25 hover:shadow-[0_0_20px_rgba(239,68,68,0.15)]"
               >
                 <AlertTriangle className="h-3.5 w-3.5" />
                 Reject
@@ -434,7 +434,7 @@ export default function EscalationDetailPage() {
                     setShowReassignDropdown(!showReassignDropdown);
                     setShowModifyEditor(false);
                   }}
-                  className="h-9 gap-2 rounded-lg bg-primary/15 px-4 text-sm font-semibold text-primary border border-primary/25 transition-all hover:bg-primary/25 hover:shadow-[0_0_20px_rgba(99,102,241,0.15)]"
+                  className="h-9 w-full sm:w-auto gap-2 rounded-lg bg-primary/15 px-4 text-sm font-semibold text-primary border border-primary/25 transition-all hover:bg-primary/25 hover:shadow-[0_0_20px_rgba(99,102,241,0.15)]"
                 >
                   <UserPlus className="h-3.5 w-3.5" />
                   Reassign

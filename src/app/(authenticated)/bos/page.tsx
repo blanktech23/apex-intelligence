@@ -237,7 +237,7 @@ export default function BosHubPage() {
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setShowSetupWizard(false)}
           />
-          <div className="relative z-10 w-full max-w-lg mx-4 rounded-xl bg-background/95 border border-border backdrop-blur-xl p-6 shadow-2xl">
+          <div className="relative z-10 w-full max-w-lg mx-4 max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-xl bg-background/95 border border-border backdrop-blur-xl p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
                 <div className="inline-flex rounded-lg bg-indigo-500/10 p-2.5">

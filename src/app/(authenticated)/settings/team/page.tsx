@@ -694,8 +694,8 @@ function TeamSettingsContent({
         </Select>
       </div>
 
-      {/* Table */}
-      <div className="glass overflow-hidden rounded-xl">
+      {/* Table - Desktop */}
+      <div className="glass overflow-hidden rounded-xl hidden md:block">
         <Table>
           <TableHeader>
             <TableRow className="border-border hover:bg-transparent">
@@ -866,6 +866,135 @@ function TeamSettingsContent({
             })}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Team Cards - Mobile */}
+      <div className="space-y-3 md:hidden">
+        {filtered.map((member) => {
+          const style = roleStyles[member.role] ?? roleStyles.Viewer;
+          const isDeactivated = member.status === "deactivated";
+          const isMemberOwner = member.role === "Owner";
+
+          return (
+            <div
+              key={member.email}
+              className={`glass rounded-xl border border-border p-4 ${isDeactivated ? "opacity-60" : ""}`}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <div
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${
+                        isDeactivated
+                          ? "bg-muted text-muted-foreground"
+                          : "bg-primary/20 text-primary"
+                      }`}
+                    >
+                      {member.initials}
+                    </div>
+                    {member.status === "active" && member.lastActive === "Active now" && (
+                      <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#0a0e1a] bg-emerald-400" />
+                    )}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-foreground">
+                        {member.name}
+                      </span>
+                      {member.role === "Owner" && (
+                        <Crown className="h-3.5 w-3.5 text-amber-400" />
+                      )}
+                    </div>
+                    <Badge className={`border-0 ${style.bg} ${style.text} text-[10px] mt-0.5`}>
+                      {member.role}
+                    </Badge>
+                  </div>
+                </div>
+                {/* Actions */}
+                {isViewOnly ? null : isDeactivated ? (
+                  canDeactivate ? (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 gap-1.5 text-xs text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-300"
+                      onClick={() => openReactivate(member)}
+                    >
+                      <UserCheck className="h-3.5 w-3.5" />
+                      Reactivate
+                    </Button>
+                  ) : null
+                ) : isMemberOwner && isOwner ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 gap-1.5 text-xs text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
+                    onClick={openTransferOwnership}
+                  >
+                    <ArrowRightLeft className="h-3.5 w-3.5" />
+                    Transfer
+                  </Button>
+                ) : isMemberOwner ? null : (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => openChangeRole(member)}>
+                        <ShieldCheck className="mr-2 h-4 w-4" />
+                        Change role
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => openSendMessage(member)}>
+                        <Mail className="mr-2 h-4 w-4" />
+                        Send message
+                      </DropdownMenuItem>
+                      {canDeactivate && (
+                        <>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="text-amber-400 focus:text-amber-400"
+                            onClick={() => openDeactivate(member)}
+                          >
+                            <UserX className="mr-2 h-4 w-4" />
+                            Deactivate
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                      {canRemove && (
+                        <>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            variant="destructive"
+                            onClick={() => openRemoveMember(member)}
+                          >
+                            <UserMinus className="mr-2 h-4 w-4" />
+                            Remove member
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
+              </div>
+              <div className="space-y-1.5 text-sm">
+                <p className="text-muted-foreground">{member.email}</p>
+                <div className="flex items-center justify-between">
+                  {isDeactivated ? (
+                    <div className="flex items-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-gray-500" />
+                      <span className="text-gray-500">Deactivated</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                      <span className="text-emerald-400">Active</span>
+                    </div>
+                  )}
+                  <span className="text-muted-foreground">{member.lastActive}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* ============================================================ */}

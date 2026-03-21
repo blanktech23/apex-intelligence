@@ -923,7 +923,7 @@ export default function AgentWorkspacePage() {
               </div>
             </div>
 
-            <div className="rounded-lg border border-border bg-muted/50 p-4">
+            <div className="rounded-lg border border-border bg-muted/50 p-4 overflow-x-auto">
               <div className="space-y-1 font-mono text-xs leading-relaxed">
                 {liveOutput.map((line) => (
                   <div key={line.id} className="flex gap-3">

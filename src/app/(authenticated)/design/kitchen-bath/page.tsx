@@ -27,6 +27,8 @@ import {
   X,
   Trash2,
   RefreshCw,
+  MessageSquare,
+  SlidersHorizontal,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -330,13 +332,15 @@ export default function KitchenBathDesignerPage() {
   const [showSelected, setShowSelected] = useState(true);
   const [bomOpen, setBomOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [mobileChatOpen, setMobileChatOpen] = useState(false);
+  const [mobilePropsOpen, setMobilePropsOpen] = useState(false);
 
   return (
-    <div className="flex h-full overflow-hidden">
+    <div className="flex h-full overflow-hidden relative">
       {/* ============================================================ */}
       {/* LEFT PANEL — Agent Chat                                       */}
       {/* ============================================================ */}
-      <div className="flex w-96 shrink-0 flex-col border-r border-border bg-[var(--background)]">
+      <div className={`${mobileChatOpen ? "fixed inset-0 z-50 flex" : "hidden"} lg:relative lg:flex lg:z-auto w-full lg:w-96 lg:shrink-0 flex-col border-r border-border bg-[var(--background)]`}>
         {/* Agent header */}
         <div className="flex items-center gap-3 border-b border-border px-4 py-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/15 ring-1 ring-indigo-500/20">
@@ -356,6 +360,12 @@ export default function KitchenBathDesignerPage() {
               <FolderOpen className="size-4" />
             </Button>
           </Link>
+          <button
+            onClick={() => setMobileChatOpen(false)}
+            className="lg:hidden rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          >
+            <X className="size-4" />
+          </button>
         </div>
 
         {/* Chat messages */}
@@ -483,7 +493,7 @@ export default function KitchenBathDesignerPage() {
       {/* ============================================================ */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Top toolbar */}
-        <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+        <div className="flex items-center gap-2 border-b border-border px-3 py-2 overflow-x-auto">
           {/* View toggle */}
           <div className="glass flex items-center gap-0.5 rounded-lg p-0.5">
             <button
@@ -536,7 +546,7 @@ export default function KitchenBathDesignerPage() {
           {/* Snap-to-grid */}
           <button
             onClick={() => setSnapGrid(!snapGrid)}
-            className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-all ${
+            className={`hidden sm:flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-all ${
               snapGrid
                 ? "bg-indigo-500/15 text-indigo-400"
                 : "text-muted-foreground hover:text-foreground"
@@ -550,7 +560,7 @@ export default function KitchenBathDesignerPage() {
           {/* Units */}
           <button
             onClick={() => setUnits(units === "in" ? "cm" : "in")}
-            className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-all"
+            className="hidden sm:flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-all"
             title="Toggle units"
           >
             <Ruler className="size-3.5" />
@@ -560,7 +570,7 @@ export default function KitchenBathDesignerPage() {
           <div className="flex-1" />
 
           {/* Render quality */}
-          <div className="glass flex items-center gap-0.5 rounded-lg p-0.5">
+          <div className="hidden sm:flex glass items-center gap-0.5 rounded-lg p-0.5">
             <button
               onClick={() => setRenderLevel(1)}
               className={`rounded-md px-2 py-1 text-xs font-medium transition-all ${
@@ -588,7 +598,7 @@ export default function KitchenBathDesignerPage() {
 
         {/* Canvas area */}
         <div
-          className="flex-1 overflow-hidden"
+          className="flex-1 overflow-auto"
           style={{
             background: "#0d1117",
             backgroundImage:
@@ -601,32 +611,40 @@ export default function KitchenBathDesignerPage() {
 
         {/* Status bar */}
         <div className="flex items-center gap-4 border-t border-border bg-muted/20 px-4 py-1.5 text-xs text-muted-foreground">
-          <span className="font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-400">
+          <span className="hidden sm:inline font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
+          <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-400">
             <Check className="size-3" />
             NKBA Compliant
           </span>
           <span>15 items | $24,350 material cost</span>
           <div className="flex-1" />
-          <span className="font-medium text-foreground/60">Design v3 (3 AI iterations)</span>
+          <span className="hidden sm:inline font-medium text-foreground/60">Design v3 (3 AI iterations)</span>
         </div>
       </div>
 
       {/* ============================================================ */}
       {/* RIGHT PANEL — Properties                                      */}
       {/* ============================================================ */}
-      <div className="w-72 shrink-0 overflow-y-auto border-l border-border bg-[var(--background)]">
+      <div className={`${mobilePropsOpen ? "fixed inset-0 z-50" : "hidden"} lg:relative lg:block lg:z-auto w-full lg:w-72 lg:shrink-0 overflow-y-auto border-l border-border bg-[var(--background)]`}>
         {showSelected ? (
           /* Selected item properties */
           <div className="p-4 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-foreground">Properties</h3>
-              <button
-                onClick={() => setShowSelected(false)}
-                className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-              >
-                <X className="size-3.5" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setMobilePropsOpen(false)}
+                  className="lg:hidden rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                >
+                  <X className="size-3.5" />
+                </button>
+                <button
+                  onClick={() => setShowSelected(false)}
+                  className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                >
+                  <X className="size-3.5" />
+                </button>
+              </div>
             </div>
 
             {/* Category badge */}
@@ -698,7 +716,15 @@ export default function KitchenBathDesignerPage() {
         ) : (
           /* Design summary (nothing selected) */
           <div className="p-4 space-y-4">
-            <h3 className="text-sm font-semibold text-foreground">Design Summary</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-foreground">Design Summary</h3>
+              <button
+                onClick={() => setMobilePropsOpen(false)}
+                className="lg:hidden rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              >
+                <X className="size-3.5" />
+              </button>
+            </div>
 
             {/* Room dimensions */}
             <div className="glass rounded-lg p-3">
@@ -783,6 +809,22 @@ export default function KitchenBathDesignerPage() {
           </div>
         )}
       </div>
+
+      {/* Mobile floating action buttons */}
+      <button
+        onClick={() => setMobileChatOpen(true)}
+        className="fixed bottom-4 left-4 z-40 lg:hidden flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-colors"
+        title="Open chat"
+      >
+        <MessageSquare className="size-5" />
+      </button>
+      <button
+        onClick={() => setMobilePropsOpen(true)}
+        className="fixed bottom-4 right-4 z-40 lg:hidden flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-colors"
+        title="Open properties"
+      >
+        <SlidersHorizontal className="size-5" />
+      </button>
 
       {/* BOM Modal */}
       <BomPreview open={bomOpen} onOpenChange={setBomOpen} />

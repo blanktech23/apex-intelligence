@@ -349,8 +349,8 @@ export default function CustomersPage() {
 
       <Separator className="bg-border" />
 
-      {/* Customers Table */}
-      <Card className="glass border-border overflow-hidden">
+      {/* Customers Table - Desktop */}
+      <Card className="glass border-border overflow-hidden hidden md:block">
         <Table>
           <TableHeader>
             <TableRow className="border-border hover:bg-transparent">
@@ -433,6 +433,49 @@ export default function CustomersPage() {
           </TableBody>
         </Table>
       </Card>
+
+      {/* Customers Cards - Mobile */}
+      <div className="space-y-3 md:hidden">
+        {filtered.map((customer) => (
+          <Card
+            key={customer.id}
+            className="glass border-border p-4 cursor-pointer hover:bg-foreground/[0.03] transition-colors"
+            onClick={() => router.push(`/customers/${customer.id}`)}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-10 w-10 border border-border">
+                  <AvatarFallback className="bg-indigo-500/20 text-sm text-indigo-300">
+                    {customer.initials}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-medium text-foreground">{customer.name}</p>
+                  <p className="text-xs text-muted-foreground">{customer.company}</p>
+                </div>
+              </div>
+              <Badge
+                variant="outline"
+                className={statusColors[customer.status]}
+              >
+                {customer.status}
+              </Badge>
+            </div>
+            <div className="space-y-1.5 text-sm">
+              <p className="text-muted-foreground">{customer.email}</p>
+              <p className="text-muted-foreground">{customer.phone}</p>
+              <div className="flex items-center justify-between pt-1">
+                <span className="font-medium text-foreground">
+                  {customer.revenue > 0
+                    ? `$${customer.revenue.toLocaleString()}`
+                    : "--"}
+                </span>
+                <ChevronRight className="h-4 w-4 text-muted-foreground/50" />
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
 
       {/* Pagination */}
       <PaginationBar

@@ -228,7 +228,7 @@ export default function CustomerDetailPage() {
           <ArrowLeft className="h-4 w-4" />
           Back to Customers
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <Avatar className="h-14 w-14 border-2 border-indigo-500/30">
             <AvatarFallback className="bg-indigo-500/20 text-lg text-indigo-300">
               {customer.initials}
@@ -334,7 +334,7 @@ export default function CustomerDetailPage() {
                     key={i}
                     className="glass border-border p-4 hover:bg-foreground/[0.03] transition-colors cursor-pointer"
                   >
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
                       <div className="flex items-center gap-3">
                         <StatusIcon
                           className={`h-4 w-4 ${

@@ -631,7 +631,7 @@ export default function ApprovalsPage() {
                       <Button
                         size="sm"
                         onClick={() => handleApprove(action.id)}
-                        className="h-8 gap-1.5 rounded-lg bg-green-600 px-3 text-xs font-medium text-white hover:bg-green-500"
+                        className="h-10 sm:h-8 gap-1.5 rounded-lg bg-green-600 px-3 text-xs font-medium text-white hover:bg-green-500"
                       >
                         {approveIcon}
                         {action.buttons.approve}
@@ -640,7 +640,7 @@ export default function ApprovalsPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleEdit(action)}
-                        className="h-8 gap-1.5 rounded-lg border-amber-500/30 px-3 text-xs font-medium text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
+                        className="h-10 sm:h-8 gap-1.5 rounded-lg border-amber-500/30 px-3 text-xs font-medium text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
                       >
                         {editButtonIcon(action.buttons.edit)}
                         {action.buttons.edit}
@@ -649,7 +649,7 @@ export default function ApprovalsPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleReject(action.id)}
-                        className="h-8 gap-1.5 rounded-lg border-red-500/30 px-3 text-xs font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300"
+                        className="h-10 sm:h-8 gap-1.5 rounded-lg border-red-500/30 px-3 text-xs font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300"
                       >
                         {rejectIcon}
                         {action.buttons.reject}
@@ -792,7 +792,7 @@ export default function ApprovalsPage() {
                           const name = parts[0] || "";
                           const amount = parts[1] || "";
                           return (
-                            <div key={idx} className="flex items-center gap-2">
+                            <div key={idx} className="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-3">
                               <input
                                 type="text"
                                 defaultValue={name}

@@ -1041,7 +1041,7 @@ function OverviewTab({ agent }: { agent: AgentDetail }) {
     <div className="space-y-6">
       {/* Performance Chart */}
       <div className="glass rounded-xl p-6">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-y-2">
           <div>
             <h3 className="text-sm font-semibold text-foreground">
               Performance Overview
@@ -1299,13 +1299,13 @@ function ConversationsTab({ agent }: { agent: AgentDetail }) {
                 <th className="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Status
                 </th>
-                <th className="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <th className="hidden sm:table-cell px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Duration
                 </th>
                 <th className="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Sentiment
                 </th>
-                <th className="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <th className="hidden sm:table-cell px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Date
                 </th>
               </tr>
@@ -1336,7 +1336,7 @@ function ConversationsTab({ agent }: { agent: AgentDetail }) {
                         {conv.status}
                       </span>
                     </td>
-                    <td className="px-5 py-3 font-mono text-xs text-muted-foreground">
+                    <td className="hidden sm:table-cell px-5 py-3 font-mono text-xs text-muted-foreground">
                       {conv.duration}
                     </td>
                     <td className="px-5 py-3">
@@ -1345,7 +1345,7 @@ function ConversationsTab({ agent }: { agent: AgentDetail }) {
                         <span className="text-xs font-medium">{conv.sentiment}</span>
                       </div>
                     </td>
-                    <td className="px-5 py-3 text-xs text-muted-foreground">
+                    <td className="hidden sm:table-cell px-5 py-3 text-xs text-muted-foreground">
                       {conv.date}
                     </td>
                   </tr>

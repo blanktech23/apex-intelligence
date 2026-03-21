@@ -16,7 +16,7 @@ export default function AuthenticatedLayout({
 }) {
   return (
     <RoleProvider>
-      <div className="flex h-screen flex-col overflow-hidden bg-background">
+      <div className="flex h-dvh flex-col overflow-hidden bg-background">
         <DegradedBanner />
         <AiUsageBanner percent={68} />
         <div className="flex flex-1 overflow-hidden">

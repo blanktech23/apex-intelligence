@@ -252,7 +252,7 @@ export default function DesignProjectsPage() {
                 <Link href="/design/kitchen-bath">
                   <Button
                     variant="outline"
-                    className="gap-1.5 text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="gap-1.5 text-xs opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
                   >
                     Open
                     <ChevronRight className="size-3" />

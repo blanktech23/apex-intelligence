@@ -443,8 +443,8 @@ export default function EscalationsPage() {
         </button>
       </div>
 
-      {/* Table */}
-      <div className="glass overflow-hidden rounded-xl">
+      {/* Desktop table */}
+      <div className="glass hidden md:block overflow-hidden rounded-xl">
         <Table>
           <TableHeader>
             <TableRow className="border-border hover:bg-transparent">
@@ -555,6 +555,63 @@ export default function EscalationsPage() {
             )}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Mobile cards */}
+      <div className="md:hidden space-y-3">
+        {filteredEscalations.length === 0 ? (
+          <div className="py-12 text-center text-sm text-muted-foreground">
+            No escalations match the current filters.
+          </div>
+        ) : (
+          filteredEscalations.map((escalation) => {
+            const Icon = escalation.agent.icon;
+            const priority = priorityConfig[escalation.priority];
+            const status = statusConfig[escalation.status];
+
+            return (
+              <Link
+                key={escalation.id}
+                href={`/escalations/${escalation.id}`}
+                className="block rounded-lg border border-border p-4 space-y-3 transition-colors hover:bg-muted/30"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`h-2 w-2 rounded-full ${priority.dot}`}
+                    />
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                      <Icon className="h-3.5 w-3.5 text-primary" />
+                    </div>
+                    <span className="text-sm font-medium text-foreground">
+                      {escalation.agent.name}
+                    </span>
+                  </div>
+                  <span
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ${status.bg} ${status.text} ${status.ring}`}
+                  >
+                    {escalation.status}
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground line-clamp-2">
+                  {escalation.summary}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">
+                    {escalation.created}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 rounded-md px-2.5 text-xs font-medium text-primary hover:bg-primary/10 hover:text-primary"
+                  >
+                    Review
+                  </Button>
+                </div>
+              </Link>
+            );
+          })
+        )}
       </div>
 
       {/* Pagination */}

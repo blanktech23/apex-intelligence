@@ -12,7 +12,7 @@ export function RoleSwitcher() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-24 right-5 z-50 flex flex-col items-end gap-3">
       {/* Expanded panel */}
       {expanded && (
         <>
@@ -23,7 +23,7 @@ export function RoleSwitcher() {
           />
 
           {/* Panel */}
-          <div className="relative z-50 w-[400px] rounded-2xl border border-border bg-[var(--background)] p-5 shadow-2xl ring-1 ring-white/5 animate-in fade-in slide-in-from-bottom-3 duration-200">
+          <div className="relative z-50 w-[min(400px,calc(100vw-2.5rem))] rounded-2xl border border-border bg-[var(--background)] p-5 shadow-2xl ring-1 ring-white/5 animate-in fade-in slide-in-from-bottom-3 duration-200">
             {/* Header */}
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2.5">

@@ -53,7 +53,7 @@ export function TopBar() {
   }));
 
   return (
-    <header className="glass flex h-14 shrink-0 items-center justify-between border-b border-border px-6">
+    <header className="glass flex h-14 shrink-0 items-center justify-between border-b border-border pl-16 pr-6 lg:px-6">
       {/* Left: Breadcrumbs */}
       <nav className="flex items-center gap-1.5 text-sm">
         {breadcrumbs.map((crumb, index) => (
@@ -118,10 +118,10 @@ export function TopBar() {
                 {config.avatar}
               </AvatarFallback>
             </Avatar>
-            <span className="text-sm font-medium text-foreground">{firstName}</span>
+            <span className="hidden sm:inline text-sm font-medium text-foreground">{firstName}</span>
             <span
               className={cn(
-                "inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold ring-1",
+                "hidden sm:inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold ring-1",
                 config.color
               )}
             >

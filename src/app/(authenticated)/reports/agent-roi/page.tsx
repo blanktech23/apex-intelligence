@@ -291,7 +291,8 @@ export default function AgentROIPage() {
           </h2>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-x-auto">
           <div className="overflow-hidden rounded-lg border border-border">
             <Table>
               <TableHeader>
@@ -424,6 +425,47 @@ export default function AgentROIPage() {
                 </TableRow>
               </TableBody>
             </Table>
+          </div>
+        </div>
+
+        {/* Mobile card view */}
+        <div className="md:hidden space-y-3">
+          {metrics.map((row) => (
+            <div key={row.agent} className="rounded-lg border border-border bg-muted/20 p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <Bot className="h-4 w-4 text-primary" />
+                <p className="text-sm font-semibold text-foreground">{row.agent}</p>
+              </div>
+              <div className="space-y-1 text-sm">
+                <p className="text-muted-foreground">Replaces: <span className="text-foreground">{row.humanRole}</span></p>
+                <p className="text-muted-foreground">Tasks/Mo: <span className="text-foreground">{row.tasksThisMonth}</span></p>
+                <p className="text-muted-foreground">Hours Saved: <span className="text-foreground">{row.humanHours.toFixed(1)}h</span></p>
+              </div>
+              <div className="text-sm">
+                <span className="text-red-500 dark:text-red-400">${row.humanCost.toLocaleString()}</span>
+                <span className="text-muted-foreground"> → </span>
+                <span className="text-green-600 dark:text-green-400">${row.agentCost.toFixed(2)}</span>
+                <span className="text-muted-foreground"> = </span>
+                <span className="font-semibold text-green-600 dark:text-green-400">${row.savings.toLocaleString()} saved</span>
+                <span className="text-green-600 dark:text-green-400"> ({row.savingsPct}% reduction)</span>
+              </div>
+            </div>
+          ))}
+
+          {/* Net total card */}
+          <div className="rounded-lg border border-primary/30 bg-primary/5 p-4 space-y-2">
+            <p className="text-sm font-bold text-foreground">Net Savings (after platform cost)</p>
+            <div className="text-sm space-y-1">
+              <p className="text-muted-foreground">Tasks: <span className="font-semibold text-foreground">{totalTasks}</span></p>
+              <p className="text-muted-foreground">Hours Saved: <span className="font-semibold text-foreground">{totalHumanHours.toFixed(1)}h</span></p>
+              <p>
+                <span className="text-red-500 dark:text-red-400">${totalHumanCost.toLocaleString()}</span>
+                <span className="text-muted-foreground"> → </span>
+                <span className="text-green-600 dark:text-green-400">${Math.round(totalPlatformCost).toLocaleString()}</span>
+                <span className="text-muted-foreground"> = </span>
+                <span className="font-bold text-green-600 dark:text-green-400">${totalSavings.toLocaleString()} saved ({totalSavingsPct}%)</span>
+              </p>
+            </div>
           </div>
         </div>
 

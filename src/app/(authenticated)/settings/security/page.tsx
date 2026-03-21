@@ -280,7 +280,7 @@ export default function SecuritySettingsPage() {
         {mfaEnabled && (
           <div className="mt-4 space-y-4 border-t border-border pt-4">
             {/* QR Code placeholder */}
-            <div className="flex items-start gap-6">
+            <div className="flex flex-col sm:flex-row items-start gap-6">
               <div className="flex h-32 w-32 shrink-0 items-center justify-center rounded-xl border border-border bg-muted/30">
                 <div className="flex flex-col items-center gap-2 text-muted-foreground">
                   <QrCode className="h-10 w-10" />
@@ -345,7 +345,8 @@ export default function SecuritySettingsPage() {
           </button>
         </div>
 
-        <div className="overflow-hidden rounded-lg border border-border">
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-hidden rounded-lg border border-border">
           <Table>
             <TableHeader>
               <TableRow className="border-border hover:bg-transparent">
@@ -412,6 +413,55 @@ export default function SecuritySettingsPage() {
             </TableBody>
           </Table>
         </div>
+
+        {/* Mobile cards */}
+        <div className="md:hidden space-y-3">
+          {sessions.map((session) => {
+            const Icon = session.icon;
+            return (
+              <div
+                key={session.device}
+                className="rounded-lg border border-border p-4 space-y-3"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted/40">
+                    <Icon className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                  <span className="text-sm font-medium text-foreground">
+                    {session.device}
+                  </span>
+                  {session.current && (
+                    <Badge className="border-0 bg-primary/15 text-primary text-[10px]">
+                      This device
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {session.browser} &middot; {session.ip}
+                </p>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <div className="flex items-center gap-1.5">
+                    <Globe className="h-3.5 w-3.5" />
+                    {session.location}
+                  </div>
+                  <span>{session.lastActive}</span>
+                </div>
+                {!session.current && (
+                  <div className="flex justify-end">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => toast.success("Session revoked")}
+                    >
+                      Revoke
+                    </Button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* ============================================================ */}
@@ -428,7 +478,8 @@ export default function SecuritySettingsPage() {
           </Badge>
         </div>
 
-        <div className="overflow-hidden rounded-lg border border-border">
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-hidden rounded-lg border border-border">
           <Table>
             <TableHeader>
               <TableRow className="border-border hover:bg-transparent">
@@ -469,6 +520,33 @@ export default function SecuritySettingsPage() {
             </TableBody>
           </Table>
         </div>
+
+        {/* Mobile cards */}
+        <div className="md:hidden space-y-3">
+          {loginHistory.map((entry, i) => (
+            <div
+              key={`${entry.ip}-${i}`}
+              className="rounded-lg border border-border p-4 space-y-2"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">{entry.device}</span>
+                <Badge
+                  className={
+                    entry.status === "success"
+                      ? "border-0 bg-emerald-500/15 text-emerald-400"
+                      : "border-0 bg-red-500/15 text-red-400"
+                  }
+                >
+                  {entry.status === "success" ? "Success" : "Blocked"}
+                </Badge>
+              </div>
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span className="font-mono">{entry.ip}</span>
+                <span>{entry.timestamp}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* ============================================================ */}
@@ -488,7 +566,8 @@ export default function SecuritySettingsPage() {
           </Button>
         </div>
 
-        <div className="overflow-hidden rounded-lg border border-border">
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-hidden rounded-lg border border-border">
           <Table>
             <TableHeader>
               <TableRow className="border-border hover:bg-transparent">
@@ -539,6 +618,48 @@ export default function SecuritySettingsPage() {
               ))}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Mobile cards */}
+        <div className="md:hidden space-y-3">
+          {apiKeys.map((apiKey) => (
+            <div
+              key={apiKey.id}
+              className="rounded-lg border border-border p-4 space-y-3"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-foreground">
+                  {apiKey.name}
+                </span>
+                <Badge className="border-0 bg-primary/15 text-primary text-[10px]">
+                  Active
+                </Badge>
+              </div>
+              <div className="flex items-center gap-2">
+                <code className="rounded bg-muted/40 px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                  {apiKey.key}
+                </code>
+                <button className="text-muted-foreground transition-colors hover:text-foreground" onClick={() => toast.success("API key copied to clipboard")}>
+                  <Copy className="h-3.5 w-3.5" />
+                </button>
+              </div>
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>Created: {apiKey.created}</span>
+                <span>Last used: {apiKey.lastUsed}</span>
+              </div>
+              <div className="flex justify-end">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 gap-1 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  onClick={() => toast.success("API key revoked")}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                  Revoke
+                </Button>
+              </div>
+            </div>
+          ))}
         </div>
 
         <p className="mt-3 text-xs text-muted-foreground/60">

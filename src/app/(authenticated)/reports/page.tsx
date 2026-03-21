@@ -197,7 +197,7 @@ export default function ReportsPage() {
         </div>
         <div className="flex items-center gap-3">
           {/* Date range selector */}
-          <div className="glass flex items-center gap-1 rounded-lg p-1">
+          <div className="glass flex flex-col sm:flex-row items-center gap-1 rounded-lg p-1">
             {(Object.keys(dateRangeLabels) as DateRange[]).map((range) => (
               <button
                 key={range}

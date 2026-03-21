@@ -135,14 +135,14 @@ export function BomPreview({
         </div>
 
         {/* BOM table */}
-        <div className="rounded-lg border border-border overflow-hidden">
+        <div className="rounded-lg border border-border overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/30">
                 <TableHead className="text-xs">Item</TableHead>
-                <TableHead className="text-xs">Category</TableHead>
-                <TableHead className="text-xs">Manufacturer</TableHead>
-                <TableHead className="text-xs">SKU</TableHead>
+                <TableHead className="text-xs hidden md:table-cell">Category</TableHead>
+                <TableHead className="text-xs hidden md:table-cell">Manufacturer</TableHead>
+                <TableHead className="text-xs hidden md:table-cell">SKU</TableHead>
                 <TableHead className="text-xs text-right">Qty</TableHead>
                 <TableHead className="text-xs text-right">Unit Cost</TableHead>
                 <TableHead className="text-xs text-right">Total</TableHead>
@@ -163,9 +163,9 @@ export function BomPreview({
                         </span>
                       )}
                     </TableCell>
-                    <TableCell className="text-muted-foreground">{item.category}</TableCell>
-                    <TableCell className="text-muted-foreground">{item.manufacturer}</TableCell>
-                    <TableCell className="font-mono text-[11px] text-muted-foreground">{item.sku}</TableCell>
+                    <TableCell className="text-muted-foreground hidden md:table-cell">{item.category}</TableCell>
+                    <TableCell className="text-muted-foreground hidden md:table-cell">{item.manufacturer}</TableCell>
+                    <TableCell className="font-mono text-[11px] text-muted-foreground hidden md:table-cell">{item.sku}</TableCell>
                     <TableCell className="text-right text-muted-foreground">{item.qty}</TableCell>
                     <TableCell className="text-right text-muted-foreground">${item.unitCost.toLocaleString(undefined, { minimumFractionDigits: 2 })}</TableCell>
                     <TableCell className="text-right font-medium text-foreground">${item.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</TableCell>

@@ -557,7 +557,7 @@ export function Sidebar() {
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          "glass hidden h-screen flex-col border-r border-border transition-all duration-300 ease-in-out lg:flex",
+          "glass hidden h-dvh flex-col border-r border-border transition-all duration-300 ease-in-out lg:flex",
           collapsed ? "w-16" : "w-60"
         )}
       >

@@ -325,7 +325,7 @@ export default function ProjectDetailPage() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="glass border border-border bg-muted/30">
+        <TabsList className="glass overflow-x-auto border border-border bg-muted/30">
           <TabsTrigger
             value="overview"
             className="data-active:bg-indigo-600/30 data-active:text-indigo-300"
@@ -496,57 +496,57 @@ export default function ProjectDetailPage() {
                 {group.items.map((task) => (
                   <div
                     key={task.name}
-                    className="flex items-center gap-3 rounded-lg bg-muted/20 border border-border px-4 py-3 hover:bg-muted/30 transition-colors"
+                    className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 rounded-lg bg-muted/20 border border-border px-4 py-3 hover:bg-muted/30 transition-colors"
                   >
-                    {/* Checkbox */}
-                    <div
-                      className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
-                        task.checked
-                          ? "border-emerald-500/40 bg-emerald-500/20"
-                          : "border-white/20 bg-muted/30"
-                      }`}
-                    >
-                      {task.checked && (
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-                      )}
-                    </div>
-
-                    {/* Name */}
-                    <span
-                      className={`flex-1 text-sm font-medium ${
-                        task.checked ? "text-muted-foreground line-through" : "text-foreground"
-                      }`}
-                    >
-                      {task.name}
-                    </span>
-
-                    {/* Assignee */}
-                    <Avatar className="h-6 w-6 border border-background">
-                      <AvatarFallback
-                        className={`text-[9px] ${
-                          project.team.find((t) => t.initials === task.assignee)?.color ||
-                          "bg-muted/50 text-muted-foreground/50"
+                    {/* Checkbox + Name row */}
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <div
+                        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
+                          task.checked
+                            ? "border-emerald-500/40 bg-emerald-500/20"
+                            : "border-white/20 bg-muted/30"
                         }`}
                       >
-                        {task.assignee}
-                      </AvatarFallback>
-                    </Avatar>
+                        {task.checked && (
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                        )}
+                      </div>
 
-                    {/* Due Date */}
-                    <span className="text-xs text-muted-foreground w-16 text-right">{task.due}</span>
+                      <span
+                        className={`flex-1 text-sm font-medium ${
+                          task.checked ? "text-muted-foreground line-through" : "text-foreground"
+                        }`}
+                      >
+                        {task.name}
+                      </span>
+                    </div>
 
-                    {/* Priority */}
-                    <Badge
-                      variant="outline"
-                      className={`text-[10px] px-2 py-0.5 ${priorityColors[task.priority]}`}
-                    >
-                      {task.priority}
-                    </Badge>
+                    {/* Metadata row */}
+                    <div className="flex items-center gap-3 pl-8 sm:pl-0">
+                      <Avatar className="h-6 w-6 border border-background">
+                        <AvatarFallback
+                          className={`text-[9px] ${
+                            project.team.find((t) => t.initials === task.assignee)?.color ||
+                            "bg-muted/50 text-muted-foreground/50"
+                          }`}
+                        >
+                          {task.assignee}
+                        </AvatarFallback>
+                      </Avatar>
 
-                    {/* Status */}
-                    <span className={`text-xs font-medium w-20 text-right ${taskStatusColors[task.status]}`}>
-                      {task.status}
-                    </span>
+                      <span className="text-xs text-muted-foreground w-16 text-right">{task.due}</span>
+
+                      <Badge
+                        variant="outline"
+                        className={`text-[10px] px-2 py-0.5 ${priorityColors[task.priority]}`}
+                      >
+                        {task.priority}
+                      </Badge>
+
+                      <span className={`text-xs font-medium w-20 text-right ${taskStatusColors[task.status]}`}>
+                        {task.status}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -627,83 +627,134 @@ export default function ProjectDetailPage() {
           {/* Budget Breakdown */}
           <Card className="glass border-border p-6">
             <h2 className="text-lg font-semibold text-foreground mb-4">Budget Breakdown</h2>
-            <Table>
-              <TableHeader>
-                <TableRow className="border-border hover:bg-transparent">
-                  <TableHead className="text-muted-foreground">Category</TableHead>
-                  <TableHead className="text-muted-foreground text-right">Budgeted</TableHead>
-                  <TableHead className="text-muted-foreground text-right">Actual</TableHead>
-                  <TableHead className="text-muted-foreground text-right">Variance</TableHead>
-                  <TableHead className="text-muted-foreground w-[180px]">% Used</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {budgetItems.map((item) => {
-                  const variance = item.budgeted - item.actual;
-                  const pctUsed = Math.round((item.actual / item.budgeted) * 100);
-                  return (
-                    <TableRow key={item.category} className="border-border hover:bg-muted/20">
-                      <TableCell className="text-foreground font-medium">
-                        {item.category}
-                      </TableCell>
-                      <TableCell className="text-right text-muted-foreground">
-                        {formatCurrency(item.budgeted)}
-                      </TableCell>
-                      <TableCell className="text-right text-muted-foreground">
-                        {formatCurrency(item.actual)}
-                      </TableCell>
-                      <TableCell
-                        className={`text-right font-medium ${
-                          variance >= 0 ? "text-emerald-400" : "text-red-400"
-                        }`}
-                      >
-                        {variance >= 0 ? "+" : ""}
-                        {formatCurrency(variance)}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Progress
-                            value={Math.min(pctUsed, 100)}
-                            className="h-1.5 flex-1 bg-muted/30"
-                          />
-                          <span className="text-xs text-muted-foreground w-10 text-right">
-                            {pctUsed}%
-                          </span>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-                {/* Totals Row */}
-                <TableRow className="border-border hover:bg-transparent font-bold">
-                  <TableCell className="text-foreground font-bold">Total</TableCell>
-                  <TableCell className="text-right text-foreground font-bold">
-                    {formatCurrency(budgetTotal)}
-                  </TableCell>
-                  <TableCell className="text-right text-foreground font-bold">
-                    {formatCurrency(actualTotal)}
-                  </TableCell>
-                  <TableCell
-                    className={`text-right font-bold ${
-                      budgetTotal - actualTotal >= 0 ? "text-emerald-400" : "text-red-400"
-                    }`}
-                  >
-                    +{formatCurrency(budgetTotal - actualTotal)}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Progress
-                        value={Math.round((actualTotal / budgetTotal) * 100)}
-                        className="h-1.5 flex-1 bg-muted/30"
-                      />
-                      <span className="text-xs text-muted-foreground w-10 text-right">
-                        {Math.round((actualTotal / budgetTotal) * 100)}%
-                      </span>
+            {/* Desktop table */}
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-border hover:bg-transparent">
+                    <TableHead className="text-muted-foreground">Category</TableHead>
+                    <TableHead className="text-muted-foreground text-right">Budgeted</TableHead>
+                    <TableHead className="text-muted-foreground text-right">Actual</TableHead>
+                    <TableHead className="text-muted-foreground text-right">Variance</TableHead>
+                    <TableHead className="text-muted-foreground w-[180px]">% Used</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {budgetItems.map((item) => {
+                    const variance = item.budgeted - item.actual;
+                    const pctUsed = Math.round((item.actual / item.budgeted) * 100);
+                    return (
+                      <TableRow key={item.category} className="border-border hover:bg-muted/20">
+                        <TableCell className="text-foreground font-medium">
+                          {item.category}
+                        </TableCell>
+                        <TableCell className="text-right text-muted-foreground">
+                          {formatCurrency(item.budgeted)}
+                        </TableCell>
+                        <TableCell className="text-right text-muted-foreground">
+                          {formatCurrency(item.actual)}
+                        </TableCell>
+                        <TableCell
+                          className={`text-right font-medium ${
+                            variance >= 0 ? "text-emerald-400" : "text-red-400"
+                          }`}
+                        >
+                          {variance >= 0 ? "+" : ""}
+                          {formatCurrency(variance)}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Progress
+                              value={Math.min(pctUsed, 100)}
+                              className="h-1.5 flex-1 bg-muted/30"
+                            />
+                            <span className="text-xs text-muted-foreground w-10 text-right">
+                              {pctUsed}%
+                            </span>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {/* Totals Row */}
+                  <TableRow className="border-border hover:bg-transparent font-bold">
+                    <TableCell className="text-foreground font-bold">Total</TableCell>
+                    <TableCell className="text-right text-foreground font-bold">
+                      {formatCurrency(budgetTotal)}
+                    </TableCell>
+                    <TableCell className="text-right text-foreground font-bold">
+                      {formatCurrency(actualTotal)}
+                    </TableCell>
+                    <TableCell
+                      className={`text-right font-bold ${
+                        budgetTotal - actualTotal >= 0 ? "text-emerald-400" : "text-red-400"
+                      }`}
+                    >
+                      +{formatCurrency(budgetTotal - actualTotal)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Progress
+                          value={Math.round((actualTotal / budgetTotal) * 100)}
+                          className="h-1.5 flex-1 bg-muted/30"
+                        />
+                        <span className="text-xs text-muted-foreground w-10 text-right">
+                          {Math.round((actualTotal / budgetTotal) * 100)}%
+                        </span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Mobile card view */}
+            <div className="md:hidden space-y-3">
+              {budgetItems.map((item) => {
+                const variance = item.budgeted - item.actual;
+                const pctUsed = Math.round((item.actual / item.budgeted) * 100);
+                return (
+                  <div key={item.category} className="rounded-lg border border-border bg-muted/20 p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium text-foreground">{item.category}</p>
+                      <span className="text-xs text-muted-foreground">{pctUsed}%</span>
                     </div>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+                    <Progress value={Math.min(pctUsed, 100)} className="h-1.5 bg-muted/30" />
+                    <div className="flex items-center justify-between text-sm">
+                      <div>
+                        <span className="text-muted-foreground">Budget: </span>
+                        <span className="text-foreground">{formatCurrency(item.budgeted)}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Actual: </span>
+                        <span className="text-foreground">{formatCurrency(item.actual)}</span>
+                      </div>
+                    </div>
+                    <p className={`text-sm font-medium ${variance >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                      {variance >= 0 ? "+" : ""}{formatCurrency(variance)} variance
+                    </p>
+                  </div>
+                );
+              })}
+              {/* Total card */}
+              <div className="rounded-lg border border-border bg-muted/30 p-4 space-y-2">
+                <p className="text-sm font-bold text-foreground">Total</p>
+                <Progress value={Math.round((actualTotal / budgetTotal) * 100)} className="h-1.5 bg-muted/30" />
+                <div className="flex items-center justify-between text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Budget: </span>
+                    <span className="font-bold text-foreground">{formatCurrency(budgetTotal)}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Actual: </span>
+                    <span className="font-bold text-foreground">{formatCurrency(actualTotal)}</span>
+                  </div>
+                </div>
+                <p className={`text-sm font-bold ${budgetTotal - actualTotal >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                  +{formatCurrency(budgetTotal - actualTotal)} variance
+                </p>
+              </div>
+            </div>
           </Card>
 
           {/* Change Orders */}

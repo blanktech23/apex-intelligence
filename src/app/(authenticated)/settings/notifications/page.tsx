@@ -156,7 +156,7 @@ export default function NotificationsSettingsPage() {
         </div>
 
         {/* Column headers */}
-        <div className="mb-3 grid grid-cols-[1fr_80px_80px] items-center gap-4 px-1">
+        <div className="mb-3 grid grid-cols-[1fr_60px_60px] sm:grid-cols-[1fr_80px_80px] items-center gap-4 px-1">
           <div />
           <div className="flex flex-col items-center gap-1">
             <Mail className="h-4 w-4 text-muted-foreground" />
@@ -181,7 +181,7 @@ export default function NotificationsSettingsPage() {
             return (
               <div
                 key={cat.id}
-                className="grid grid-cols-[1fr_80px_80px] items-center gap-4 px-1 py-4"
+                className="grid grid-cols-[1fr_60px_60px] sm:grid-cols-[1fr_80px_80px] items-center gap-4 px-1 py-4"
               >
                 {/* Label */}
                 <div>

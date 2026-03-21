@@ -125,7 +125,7 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
                 {isCompleted ? <Check className="size-5" /> : step.number}
               </div>
               <span
-                className={`mt-2 text-[11px] font-medium ${
+                className={`mt-2 hidden text-[11px] font-medium sm:block ${
                   isActive ? "text-foreground" : "text-muted-foreground"
                 }`}
               >
@@ -444,7 +444,7 @@ function InviteTeamStep({
         {invites.map((invite, index) => (
           <div
             key={index}
-            className="glass flex items-end gap-3 rounded-xl p-4"
+            className="glass flex flex-col sm:flex-row sm:items-end gap-3 rounded-xl p-4"
           >
             <div className="flex-1 space-y-1.5">
               <label className="text-xs font-medium text-muted-foreground">

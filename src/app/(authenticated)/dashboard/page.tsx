@@ -432,7 +432,7 @@ function StatCard({
             <Icon className={`size-5 ${iconColor}`} />
           </div>
         </div>
-        <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{value}</p>
+        <p className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-foreground">{value}</p>
         <p className="mt-1 text-sm text-muted-foreground">{label}</p>
         {subtitle && (
           <p className={`mt-1.5 text-xs font-medium ${subtitleColor}`}>{subtitle}</p>
@@ -638,7 +638,7 @@ function EscalationAlertBanner({ role }: { role: Role }) {
   if (dismissed || count === 0 || !canSeeEscalationBanner(role)) return null;
 
   return (
-    <div className="flex items-center justify-between rounded-xl border border-amber-600/30 bg-amber-500/15 px-5 py-3">
+    <div className="flex flex-wrap gap-2 items-center justify-between rounded-xl border border-amber-600/30 bg-amber-500/15 px-5 py-3">
       <div className="flex items-center gap-3">
         <AlertTriangle className="size-4 text-amber-700 dark:text-amber-300" />
         <span className="text-sm font-medium text-amber-900 dark:text-amber-100">
@@ -681,7 +681,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background bg-mesh">
+      <div className="min-h-full bg-background bg-mesh">
         <div className="mx-auto max-w-7xl space-y-6 p-6">
           {/* Header skeleton */}
           <div>
@@ -758,7 +758,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background bg-mesh">
+    <div className="min-h-full bg-background bg-mesh">
       <div className="mx-auto max-w-7xl space-y-6 p-6">
         {/* Header */}
         <div>
@@ -789,7 +789,7 @@ export default function DashboardPage() {
               Agent Activity
               <span className="ml-2 text-xs font-normal text-muted-foreground">Last 7 days</span>
             </h2>
-            <div className="h-64">
+            <div className="h-48 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
                   <defs>
