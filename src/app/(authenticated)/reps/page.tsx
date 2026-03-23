@@ -13,6 +13,7 @@ import {
   MapPin,
   Briefcase,
   UserPlus,
+  ChevronDown,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -114,6 +115,7 @@ export default function RepsPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [reps, setReps] = useState(defaultReps);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [form, setForm] = useState<RepForm>(defaultForm());
   const [errors, setErrors] = useState<Record<string, boolean>>({});
@@ -195,20 +197,126 @@ export default function RepsPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.label} className="glass border-border p-5">
+          <Card
+            key={stat.label}
+            className={`glass border-border p-5 cursor-pointer transition-all duration-200 hover:bg-foreground/[0.03] ${expandedCard === stat.label ? "ring-1 ring-indigo-500/30 border-indigo-500/20" : ""}`}
+            onClick={() => setExpandedCard(expandedCard === stat.label ? null : stat.label)}
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</p>
                 <p className="mt-1 text-2xl font-bold text-foreground">{stat.value}</p>
                 <p className={`mt-1 text-xs ${stat.color}`}>{stat.change}</p>
               </div>
-              <div className="rounded-xl bg-foreground/5 p-3">
-                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+              <div className="flex flex-col items-center gap-2">
+                <div className="rounded-xl bg-foreground/5 p-3">
+                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                </div>
+                <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 ${expandedCard === stat.label ? "rotate-180" : ""}`} />
               </div>
             </div>
           </Card>
         ))}
       </div>
+
+      {/* Expanded Card Detail Panel */}
+      {expandedCard && (
+        <div className="glass border-border rounded-xl p-5 animate-in fade-in slide-in-from-top-2 duration-200">
+          {expandedCard === "Total Reps" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Breakdown by Status</h3>
+              <div className="space-y-3">
+                {[
+                  { status: "Active", count: 11, color: "text-emerald-400" },
+                  { status: "On Leave", count: 1, color: "text-amber-400" },
+                  { status: "Inactive", count: 2, color: "text-zinc-400" },
+                ].map((row) => (
+                  <div key={row.status} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <div className="flex items-center gap-2">
+                      <div className={`h-2 w-2 rounded-full ${row.color.replace("text-", "bg-")}`} />
+                      <p className="text-sm text-foreground">{row.status}</p>
+                    </div>
+                    <span className={`text-sm font-medium ${row.color}`}>{row.count}</span>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between pt-2 border-t border-border">
+                  <p className="text-sm font-semibold text-foreground">Total</p>
+                  <span className="text-sm font-bold text-indigo-400">14</span>
+                </div>
+              </div>
+            </div>
+          )}
+          {expandedCard === "Active Territories" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Territory Assignments</h3>
+              <div className="space-y-3">
+                {[
+                  { territory: "Southeast FL", rep: "Carlos Medina" },
+                  { territory: "DFW Metro", rep: "Jessica Palmer" },
+                  { territory: "Atlanta Metro", rep: "Derek Washington" },
+                  { territory: "SoCal Inland", rep: "Natalie Tran" },
+                  { territory: "Chicagoland", rep: "Brian Kowalski" },
+                  { territory: "Nashville / TN", rep: "Amanda Reeves" },
+                  { territory: "Northeast OH", rep: "Kevin O'Brien" },
+                  { territory: "Phoenix Metro", rep: "Maria Santos" },
+                  { territory: "Central TX", rep: "Unassigned" },
+                  { territory: "Pacific NW", rep: "Unassigned" },
+                  { territory: "Bay Area", rep: "Unassigned" },
+                ].map((row) => (
+                  <div key={row.territory} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <p className="text-sm text-foreground">{row.territory}</p>
+                    <span className={`text-sm ${row.rep === "Unassigned" ? "text-muted-foreground italic" : "text-emerald-400 font-medium"}`}>{row.rep}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {expandedCard === "Orders Placed MTD" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Top 5 Reps by Order Count</h3>
+              <div className="space-y-3">
+                {[
+                  { rep: "Carlos Medina", orders: 34 },
+                  { rep: "Derek Washington", orders: 31 },
+                  { rep: "Jessica Palmer", orders: 28 },
+                  { rep: "Natalie Tran", orders: 26 },
+                  { rep: "Brian Kowalski", orders: 22 },
+                ].map((row, i) => (
+                  <div key={row.rep} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs font-bold text-muted-foreground w-5">#{i + 1}</span>
+                      <p className="text-sm text-foreground">{row.rep}</p>
+                    </div>
+                    <span className="text-sm font-medium text-amber-400">{row.orders} orders</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {expandedCard === "Commission Paid MTD" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Top 5 Reps by Commission Earned</h3>
+              <div className="space-y-3">
+                {[
+                  { rep: "Carlos Medina", commission: "$2,523" },
+                  { rep: "Derek Washington", commission: "$1,820" },
+                  { rep: "Jessica Palmer", commission: "$1,640" },
+                  { rep: "Natalie Tran", commission: "$1,368" },
+                  { rep: "Brian Kowalski", commission: "$1,300" },
+                ].map((row, i) => (
+                  <div key={row.rep} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs font-bold text-muted-foreground w-5">#{i + 1}</span>
+                      <p className="text-sm text-foreground">{row.rep}</p>
+                    </div>
+                    <span className="text-sm font-medium text-purple-400">{row.commission}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">

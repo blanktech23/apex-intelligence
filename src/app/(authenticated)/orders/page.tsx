@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   Clock,
   Trash2,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -116,6 +117,7 @@ export default function OrdersPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [orders, setOrders] = useState(defaultOrders);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [form, setForm] = useState<OrderForm>(defaultForm());
   const [errors, setErrors] = useState<Record<string, boolean>>({});
@@ -204,20 +206,155 @@ export default function OrdersPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.label} className="glass border-border p-5">
+          <Card
+            key={stat.label}
+            className={`glass border-border p-5 cursor-pointer transition-all duration-200 hover:bg-foreground/[0.03] ${expandedCard === stat.label ? "ring-1 ring-indigo-500/30 border-indigo-500/20" : ""}`}
+            onClick={() => setExpandedCard(expandedCard === stat.label ? null : stat.label)}
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</p>
                 <p className="mt-1 text-2xl font-bold text-foreground">{stat.value}</p>
                 <p className={`mt-1 text-xs ${stat.color}`}>{stat.change}</p>
               </div>
-              <div className="rounded-xl bg-foreground/5 p-3">
-                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+              <div className="flex flex-col items-center gap-2">
+                <div className="rounded-xl bg-foreground/5 p-3">
+                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                </div>
+                <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 ${expandedCard === stat.label ? "rotate-180" : ""}`} />
               </div>
             </div>
           </Card>
         ))}
       </div>
+
+      {/* Expanded Card Detail Panel */}
+      {expandedCard && (
+        <div className="glass border-border rounded-xl p-5 animate-in fade-in slide-in-from-top-2 duration-200">
+          {expandedCard === "Open" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Open Orders</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left py-2 text-xs font-medium text-muted-foreground">Order #</th>
+                      <th className="text-left py-2 text-xs font-medium text-muted-foreground">Contractor</th>
+                      <th className="text-right py-2 text-xs font-medium text-muted-foreground">Total</th>
+                      <th className="text-right py-2 text-xs font-medium text-muted-foreground">Days Open</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { order: "ORD-4821", contractor: "Rivera General Contracting", total: "$18,450", days: "3" },
+                      { order: "ORD-4813", contractor: "Lone Star Renovations", total: "$9,870", days: "7" },
+                      { order: "ORD-4825", contractor: "Whitfield Custom Homes", total: "$6,200", days: "1" },
+                      { order: "ORD-4826", contractor: "Parkway Home Design", total: "$3,450", days: "1" },
+                      { order: "ORD-4824", contractor: "Harbor View Construction", total: "$11,300", days: "2" },
+                    ].map((row) => (
+                      <tr key={row.order} className="border-b border-border/50">
+                        <td className="py-2 text-foreground font-medium">{row.order}</td>
+                        <td className="py-2 text-muted-foreground">{row.contractor}</td>
+                        <td className="py-2 text-right text-foreground font-medium">{row.total}</td>
+                        <td className="py-2 text-right text-muted-foreground">{row.days}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+          {expandedCard === "Processing" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Orders in Processing</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left py-2 text-xs font-medium text-muted-foreground">Order #</th>
+                      <th className="text-left py-2 text-xs font-medium text-muted-foreground">Contractor</th>
+                      <th className="text-right py-2 text-xs font-medium text-muted-foreground">Est. Ship Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { order: "ORD-4820", contractor: "Summit Builders LLC", ship: "Mar 25" },
+                      { order: "ORD-4819", contractor: "Harbor View Construction", ship: "Mar 24" },
+                      { order: "ORD-4815", contractor: "Whitfield Custom Homes", ship: "Mar 26" },
+                      { order: "ORD-4808", contractor: "Castillo Landscape Design", ship: "Mar 23" },
+                    ].map((row) => (
+                      <tr key={row.order} className="border-b border-border/50">
+                        <td className="py-2 text-foreground font-medium">{row.order}</td>
+                        <td className="py-2 text-muted-foreground">{row.contractor}</td>
+                        <td className="py-2 text-right text-amber-400">{row.ship}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+          {expandedCard === "Shipped" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Recently Shipped</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left py-2 text-xs font-medium text-muted-foreground">Order #</th>
+                      <th className="text-left py-2 text-xs font-medium text-muted-foreground">Tracking Status</th>
+                      <th className="text-right py-2 text-xs font-medium text-muted-foreground">ETA</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { order: "ORD-4818", status: "In Transit", eta: "Mar 23" },
+                      { order: "ORD-4816", status: "In Transit", eta: "Mar 22" },
+                      { order: "ORD-4814", status: "Out for Delivery", eta: "Mar 21" },
+                      { order: "ORD-4811", status: "In Transit", eta: "Mar 24" },
+                      { order: "ORD-4810", status: "Out for Delivery", eta: "Mar 21" },
+                    ].map((row) => (
+                      <tr key={row.order} className="border-b border-border/50">
+                        <td className="py-2 text-foreground font-medium">{row.order}</td>
+                        <td className="py-2 text-purple-400">{row.status}</td>
+                        <td className="py-2 text-right text-muted-foreground">{row.eta}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+          {expandedCard === "Delivered" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">March Deliveries</h3>
+              <div className="space-y-3">
+                {[
+                  { week: "Week 1 (Mar 1-7)", count: 34, onTime: "94%" },
+                  { week: "Week 2 (Mar 8-14)", count: 41, onTime: "97%" },
+                  { week: "Week 3 (Mar 15-21)", count: 48, onTime: "92%" },
+                  { week: "Week 4 (Mar 22+)", count: 33, onTime: "96%" },
+                ].map((row) => (
+                  <div key={row.week} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <p className="text-sm text-foreground">{row.week}</p>
+                    <div className="flex items-center gap-4">
+                      <span className="text-sm font-medium text-foreground">{row.count} delivered</span>
+                      <span className="text-xs text-emerald-400">{row.onTime} on-time</span>
+                    </div>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between pt-2 border-t border-border">
+                  <p className="text-sm font-semibold text-foreground">Total</p>
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm font-bold text-foreground">156 delivered</span>
+                    <span className="text-xs font-medium text-emerald-400">95% on-time</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">

@@ -14,6 +14,7 @@ import {
   Users,
   ShoppingCart,
   Building2,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -104,6 +105,7 @@ export default function ContractorsPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [contractors, setContractors] = useState(defaultContractors);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [form, setForm] = useState<ContractorForm>(defaultForm());
   const [errors, setErrors] = useState<Record<string, boolean>>({});
@@ -175,20 +177,118 @@ export default function ContractorsPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.label} className="glass border-border p-5">
+          <Card
+            key={stat.label}
+            className={`glass border-border p-5 cursor-pointer transition-all duration-200 hover:bg-foreground/[0.03] ${expandedCard === stat.label ? "ring-1 ring-indigo-500/30 border-indigo-500/20" : ""}`}
+            onClick={() => setExpandedCard(expandedCard === stat.label ? null : stat.label)}
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</p>
                 <p className="mt-1 text-2xl font-bold text-foreground">{stat.value}</p>
                 <p className={`mt-1 text-xs ${stat.color}`}>{stat.change}</p>
               </div>
-              <div className="rounded-xl bg-foreground/5 p-3">
-                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+              <div className="flex flex-col items-center gap-2">
+                <div className="rounded-xl bg-foreground/5 p-3">
+                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                </div>
+                <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 ${expandedCard === stat.label ? "rotate-180" : ""}`} />
               </div>
             </div>
           </Card>
         ))}
       </div>
+
+      {/* Expanded Card Detail Panel */}
+      {expandedCard && (
+        <div className="glass border-border rounded-xl p-5 animate-in fade-in slide-in-from-top-2 duration-200">
+          {expandedCard === "Total Contractors" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Breakdown by Type</h3>
+              <div className="space-y-3">
+                {[
+                  { type: "General Contractor", count: 32 },
+                  { type: "Design-Build", count: 21 },
+                  { type: "K&B Specialist", count: 18 },
+                  { type: "Custom Builder", count: 15 },
+                ].map((row) => (
+                  <div key={row.type} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <p className="text-sm text-foreground">{row.type}</p>
+                    <span className="text-sm font-medium text-indigo-400">{row.count}</span>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between pt-2 border-t border-border">
+                  <p className="text-sm font-semibold text-foreground">Total</p>
+                  <span className="text-sm font-bold text-indigo-400">86</span>
+                </div>
+              </div>
+            </div>
+          )}
+          {expandedCard === "Active Accounts" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Top 5 by Revenue This Month</h3>
+              <div className="space-y-3">
+                {[
+                  { company: "Brooks Design-Build", revenue: "$58,300" },
+                  { company: "Rivera General Contracting", revenue: "$42,800" },
+                  { company: "Lone Star Renovations", revenue: "$36,100" },
+                  { company: "Summit Builders LLC", revenue: "$31,200" },
+                  { company: "Harbor View Construction", revenue: "$24,500" },
+                ].map((row) => (
+                  <div key={row.company} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <p className="text-sm text-foreground">{row.company}</p>
+                    <span className="text-sm font-medium text-emerald-400">{row.revenue}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {expandedCard === "Orders MTD" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Orders by Status</h3>
+              <div className="space-y-3">
+                {[
+                  { status: "Open", count: 18, color: "text-blue-400" },
+                  { status: "Processing", count: 24, color: "text-amber-400" },
+                  { status: "Shipped", count: 47, color: "text-purple-400" },
+                  { status: "Delivered", count: 45, color: "text-emerald-400" },
+                ].map((row) => (
+                  <div key={row.status} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <p className="text-sm text-foreground">{row.status}</p>
+                    <span className={`text-sm font-medium ${row.color}`}>{row.count}</span>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between pt-2 border-t border-border">
+                  <p className="text-sm font-semibold text-foreground">Total</p>
+                  <span className="text-sm font-bold text-amber-400">134</span>
+                </div>
+              </div>
+            </div>
+          )}
+          {expandedCard === "Revenue MTD" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Revenue by Product Category</h3>
+              <div className="space-y-3">
+                {[
+                  { category: "Cabinets", revenue: "$68,200" },
+                  { category: "Countertops", revenue: "$34,800" },
+                  { category: "Hardware & Accessories", revenue: "$14,600" },
+                  { category: "Appliances", revenue: "$9,800" },
+                ].map((row) => (
+                  <div key={row.category} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <p className="text-sm text-foreground">{row.category}</p>
+                    <span className="text-sm font-medium text-purple-400">{row.revenue}</span>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between pt-2 border-t border-border">
+                  <p className="text-sm font-semibold text-foreground">Total</p>
+                  <span className="text-sm font-bold text-purple-400">$127,400</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">

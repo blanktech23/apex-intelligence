@@ -14,6 +14,7 @@ import {
   Star,
   MoreHorizontal,
   ChevronRight,
+  ChevronDown,
   X,
   Building2,
   User,
@@ -297,6 +298,7 @@ export default function CustomersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [customers, setCustomers] = useState(initialCustomers);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const [addOpen, setAddOpen] = useState(false);
   const [form, setForm] = useState<NewCustomerForm>({ ...emptyForm });
   const [tagInput, setTagInput] = useState("");
@@ -466,7 +468,8 @@ export default function CustomersPage() {
         {stats.map((stat) => (
           <Card
             key={stat.label}
-            className="glass border-border p-5"
+            className={`glass border-border p-5 cursor-pointer transition-all duration-200 hover:bg-foreground/[0.03] ${expandedCard === stat.label ? "ring-1 ring-indigo-500/30 border-indigo-500/20" : ""}`}
+            onClick={() => setExpandedCard(expandedCard === stat.label ? null : stat.label)}
           >
             <div className="flex items-center justify-between">
               <div>
@@ -480,13 +483,113 @@ export default function CustomersPage() {
                   {stat.change}
                 </p>
               </div>
-              <div className="rounded-xl bg-foreground/5 p-3">
-                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+              <div className="flex flex-col items-center gap-2">
+                <div className="rounded-xl bg-foreground/5 p-3">
+                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                </div>
+                <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 ${expandedCard === stat.label ? "rotate-180" : ""}`} />
               </div>
             </div>
           </Card>
         ))}
       </div>
+
+      {/* Expanded Card Detail Panel */}
+      {expandedCard && (
+        <div className="glass border-border rounded-xl p-5 animate-in fade-in slide-in-from-top-2 duration-200">
+          {expandedCard === "Total Customers" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Breakdown by Type</h3>
+              <div className="space-y-3">
+                {[
+                  { type: "Contractors", count: 142 },
+                  { type: "Design-Build", count: 86 },
+                  { type: "Showrooms", count: 64 },
+                  { type: "Custom Builders", count: 50 },
+                ].map((row) => (
+                  <div key={row.type} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <p className="text-sm text-foreground">{row.type}</p>
+                    <span className="text-sm font-medium text-indigo-400">{row.count}</span>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between pt-2 border-t border-border">
+                  <p className="text-sm font-semibold text-foreground">Total</p>
+                  <span className="text-sm font-bold text-indigo-400">342</span>
+                </div>
+              </div>
+            </div>
+          )}
+          {expandedCard === "Active Projects" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Top 5 Active Projects</h3>
+              <div className="space-y-3">
+                {[
+                  { customer: "Michael Brooks", project: "Lakeside Kitchen Remodel", value: "$89,100" },
+                  { customer: "David Park", project: "Modern Bathroom Suite", value: "$72,300" },
+                  { customer: "Robert Nguyen", project: "Custom Cabinetry Install", value: "$56,700" },
+                  { customer: "Marcus Rivera", project: "Commercial Kitchen Build", value: "$48,500" },
+                  { customer: "Sarah Chen", project: "Countertop Replacement", value: "$35,200" },
+                ].map((row) => (
+                  <div key={row.project} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{row.project}</p>
+                      <p className="text-xs text-muted-foreground">{row.customer}</p>
+                    </div>
+                    <span className="text-sm font-medium text-emerald-400">{row.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {expandedCard === "Monthly Revenue" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Revenue by Customer Type</h3>
+              <div className="space-y-3">
+                {[
+                  { type: "Contractors", revenue: "$52,800" },
+                  { type: "Design-Build", revenue: "$38,400" },
+                  { type: "Showrooms", revenue: "$22,600" },
+                  { type: "Custom Builders", revenue: "$13,600" },
+                ].map((row) => (
+                  <div key={row.type} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <p className="text-sm text-foreground">{row.type}</p>
+                    <span className="text-sm font-medium text-amber-400">{row.revenue}</span>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between pt-2 border-t border-border">
+                  <p className="text-sm font-semibold text-foreground">Total</p>
+                  <span className="text-sm font-bold text-amber-400">$127,400</span>
+                </div>
+              </div>
+            </div>
+          )}
+          {expandedCard === "Avg Satisfaction" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Recent Satisfaction Ratings</h3>
+              <div className="space-y-3">
+                {[
+                  { customer: "Marcus Rivera", company: "Rivera General Contracting", rating: 5.0 },
+                  { customer: "Sarah Chen", company: "Summit Builders LLC", rating: 4.8 },
+                  { customer: "Michael Brooks", company: "Brooks Design-Build", rating: 4.7 },
+                  { customer: "David Park", company: "Parkway Home Design", rating: 4.5 },
+                  { customer: "Robert Nguyen", company: "Harbor View Construction", rating: 4.2 },
+                ].map((row) => (
+                  <div key={row.customer} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{row.customer}</p>
+                      <p className="text-xs text-muted-foreground">{row.company}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Star className="h-3.5 w-3.5 text-purple-400 fill-purple-400" />
+                      <span className="text-sm font-medium text-purple-400">{row.rating.toFixed(1)}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Search & Filters */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
