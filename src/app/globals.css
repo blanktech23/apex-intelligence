@@ -45,7 +45,7 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  /* Apex custom colors */
+  /* Kiptra custom colors */
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-info: var(--info);
@@ -55,7 +55,7 @@
   --color-glow: var(--glow);
 }
 
-/* Glassmorphism Dark Theme - Apex Intelligence */
+/* Glassmorphism Dark Theme - Kiptra AI */
 :root {
   --background: #0a0e1a;
   --foreground: #e8eaf0;
@@ -77,7 +77,7 @@
   --ring: #6366f1;
   --radius: 0.75rem;
 
-  /* Apex semantic tokens */
+  /* Kiptra semantic tokens */
   --success: #22c55e;
   --warning: #f59e0b;
   --info: #22d3ee;
@@ -260,7 +260,7 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Driver.js Apex Theme — Premium, Non-Intrusive                       */
+/* Driver.js Kiptra Theme — Premium, Non-Intrusive                       */
 /* ------------------------------------------------------------------ */
 
 /* Overlay: subtle dim to draw attention to highlighted element */

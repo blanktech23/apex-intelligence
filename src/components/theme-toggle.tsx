@@ -8,7 +8,7 @@ export function ThemeToggle() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
   useEffect(() => {
-    const saved = localStorage.getItem("apex-theme") as "dark" | "light" | null;
+    const saved = localStorage.getItem("kiptra-theme") as "dark" | "light" | null;
     if (saved) {
       setTheme(saved);
       applyTheme(saved);
@@ -29,7 +29,7 @@ export function ThemeToggle() {
   const toggle = () => {
     const next = theme === "dark" ? "light" : "dark";
     setTheme(next);
-    localStorage.setItem("apex-theme", next);
+    localStorage.setItem("kiptra-theme", next);
     applyTheme(next);
   };
 

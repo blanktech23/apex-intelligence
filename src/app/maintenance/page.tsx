@@ -13,7 +13,7 @@ export default function MaintenancePage() {
           </div>
           <div className="flex flex-col text-left">
             <span className="text-xl font-bold tracking-tight text-foreground">
-              APEX
+              KIPTRA
             </span>
             <span className="text-xs font-medium text-muted-foreground">
               Intelligence

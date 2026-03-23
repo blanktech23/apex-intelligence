@@ -208,7 +208,7 @@ const notifications: Notification[] = [
     type: "info",
     title: "System update scheduled",
     description:
-      "Apex Intelligence v2.4.1 will be deployed on Sunday at 2:00 AM EST. Expected downtime: 5 minutes. New features include improved agent memory.",
+      "Kiptra AI v2.4.1 will be deployed on Sunday at 2:00 AM EST. Expected downtime: 5 minutes. New features include improved agent memory.",
     timestamp: "2 days ago",
     read: true,
     category: "system",

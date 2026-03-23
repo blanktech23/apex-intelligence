@@ -423,7 +423,7 @@ export function Sidebar() {
       );
     }
 
-    // Default APEX header
+    // Default KIPTRA header
     return (
       <Link
         href="/dashboard"
@@ -439,7 +439,7 @@ export function Sidebar() {
         {!isCollapsedDesktop && (
           <div className="flex flex-col">
             <span className="text-gradient text-lg font-bold leading-tight tracking-tight">
-              APEX
+              KIPTRA
             </span>
             <span className="text-[10px] font-medium leading-tight text-muted-foreground">
               Intelligence

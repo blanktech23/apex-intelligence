@@ -27,9 +27,9 @@ const categories: Record<string, string> = {
 };
 
 const products = [
-  { name: "Shaker Base Cabinet 36\"", sku: "CAB-SHK-36B", category: "Cabinets", price: "$420 - $580", manufacturer: "Apex Cabinetry Co.", color: "bg-indigo-500/10" },
-  { name: "Shaker Wall Cabinet 30\"", sku: "CAB-SHK-30W", category: "Cabinets", price: "$310 - $450", manufacturer: "Apex Cabinetry Co.", color: "bg-indigo-500/10" },
-  { name: "Lazy Susan Corner Unit", sku: "CAB-LSU-36", category: "Cabinets", price: "$680 - $890", manufacturer: "Apex Cabinetry Co.", color: "bg-indigo-500/10" },
+  { name: "Shaker Base Cabinet 36\"", sku: "CAB-SHK-36B", category: "Cabinets", price: "$420 - $580", manufacturer: "Kiptra Cabinetry Co.", color: "bg-indigo-500/10" },
+  { name: "Shaker Wall Cabinet 30\"", sku: "CAB-SHK-30W", category: "Cabinets", price: "$310 - $450", manufacturer: "Kiptra Cabinetry Co.", color: "bg-indigo-500/10" },
+  { name: "Lazy Susan Corner Unit", sku: "CAB-LSU-36", category: "Cabinets", price: "$680 - $890", manufacturer: "Kiptra Cabinetry Co.", color: "bg-indigo-500/10" },
   { name: "Tall Pantry Cabinet 84\"", sku: "CAB-PNT-84T", category: "Cabinets", price: "$1,200 - $1,650", manufacturer: "Heritage Woodworks", color: "bg-indigo-500/10" },
   { name: "Quartz - Calacatta Laza", sku: "CTR-QTZ-CL", category: "Countertops", price: "$72 - $95/sqft", manufacturer: "StoneVista Surfaces", color: "bg-emerald-500/10" },
   { name: "Granite - Absolute Black", sku: "CTR-GRN-AB", category: "Countertops", price: "$55 - $80/sqft", manufacturer: "StoneVista Surfaces", color: "bg-emerald-500/10" },

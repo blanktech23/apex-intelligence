@@ -282,7 +282,7 @@ function CompanyProfileStep({
         <div className="space-y-1.5 sm:col-span-2">
           <label className="text-sm font-medium text-foreground">Company Name</label>
           <Input
-            placeholder="Apex Construction Co."
+            placeholder="Kiptra Construction Co."
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
             className="h-10 rounded-lg border-border bg-muted/30 text-sm focus-visible:border-primary focus-visible:ring-primary/30"

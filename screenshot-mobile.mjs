@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 
-const BASE = 'https://apex-mockup.vercel.app';
+const BASE = 'https://kiptra-mockup.vercel.app';
 const pages = [
   { name: '01-dashboard', path: '/dashboard' },
   { name: '02-agent-chat', path: '/dashboard/agents/discovery-concierge/chat' },

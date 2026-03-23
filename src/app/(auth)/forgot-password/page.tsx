@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
       <Card className="glass w-full max-w-md border-border">
         <CardHeader className="space-y-2 text-center">
           <h1 className="text-gradient text-2xl font-bold tracking-tight">
-            Apex Intelligence
+            Kiptra AI
           </h1>
           {!sent && (
             <p className="text-sm text-muted-foreground">

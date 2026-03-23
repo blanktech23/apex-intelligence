@@ -336,7 +336,7 @@ export default function MeetingRecapPage() {
           <div className="mt-4 flex items-center gap-2 rounded-lg bg-indigo-500/5 px-3 py-2">
             <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
             <span className="text-xs text-indigo-400">
-              AI-generated recap by Apex Intelligence Meeting Assistant
+              AI-generated recap by Kiptra AI Meeting Assistant
             </span>
           </div>
         </div>

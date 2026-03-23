@@ -297,13 +297,13 @@ export default function SecuritySettingsPage() {
                   </p>
                   <div className="flex items-center gap-2">
                     <code className="rounded-md border border-border bg-muted/30 px-3 py-1.5 font-mono text-xs text-foreground">
-                      APEX-4K7M-R2QN-X8FJ-LP3W
+                      KIPTRA-4K7M-R2QN-X8FJ-LP3W
                     </code>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
-                      onClick={() => { navigator.clipboard.writeText("APEX-4K7M-R2QN-X8FJ-LP3W"); toast.success("Code copied to clipboard"); }}
+                      onClick={() => { navigator.clipboard.writeText("KIPTRA-4K7M-R2QN-X8FJ-LP3W"); toast.success("Code copied to clipboard"); }}
                     >
                       <Copy className="h-3.5 w-3.5" />
                     </Button>

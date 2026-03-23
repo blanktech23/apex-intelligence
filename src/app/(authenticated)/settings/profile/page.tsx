@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 export default function ProfileSettingsPage() {
   const [fullName, setFullName] = useState("Joseph Wells");
-  const [email, setEmail] = useState("joseph@apexintelligence.ai");
+  const [email, setEmail] = useState("joseph@kiptra.io");
   const [phone, setPhone] = useState("+1 555-0123");
   const [modified, setModified] = useState(false);
 

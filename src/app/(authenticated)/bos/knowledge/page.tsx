@@ -136,10 +136,10 @@ const initialArticles: Article[] = [
     excerpt:
       'Complete onboarding checklist for new hires covering paperwork, equipment setup, safety orientation, team introductions, and 30/60/90-day milestones.',
     content:
-      'Welcome to Apex Builders! This checklist ensures every new team member has a smooth start. Day 1: Complete HR paperwork (W-4, I-9, direct deposit), receive company handbook, IT setup (email, project management access, phone), office/site tour, meet your team. Week 1: Safety orientation and certification, review core values and company vision, shadow a senior team member, complete APEX Intelligence platform training (Module 1). 30-Day Milestone: Complete all required reading, pass safety certification, attend first L10 meeting, receive first performance check-in. 60-Day Milestone: Lead a small task independently, complete APEX platform training (all modules), participate in quarterly planning session. 90-Day Milestone: Full performance review with manager, core values evaluation, goal setting for next quarter, mentorship program enrollment.',
+      'Welcome to Kiptra Builders! This checklist ensures every new team member has a smooth start. Day 1: Complete HR paperwork (W-4, I-9, direct deposit), receive company handbook, IT setup (email, project management access, phone), office/site tour, meet your team. Week 1: Safety orientation and certification, review core values and company vision, shadow a senior team member, complete KIPTRA Intelligence platform training (Module 1). 30-Day Milestone: Complete all required reading, pass safety certification, attend first L10 meeting, receive first performance check-in. 60-Day Milestone: Lead a small task independently, complete KIPTRA platform training (all modules), participate in quarterly planning session. 90-Day Milestone: Full performance review with manager, core values evaluation, goal setting for next quarter, mentorship program enrollment.',
     tags: ['onboarding', 'new-hire', 'checklist', 'HR'],
     versionHistory: [
-      { version: '4.0', date: 'Mar 15, 2026', author: 'Lisa Park', summary: 'Added APEX Intelligence platform training modules' },
+      { version: '4.0', date: 'Mar 15, 2026', author: 'Lisa Park', summary: 'Added KIPTRA Intelligence platform training modules' },
       { version: '3.5', date: 'Jan 5, 2026', author: 'Lisa Park', summary: 'Updated 30/60/90 day milestones' },
     ],
   },
@@ -179,7 +179,7 @@ const initialArticles: Article[] = [
   },
   {
     id: 'art-007',
-    title: 'APEX Intelligence Platform Training',
+    title: 'KIPTRA Intelligence Platform Training',
     category: 'Training Materials',
     author: { name: 'Joseph Wells', initials: 'JW' },
     lastUpdated: 'Mar 16, 2026',
@@ -187,10 +187,10 @@ const initialArticles: Article[] = [
     completionPercent: 40,
     required: true,
     excerpt:
-      'Comprehensive training guide for the APEX Intelligence AI platform covering dashboard navigation, agent configuration, escalation handling, and report generation.',
+      'Comprehensive training guide for the KIPTRA Intelligence AI platform covering dashboard navigation, agent configuration, escalation handling, and report generation.',
     content:
-      'The APEX Intelligence platform is our proprietary AI-powered project management system. Module 1 - Dashboard Navigation: Overview of main dashboard, understanding KPI widgets, customizing your view, setting up notifications. Module 2 - Agent Configuration: Understanding AI agents (Sales, Operations, Finance, Support), configuring agent behaviors, setting up automation rules, managing agent permissions. Module 3 - Escalation Handling: How escalations are routed, priority levels and SLAs, responding to escalations, escalation analytics. Module 4 - Report Generation: Standard reports (daily, weekly, monthly), custom report builder, scheduling automated reports, exporting and sharing. Module 5 - Advanced Features: AI-powered insights, predictive analytics, integration with QuickBooks and Google Calendar, mobile app usage.',
-    tags: ['APEX', 'AI', 'training', 'platform'],
+      'The KIPTRA Intelligence platform is our proprietary AI-powered project management system. Module 1 - Dashboard Navigation: Overview of main dashboard, understanding KPI widgets, customizing your view, setting up notifications. Module 2 - Agent Configuration: Understanding AI agents (Sales, Operations, Finance, Support), configuring agent behaviors, setting up automation rules, managing agent permissions. Module 3 - Escalation Handling: How escalations are routed, priority levels and SLAs, responding to escalations, escalation analytics. Module 4 - Report Generation: Standard reports (daily, weekly, monthly), custom report builder, scheduling automated reports, exporting and sharing. Module 5 - Advanced Features: AI-powered insights, predictive analytics, integration with QuickBooks and Google Calendar, mobile app usage.',
+    tags: ['KIPTRA', 'AI', 'training', 'platform'],
     versionHistory: [
       { version: '2.0', date: 'Mar 16, 2026', author: 'Joseph Wells', summary: 'Added Module 5: Advanced Features' },
       { version: '1.5', date: 'Feb 10, 2026', author: 'Joseph Wells', summary: 'Updated agent configuration for v2 agents' },

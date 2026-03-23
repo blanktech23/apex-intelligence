@@ -121,7 +121,7 @@ const routeContextMap: Record<string, RouteContext> = {
       {
         question: "How does billing work?",
         answer:
-          "Apex bills monthly. Setup fees are one-time. Your plan includes a set number of agent seats and AI usage.",
+          "Kiptra bills monthly. Setup fees are one-time. Your plan includes a set number of agent seats and AI usage.",
       },
     ],
   },
@@ -131,7 +131,7 @@ const routeContextMap: Record<string, RouteContext> = {
       {
         question: "How do I connect JobTread?",
         answer:
-          "Click 'Connect' on the JobTread card. You'll be redirected to authorize Apex to access your JobTread data.",
+          "Click 'Connect' on the JobTread card. You'll be redirected to authorize Kiptra to access your JobTread data.",
         link: "/settings/integrations",
       },
       {
@@ -158,7 +158,7 @@ const routeContextMap: Record<string, RouteContext> = {
       {
         question: "What are the different roles?",
         answer:
-          "Apex has 6 roles: Owner (full access), Admin (full access), Manager (approvals + reports), Designer (projects only), Bookkeeper (financial views), and Viewer (read-only).",
+          "Kiptra has 6 roles: Owner (full access), Admin (full access), Manager (approvals + reports), Designer (projects only), Bookkeeper (financial views), and Viewer (read-only).",
       },
       {
         question: "How do I change someone's role?",
@@ -217,9 +217,9 @@ const routeContextMap: Record<string, RouteContext> = {
         link: "/settings/integrations",
       },
       {
-        question: "Can I create projects directly in Apex?",
+        question: "Can I create projects directly in Kiptra?",
         answer:
-          "Projects are sourced from your connected project management tool (e.g., JobTread). Apex reads and enriches this data.",
+          "Projects are sourced from your connected project management tool (e.g., JobTread). Kiptra reads and enriches this data.",
       },
     ],
   },
@@ -244,7 +244,7 @@ const routeContextMap: Record<string, RouteContext> = {
       {
         question: "What is the Business Operating System?",
         answer:
-          "It's Apex's Business Operating System, inspired by proven business methodologies \u2014 scorecards, goals, meeting management, issue tracking, and more, with AI augmentation.",
+          "It's Kiptra's Business Operating System, inspired by proven business methodologies \u2014 scorecards, goals, meeting management, issue tracking, and more, with AI augmentation.",
       },
       {
         question: "How do I set up my first meeting?",
@@ -255,7 +255,7 @@ const routeContextMap: Record<string, RouteContext> = {
       {
         question: "How do I track KPIs?",
         answer:
-          "Set up your scorecard with key metrics. Apex automatically pulls data from connected integrations.",
+          "Set up your scorecard with key metrics. Kiptra automatically pulls data from connected integrations.",
         link: "/bos/kpis",
       },
     ],
@@ -356,10 +356,10 @@ const routeContextMap: Record<string, RouteContext> = {
 };
 
 const defaultContext: RouteContext = {
-  title: "Apex Intelligence",
+  title: "Kiptra AI",
   suggestions: [
     {
-      question: "How do I get started with Apex?",
+      question: "How do I get started with Kiptra?",
       answer:
         "Start by connecting your integrations (JobTread, QuickBooks) in Settings > Integrations, then invite your team in Settings > Team.",
       link: "/onboarding",
@@ -367,13 +367,13 @@ const defaultContext: RouteContext = {
     {
       question: "What can the AI agents do?",
       answer:
-        "Apex agents automate lead follow-up, estimate generation, project operations, financial reconciliation, design specs, and executive reporting.",
+        "Kiptra agents automate lead follow-up, estimate generation, project operations, financial reconciliation, design specs, and executive reporting.",
       link: "/dashboard/agents",
     },
     {
       question: "How do I contact support?",
       answer:
-        "Email us at support@apexintelligence.ai or use the chat assistant right here for instant help.",
+        "Email us at support@kiptra.io or use the chat assistant right here for instant help.",
     },
   ],
 };
@@ -404,7 +404,7 @@ const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
       pattern: /connect.*gmail|gmail|set.?up.*email|email.*integrat/i,
       response: {
         message:
-          "You can connect Gmail from the Integrations page. Click 'Connect' on the Gmail card to authorize Apex to create and send email drafts on your behalf.",
+          "You can connect Gmail from the Integrations page. Click 'Connect' on the Gmail card to authorize Kiptra to create and send email drafts on your behalf.",
         link: { label: "Go to Integrations \u2192", href: "/settings/integrations" },
       },
     },
@@ -428,7 +428,7 @@ const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
       pattern: /connect.*jobtread|jobtread|job.*tread/i,
       response: {
         message:
-          "Connect JobTread from the Integrations page. Click 'Connect' on the JobTread card to authorize Apex to access your project, estimate, and contact data.",
+          "Connect JobTread from the Integrations page. Click 'Connect' on the JobTread card to authorize Kiptra to access your project, estimate, and contact data.",
         link: { label: "Go to Integrations \u2192", href: "/settings/integrations" },
       },
     },
@@ -452,7 +452,7 @@ const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
       pattern: /role|permission|access|owner|admin|manager|designer|bookkeeper|viewer|who can/i,
       response: {
         message:
-          "Apex has 6 roles: Owner (full access), Admin (full access), Manager (approvals + reports), Designer (projects only), Bookkeeper (financial views), and Viewer (read-only). Manage roles in Team settings.",
+          "Kiptra has 6 roles: Owner (full access), Admin (full access), Manager (approvals + reports), Designer (projects only), Bookkeeper (financial views), and Viewer (read-only). Manage roles in Team settings.",
         link: { label: "Go to Team Settings \u2192", href: "/settings/team" },
       },
     },
@@ -564,7 +564,7 @@ const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
       pattern: /help|support|contact|phone|call|chat|talk.*human|real.*person/i,
       response: {
         message:
-          "You can email us at support@apexintelligence.ai for direct support. Owners and Admins can also schedule a call from the Help panel.",
+          "You can email us at support@kiptra.io for direct support. Owners and Admins can also schedule a call from the Help panel.",
       },
     },
     {
@@ -587,7 +587,7 @@ const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
 
 const fallbackResponse: ChatResponse = {
   message:
-    "I'm not sure about that one. You can try rephrasing your question, or contact our support team at support@apexintelligence.ai for further assistance.",
+    "I'm not sure about that one. You can try rephrasing your question, or contact our support team at support@kiptra.io for further assistance.",
 };
 
 // ---------------------------------------------------------------------------
@@ -1191,7 +1191,7 @@ export function HelpPanel() {
                 </div>
                 <div className="flex-1">
                   <p className="text-[13px] font-semibold text-foreground">
-                    Ask Apex Assistant
+                    Ask Kiptra Assistant
                   </p>
                   <p className="text-[11px] text-muted-foreground">
                     Chat with our AI for instant answers
@@ -1208,11 +1208,11 @@ export function HelpPanel() {
               </h3>
               <div className="space-y-2 rounded-lg border border-border bg-muted/20 p-3.5">
                 <a
-                  href="mailto:support@apexintelligence.ai"
+                  href="mailto:support@kiptra.io"
                   className="flex items-center gap-2.5 text-[13px] text-foreground transition-colors hover:text-primary"
                 >
                   <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
-                  <span>support@apexintelligence.ai</span>
+                  <span>support@kiptra.io</span>
                   <ExternalLink className="ml-auto h-3 w-3 text-muted-foreground/40" />
                 </a>
                 {canScheduleCall && (
@@ -1234,7 +1234,7 @@ export function HelpPanel() {
           {/* Footer */}
           <div className="border-t border-border px-5 py-2.5">
             <p className="text-center text-[11px] text-muted-foreground">
-              Apex Intelligence v1.0 &middot; Documentation
+              Kiptra AI v1.0 &middot; Documentation
             </p>
           </div>
         </div>
@@ -1264,7 +1264,7 @@ export function HelpPanel() {
                 <Sparkles className="h-3.5 w-3.5 text-primary" />
               </div>
               <h2 className="text-sm font-bold text-foreground">
-                Apex Assistant
+                Kiptra Assistant
               </h2>
             </div>
             <button
@@ -1291,7 +1291,7 @@ export function HelpPanel() {
                   </div>
                   <div className="max-w-[85%]">
                     <div className="inline-block rounded-2xl rounded-bl-md bg-muted/80 px-3.5 py-2.5 text-[13px] leading-relaxed text-foreground">
-                      Hi! I&apos;m your Apex assistant. Ask me anything about
+                      Hi! I&apos;m your Kiptra assistant. Ask me anything about
                       using the platform.
                     </div>
                   </div>

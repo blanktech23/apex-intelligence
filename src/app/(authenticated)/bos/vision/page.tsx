@@ -136,7 +136,7 @@ const visionSections: VisionSection[] = [
     icon: Flag,
     content: {
       goals: [
-        'Complete Apex Intelligence platform MVP and onboard first 5 clients',
+        'Complete Kiptra AI platform MVP and onboard first 5 clients',
         'Hire and train 2 new site superintendents',
         'Launch referral program with $500 incentive per closed referral',
         'Implement automated weekly KPI reporting for all teams',
@@ -149,7 +149,7 @@ const visionSections: VisionSection[] = [
 const initialRocks: Rock[] = [
   {
     id: 'rock-1',
-    title: 'Launch Apex Intelligence Platform MVP',
+    title: 'Launch Kiptra AI Platform MVP',
     owner: 'Joseph Wells',
     status: 'On Track',
     progress: 72,

@@ -15,7 +15,7 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Apex Intelligence",
+  title: "Kiptra AI",
   description: "AI-powered business intelligence platform",
 };
 

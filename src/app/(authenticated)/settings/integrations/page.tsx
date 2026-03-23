@@ -539,7 +539,7 @@ function OAuthConnectModal({
             <div className="space-y-4">
               <div>
                 <h4 className="text-xs font-semibold text-foreground/80 uppercase tracking-wider mb-3">
-                  Apex Intelligence will request access to:
+                  Kiptra AI will request access to:
                 </h4>
                 <ul className="space-y-2.5">
                   {scopes.map((scope) => (

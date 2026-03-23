@@ -281,7 +281,7 @@ function CompanyProfileStep() {
       <div>
         <h2 className="text-xl font-semibold text-foreground">Company Profile</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Help us configure Apex Intelligence for your business
+          Help us configure Kiptra AI for your business
         </p>
       </div>
 
@@ -289,7 +289,7 @@ function CompanyProfileStep() {
         <div className="space-y-1.5 sm:col-span-2">
           <label className="text-sm font-medium text-foreground">Company Name</label>
           <Input
-            placeholder="Apex Construction Co."
+            placeholder="Kiptra Construction Co."
             className="h-10 rounded-lg border-border bg-muted/30 text-sm focus-visible:border-primary focus-visible:ring-primary/30"
           />
         </div>
@@ -776,7 +776,7 @@ function ReviewStep({
       <div className="flex justify-center pt-4">
         <Button className="h-12 gap-3 rounded-xl bg-primary px-10 text-base font-bold text-primary-foreground shadow-[0_0_40px_rgba(99,102,241,0.3)] transition-all hover:bg-primary/90 hover:shadow-[0_0_60px_rgba(99,102,241,0.5)]">
           <Sparkles className="size-5" />
-          Launch Apex Intelligence
+          Launch Kiptra AI
         </Button>
       </div>
     </div>

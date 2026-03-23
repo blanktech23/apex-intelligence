@@ -27,7 +27,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     color: "text-purple-400 bg-purple-500/15 ring-purple-500/20",
     avatar: "JW",
     name: "Joseph Wells",
-    email: "joseph@apexintelligence.ai",
+    email: "joseph@kiptra.io",
     sidebarItems: [
       "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Business OS", "Settings",
       "Orders", "Contractors", "Catalog", "Reps", "Territory", "Commissions", "Production", "Dealers", "Distribution",
@@ -48,7 +48,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     color: "text-blue-400 bg-blue-500/15 ring-blue-500/20",
     avatar: "SC",
     name: "Sarah Chen",
-    email: "sarah@apexintelligence.ai",
+    email: "sarah@kiptra.io",
     sidebarItems: [
       "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Business OS", "Settings",
       "Orders", "Contractors", "Catalog", "Reps", "Territory", "Commissions", "Production", "Dealers", "Distribution",
@@ -69,7 +69,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     color: "text-emerald-400 bg-emerald-500/15 ring-emerald-500/20",
     avatar: "MT",
     name: "Mike Torres",
-    email: "mike@apexintelligence.ai",
+    email: "mike@kiptra.io",
     sidebarItems: [
       "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Business OS", "Settings",
       "Orders", "Contractors", "Catalog", "Reps", "Territory", "Commissions", "Production", "Dealers", "Distribution",
@@ -90,7 +90,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     color: "text-cyan-400 bg-cyan-500/15 ring-cyan-500/20",
     avatar: "LP",
     name: "Lisa Park",
-    email: "lisa@apexintelligence.ai",
+    email: "lisa@kiptra.io",
     sidebarItems: [
       "Dashboard", "Agents", "Projects", "Catalog", "Business OS",
       "BOS Hub", "Goals & Milestones",
@@ -109,7 +109,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     color: "text-amber-400 bg-amber-500/15 ring-amber-500/20",
     avatar: "DK",
     name: "David Kim",
-    email: "david@apexintelligence.ai",
+    email: "david@kiptra.io",
     sidebarItems: [
       "Dashboard", "Agents", "Customers", "Orders", "Commissions", "Reports", "Business OS",
       "BOS Hub", "KPI Dashboard", "Analytics",
@@ -128,7 +128,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     color: "text-gray-400 bg-gray-500/15 ring-gray-500/20",
     avatar: "AN",
     name: "Alex Nguyen",
-    email: "alex@apexintelligence.ai",
+    email: "alex@kiptra.io",
     sidebarItems: [
       "Dashboard", "Agents", "Projects", "Orders", "Catalog", "Reports", "Business OS",
       "BOS Hub", "KPI Dashboard",

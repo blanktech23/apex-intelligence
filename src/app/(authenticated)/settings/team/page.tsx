@@ -107,7 +107,7 @@ const SEAT_LIMIT = 15; // Professional plan
 const initialMembers: TeamMember[] = [
   {
     name: "Joseph Wells",
-    email: "joseph@apexintelligence.ai",
+    email: "joseph@kiptra.io",
     initials: "JW",
     role: "Owner",
     status: "active",
@@ -115,7 +115,7 @@ const initialMembers: TeamMember[] = [
   },
   {
     name: "Sarah Chen",
-    email: "sarah@apexintelligence.ai",
+    email: "sarah@kiptra.io",
     initials: "SC",
     role: "Admin",
     status: "active",
@@ -123,7 +123,7 @@ const initialMembers: TeamMember[] = [
   },
   {
     name: "Mike Torres",
-    email: "mike@apexintelligence.ai",
+    email: "mike@kiptra.io",
     initials: "MT",
     role: "Manager",
     status: "active",
@@ -131,7 +131,7 @@ const initialMembers: TeamMember[] = [
   },
   {
     name: "Lisa Park",
-    email: "lisa@apexintelligence.ai",
+    email: "lisa@kiptra.io",
     initials: "LP",
     role: "Designer",
     status: "active",
@@ -139,7 +139,7 @@ const initialMembers: TeamMember[] = [
   },
   {
     name: "David Kim",
-    email: "david@apexintelligence.ai",
+    email: "david@kiptra.io",
     initials: "DK",
     role: "Bookkeeper",
     status: "active",
@@ -147,7 +147,7 @@ const initialMembers: TeamMember[] = [
   },
   {
     name: "Emily Rodriguez",
-    email: "emily@apexintelligence.ai",
+    email: "emily@kiptra.io",
     initials: "ER",
     role: "Manager",
     status: "active",
@@ -155,7 +155,7 @@ const initialMembers: TeamMember[] = [
   },
   {
     name: "Alex Nguyen",
-    email: "alex@apexintelligence.ai",
+    email: "alex@kiptra.io",
     initials: "AN",
     role: "Designer",
     status: "active",
@@ -163,7 +163,7 @@ const initialMembers: TeamMember[] = [
   },
   {
     name: "Rachel Foster",
-    email: "rachel@apexintelligence.ai",
+    email: "rachel@kiptra.io",
     initials: "RF",
     role: "Viewer",
     status: "active",

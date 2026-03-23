@@ -261,7 +261,7 @@ export default function EscalationDetailPage() {
   const [replyText, setReplyText] = useState("");
   const [showModifyEditor, setShowModifyEditor] = useState(false);
   const [modifyDraft, setModifyDraft] = useState(
-    "Dear Marcus,\n\nAfter reviewing the original quote QT-2918 and the invoice INV-3847, I can confirm there was a discrepancy. We will issue a credit of $2,400 to align with the agreed-upon price of $11,800.\n\nThe credit will be processed within 2-3 business days. We sincerely apologize for the inconvenience and value your continued partnership.\n\nBest regards,\nApex Intelligence Team"
+    "Dear Marcus,\n\nAfter reviewing the original quote QT-2918 and the invoice INV-3847, I can confirm there was a discrepancy. We will issue a credit of $2,400 to align with the agreed-upon price of $11,800.\n\nThe credit will be processed within 2-3 business days. We sincerely apologize for the inconvenience and value your continued partnership.\n\nBest regards,\nKiptra AI Team"
   );
   const [modifyApproved, setModifyApproved] = useState(false);
   const [showReassignDropdown, setShowReassignDropdown] = useState(false);

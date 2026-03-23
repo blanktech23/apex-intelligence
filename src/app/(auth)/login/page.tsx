@@ -35,7 +35,7 @@ export default function LoginPage() {
           </div>
           <div className="flex flex-col items-center">
             <span className="text-gradient text-2xl font-bold tracking-tight">
-              APEX
+              KIPTRA
             </span>
             <span className="text-xs font-medium text-muted-foreground">
               Intelligence
@@ -192,7 +192,7 @@ export default function LoginPage() {
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
           <a
-            href="mailto:sales@apexintelligence.ai"
+            href="mailto:sales@kiptra.io"
             className="font-medium text-primary transition-colors hover:text-primary/80"
           >
             Contact sales
