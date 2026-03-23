@@ -1,4 +1,4 @@
-# Apex Intelligence - Claude Code Instructions
+# Kiptra AI - Claude Code Instructions
 
 ## GitHub Standards (Enforced)
 
