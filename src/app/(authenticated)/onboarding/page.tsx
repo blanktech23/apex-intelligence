@@ -27,6 +27,10 @@ import {
   CheckCircle2,
   ExternalLink,
   Shield,
+  HardHat,
+  Store,
+  UserCheck,
+  Factory,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +41,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { usePersona, type Persona } from "@/lib/persona-context";
 
 /* ------------------------------------------------------------------ */
 /*  Types & config                                                     */
@@ -50,11 +55,12 @@ interface StepConfig {
 }
 
 const steps: StepConfig[] = [
-  { number: 1, title: "Company Profile", description: "Tell us about your business", icon: Building2 },
-  { number: 2, title: "Connect Integrations", description: "Link your existing tools", icon: Plug },
-  { number: 3, title: "Configure AI Agents", description: "Choose your AI workforce", icon: Bot },
-  { number: 4, title: "Invite Team", description: "Add your team members", icon: Users },
-  { number: 5, title: "Review & Launch", description: "Confirm and go live", icon: Rocket },
+  { number: 1, title: "Business Type", description: "What type of business are you?", icon: Building2 },
+  { number: 2, title: "Company Profile", description: "Tell us about your business", icon: Building2 },
+  { number: 3, title: "Connect Integrations", description: "Link your existing tools", icon: Plug },
+  { number: 4, title: "Configure AI Agents", description: "Choose your AI workforce", icon: Bot },
+  { number: 5, title: "Invite Team", description: "Add your team members", icon: Users },
+  { number: 6, title: "Review & Launch", description: "Confirm and go live", icon: Rocket },
 ];
 
 type ConnectionStatus = "idle" | "connecting" | "connected";
@@ -98,6 +104,44 @@ interface TeamInvite {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Persona Card Data                                                  */
+/* ------------------------------------------------------------------ */
+
+interface PersonaCard {
+  persona: Persona;
+  label: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+const personaCards: PersonaCard[] = [
+  {
+    persona: "contractor",
+    label: "Contractor / Remodeler",
+    description: "Design, estimate, and manage remodeling projects",
+    icon: HardHat,
+  },
+  {
+    persona: "dealer",
+    label: "Dealer / Showroom",
+    description: "Sell products to contractors, manage orders and reps",
+    icon: Store,
+  },
+  {
+    persona: "rep",
+    label: "Sales Representative",
+    description: "Cover a territory, track commissions, spec products",
+    icon: UserCheck,
+  },
+  {
+    persona: "manufacturer",
+    label: "Manufacturer",
+    description: "Produce and distribute K&B products to dealers",
+    icon: Factory,
+  },
+];
+
+/* ------------------------------------------------------------------ */
 /*  Step Indicator                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -136,7 +180,7 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
             {/* Connecting line */}
             {!isLast && (
               <div
-                className={`mx-1.5 sm:mx-3 mb-6 h-0.5 w-6 sm:w-12 md:w-20 rounded-full transition-colors ${
+                className={`mx-1.5 sm:mx-3 mb-6 h-0.5 w-6 sm:w-12 md:w-16 rounded-full transition-colors ${
                   isCompleted ? "bg-green-500/50" : "bg-muted"
                 }`}
               />
@@ -151,6 +195,85 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
 /* ------------------------------------------------------------------ */
 /*  Step Content Components                                            */
 /* ------------------------------------------------------------------ */
+
+function PersonaSelectorStep({
+  selectedPersona,
+  onSelect,
+}: {
+  selectedPersona: Persona | null;
+  onSelect: (p: Persona) => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-semibold text-foreground">
+          What type of business are you?
+        </h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          We&apos;ll customize your experience based on your role in the kitchen
+          &amp; bath industry.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {personaCards.map((card) => {
+          const Icon = card.icon;
+          const isSelected = selectedPersona === card.persona;
+
+          return (
+            <button
+              key={card.persona}
+              onClick={() => onSelect(card.persona)}
+              className={`group relative flex flex-col items-center gap-3 rounded-2xl border-2 p-6 text-center transition-all duration-300 ${
+                isSelected
+                  ? "border-primary bg-primary/[0.06] shadow-[0_0_30px_rgba(99,102,241,0.15)]"
+                  : "border-border/50 bg-white/[0.02] backdrop-blur-sm hover:border-border hover:bg-white/[0.04] hover:shadow-[0_0_20px_rgba(99,102,241,0.08)]"
+              }`}
+            >
+              {/* Selected indicator */}
+              {isSelected && (
+                <div className="absolute right-3 top-3 flex size-6 items-center justify-center rounded-full bg-primary">
+                  <Check className="size-3.5 text-primary-foreground" />
+                </div>
+              )}
+
+              {/* Icon */}
+              <div
+                className={`flex size-14 items-center justify-center rounded-2xl transition-all duration-300 ${
+                  isSelected
+                    ? "bg-primary/15 shadow-[0_0_20px_rgba(99,102,241,0.2)]"
+                    : "bg-muted/40 group-hover:bg-muted/60"
+                }`}
+              >
+                <Icon
+                  className={`size-7 transition-colors duration-300 ${
+                    isSelected
+                      ? "text-primary"
+                      : "text-muted-foreground group-hover:text-foreground"
+                  }`}
+                />
+              </div>
+
+              {/* Label */}
+              <div>
+                <h3
+                  className={`text-sm font-semibold transition-colors ${
+                    isSelected ? "text-foreground" : "text-foreground/80"
+                  }`}
+                >
+                  {card.label}
+                </h3>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {card.description}
+                </p>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function CompanyProfileStep() {
   return (
@@ -665,7 +788,9 @@ function ReviewStep({
 /* ------------------------------------------------------------------ */
 
 export default function OnboardingPage() {
+  const { persona, setPersona } = usePersona();
   const [currentStep, setCurrentStep] = useState(1);
+  const [selectedPersona, setSelectedPersona] = useState<Persona | null>(persona);
   const [connectionState, setConnectionState] = useState<Record<string, ConnectionStatus>>(
     Object.fromEntries(integrations.map((i) => [i.name, "idle" as ConnectionStatus]))
   );
@@ -677,6 +802,14 @@ export default function OnboardingPage() {
     { email: "", role: "Designer" },
     { email: "", role: "Viewer" },
   ]);
+
+  const handlePersonaSelect = useCallback(
+    (p: Persona) => {
+      setSelectedPersona(p);
+      setPersona(p);
+    },
+    [setPersona]
+  );
 
   const handleConnectIntegration = useCallback((name: string) => {
     setConnectionState((prev) => ({ ...prev, [name]: "connecting" as ConnectionStatus }));
@@ -709,6 +842,9 @@ export default function OnboardingPage() {
     setInvites((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const totalSteps = steps.length;
+  const canContinueStep1 = selectedPersona !== null;
+
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-6 py-8">
       {/* Step indicator */}
@@ -716,18 +852,24 @@ export default function OnboardingPage() {
 
       {/* Step content */}
       <div className="glass rounded-2xl p-6 sm:p-8">
-        {currentStep === 1 && <CompanyProfileStep />}
-        {currentStep === 2 && (
+        {currentStep === 1 && (
+          <PersonaSelectorStep
+            selectedPersona={selectedPersona}
+            onSelect={handlePersonaSelect}
+          />
+        )}
+        {currentStep === 2 && <CompanyProfileStep />}
+        {currentStep === 3 && (
           <IntegrationsStep
             connectionState={connectionState}
             onConnect={handleConnectIntegration}
             onDisconnect={handleDisconnectIntegration}
           />
         )}
-        {currentStep === 3 && (
+        {currentStep === 4 && (
           <AgentsStep agentState={agentState} onToggle={handleToggleAgent} />
         )}
-        {currentStep === 4 && (
+        {currentStep === 5 && (
           <InviteTeamStep
             invites={invites}
             onUpdate={handleUpdateInvite}
@@ -735,7 +877,7 @@ export default function OnboardingPage() {
             onRemove={handleRemoveInvite}
           />
         )}
-        {currentStep === 5 && (
+        {currentStep === 6 && (
           <ReviewStep
             agentState={agentState}
             connectionState={connectionState}
@@ -772,16 +914,19 @@ export default function OnboardingPage() {
             ))}
           </div>
 
-          {currentStep < 5 ? (
+          {currentStep < totalSteps ? (
             <Button
-              onClick={() => setCurrentStep((s) => Math.min(5, s + 1))}
-              className="h-10 gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]"
+              onClick={() => setCurrentStep((s) => Math.min(totalSteps, s + 1))}
+              disabled={currentStep === 1 && !canContinueStep1}
+              className="h-10 gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)] disabled:opacity-40"
             >
-              {currentStep === 2
-                ? Object.values(connectionState).some((s) => s === "connected")
-                  ? "Continue"
-                  : "Skip Integrations"
-                : "Next"}
+              {currentStep === 1
+                ? "Continue"
+                : currentStep === 3
+                  ? Object.values(connectionState).some((s) => s === "connected")
+                    ? "Continue"
+                    : "Skip Integrations"
+                  : "Next"}
               <ChevronRight className="size-4" />
             </Button>
           ) : (
@@ -789,11 +934,11 @@ export default function OnboardingPage() {
           )}
         </div>
 
-        {/* Skip for now link on Step 2 */}
-        {currentStep === 2 &&
+        {/* Skip for now link on Step 3 (integrations) */}
+        {currentStep === 3 &&
           Object.values(connectionState).some((s) => s === "connected") && (
             <button
-              onClick={() => setCurrentStep(3)}
+              onClick={() => setCurrentStep(4)}
               className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
             >
               Skip for now

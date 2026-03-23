@@ -88,7 +88,7 @@ const allPeople = [
 ];
 
 // ---------------------------------------------------------------------------
-// Mock Data — Construction company EOS-style org chart
+// Mock Data — Construction company Business OS-style org chart
 // ---------------------------------------------------------------------------
 
 const initialOrgChart: Seat = {
@@ -300,7 +300,7 @@ const initialOrgChart: Seat = {
       roleCount: 5,
       skills: [
         { name: 'Process Optimization', proficiency: 'Expert' },
-        { name: 'EOS Methodology', proficiency: 'Expert' },
+        { name: 'Business OS Framework', proficiency: 'Expert' },
       ],
       kpis: ['Process Efficiency Score', 'Cross-Team Alignment'],
       tenure: '3 years',

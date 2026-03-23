@@ -230,7 +230,7 @@ const teamMembers: PersonFitData[] = [
     coreValues: { 'Integrity First': '+', 'Relentless Quality': '+', 'Team Over Individual': '+', 'Own It': '+', 'Innovate or Stagnate': '+' },
     coreValueTrends: { 'Integrity First': 'stable', 'Relentless Quality': 'stable', 'Team Over Individual': 'up', 'Own It': 'stable', 'Innovate or Stagnate': 'stable' },
     ccc: { competency: true, commitment: true, capacity: true },
-    cccNotes: { competency: 'Exceptional at cross-functional coordination', commitment: 'Lives the EOS framework daily', capacity: 'Manages complexity well' },
+    cccNotes: { competency: 'Exceptional at cross-functional coordination', commitment: 'Lives the Business OS framework daily', capacity: 'Manages complexity well' },
     fitStatus: 'right-right',
     managerNotes: 'Ideal integrator. Keeps the entire organization aligned and accountable.',
     actionItems: [],

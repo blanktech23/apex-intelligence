@@ -227,3 +227,215 @@
       radial-gradient(at 10% 90%, rgba(245, 158, 11, 0.02) 0px, transparent 50%);
   }
 }
+
+/* Confetti animation */
+@keyframes confetti-fall {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  10% {
+    transform: translate(calc(var(--confetti-vx) * 0.3), calc(var(--confetti-vy) * 0.6)) rotate(calc(var(--confetti-rot) * 0.3));
+    opacity: 1;
+  }
+  50% {
+    transform: translate(var(--confetti-vx), calc(var(--confetti-vy) * -0.2 + 80px)) rotate(calc(var(--confetti-rot)));
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(calc(var(--confetti-vx) * 1.2), calc(100vh - 100px)) rotate(calc(var(--confetti-rot) * 3));
+    opacity: 0;
+  }
+}
+
+.animate-confetti-fall {
+  animation: confetti-fall 2s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-confetti-fall {
+    animation: none;
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Driver.js Apex Theme — Premium, Non-Intrusive                       */
+/* ------------------------------------------------------------------ */
+
+/* Overlay: subtle dim to draw attention to highlighted element */
+.driver-overlay {
+  background: rgba(0, 0, 0, 0.25) !important;
+  backdrop-filter: none !important;
+}
+
+/* Tooltip: glassmorphism matching the app */
+.driver-popover {
+  background: rgba(15, 23, 42, 0.92) !important;
+  backdrop-filter: blur(20px) saturate(1.5) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+  padding: 20px 24px !important;
+  max-width: 320px !important;
+  color: #e2e8f0 !important;
+}
+
+/* Title */
+.driver-popover-title {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #f1f5f9 !important;
+  margin-bottom: 6px !important;
+  line-height: 1.4 !important;
+}
+
+/* Description */
+.driver-popover-description {
+  font-size: 14px !important;
+  color: #94a3b8 !important;
+  line-height: 1.5 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Step counter (2/5) */
+.driver-popover-progress-text {
+  font-size: 12px !important;
+  color: #64748b !important;
+  font-weight: 500 !important;
+}
+
+/* Navigation buttons container */
+.driver-popover-navigation-btns {
+  gap: 8px !important;
+  margin-top: 16px !important;
+}
+
+/* Next/Done button — primary accent */
+.driver-popover-next-btn {
+  background: #6366f1 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  cursor: pointer !important;
+  transition: background 0.2s !important;
+}
+.driver-popover-next-btn:hover {
+  background: #4f46e5 !important;
+}
+
+/* Back button — subtle ghost */
+.driver-popover-prev-btn {
+  background: transparent !important;
+  color: #94a3b8 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+}
+.driver-popover-prev-btn:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #e2e8f0 !important;
+}
+
+/* Close button */
+.driver-popover-close-btn {
+  color: #64748b !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  transition: all 0.2s !important;
+}
+.driver-popover-close-btn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #e2e8f0 !important;
+}
+
+/* Arrow — visible pointer connecting tooltip to target */
+.driver-popover-arrow {
+  display: block !important;
+  visibility: visible !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 10px solid transparent !important;
+}
+.driver-popover-arrow-side-top {
+  border-bottom-color: rgba(15, 23, 42, 0.92) !important;
+  border-top-color: transparent !important;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+}
+.driver-popover-arrow-side-bottom {
+  border-top-color: rgba(15, 23, 42, 0.92) !important;
+  border-bottom-color: transparent !important;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+}
+.driver-popover-arrow-side-left {
+  border-right-color: rgba(15, 23, 42, 0.92) !important;
+  border-left-color: transparent !important;
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+.driver-popover-arrow-side-right {
+  border-left-color: rgba(15, 23, 42, 0.92) !important;
+  border-right-color: transparent !important;
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+/* Highlighted element — clear glow ring connecting visually to tooltip arrow */
+.driver-active-element {
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.5), 0 0 24px rgba(99, 102, 241, 0.25), 0 0 0 8px rgba(99, 102, 241, 0.1) !important;
+  border-radius: 8px !important;
+  transition: box-shadow 0.3s ease !important;
+  position: relative !important;
+  z-index: 10001 !important;
+}
+
+/* Light mode overrides */
+[data-theme="light"] .driver-popover,
+.light .driver-popover {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04) !important;
+  color: #1e293b !important;
+}
+[data-theme="light"] .driver-popover-title,
+.light .driver-popover-title {
+  color: #0f172a !important;
+}
+[data-theme="light"] .driver-popover-description,
+.light .driver-popover-description {
+  color: #475569 !important;
+}
+[data-theme="light"] .driver-popover-arrow-side-top,
+.light .driver-popover-arrow-side-top {
+  border-bottom-color: rgba(255, 255, 255, 0.95) !important;
+}
+[data-theme="light"] .driver-popover-arrow-side-bottom,
+.light .driver-popover-arrow-side-bottom {
+  border-top-color: rgba(255, 255, 255, 0.95) !important;
+}
+[data-theme="light"] .driver-popover-arrow-side-left,
+.light .driver-popover-arrow-side-left {
+  border-right-color: rgba(255, 255, 255, 0.95) !important;
+}
+[data-theme="light"] .driver-popover-arrow-side-right,
+.light .driver-popover-arrow-side-right {
+  border-left-color: rgba(255, 255, 255, 0.95) !important;
+}

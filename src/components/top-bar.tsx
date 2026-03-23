@@ -98,6 +98,7 @@ export function TopBar() {
         {/* Notification bell */}
         <div className="relative">
           <button
+            data-tour="notification-bell"
             onClick={() => setNotificationsOpen(!notificationsOpen)}
             className={cn(
               "relative flex h-9 w-9 items-center justify-center rounded-lg transition-all duration-200",
@@ -125,7 +126,7 @@ export function TopBar() {
 
         {/* User avatar dropdown */}
         {mounted && <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-foreground/[0.06] focus:outline-none">
+          <DropdownMenuTrigger data-tour="user-avatar" className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-foreground/[0.06] focus:outline-none">
             <Avatar size="sm">
               <AvatarFallback className="bg-primary/20 text-xs font-semibold text-primary">
                 {config.avatar}

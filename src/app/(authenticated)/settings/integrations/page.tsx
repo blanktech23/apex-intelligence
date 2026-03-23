@@ -892,7 +892,7 @@ export default function IntegrationsPage() {
       </div>
 
       {/* Card grid */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div data-tour="integrations-grid" className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {integrations.map((integration) => {
           const Icon = integration.icon;
           const statusCfg = statusConfig[integration.status];
@@ -902,9 +902,11 @@ export default function IntegrationsPage() {
             ? healthConfig[integration.health]
             : null;
 
+          const tourAttr = integration.name === "QuickBooks" ? "quickbooks-card" : integration.name === "Google Calendar" ? "calendar-card" : undefined;
           return (
             <div
               key={integration.name}
+              {...(tourAttr ? { "data-tour": tourAttr } : {})}
               className={`group glass rounded-xl border-l-2 p-5 transition-all duration-200 hover:bg-muted/40 ${statusCfg.borderAccent}`}
             >
               {/* Top row: icon + status */}

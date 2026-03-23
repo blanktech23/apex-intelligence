@@ -6,6 +6,7 @@ import Link from "next/link";
 import {
   LayoutDashboard,
   Brain,
+  Bot,
   AlertTriangle,
   CheckSquare,
   Users,
@@ -39,9 +40,18 @@ import {
   Bell,
   CreditCard,
   Plug,
+  ShoppingCart,
+  HardHat,
+  Map,
+  DollarSign,
+  Factory,
+  Store,
+  Truck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRole } from "@/lib/role-context";
+import { usePersona } from "@/lib/persona-context";
+import { OnboardingChecklist } from "@/components/onboarding-checklist";
 import {
   Tooltip,
   TooltipTrigger,
@@ -62,17 +72,30 @@ interface BosNavGroup {
   items: NavItem[];
 }
 
-const navItems: NavItem[] = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { label: "Agents", icon: Brain, href: "/dashboard/agents" },
-  { label: "Customers", icon: Users, href: "/customers" },
-  { label: "Projects", icon: FolderKanban, href: "/projects" },
-  { label: "Escalations", icon: AlertTriangle, href: "/escalations", badge: 3 },
-  { label: "Approvals", icon: CheckSquare, href: "/approvals", badge: 12 },
-  { label: "Reports", icon: BarChart3, href: "/reports" },
-  { label: "EOS", icon: Building2, href: "/bos" },
-  { label: "Settings", icon: Settings, href: "/settings" },
-];
+/* ------------------------------------------------------------------ */
+/*  Master nav-item registry (all possible items across all personas)  */
+/* ------------------------------------------------------------------ */
+
+const NAV_ITEM_REGISTRY: Record<string, { icon: React.ComponentType<{ className?: string }>; href: string; badge?: number; dataTour?: string }> = {
+  Dashboard:    { icon: LayoutDashboard, href: "/dashboard", dataTour: "dashboard-link" },
+  Agents:       { icon: Bot, href: "/dashboard/agents", dataTour: "agents-link" },
+  Customers:    { icon: Users, href: "/customers", dataTour: "customers-link" },
+  Projects:     { icon: FolderKanban, href: "/projects", dataTour: "projects-link" },
+  Escalations:  { icon: AlertTriangle, href: "/escalations", badge: 3, dataTour: "escalations-link" },
+  Approvals:    { icon: CheckSquare, href: "/approvals", badge: 12, dataTour: "approvals-link" },
+  Reports:      { icon: BarChart3, href: "/reports", dataTour: "reports-link" },
+  "Business OS": { icon: Building2, href: "/bos", dataTour: "bos-link" },
+  Settings:     { icon: Settings, href: "/settings", dataTour: "settings-link" },
+  Orders:       { icon: ShoppingCart, href: "/orders", dataTour: "orders-link" },
+  Contractors:  { icon: HardHat, href: "/contractors", dataTour: "contractors-link" },
+  Catalog:      { icon: BookOpen, href: "/catalog", dataTour: "catalog-link" },
+  Reps:         { icon: UserCheck, href: "/reps", dataTour: "reps-link" },
+  Territory:    { icon: Map, href: "/territory", dataTour: "territory-link" },
+  Commissions:  { icon: DollarSign, href: "/commissions", dataTour: "commissions-link" },
+  Production:   { icon: Factory, href: "/production", dataTour: "production-link" },
+  Dealers:      { icon: Store, href: "/dealers", dataTour: "dealers-link" },
+  Distribution: { icon: Truck, href: "/distribution", dataTour: "distribution-link" },
+};
 
 const bosNavGroups: BosNavGroup[] = [
   {
@@ -152,6 +175,7 @@ export function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const { config } = useRole();
+  const { template } = usePersona();
 
   const isBosMode = pathname.startsWith("/bos") && !pathname.includes("/onboarding");
   const isSettingsMode = pathname.startsWith("/settings");
@@ -169,15 +193,21 @@ export function Sidebar() {
     { label: "Integrations", icon: Plug, href: "/settings/integrations" },
   ];
 
-  const visibleNavItems = navItems.filter((item) =>
-    config.sidebarItems.includes(item.label)
-  );
+  // Build nav items: intersection of persona template's sidebarItems and role's sidebarItems
+  const visibleNavItems: NavItem[] = template.sidebarItems
+    .filter((label) => config.sidebarItems.includes(label) && NAV_ITEM_REGISTRY[label])
+    .map((label) => {
+      const entry = NAV_ITEM_REGISTRY[label];
+      return { label, icon: entry.icon, href: entry.href, badge: entry.badge };
+    });
 
+  // BOS sub-nav: filter by template.bosItems AND role sidebarItems
   const visibleBosGroups = bosNavGroups
     .map((group) => ({
       ...group,
       items: group.items.filter((item) =>
-        config.sidebarItems.includes(item.sidebarLabel!)
+        config.sidebarItems.includes(item.sidebarLabel!) &&
+        template.bosItems.includes(item.sidebarLabel!)
       ),
     }))
     .filter((group) => group.items.length > 0);
@@ -190,7 +220,7 @@ export function Sidebar() {
     if (href === "/bos") {
       // In BOS mode, Hub is exact match only
       if (isBosMode) return pathname === "/bos";
-      // In main nav, EOS link highlights for any /bos route
+      // In main nav, Business OS link highlights for any /bos route
       return pathname.startsWith("/bos");
     }
     // Settings sub-routes: exact match or nested
@@ -202,14 +232,31 @@ export function Sidebar() {
     return pathname.startsWith(href);
   };
 
+  const tourAttrMap: Record<string, string> = {
+    // Main nav items get data-tour from registry
+    ...Object.fromEntries(
+      Object.entries(NAV_ITEM_REGISTRY)
+        .filter(([, v]) => v.dataTour)
+        .map(([k, v]) => [k, v.dataTour!])
+    ),
+    // BOS sub-nav items
+    KPIs: "kpis-link",
+    Meetings: "meetings-link",
+    Goals: "goals-link",
+    Issues: "issues-link",
+    Hub: "bos-hub",
+  };
+
   const renderNavLink = (item: NavItem, isCollapsedDesktop: boolean, indent = false) => {
     const Icon = item.icon;
     const active = isActive(item.href);
+    const tourAttr = tourAttrMap[item.label];
     const button = (
       <Link
         key={item.label}
         href={item.href}
         onClick={() => setMobileOpen(false)}
+        {...(tourAttr ? { "data-tour": tourAttr } : {})}
         className={cn(
           "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
           isCollapsedDesktop && "justify-center px-0",
@@ -298,7 +345,7 @@ export function Sidebar() {
               </Link>
             )}
           </div>
-          {/* EOS branding */}
+          {/* Business OS branding */}
           <div
             className={cn(
               "flex items-center gap-2 px-4 pb-5 pt-2",
@@ -311,7 +358,7 @@ export function Sidebar() {
             {!isCollapsedDesktop && (
               <div className="flex flex-col">
                 <span className="text-gradient text-lg font-bold leading-tight tracking-tight">
-                  EOS
+                  Business OS
                 </span>
                 <span className="text-[10px] font-medium leading-tight text-muted-foreground">
                   Business OS
@@ -437,7 +484,7 @@ export function Sidebar() {
     }
 
     return (
-      <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
+      <nav data-tour="sidebar-nav" className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
         {visibleNavItems.map((item) => renderNavLink(item, isCollapsedDesktop))}
       </nav>
     );
@@ -452,6 +499,11 @@ export function Sidebar() {
 
       {/* Bottom section */}
       <div className="border-t border-border p-2">
+        {/* Onboarding checklist — above plan badge */}
+        <div className="mb-2">
+          <OnboardingChecklist collapsed={isCollapsedDesktop} />
+        </div>
+
         {/* Plan badge */}
         <div
           className={cn(

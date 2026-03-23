@@ -244,7 +244,7 @@ const routeContextMap: Record<string, RouteContext> = {
       {
         question: "What is the Business Operating System?",
         answer:
-          "It's Apex's implementation of the EOS methodology \u2014 scorecards, goals, meeting management, issue tracking, and more, with AI augmentation.",
+          "It's Apex's Business Operating System, inspired by proven business methodologies \u2014 scorecards, goals, meeting management, issue tracking, and more, with AI augmentation.",
       },
       {
         question: "How do I set up my first meeting?",
@@ -508,7 +508,7 @@ const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
       pattern: /eos|bos|business.*os|meeting|scorecard|kpi|goal|rock|l10|quarterly|weekly|issue.*track/i,
       response: {
         message:
-          "The Business Operating System helps you run your company with the EOS methodology. Manage meetings, track KPIs, set goals, and align your team.",
+          "The Business Operating System helps you run your company using proven business methodologies. Manage meetings, track KPIs, set goals, and align your team.",
         link: { label: "Go to Business OS \u2192", href: "/bos" },
       },
     },
@@ -1014,6 +1014,7 @@ export function HelpPanel() {
     <>
       {/* ---- Trigger Button ---- */}
       <button
+        data-tour="help-bot"
         onClick={open ? handleClose : handleOpen}
         className={cn(
           "fixed bottom-20 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full shadow-lg transition-all duration-300 sm:bottom-6 sm:h-14 sm:w-14",

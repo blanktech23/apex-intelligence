@@ -139,7 +139,7 @@ const meetingTemplates: MeetingTemplate[] = [
   {
     id: 'tmpl-001',
     name: 'Level 10 Meeting',
-    description: 'Standard EOS Level 10 format with 7 sections: Check-in, Scorecard, Rock Review, Action Items, Headlines, IDS, Conclude.',
+    description: 'Standard Weekly Sync format with 7 sections: Check-in, Scorecard, Rock Review, Action Items, Headlines, IDS, Conclude.',
     sections: [
       { name: 'Segue / Check-in', minutes: 5 },
       { name: 'Scorecard Review', minutes: 5 },

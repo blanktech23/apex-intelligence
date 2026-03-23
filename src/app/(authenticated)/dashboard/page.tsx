@@ -22,6 +22,15 @@ import {
   CreditCard,
   FolderOpen,
   ClipboardCheck,
+  ShoppingCart,
+  Users,
+  Package,
+  TrendingUp,
+  MapPin,
+  Factory,
+  Truck,
+  CheckCircle,
+  Clock,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -34,6 +43,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useRole, type Role } from "@/lib/role-context";
+import { usePersona } from "@/lib/persona-context";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // ---------------------------------------------------------------------------
@@ -296,6 +306,214 @@ const agents: Agent[] = [
   { id: "project-orchestrator", name: "Project Orchestrator", icon: Calendar, description: "Manages crew scheduling and availability", status: "Active", lastRun: "2h ago", todayCount: 4 },
   { id: "design-spec-assistant", name: "Design Spec Assistant", icon: Palette, description: "Extracts specs and submittals from design documents", status: "Paused", lastRun: "1d ago", todayCount: 0 },
   { id: "support-agent", name: "Support Agent", icon: Headset, description: "Handles customer inquiries and ticket triage", status: "Active", lastRun: "10m ago", todayCount: 14 },
+];
+
+// ---------------------------------------------------------------------------
+// Persona-specific Mock Data (Dealer / Rep / Manufacturer)
+// ---------------------------------------------------------------------------
+
+const dealerStatsCards = [
+  {
+    label: "Open Orders",
+    value: "24",
+    subtitle: "+3 today",
+    subtitleColor: "text-green-400",
+    trend: "up" as const,
+    icon: ShoppingCart,
+    glowClass: "",
+    iconColor: "text-cyan-400",
+    iconBg: "bg-cyan-500/10",
+    href: "/orders",
+  },
+  {
+    label: "Contractor Accounts",
+    value: "47",
+    subtitle: "5 new this month",
+    subtitleColor: "text-green-400",
+    trend: "up" as const,
+    icon: Users,
+    glowClass: "",
+    iconColor: "text-indigo-400",
+    iconBg: "bg-indigo-500/10",
+    href: "/contractors",
+  },
+  {
+    label: "Revenue MTD",
+    value: "$127,400",
+    subtitle: "+8% vs last month",
+    subtitleColor: "text-green-400",
+    trend: "up" as const,
+    icon: DollarSign,
+    glowClass: "glow-success",
+    iconColor: "text-green-400",
+    iconBg: "bg-green-500/10",
+    href: "/reports",
+  },
+  {
+    label: "Catalog Products",
+    value: "2,340",
+    subtitle: "12 updated this week",
+    subtitleColor: "text-muted-foreground",
+    trend: "neutral" as const,
+    icon: Package,
+    glowClass: "",
+    iconColor: "text-amber-400",
+    iconBg: "bg-amber-500/10",
+    href: "/catalog",
+  },
+];
+
+const dealerBriefingText = `Good morning. 3 new orders received overnight totaling $18,200. Westbrook Remodeling placed a $12,400 cabinet order (KraftMaid Shaker series). 2 orders are ready for fulfillment. Your top rep Sarah Chen closed 4 orders this week.`;
+
+const dealerRecentOrders = [
+  { id: "ORD-4821", contractor: "Westbrook Remodeling", amount: "$12,400", status: "Processing", date: "Today" },
+  { id: "ORD-4820", contractor: "Summit Kitchens", amount: "$3,200", status: "Ready", date: "Today" },
+  { id: "ORD-4819", contractor: "Lakeside Builders", amount: "$2,600", status: "Ready", date: "Yesterday" },
+  { id: "ORD-4818", contractor: "Henderson Renovations", amount: "$8,900", status: "Shipped", date: "Yesterday" },
+  { id: "ORD-4817", contractor: "Metro Bath Co.", amount: "$4,100", status: "Delivered", date: "Mar 19" },
+];
+
+const dealerTopContractors = [
+  { name: "Westbrook Remodeling", ordersMTD: 6, revenueMTD: "$34,200", status: "Active" },
+  { name: "Summit Kitchens", ordersMTD: 4, revenueMTD: "$18,400", status: "Active" },
+  { name: "Henderson Renovations", ordersMTD: 3, revenueMTD: "$22,100", status: "Active" },
+  { name: "Lakeside Builders", ordersMTD: 3, revenueMTD: "$14,600", status: "Active" },
+  { name: "Metro Bath Co.", ordersMTD: 2, revenueMTD: "$9,800", status: "New" },
+];
+
+const repStatsCards = [
+  {
+    label: "Commission MTD",
+    value: "$4,280",
+    subtitle: "+12% vs last month",
+    subtitleColor: "text-green-400",
+    trend: "up" as const,
+    icon: DollarSign,
+    glowClass: "glow-success",
+    iconColor: "text-green-400",
+    iconBg: "bg-green-500/10",
+    href: "/commissions",
+  },
+  {
+    label: "Orders This Month",
+    value: "18",
+    subtitle: "$67,200 total",
+    subtitleColor: "text-muted-foreground",
+    trend: "up" as const,
+    icon: ShoppingCart,
+    glowClass: "",
+    iconColor: "text-cyan-400",
+    iconBg: "bg-cyan-500/10",
+    href: "/orders",
+  },
+  {
+    label: "Territory Accounts",
+    value: "32",
+    subtitle: "3 new prospects",
+    subtitleColor: "text-green-400",
+    trend: "up" as const,
+    icon: MapPin,
+    glowClass: "",
+    iconColor: "text-indigo-400",
+    iconBg: "bg-indigo-500/10",
+    href: "/territory",
+  },
+  {
+    label: "Avg Order Size",
+    value: "$3,733",
+    subtitle: "",
+    subtitleColor: "text-muted-foreground",
+    trend: "neutral" as const,
+    icon: TrendingUp,
+    glowClass: "",
+    iconColor: "text-amber-400",
+    iconBg: "bg-amber-500/10",
+    href: "/reports",
+  },
+];
+
+const repBriefingText = `Good morning. You have 3 follow-ups scheduled today. The Henderson account is ready to place a $15K order — they're waiting on the countertop sample. Your commission run rate puts you at $5,100 for the month.`;
+
+const repFollowUps = [
+  { contractor: "Henderson Renovations", lastContact: "2 days ago", notes: "Waiting on countertop sample — ready to order $15K" },
+  { contractor: "Lakeside Builders", lastContact: "4 days ago", notes: "Quote sent for Summit series cabinets — follow up on pricing" },
+  { contractor: "Metro Bath Co.", lastContact: "1 week ago", notes: "New showroom opening — schedule product demo" },
+];
+
+const repCommissionPipeline = [
+  { order: "ORD-4821", contractor: "Westbrook Remodeling", amount: "$12,400", commissionPct: "5%", status: "Processing" },
+  { order: "ORD-4818", contractor: "Henderson Renovations", amount: "$8,900", commissionPct: "5%", status: "Shipped" },
+  { order: "ORD-4815", contractor: "Summit Kitchens", amount: "$6,200", commissionPct: "4%", status: "Delivered" },
+  { order: "ORD-4812", contractor: "Lakeside Builders", amount: "$4,800", commissionPct: "5%", status: "Pending" },
+  { order: "ORD-4810", contractor: "Metro Bath Co.", amount: "$3,100", commissionPct: "4%", status: "Paid" },
+];
+
+const manufacturerStatsCards = [
+  {
+    label: "Production Orders",
+    value: "38",
+    subtitle: "5 new today",
+    subtitleColor: "text-green-400",
+    trend: "up" as const,
+    icon: Factory,
+    glowClass: "",
+    iconColor: "text-cyan-400",
+    iconBg: "bg-cyan-500/10",
+    href: "/production",
+  },
+  {
+    label: "Active Dealers",
+    value: "12",
+    subtitle: "2 pending applications",
+    subtitleColor: "text-amber-400",
+    trend: "neutral" as const,
+    icon: Users,
+    glowClass: "",
+    iconColor: "text-indigo-400",
+    iconBg: "bg-indigo-500/10",
+    href: "/dealers",
+  },
+  {
+    label: "Revenue MTD",
+    value: "$342,000",
+    subtitle: "+15% vs last month",
+    subtitleColor: "text-green-400",
+    trend: "up" as const,
+    icon: DollarSign,
+    glowClass: "glow-success",
+    iconColor: "text-green-400",
+    iconBg: "bg-green-500/10",
+    href: "/reports",
+  },
+  {
+    label: "On-Time Delivery",
+    value: "94.2%",
+    subtitle: "",
+    subtitleColor: "text-muted-foreground",
+    trend: "neutral" as const,
+    icon: Truck,
+    glowClass: "",
+    iconColor: "text-green-400",
+    iconBg: "bg-green-500/10",
+    href: "/distribution",
+  },
+];
+
+const manufacturerBriefingText = `Good morning. 5 new production orders received from 3 dealers totaling $28,400. The Summit series continues to lead with 40% of orders. One fulfillment delay flagged — Westwood order #1847 is 2 days behind due to a hickory supply shortage.`;
+
+const manufacturerProductionPipeline = [
+  { id: "PRD-1852", dealer: "Central Supply Co.", items: "24 cabinet units", status: "In Production", estCompletion: "Mar 28" },
+  { id: "PRD-1851", dealer: "Metro Distributors", items: "12 vanity sets", status: "In Production", estCompletion: "Mar 26" },
+  { id: "PRD-1850", dealer: "Pacific Dealers", items: "36 cabinet doors", status: "QC Review", estCompletion: "Mar 24" },
+  { id: "PRD-1849", dealer: "Central Supply Co.", items: "8 island units", status: "Shipping", estCompletion: "Mar 23" },
+  { id: "PRD-1847", dealer: "Westwood Partners", items: "18 cabinet units", status: "Delayed", estCompletion: "Mar 30" },
+];
+
+const manufacturerTopProducts = [
+  { productLine: "Summit Series", ordersMTD: 15, revenue: "$136,800", trend: "up" },
+  { productLine: "Heritage Collection", ordersMTD: 10, revenue: "$89,200", trend: "up" },
+  { productLine: "Modern Edge", ordersMTD: 8, revenue: "$67,400", trend: "neutral" },
+  { productLine: "Classic Line", ordersMTD: 5, revenue: "$48,600", trend: "down" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -662,100 +880,449 @@ function EscalationAlertBanner({ role }: { role: Role }) {
 }
 
 // ---------------------------------------------------------------------------
-// Page
+// Persona Briefing Card (reusable for dealer/rep/manufacturer)
 // ---------------------------------------------------------------------------
 
-export default function DashboardPage() {
+function PersonaBriefingCard({
+  briefingText,
+  agentName,
+}: {
+  briefingText: string;
+  agentName: string;
+}) {
+  const [expanded, setExpanded] = useState(true);
+
+  return (
+    <div className="glass rounded-xl overflow-hidden">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="flex w-full items-center justify-between p-5 text-left transition-colors hover:bg-muted/20"
+      >
+        <div className="flex items-center gap-3">
+          <div className="inline-flex rounded-lg bg-indigo-500/10 p-2.5">
+            <BarChart3 className="size-5 text-indigo-400" />
+          </div>
+          <div>
+            <h2 className="text-base font-semibold text-foreground">Daily Briefing</h2>
+            <p className="text-xs text-muted-foreground">
+              Generated by {agentName} &middot; 8:00 AM today
+            </p>
+          </div>
+        </div>
+        {expanded ? (
+          <ChevronUp className="size-5 text-muted-foreground" />
+        ) : (
+          <ChevronDown className="size-5 text-muted-foreground" />
+        )}
+      </button>
+      {expanded && (
+        <div className="border-t border-border px-5 pb-5 pt-4">
+          <p className="text-sm leading-relaxed text-muted-foreground">{briefingText}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Table status badges
+// ---------------------------------------------------------------------------
+
+const orderStatusStyles: Record<string, string> = {
+  Processing: "bg-blue-500/15 text-blue-400 border border-blue-500/20",
+  Ready: "bg-green-500/15 text-green-400 border border-green-500/20",
+  Shipped: "bg-cyan-500/15 text-cyan-400 border border-cyan-500/20",
+  Delivered: "bg-green-500/15 text-green-400 border border-green-500/20",
+  "In Production": "bg-blue-500/15 text-blue-400 border border-blue-500/20",
+  "QC Review": "bg-amber-500/15 text-amber-400 border border-amber-500/20",
+  Shipping: "bg-cyan-500/15 text-cyan-400 border border-cyan-500/20",
+  Delayed: "bg-red-500/15 text-red-400 border border-red-500/20",
+  Pending: "bg-amber-500/15 text-amber-400 border border-amber-500/20",
+  Paid: "bg-green-500/15 text-green-400 border border-green-500/20",
+  Active: "bg-green-500/15 text-green-400 border border-green-500/20",
+  New: "bg-indigo-500/15 text-indigo-400 border border-indigo-500/20",
+};
+
+function StatusBadge({ status }: { status: string }) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${orderStatusStyles[status] || "bg-muted/30 text-muted-foreground"}`}
+    >
+      {status}
+    </span>
+  );
+}
+
+function TrendIndicator({ trend }: { trend: string }) {
+  if (trend === "up") return <TrendingUp className="inline size-3 text-green-400" />;
+  if (trend === "down") return <TrendingUp className="inline size-3 text-red-400 rotate-180" />;
+  return <span className="text-muted-foreground">—</span>;
+}
+
+// ---------------------------------------------------------------------------
+// Dealer Dashboard
+// ---------------------------------------------------------------------------
+
+function DealerDashboard() {
+  return (
+    <div className="min-h-full bg-background bg-mesh">
+      <div className="mx-auto max-w-7xl space-y-6 p-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Orders, contractors, and catalog at a glance
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {dealerStatsCards.map((card) => (
+            <StatCard key={card.label} {...card} />
+          ))}
+        </div>
+
+        {/* Briefing */}
+        <PersonaBriefingCard
+          briefingText={dealerBriefingText}
+          agentName="Operations Controller"
+        />
+
+        {/* Two-column activity */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Recent Orders */}
+          <div className="glass rounded-xl p-5">
+            <h2 className="mb-4 text-base font-semibold text-foreground">
+              Recent Orders
+              <span className="ml-2 text-xs font-normal text-muted-foreground">Last 5</span>
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                    <th className="pb-2 pr-4 font-medium">Order</th>
+                    <th className="pb-2 pr-4 font-medium">Contractor</th>
+                    <th className="pb-2 pr-4 font-medium">Amount</th>
+                    <th className="pb-2 pr-4 font-medium">Status</th>
+                    <th className="pb-2 font-medium">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dealerRecentOrders.map((order) => (
+                    <tr key={order.id} className="border-b border-border/50 transition-colors hover:bg-muted/20">
+                      <td className="py-2.5 pr-4 font-medium text-foreground">{order.id}</td>
+                      <td className="py-2.5 pr-4 text-muted-foreground">{order.contractor}</td>
+                      <td className="py-2.5 pr-4 font-medium text-foreground">{order.amount}</td>
+                      <td className="py-2.5 pr-4"><StatusBadge status={order.status} /></td>
+                      <td className="py-2.5 text-muted-foreground">{order.date}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <Link href="/orders" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+              View all orders <ArrowRight className="size-3" />
+            </Link>
+          </div>
+
+          {/* Top Contractors */}
+          <div className="glass rounded-xl p-5">
+            <h2 className="mb-4 text-base font-semibold text-foreground">
+              Top Contractors
+              <span className="ml-2 text-xs font-normal text-muted-foreground">This month</span>
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                    <th className="pb-2 pr-4 font-medium">Name</th>
+                    <th className="pb-2 pr-4 font-medium">Orders MTD</th>
+                    <th className="pb-2 pr-4 font-medium">Revenue MTD</th>
+                    <th className="pb-2 font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dealerTopContractors.map((c) => (
+                    <tr key={c.name} className="border-b border-border/50 transition-colors hover:bg-muted/20">
+                      <td className="py-2.5 pr-4 font-medium text-foreground">{c.name}</td>
+                      <td className="py-2.5 pr-4 text-muted-foreground">{c.ordersMTD}</td>
+                      <td className="py-2.5 pr-4 font-medium text-foreground">{c.revenueMTD}</td>
+                      <td className="py-2.5"><StatusBadge status={c.status} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <Link href="/contractors" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+              View all contractors <ArrowRight className="size-3" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Sales Rep Dashboard
+// ---------------------------------------------------------------------------
+
+function RepDashboard() {
+  return (
+    <div className="min-h-full bg-background bg-mesh">
+      <div className="mx-auto max-w-7xl space-y-6 p-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Territory performance and commission tracking
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {repStatsCards.map((card) => (
+            <StatCard key={card.label} {...card} />
+          ))}
+        </div>
+
+        {/* Briefing */}
+        <PersonaBriefingCard
+          briefingText={repBriefingText}
+          agentName="Executive Navigator"
+        />
+
+        {/* Two-column activity */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Today's Follow-ups */}
+          <div className="glass rounded-xl p-5">
+            <h2 className="mb-4 text-base font-semibold text-foreground">
+              Today&apos;s Follow-ups
+              <span className="ml-2 inline-flex size-5 items-center justify-center rounded-full bg-indigo-500/15 text-[10px] font-bold text-indigo-400">
+                {repFollowUps.length}
+              </span>
+            </h2>
+            <div className="space-y-3">
+              {repFollowUps.map((fu) => (
+                <div key={fu.contractor} className="rounded-lg p-3 transition-colors hover:bg-muted/20 cursor-pointer">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-foreground">{fu.contractor}</span>
+                    <span className="text-xs text-muted-foreground">{fu.lastContact}</span>
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">{fu.notes}</p>
+                </div>
+              ))}
+            </div>
+            <Link href="/territory" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+              View territory <ArrowRight className="size-3" />
+            </Link>
+          </div>
+
+          {/* Commission Pipeline */}
+          <div className="glass rounded-xl p-5">
+            <h2 className="mb-4 text-base font-semibold text-foreground">
+              Commission Pipeline
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                    <th className="pb-2 pr-4 font-medium">Order</th>
+                    <th className="pb-2 pr-4 font-medium">Contractor</th>
+                    <th className="pb-2 pr-4 font-medium">Amount</th>
+                    <th className="pb-2 pr-4 font-medium">Rate</th>
+                    <th className="pb-2 font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {repCommissionPipeline.map((row) => (
+                    <tr key={row.order} className="border-b border-border/50 transition-colors hover:bg-muted/20">
+                      <td className="py-2.5 pr-4 font-medium text-foreground">{row.order}</td>
+                      <td className="py-2.5 pr-4 text-muted-foreground">{row.contractor}</td>
+                      <td className="py-2.5 pr-4 font-medium text-foreground">{row.amount}</td>
+                      <td className="py-2.5 pr-4 text-muted-foreground">{row.commissionPct}</td>
+                      <td className="py-2.5"><StatusBadge status={row.status} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <Link href="/commissions" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+              View all commissions <ArrowRight className="size-3" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Manufacturer Dashboard
+// ---------------------------------------------------------------------------
+
+function ManufacturerDashboard() {
+  return (
+    <div className="min-h-full bg-background bg-mesh">
+      <div className="mx-auto max-w-7xl space-y-6 p-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Production, dealers, and distribution overview
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {manufacturerStatsCards.map((card) => (
+            <StatCard key={card.label} {...card} />
+          ))}
+        </div>
+
+        {/* Briefing */}
+        <PersonaBriefingCard
+          briefingText={manufacturerBriefingText}
+          agentName="Operations Controller"
+        />
+
+        {/* Two-column activity */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Production Pipeline */}
+          <div className="glass rounded-xl p-5">
+            <h2 className="mb-4 text-base font-semibold text-foreground">
+              Production Pipeline
+              <span className="ml-2 text-xs font-normal text-muted-foreground">Active orders</span>
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                    <th className="pb-2 pr-4 font-medium">Order</th>
+                    <th className="pb-2 pr-4 font-medium">Dealer</th>
+                    <th className="pb-2 pr-4 font-medium">Items</th>
+                    <th className="pb-2 pr-4 font-medium">Status</th>
+                    <th className="pb-2 font-medium">Est.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {manufacturerProductionPipeline.map((row) => (
+                    <tr key={row.id} className="border-b border-border/50 transition-colors hover:bg-muted/20">
+                      <td className="py-2.5 pr-4 font-medium text-foreground">{row.id}</td>
+                      <td className="py-2.5 pr-4 text-muted-foreground">{row.dealer}</td>
+                      <td className="py-2.5 pr-4 text-muted-foreground">{row.items}</td>
+                      <td className="py-2.5 pr-4"><StatusBadge status={row.status} /></td>
+                      <td className="py-2.5 text-muted-foreground">{row.estCompletion}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <Link href="/production" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+              View all production <ArrowRight className="size-3" />
+            </Link>
+          </div>
+
+          {/* Top Products */}
+          <div className="glass rounded-xl p-5">
+            <h2 className="mb-4 text-base font-semibold text-foreground">
+              Top Products
+              <span className="ml-2 text-xs font-normal text-muted-foreground">This month</span>
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                    <th className="pb-2 pr-4 font-medium">Product Line</th>
+                    <th className="pb-2 pr-4 font-medium">Orders</th>
+                    <th className="pb-2 pr-4 font-medium">Revenue</th>
+                    <th className="pb-2 font-medium">Trend</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {manufacturerTopProducts.map((row) => (
+                    <tr key={row.productLine} className="border-b border-border/50 transition-colors hover:bg-muted/20">
+                      <td className="py-2.5 pr-4 font-medium text-foreground">{row.productLine}</td>
+                      <td className="py-2.5 pr-4 text-muted-foreground">{row.ordersMTD}</td>
+                      <td className="py-2.5 pr-4 font-medium text-foreground">{row.revenue}</td>
+                      <td className="py-2.5"><TrendIndicator trend={row.trend} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <Link href="/catalog" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+              View catalog <ArrowRight className="size-3" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Loading Skeleton (shared)
+// ---------------------------------------------------------------------------
+
+function DashboardSkeleton() {
+  return (
+    <div className="min-h-full bg-background bg-mesh">
+      <div className="mx-auto max-w-7xl space-y-6 p-6">
+        <div>
+          <Skeleton className="h-8 w-48 bg-muted/40" />
+          <Skeleton className="mt-2 h-4 w-72 bg-muted/30" />
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="glass rounded-xl p-5 space-y-3">
+              <Skeleton className="h-10 w-10 rounded-lg bg-muted/40" />
+              <Skeleton className="h-8 w-24 bg-muted/40" />
+              <Skeleton className="h-4 w-32 bg-muted/30" />
+              <Skeleton className="h-3 w-20 bg-muted/20" />
+            </div>
+          ))}
+        </div>
+        <div className="glass rounded-xl p-5 space-y-3">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-10 w-10 rounded-lg bg-muted/40" />
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-32 bg-muted/40" />
+              <Skeleton className="h-3 w-56 bg-muted/20" />
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="glass rounded-xl p-5">
+            <Skeleton className="mb-4 h-5 w-40 bg-muted/40" />
+            <Skeleton className="h-64 w-full rounded-lg bg-muted/20" />
+          </div>
+          <div className="glass rounded-xl p-5 space-y-3">
+            <Skeleton className="h-5 w-28 bg-muted/40" />
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="flex items-start gap-3 p-3">
+                <Skeleton className="h-8 w-8 rounded-md bg-muted/30" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-36 bg-muted/30" />
+                  <Skeleton className="h-3 w-full bg-muted/20" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Contractor Dashboard (original — unchanged)
+// ---------------------------------------------------------------------------
+
+function ContractorDashboard() {
   const { role } = useRole();
-  const [loading, setLoading] = useState(true);
   const statsCards = getStatsForRole(role);
   const escalations = getEscalationsForRole(role);
   const visibleAgents = getAgentsForRole(role);
   const isViewer = role === "viewer";
   const showEscalationPanel = escalations.length > 0;
-
-  useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(t);
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-full bg-background bg-mesh">
-        <div className="mx-auto max-w-7xl space-y-6 p-6">
-          {/* Header skeleton */}
-          <div>
-            <Skeleton className="h-8 w-48 bg-muted/40" />
-            <Skeleton className="mt-2 h-4 w-72 bg-muted/30" />
-          </div>
-
-          {/* Stats row skeleton */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="glass rounded-xl p-5 space-y-3">
-                <Skeleton className="h-10 w-10 rounded-lg bg-muted/40" />
-                <Skeleton className="h-8 w-24 bg-muted/40" />
-                <Skeleton className="h-4 w-32 bg-muted/30" />
-                <Skeleton className="h-3 w-20 bg-muted/20" />
-              </div>
-            ))}
-          </div>
-
-          {/* Briefing skeleton */}
-          <div className="glass rounded-xl p-5 space-y-3">
-            <div className="flex items-center gap-3">
-              <Skeleton className="h-10 w-10 rounded-lg bg-muted/40" />
-              <div className="space-y-2">
-                <Skeleton className="h-5 w-32 bg-muted/40" />
-                <Skeleton className="h-3 w-56 bg-muted/20" />
-              </div>
-            </div>
-          </div>
-
-          {/* Chart + Escalations skeleton */}
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
-            <div className="glass rounded-xl p-5 lg:col-span-3">
-              <Skeleton className="mb-4 h-5 w-40 bg-muted/40" />
-              <Skeleton className="h-64 w-full rounded-lg bg-muted/20" />
-            </div>
-            <div className="glass rounded-xl p-5 lg:col-span-2 space-y-3">
-              <Skeleton className="h-5 w-28 bg-muted/40" />
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="flex items-start gap-3 p-3">
-                  <Skeleton className="h-8 w-8 rounded-md bg-muted/30" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton className="h-4 w-36 bg-muted/30" />
-                    <Skeleton className="h-3 w-full bg-muted/20" />
-                    <Skeleton className="h-3 w-16 bg-muted/15" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Agent grid skeleton */}
-          <div>
-            <Skeleton className="mb-4 h-5 w-28 bg-muted/40" />
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="glass rounded-xl border-l-2 border-l-muted/30 p-4 space-y-3">
-                  <div className="flex items-center gap-3">
-                    <Skeleton className="h-9 w-9 rounded-lg bg-muted/30" />
-                    <div className="flex-1 space-y-2">
-                      <Skeleton className="h-4 w-36 bg-muted/30" />
-                      <Skeleton className="h-3 w-48 bg-muted/20" />
-                    </div>
-                    <Skeleton className="h-5 w-16 rounded-full bg-muted/20" />
-                  </div>
-                  <Skeleton className="h-3 w-40 bg-muted/15" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-full bg-background bg-mesh">
@@ -872,4 +1439,34 @@ export default function DashboardPage() {
       </div>
     </div>
   );
+}
+
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
+
+export default function DashboardPage() {
+  const { template } = usePersona();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
+
+  switch (template.dashboardLayout) {
+    case "dealer":
+      return <DealerDashboard />;
+    case "rep":
+      return <RepDashboard />;
+    case "manufacturer":
+      return <ManufacturerDashboard />;
+    case "contractor":
+    default:
+      return <ContractorDashboard />;
+  }
 }
