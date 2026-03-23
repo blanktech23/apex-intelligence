@@ -3,15 +3,18 @@
 import { useEffect, useState } from "react";
 import { usePersona } from "@/lib/persona-context";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   HardHat,
   Search,
+  Plus,
   Filter,
   DollarSign,
   TrendingUp,
   Users,
   ShoppingCart,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -31,6 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
   Active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
@@ -46,14 +50,14 @@ const stats = [
 ];
 
 const contractors = [
-  { company: "Rivera General Contracting", contact: "Marcus Rivera", ordersMTD: 12, revenueMTD: 42800, status: "Active", lastOrder: "2026-03-20" },
-  { company: "Summit Builders LLC", contact: "Sarah Chen", ordersMTD: 8, revenueMTD: 31200, status: "Active", lastOrder: "2026-03-19" },
-  { company: "Harbor View Construction", contact: "Robert Nguyen", ordersMTD: 6, revenueMTD: 24500, status: "Active", lastOrder: "2026-03-18" },
-  { company: "Brooks Concrete & Masonry", contact: "Michael Brooks", ordersMTD: 15, revenueMTD: 58300, status: "Active", lastOrder: "2026-03-17" },
-  { company: "Whitfield Custom Homes", contact: "Karen Whitfield", ordersMTD: 3, revenueMTD: 18700, status: "Pending", lastOrder: "2026-03-16" },
-  { company: "Lone Star Foundations", contact: "Olivia Martinez", ordersMTD: 9, revenueMTD: 36100, status: "Active", lastOrder: "2026-03-16" },
-  { company: "Parkway Electrical Services", contact: "David Park", ordersMTD: 4, revenueMTD: 8200, status: "Active", lastOrder: "2026-03-15" },
-  { company: "BlueLine Plumbing Co.", contact: "Angela Foster", ordersMTD: 0, revenueMTD: 0, status: "Inactive", lastOrder: "2026-02-20" },
+  { id: "contractor-1", company: "Rivera General Contracting", contact: "Marcus Rivera", ordersMTD: 12, revenueMTD: 42800, status: "Active", lastOrder: "2026-03-20" },
+  { id: "contractor-2", company: "Summit Builders LLC", contact: "Sarah Chen", ordersMTD: 8, revenueMTD: 31200, status: "Active", lastOrder: "2026-03-19" },
+  { id: "contractor-3", company: "Harbor View Construction", contact: "Robert Nguyen", ordersMTD: 6, revenueMTD: 24500, status: "Active", lastOrder: "2026-03-18" },
+  { id: "contractor-4", company: "Brooks Concrete & Masonry", contact: "Michael Brooks", ordersMTD: 15, revenueMTD: 58300, status: "Active", lastOrder: "2026-03-17" },
+  { id: "contractor-5", company: "Whitfield Custom Homes", contact: "Karen Whitfield", ordersMTD: 3, revenueMTD: 18700, status: "Pending", lastOrder: "2026-03-16" },
+  { id: "contractor-6", company: "Lone Star Foundations", contact: "Olivia Martinez", ordersMTD: 9, revenueMTD: 36100, status: "Active", lastOrder: "2026-03-16" },
+  { id: "contractor-7", company: "Parkway Electrical Services", contact: "David Park", ordersMTD: 4, revenueMTD: 8200, status: "Active", lastOrder: "2026-03-15" },
+  { id: "contractor-8", company: "BlueLine Plumbing Co.", contact: "Angela Foster", ordersMTD: 0, revenueMTD: 0, status: "Inactive", lastOrder: "2026-02-20" },
 ];
 
 export default function ContractorsPage() {
@@ -81,9 +85,15 @@ export default function ContractorsPage() {
 
   return (
     <div className="space-y-6 p-6 lg:p-8">
-      <div>
-        <h1 className="text-3xl font-bold text-gradient">Contractor Accounts</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Manage your contractor relationships and order history</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gradient">Contractor Accounts</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Manage your contractor relationships and order history</p>
+        </div>
+        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => toast.success("Contractor added successfully")}>
+          <Plus className="h-4 w-4" />
+          Add Contractor
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -138,8 +148,8 @@ export default function ContractorsPage() {
           </TableHeader>
           <TableBody>
             {filtered.map((c) => (
-              <TableRow key={c.company} className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer">
-                <TableCell className="font-medium text-foreground">{c.company}</TableCell>
+              <TableRow key={c.id} className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer" onClick={() => router.push(`/contractors/${c.id}`)}>
+                <TableCell className="font-medium text-foreground"><Link href={`/contractors/${c.id}`} className="text-indigo-400 hover:text-indigo-300 hover:underline" onClick={(e) => e.stopPropagation()}>{c.company}</Link></TableCell>
                 <TableCell className="text-muted-foreground">{c.contact}</TableCell>
                 <TableCell className="text-center text-muted-foreground">{c.ordersMTD}</TableCell>
                 <TableCell className="text-right font-medium text-foreground">{c.revenueMTD > 0 ? `$${c.revenueMTD.toLocaleString()}` : "--"}</TableCell>

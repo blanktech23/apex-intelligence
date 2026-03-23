@@ -126,7 +126,7 @@ export default function CommissionsPage() {
           </TableHeader>
           <TableBody>
             {commissions.map((c) => (
-              <TableRow key={c.order} className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer">
+              <TableRow key={c.order} className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer" onClick={() => router.push(`/orders/${c.order}`)}>
                 <TableCell className="font-medium text-foreground">{c.order}</TableCell>
                 <TableCell className="text-muted-foreground">{c.contractor}</TableCell>
                 <TableCell className="text-right text-muted-foreground">${c.total.toLocaleString()}</TableCell>

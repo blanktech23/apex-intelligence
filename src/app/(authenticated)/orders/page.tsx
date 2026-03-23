@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePersona } from "@/lib/persona-context";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   ShoppingCart,
   Search,
@@ -151,8 +152,8 @@ export default function OrdersPage() {
           </TableHeader>
           <TableBody>
             {filtered.map((order) => (
-              <TableRow key={order.id} className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer">
-                <TableCell className="font-medium text-foreground">{order.id}</TableCell>
+              <TableRow key={order.id} className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer" onClick={() => router.push(`/orders/${order.id}`)}>
+                <TableCell className="font-medium text-foreground"><Link href={`/orders/${order.id}`} className="text-indigo-400 hover:text-indigo-300 hover:underline" onClick={(e) => e.stopPropagation()}>{order.id}</Link></TableCell>
                 <TableCell className="text-muted-foreground">{order.contractor}</TableCell>
                 <TableCell className="text-muted-foreground text-sm hidden lg:table-cell max-w-[280px] truncate">{order.items}</TableCell>
                 <TableCell className="text-right font-medium text-foreground">${order.total.toLocaleString()}</TableCell>
