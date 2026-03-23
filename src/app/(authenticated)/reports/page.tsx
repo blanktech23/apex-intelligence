@@ -10,8 +10,10 @@ import {
   Calendar,
   Brain,
   Sparkles,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   AreaChart,
   Area,
@@ -30,6 +32,21 @@ import {
   Legend,
 } from "recharts";
 import { useRole } from "@/lib/role-context";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 
 /* ------------------------------------------------------------------ */
@@ -132,6 +149,41 @@ const statsCards = [
   },
 ];
 
+/* Detail data for expanded cards */
+const revenueBreakdown = {
+  byCategory: [
+    { name: "Cabinets", amount: "$156K", pct: "54.9%" },
+    { name: "Countertops", amount: "$82K", pct: "28.9%" },
+    { name: "Hardware & Accessories", amount: "$46K", pct: "16.2%" },
+  ],
+  byChannel: [
+    { name: "Dealer Network", amount: "$198K", pct: "69.7%" },
+    { name: "Direct Sales", amount: "$62K", pct: "21.8%" },
+    { name: "Online", amount: "$24K", pct: "8.5%" },
+  ],
+};
+
+const conversationBreakdown = [
+  { agent: "Discovery", count: "3,240", pct: "25.2%" },
+  { agent: "Support", count: "3,120", pct: "24.3%" },
+  { agent: "Operations", count: "2,150", pct: "16.7%" },
+  { agent: "Estimating", count: "1,920", pct: "14.9%" },
+  { agent: "Schedule", count: "1,670", pct: "13.0%" },
+  { agent: "Executive", count: "747", pct: "5.8%" },
+];
+
+const resolutionBreakdown = [
+  { type: "Auto-resolved", pct: "72.8%", color: "text-emerald-400" },
+  { type: "Escalated to human", pct: "21.4%", color: "text-amber-400" },
+  { type: "Pending resolution", pct: "5.8%", color: "text-red-400" },
+];
+
+const savingsBreakdown = [
+  { category: "Labor savings", amount: "$21,200", desc: "Automated data entry & scheduling" },
+  { category: "Error reduction", amount: "$12,800", desc: "Fewer order mistakes & rework" },
+  { category: "Time savings", amount: "$13,000", desc: "Faster estimates & ticket routing" },
+];
+
 /* ------------------------------------------------------------------ */
 /*  Chart Tooltip                                                      */
 /* ------------------------------------------------------------------ */
@@ -173,6 +225,9 @@ function ChartTooltip({
 export default function ReportsPage() {
   const { config } = useRole();
   const [dateRange, setDateRange] = useState<DateRange>("30d");
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [exportForm, setExportForm] = useState({ reportType: "", dateFrom: "", dateTo: "", format: "" });
 
   if (!config.canViewReports) {
     return (
@@ -181,6 +236,28 @@ export default function ReportsPage() {
         <p className="mt-2 text-sm text-muted-foreground">You don&apos;t have permission to view reports.</p>
       </div>
     );
+  }
+
+  function handleExport() {
+    if (!exportForm.reportType) {
+      toast.error("Please select a report type");
+      return;
+    }
+    if (!exportForm.format) {
+      toast.error("Please select a format");
+      return;
+    }
+    const typeLabels: Record<string, string> = {
+      revenue: "Revenue Summary",
+      agent: "Agent Performance",
+      commission: "Commission Report",
+      full: "Full Export",
+    };
+    toast.success(`Exporting ${typeLabels[exportForm.reportType] || exportForm.reportType}...`, {
+      description: `Format: ${exportForm.format.toUpperCase()}${exportForm.dateFrom ? ` | From: ${exportForm.dateFrom}` : ""}${exportForm.dateTo ? ` To: ${exportForm.dateTo}` : ""}`,
+    });
+    setExportOpen(false);
+    setExportForm({ reportType: "", dateFrom: "", dateTo: "", format: "" });
   }
 
   return (
@@ -212,7 +289,7 @@ export default function ReportsPage() {
               </button>
             ))}
           </div>
-          <Button onClick={() => toast.success("Report exported successfully")} className="h-9 gap-2 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]">
+          <Button onClick={() => setExportOpen(true)} className="h-9 gap-2 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]">
             <Download className="h-3.5 w-3.5" />
             Export
           </Button>
@@ -226,19 +303,23 @@ export default function ReportsPage() {
           return (
             <div
               key={card.label}
-              className="glass rounded-xl p-5 transition-all duration-300 glass-hover"
+              className={`glass rounded-xl p-5 transition-all duration-300 glass-hover cursor-pointer ${expandedCard === card.label ? "ring-1 ring-indigo-500/30" : ""}`}
+              onClick={() => setExpandedCard(expandedCard === card.label ? null : card.label)}
             >
               <div className="flex items-center justify-between">
                 <div className={`inline-flex rounded-lg p-2.5 ${card.iconBg}`}>
                   <Icon className={`size-5 ${card.iconColor}`} />
                 </div>
-                <span
-                  className={`text-xs font-semibold ${
-                    card.changePositive ? "text-green-400" : "text-red-400"
-                  }`}
-                >
-                  {card.change}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`text-xs font-semibold ${
+                      card.changePositive ? "text-green-400" : "text-red-400"
+                    }`}
+                  >
+                    {card.change}
+                  </span>
+                  <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 ${expandedCard === card.label ? "rotate-180" : ""}`} />
+                </div>
               </div>
               <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
                 {card.value}
@@ -248,6 +329,122 @@ export default function ReportsPage() {
           );
         })}
       </div>
+
+      {/* Expanded Card Detail Panel */}
+      {expandedCard && (
+        <div className="glass border-border rounded-xl p-5 animate-in fade-in slide-in-from-top-2 duration-200">
+          {expandedCard === "Total Revenue" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-4">Revenue Breakdown</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wider">By Product Category</h4>
+                  <div className="space-y-2">
+                    {revenueBreakdown.byCategory.map((item) => (
+                      <div key={item.name} className="flex items-center justify-between rounded-lg border border-border bg-foreground/[0.02] px-4 py-2.5">
+                        <span className="text-sm text-foreground">{item.name}</span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm font-medium text-emerald-400">{item.amount}</span>
+                          <span className="text-xs text-muted-foreground w-12 text-right">{item.pct}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wider">By Channel</h4>
+                  <div className="space-y-2">
+                    {revenueBreakdown.byChannel.map((item) => (
+                      <div key={item.name} className="flex items-center justify-between rounded-lg border border-border bg-foreground/[0.02] px-4 py-2.5">
+                        <span className="text-sm text-foreground">{item.name}</span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm font-medium text-indigo-400">{item.amount}</span>
+                          <span className="text-xs text-muted-foreground w-12 text-right">{item.pct}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {expandedCard === "AI Conversations" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Conversations by Agent</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left py-2 text-xs font-medium text-muted-foreground">Agent</th>
+                      <th className="text-right py-2 text-xs font-medium text-muted-foreground">Conversations</th>
+                      <th className="text-right py-2 text-xs font-medium text-muted-foreground">% of Total</th>
+                      <th className="text-right py-2 text-xs font-medium text-muted-foreground hidden sm:table-cell">Visual</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {conversationBreakdown.map((row) => (
+                      <tr key={row.agent} className="border-b border-border/50">
+                        <td className="py-2 text-foreground font-medium">{row.agent}</td>
+                        <td className="py-2 text-right text-muted-foreground">{row.count}</td>
+                        <td className="py-2 text-right text-indigo-400 font-medium">{row.pct}</td>
+                        <td className="py-2 text-right hidden sm:table-cell">
+                          <div className="flex items-center justify-end">
+                            <div className="h-1.5 rounded-full bg-indigo-500 transition-all" style={{ width: `${parseFloat(row.pct) * 3}px` }} />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="mt-3 text-xs text-muted-foreground">Total: <span className="font-medium text-foreground">12,847</span> conversations this period</div>
+            </div>
+          )}
+
+          {expandedCard === "Resolution Rate" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Resolution Breakdown</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {resolutionBreakdown.map((item) => (
+                  <div key={item.type} className="flex flex-col items-center rounded-lg border border-border bg-foreground/[0.02] px-4 py-4">
+                    <span className={`text-2xl font-bold ${item.color}`}>{item.pct}</span>
+                    <span className="text-xs text-muted-foreground mt-1">{item.type}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 text-xs text-muted-foreground">Overall resolution rate: <span className="font-medium text-cyan-400">94.2%</span> (+2.1% vs last period)</div>
+            </div>
+          )}
+
+          {expandedCard === "Cost Savings" && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Savings Breakdown</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left py-2 text-xs font-medium text-muted-foreground">Category</th>
+                      <th className="text-right py-2 text-xs font-medium text-muted-foreground">Amount</th>
+                      <th className="text-left py-2 text-xs font-medium text-muted-foreground hidden sm:table-cell">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {savingsBreakdown.map((row) => (
+                      <tr key={row.category} className="border-b border-border/50">
+                        <td className="py-2 text-foreground font-medium">{row.category}</td>
+                        <td className="py-2 text-right text-amber-400 font-medium">{row.amount}</td>
+                        <td className="py-2 text-muted-foreground text-xs hidden sm:table-cell">{row.desc}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="mt-3 text-xs text-muted-foreground">Total savings: <span className="font-medium text-amber-400">$47,000</span> (+18% vs last period)</div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Charts 2x2 grid */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -464,6 +661,82 @@ export default function ReportsPage() {
           </div>
         </div>
       </div>
+
+      {/* Export Dialog */}
+      <Dialog open={exportOpen} onOpenChange={setExportOpen}>
+        <DialogContent className="sm:max-w-md glass-strong border-border bg-background" showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <div className="rounded-lg bg-indigo-500/10 p-2">
+                <Download className="h-4 w-4 text-indigo-400" />
+              </div>
+              Export Report
+            </DialogTitle>
+            <DialogDescription>
+              Configure your report export settings.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <div>
+              <label className="text-xs font-medium text-muted-foreground">Report Type *</label>
+              <Select value={exportForm.reportType} onValueChange={(v) => { if (v) setExportForm({ ...exportForm, reportType: v }); }}>
+                <SelectTrigger className="mt-1 glass border-border bg-foreground/5 text-foreground">
+                  <SelectValue placeholder="Select report type" />
+                </SelectTrigger>
+                <SelectContent className="glass-strong border-border bg-popover">
+                  <SelectItem value="revenue">Revenue Summary</SelectItem>
+                  <SelectItem value="agent">Agent Performance</SelectItem>
+                  <SelectItem value="commission">Commission Report</SelectItem>
+                  <SelectItem value="full">Full Export</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground">Date From</label>
+                <Input
+                  type="date"
+                  value={exportForm.dateFrom}
+                  onChange={(e) => setExportForm({ ...exportForm, dateFrom: e.target.value })}
+                  className="mt-1 glass border-border bg-foreground/5 text-foreground"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground">Date To</label>
+                <Input
+                  type="date"
+                  value={exportForm.dateTo}
+                  onChange={(e) => setExportForm({ ...exportForm, dateTo: e.target.value })}
+                  className="mt-1 glass border-border bg-foreground/5 text-foreground"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-muted-foreground">Format *</label>
+              <Select value={exportForm.format} onValueChange={(v) => { if (v) setExportForm({ ...exportForm, format: v }); }}>
+                <SelectTrigger className="mt-1 glass border-border bg-foreground/5 text-foreground">
+                  <SelectValue placeholder="Select format" />
+                </SelectTrigger>
+                <SelectContent className="glass-strong border-border bg-popover">
+                  <SelectItem value="pdf">PDF</SelectItem>
+                  <SelectItem value="csv">CSV</SelectItem>
+                  <SelectItem value="excel">Excel</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10" onClick={() => { setExportOpen(false); setExportForm({ reportType: "", dateFrom: "", dateTo: "", format: "" }); }}>
+              Cancel
+            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white" onClick={handleExport}>
+              Export Report
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
