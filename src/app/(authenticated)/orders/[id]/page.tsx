@@ -52,14 +52,14 @@ const ordersData: Record<string, {
     customer: { name: "Marcus Rivera", company: "Rivera General Contracting", email: "marcus@riveragc.com", phone: "(512) 555-0142" },
     contractor: { name: "Marcus Rivera", company: "Rivera General Contracting", email: "marcus@riveragc.com", phone: "(512) 555-0142" },
     items: [
-      { sku: "CAB-SHK-42W", name: "42\" Shaker Wall Cabinet", finish: "White", qty: 8, unitPrice: 1450 },
-      { sku: "CAB-SHK-42B", name: "42\" Shaker Base Cabinet", finish: "White", qty: 4, unitPrice: 1680 },
+      { sku: "CAB-SHK-42W", name: "42\" Shaker Wall Cabinet", finish: "White", qty: 8, unitPrice: 680 },
+      { sku: "CAB-SHK-42B", name: "42\" Shaker Base Cabinet", finish: "White", qty: 4, unitPrice: 780 },
       { sku: "TRM-CRN-8FT", name: "Crown Molding 8ft", finish: "White Oak", qty: 6, unitPrice: 85 },
     ],
-    subtotal: 18710,
-    tax: 1543.58,
+    subtotal: 9070,
+    tax: 748.28,
     shipping: 0,
-    total: 18450,
+    total: 9818.28,
     timeline: [
       { step: "Order Placed", date: "Mar 20, 2026", completed: true },
       { step: "Processing", date: "--", completed: false },
@@ -84,7 +84,7 @@ const ordersData: Record<string, {
     subtotal: 8320,
     tax: 686.40,
     shipping: 400,
-    total: 8720,
+    total: 9406.40,
     timeline: [
       { step: "Order Placed", date: "Mar 19, 2026", completed: true },
       { step: "Processing", date: "Mar 20, 2026", completed: true },
@@ -108,7 +108,7 @@ const ordersData: Record<string, {
     subtotal: 11248,
     tax: 928.46,
     shipping: 350,
-    total: 12340,
+    total: 12526.46,
     timeline: [
       { step: "Order Placed", date: "Mar 18, 2026", completed: true },
       { step: "Processing", date: "Mar 18, 2026", completed: true },
@@ -123,8 +123,8 @@ const ordersData: Record<string, {
     id: "ORD-4817",
     status: "Delivered",
     date: "2026-03-17",
-    customer: { name: "Michael Brooks", company: "Brooks Concrete & Masonry", email: "michael@brookscm.com", phone: "(512) 555-0456" },
-    contractor: { name: "Michael Brooks", company: "Brooks Concrete & Masonry", email: "michael@brookscm.com", phone: "(512) 555-0456" },
+    customer: { name: "Michael Brooks", company: "Brooks Design-Build", email: "michael@brookscm.com", phone: "(512) 555-0456" },
+    contractor: { name: "Michael Brooks", company: "Brooks Design-Build", email: "michael@brookscm.com", phone: "(512) 555-0456" },
     items: [
       { sku: "VAN-DBL-60", name: "Bathroom Vanity 60\" Double Sink", finish: "Gray Oak", qty: 1, unitPrice: 2480 },
       { sku: "SNK-UND-OVL", name: "Undermount Oval Sink", finish: "White Ceramic", qty: 2, unitPrice: 285 },
@@ -133,7 +133,7 @@ const ordersData: Record<string, {
     subtotal: 3280,
     tax: 270.60,
     shipping: 0,
-    total: 3280,
+    total: 3550.60,
     timeline: [
       { step: "Order Placed", date: "Mar 17, 2026", completed: true },
       { step: "Processing", date: "Mar 17, 2026", completed: true },
@@ -146,7 +146,7 @@ const ordersData: Record<string, {
   },
   "ORD-4815": {
     id: "ORD-4815",
-    status: "Processing",
+    status: "In Production",
     date: "2026-03-16",
     customer: { name: "Karen Whitfield", company: "Whitfield Custom Homes", email: "karen@whitfieldch.com", phone: "(512) 555-0521" },
     contractor: { name: "Karen Whitfield", company: "Whitfield Custom Homes", email: "karen@whitfieldch.com", phone: "(512) 555-0521" },
@@ -157,10 +157,11 @@ const ordersData: Record<string, {
     subtotal: 14500,
     tax: 1196.75,
     shipping: 0,
-    total: 14500,
+    total: 15696.75,
     timeline: [
       { step: "Order Placed", date: "Mar 16, 2026", completed: true },
       { step: "Processing", date: "Mar 17, 2026", completed: true },
+      { step: "In Production", date: "Mar 18, 2026", completed: true },
       { step: "Shipped", date: "--", completed: false },
       { step: "Delivered", date: "--", completed: false },
     ],
@@ -172,8 +173,8 @@ const ordersData: Record<string, {
     id: "ORD-4813",
     status: "Open",
     date: "2026-03-16",
-    customer: { name: "Olivia Martinez", company: "Lone Star Foundations", email: "olivia@lonestarf.com", phone: "(512) 555-0678" },
-    contractor: { name: "Olivia Martinez", company: "Lone Star Foundations", email: "olivia@lonestarf.com", phone: "(512) 555-0678" },
+    customer: { name: "Olivia Martinez", company: "Lone Star Renovations", email: "olivia@lonestarf.com", phone: "(512) 555-0678" },
+    contractor: { name: "Olivia Martinez", company: "Lone Star Renovations", email: "olivia@lonestarf.com", phone: "(512) 555-0678" },
     items: [
       { sku: "CAB-WALL-30", name: "Wall Cabinet 30\"", finish: "Dove Gray", qty: 6, unitPrice: 1120 },
       { sku: "CAB-LS-CRN", name: "Lazy Susan Corner Unit", finish: "Dove Gray", qty: 1, unitPrice: 3150 },
@@ -181,7 +182,7 @@ const ordersData: Record<string, {
     subtotal: 9870,
     tax: 814.28,
     shipping: 0,
-    total: 9870,
+    total: 10684.28,
     timeline: [
       { step: "Order Placed", date: "Mar 16, 2026", completed: true },
       { step: "Processing", date: "--", completed: false },
@@ -194,15 +195,15 @@ const ordersData: Record<string, {
     id: "ORD-4810",
     status: "Shipped",
     date: "2026-03-15",
-    customer: { name: "David Park", company: "Parkway Electrical Services", email: "david@parkwayelectric.com", phone: "(737) 555-0429" },
-    contractor: { name: "David Park", company: "Parkway Electrical Services", email: "david@parkwayelectric.com", phone: "(737) 555-0429" },
+    customer: { name: "David Park", company: "Parkway Home Design", email: "david@parkwayelectric.com", phone: "(737) 555-0429" },
+    contractor: { name: "David Park", company: "Parkway Home Design", email: "david@parkwayelectric.com", phone: "(737) 555-0429" },
     items: [
       { sku: "LED-UC-KIT", name: "Under-Cabinet LED Lighting Kit", finish: "Warm White 3000K", qty: 4, unitPrice: 310 },
     ],
     subtotal: 1240,
     tax: 102.30,
     shipping: 0,
-    total: 1240,
+    total: 1342.30,
     timeline: [
       { step: "Order Placed", date: "Mar 15, 2026", completed: true },
       { step: "Processing", date: "Mar 15, 2026", completed: true },
@@ -224,7 +225,7 @@ const ordersData: Record<string, {
     subtotal: 22100,
     tax: 1823.25,
     shipping: 0,
-    total: 22100,
+    total: 23923.25,
     timeline: [
       { step: "Order Placed", date: "Mar 14, 2026", completed: true },
       { step: "Processing", date: "Mar 15, 2026", completed: true },
@@ -247,7 +248,7 @@ const ordersData: Record<string, {
     subtotal: 6450,
     tax: 532.13,
     shipping: 0,
-    total: 6450,
+    total: 6982.13,
     timeline: [
       { step: "Order Placed", date: "Mar 13, 2026", completed: true },
       { step: "Processing", date: "Mar 13, 2026", completed: true },
@@ -269,7 +270,7 @@ const ordersData: Record<string, {
     subtotal: 5680,
     tax: 468.60,
     shipping: 0,
-    total: 5680,
+    total: 6148.60,
     timeline: [
       { step: "Order Placed", date: "Mar 12, 2026", completed: true },
       { step: "Processing", date: "Mar 12, 2026", completed: true },
@@ -283,6 +284,7 @@ const ordersData: Record<string, {
 const statusColors: Record<string, string> = {
   Open: "bg-blue-500/20 text-blue-400 border-blue-500/30",
   Processing: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  "In Production": "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
   Shipped: "bg-purple-500/20 text-purple-400 border-purple-500/30",
   Delivered: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
 };
@@ -290,6 +292,7 @@ const statusColors: Record<string, string> = {
 const timelineIcons: Record<string, typeof Clock> = {
   "Order Placed": Clock,
   Processing: Package,
+  "In Production": Package,
   Shipped: Truck,
   Delivered: CheckCircle2,
 };

@@ -64,7 +64,7 @@ const accounts = [
     phone: "(512) 555-0142",
     email: "orders@austinkb.com",
     address: "2801 S Lamar Blvd, Austin, TX 78704",
-    revenueBreakdown: { cabinets: 18400, countertops: 9800, appliances: 6000 },
+    revenueBreakdown: { cabinets: 18400, countertops: 9800, hardware: 6000 },
     recentOrders: [
       { name: "Shaker Cabinet Set (12 units)", date: "2026-03-15", value: 6240 },
       { name: "Quartz Countertop - 45sqft", date: "2026-03-08", value: 3825 },
@@ -86,7 +86,7 @@ const accounts = [
     phone: "(512) 555-0287",
     email: "info@centraltxcab.com",
     address: "901 E 6th St, Austin, TX 78702",
-    revenueBreakdown: { cabinets: 22100, countertops: 4200, appliances: 2400 },
+    revenueBreakdown: { cabinets: 22100, countertops: 4200, hardware: 2400 },
     recentOrders: [
       { name: "Tall Pantry Cabinet x4", date: "2026-03-10", value: 5200 },
       { name: "Lazy Susan Corner Units x2", date: "2026-02-28", value: 1560 },
@@ -106,7 +106,7 @@ const accounts = [
     phone: "(512) 555-0391",
     email: "projects@hillcountryren.com",
     address: "4500 Bee Cave Rd, West Lake Hills, TX 78746",
-    revenueBreakdown: { cabinets: 8200, countertops: 7600, appliances: 4000 },
+    revenueBreakdown: { cabinets: 8200, countertops: 7600, hardware: 4000 },
     recentOrders: [
       { name: "Marble Countertop - 30sqft", date: "2026-03-05", value: 3150 },
       { name: "Wall-Mount Range Hood", date: "2026-02-18", value: 1100 },
@@ -126,7 +126,7 @@ const accounts = [
     phone: "(512) 555-0463",
     email: "hello@lakewayhd.com",
     address: "1200 Lakeway Dr, Lakeway, TX 78734",
-    revenueBreakdown: { cabinets: 0, countertops: 0, appliances: 0 },
+    revenueBreakdown: { cabinets: 0, countertops: 0, hardware: 0 },
     recentOrders: [],
     visitHistory: [
       { date: "2026-03-12", note: "Discovery meeting - high-end residential focus" },
@@ -143,7 +143,7 @@ const accounts = [
     phone: "(512) 555-0518",
     email: "supply@roundrockbs.com",
     address: "3200 IH-35 N, Round Rock, TX 78681",
-    revenueBreakdown: { cabinets: 12000, countertops: 6400, appliances: 4000 },
+    revenueBreakdown: { cabinets: 12000, countertops: 6400, hardware: 4000 },
     recentOrders: [
       { name: "Shaker Wall Cabinets x8", date: "2026-03-02", value: 3200 },
       { name: "Granite Countertop - 60sqft", date: "2026-02-15", value: 4200 },
@@ -163,7 +163,7 @@ const accounts = [
     phone: "(512) 555-0672",
     email: "orders@georgetowncab.com",
     address: "500 S Main St, Georgetown, TX 78626",
-    revenueBreakdown: { cabinets: 9800, countertops: 1500, appliances: 1000 },
+    revenueBreakdown: { cabinets: 9800, countertops: 1500, hardware: 1000 },
     recentOrders: [
       { name: "Shaker Base Cabinet x2", date: "2026-01-20", value: 960 },
     ],
@@ -182,7 +182,7 @@ const accounts = [
     phone: "(512) 555-0734",
     email: "design@cedarparkint.com",
     address: "800 N Bell Blvd, Cedar Park, TX 78613",
-    revenueBreakdown: { cabinets: 0, countertops: 0, appliances: 0 },
+    revenueBreakdown: { cabinets: 0, countertops: 0, hardware: 0 },
     recentOrders: [],
     visitHistory: [
       { date: "2026-03-06", note: "Product line presentation" },
@@ -199,7 +199,7 @@ const accounts = [
     phone: "(512) 555-0856",
     email: "info@smdesigncenter.com",
     address: "200 N LBJ Dr, San Marcos, TX 78666",
-    revenueBreakdown: { cabinets: 7200, countertops: 5700, appliances: 4000 },
+    revenueBreakdown: { cabinets: 7200, countertops: 5700, hardware: 4000 },
     recentOrders: [
       { name: "Butcher Block Walnut - 25sqft", date: "2026-02-28", value: 1375 },
       { name: "French Door Refrigerator", date: "2026-02-10", value: 3200 },
@@ -219,7 +219,7 @@ const accounts = [
     phone: "(512) 555-0923",
     email: "info@dskb.com",
     address: "100 Mercer St, Dripping Springs, TX 78620",
-    revenueBreakdown: { cabinets: 0, countertops: 0, appliances: 0 },
+    revenueBreakdown: { cabinets: 0, countertops: 0, hardware: 0 },
     recentOrders: [],
     visitHistory: [
       { date: "2026-03-02", note: "On-site demo with owner" },
@@ -236,7 +236,7 @@ const accounts = [
     phone: "(512) 555-1047",
     email: "orders@pflugervillehp.com",
     address: "1500 W Pecan St, Pflugerville, TX 78660",
-    revenueBreakdown: { cabinets: 4200, countertops: 2400, appliances: 1800 },
+    revenueBreakdown: { cabinets: 4200, countertops: 2400, hardware: 1800 },
     recentOrders: [
       { name: "Shaker Base Cabinet x1", date: "2026-02-20", value: 480 },
     ],
@@ -272,8 +272,8 @@ export default function TerritoryPage() {
   });
 
   const totalRevenue = (account: typeof accounts[0]) => {
-    const { cabinets, countertops, appliances } = account.revenueBreakdown;
-    return cabinets + countertops + appliances;
+    const { cabinets, countertops, hardware } = account.revenueBreakdown;
+    return cabinets + countertops + hardware;
   };
 
   return (
@@ -435,11 +435,11 @@ export default function TerritoryPage() {
                         <div className="h-full rounded-full bg-emerald-500/60" style={{ width: `${(selectedAccount.revenueBreakdown.countertops / totalRevenue(selectedAccount)) * 100}%` }} />
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Appliances</span>
-                        <span className="text-sm font-medium text-foreground">${selectedAccount.revenueBreakdown.appliances.toLocaleString()}</span>
+                        <span className="text-sm text-muted-foreground">Hardware</span>
+                        <span className="text-sm font-medium text-foreground">${selectedAccount.revenueBreakdown.hardware.toLocaleString()}</span>
                       </div>
                       <div className="h-1.5 rounded-full bg-foreground/5 overflow-hidden">
-                        <div className="h-full rounded-full bg-amber-500/60" style={{ width: `${(selectedAccount.revenueBreakdown.appliances / totalRevenue(selectedAccount)) * 100}%` }} />
+                        <div className="h-full rounded-full bg-amber-500/60" style={{ width: `${(selectedAccount.revenueBreakdown.hardware / totalRevenue(selectedAccount)) * 100}%` }} />
                       </div>
                       <Separator className="bg-border" />
                       <div className="flex items-center justify-between">

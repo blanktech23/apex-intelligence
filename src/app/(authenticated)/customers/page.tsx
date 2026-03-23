@@ -63,9 +63,9 @@ const stats = [
   },
   {
     label: "Monthly Revenue",
-    value: "$284K",
+    value: "$127.4K",
     icon: DollarSign,
-    change: "+8.2% MoM",
+    change: "+8% MoM",
     color: "text-amber-400",
   },
   {
@@ -117,7 +117,7 @@ const customers = [
   {
     id: "cust-004",
     name: "Olivia Martinez",
-    company: "Lone Star Foundations",
+    company: "Lone Star Renovations",
     email: "olivia@lonestarfound.com",
     phone: "(512) 555-0361",
     status: "Active",
@@ -129,7 +129,7 @@ const customers = [
   {
     id: "cust-005",
     name: "David Park",
-    company: "Parkway Electrical Services",
+    company: "Parkway Home Design",
     email: "david@parkwayelectric.com",
     phone: "(737) 555-0429",
     status: "Active",
@@ -141,7 +141,7 @@ const customers = [
   {
     id: "cust-006",
     name: "Angela Foster",
-    company: "BlueLine Plumbing Co.",
+    company: "BlueLine Kitchen Studio",
     email: "angela@bluelineplumb.com",
     phone: "(512) 555-0518",
     status: "Inactive",
@@ -177,7 +177,7 @@ const customers = [
   {
     id: "cust-009",
     name: "Michael Brooks",
-    company: "Brooks Concrete & Masonry",
+    company: "Brooks Design-Build",
     email: "michael@brooksconcrete.com",
     phone: "(512) 555-0892",
     status: "Active",

@@ -38,12 +38,12 @@ import { toast } from "sonner";
 const customer = {
   id: "cust-005",
   name: "David Park",
-  company: "Parkway Electrical Services",
+  company: "Parkway Home Design",
   status: "Active",
-  email: "david@parkwayelectric.com",
+  email: "david@parkwayhomedesign.com",
   phone: "(737) 555-0429",
   address: "4821 Lamar Blvd, Suite 200, Austin, TX 78751",
-  website: "www.parkwayelectric.com",
+  website: "www.parkwayhomedesign.com",
   initials: "DP",
   totalRevenue: 214300,
   yoyGrowth: 18.4,
@@ -52,31 +52,31 @@ const customer = {
 
 const projects = [
   {
-    name: "Downtown Office Electrical Overhaul",
+    name: "Downtown Loft Kitchen Remodel",
     status: "Active",
     value: 78500,
     progress: 62,
   },
   {
-    name: "Riverside Condo Wiring Phase 2",
+    name: "Riverside Condo Bath Renovation",
     status: "Active",
     value: 45200,
     progress: 35,
   },
   {
-    name: "Summit Heights Panel Upgrade",
+    name: "Summit Heights Cabinet Refresh",
     status: "Completed",
     value: 32100,
     progress: 100,
   },
   {
-    name: "Harbor Mall Emergency Lighting",
+    name: "Harbor Mall Break Room Refit",
     status: "Completed",
     value: 28900,
     progress: 100,
   },
   {
-    name: "Lakewood Residence Smart Home",
+    name: "Lakewood Residence Kitchen & Bath",
     status: "Pending",
     value: 29600,
     progress: 0,
@@ -87,7 +87,7 @@ const communications = [
   {
     type: "email",
     direction: "inbound",
-    subject: "Re: Electrical Overhaul Timeline Update",
+    subject: "Re: Kitchen Remodel Timeline Update",
     preview: "Thanks for the update. The revised schedule works for us...",
     date: "2026-03-14T10:32:00",
     agent: "ai",
@@ -96,8 +96,8 @@ const communications = [
   {
     type: "call",
     direction: "outbound",
-    subject: "Follow-up on Panel Upgrade Completion",
-    preview: "Discussed final inspection scheduling and punch list items.",
+    subject: "Follow-up on Cabinet Refresh Completion",
+    preview: "Discussed final walkthrough scheduling and punch list items.",
     date: "2026-03-13T14:15:00",
     agent: "manual",
     agentName: "You",
@@ -105,7 +105,7 @@ const communications = [
   {
     type: "email",
     direction: "outbound",
-    subject: "Proposal: Lakewood Smart Home Package",
+    subject: "Proposal: Lakewood Kitchen & Bath Package",
     preview: "Hi David, attached is our proposal for the Lakewood residence...",
     date: "2026-03-12T09:45:00",
     agent: "ai",
@@ -115,7 +115,7 @@ const communications = [
     type: "email",
     direction: "inbound",
     subject: "Question about Riverside Phase 2 budget",
-    preview: "Can we review the budget line items for the conduit work?",
+    preview: "Can we review the budget line items for the vanity install?",
     date: "2026-03-10T16:20:00",
     agent: "manual",
     agentName: "David Park",
@@ -141,7 +141,7 @@ const communications = [
   {
     type: "email",
     direction: "inbound",
-    subject: "Re: Smart Home Consultation",
+    subject: "Re: Kitchen & Bath Consultation",
     preview: "Looks great. Let's schedule the site walk for next Tuesday.",
     date: "2026-03-05T13:12:00",
     agent: "manual",
@@ -150,7 +150,7 @@ const communications = [
   {
     type: "call",
     direction: "outbound",
-    subject: "Emergency Lighting Sign-off",
+    subject: "Break Room Refit Sign-off",
     preview: "Confirmed Harbor Mall project complete. Client signed off.",
     date: "2026-03-03T15:45:00",
     agent: "manual",
@@ -167,7 +167,7 @@ const notes = [
   },
   {
     content:
-      "Discussed potential expansion into commercial solar installations. David expressed interest in a joint venture proposal for Q3.",
+      "Discussed potential expansion into commercial K&B projects. David expressed interest in a preferred vendor arrangement for Q3.",
     date: "2026-03-01T14:30:00",
     author: "You",
   },
@@ -189,7 +189,7 @@ const insights = [
     type: "engagement",
   },
   {
-    text: "Pending Lakewood project has potential for $15K upsell on smart security integration based on similar client patterns.",
+    text: "Pending Lakewood project has potential for $15K upsell on premium hardware and fixtures based on similar client patterns.",
     type: "opportunity",
   },
   {
@@ -198,7 +198,7 @@ const insights = [
   },
 ];
 
-const tags = ["VIP", "Commercial", "Repeat", "Electrical", "Austin Metro"];
+const tags = ["VIP", "Commercial", "Repeat", "K&B", "Austin Metro"];
 
 const projectStatusColors: Record<string, string> = {
   Active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",

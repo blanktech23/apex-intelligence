@@ -141,7 +141,7 @@ const contractorsData: Record<string, {
   },
   "contractor-4": {
     id: "contractor-4",
-    company: "Brooks Concrete & Masonry",
+    company: "Brooks Design-Build",
     contact: "Michael Brooks",
     initials: "MB",
     status: "Active",
@@ -189,7 +189,7 @@ const contractorsData: Record<string, {
   },
   "contractor-6": {
     id: "contractor-6",
-    company: "Lone Star Foundations",
+    company: "Lone Star Renovations",
     contact: "Olivia Martinez",
     initials: "OM",
     status: "Active",
@@ -211,7 +211,7 @@ const contractorsData: Record<string, {
   },
   "contractor-7": {
     id: "contractor-7",
-    company: "Parkway Electrical Services",
+    company: "Parkway Home Design",
     contact: "David Park",
     initials: "DP",
     status: "Active",
@@ -229,12 +229,12 @@ const contractorsData: Record<string, {
       { name: "Under-Cabinet LED Lighting Kit", category: "Lighting", orderedQty: 12, lastOrdered: "2026-03-15" },
     ],
     notes: [
-      { author: "You", content: "David mainly orders lighting and electrical-adjacent products. Good cross-sell opportunity for smart home integration kits.", date: "2026-02-20T09:00:00" },
+      { author: "You", content: "David mainly orders lighting and cabinet hardware. Good cross-sell opportunity for premium fixture upgrades.", date: "2026-02-20T09:00:00" },
     ],
   },
   "contractor-8": {
     id: "contractor-8",
-    company: "BlueLine Plumbing Co.",
+    company: "BlueLine Kitchen Studio",
     contact: "Angela Foster",
     initials: "AF",
     status: "Inactive",

@@ -363,7 +363,7 @@ const dealerStatsCards = [
   },
 ];
 
-const dealerBriefingText = `Good morning. 3 new orders received overnight totaling $18,200. Westbrook Remodeling placed a $12,400 cabinet order (KraftMaid Shaker series). 2 orders are ready for fulfillment. Your top rep Sarah Chen closed 4 orders this week.`;
+const dealerBriefingText = `Good morning. 3 new orders received overnight totaling $18,200. Westbrook Remodeling placed a $12,400 cabinet order (Ridgewood Shaker series). 2 orders are ready for fulfillment. Your top rep Sarah Chen closed 4 orders this week.`;
 
 const dealerRecentOrders = [
   { id: "ORD-4821", contractor: "Westbrook Remodeling", amount: "$12,400", status: "Processing", date: "Today" },
@@ -432,7 +432,7 @@ const repStatsCards = [
   },
 ];
 
-const repBriefingText = `Good morning. You have 3 follow-ups scheduled today. The Henderson account is ready to place a $15K order — they're waiting on the countertop sample. Your commission run rate puts you at $5,100 for the month.`;
+const repBriefingText = `Good morning. You have 3 follow-ups scheduled today. The Henderson account is ready to place a $15K order — they're waiting on the countertop sample. Your commission run rate puts you at $2,500 for the month.`;
 
 const repFollowUps = [
   { contractor: "Henderson Renovations", lastContact: "2 days ago", notes: "Waiting on countertop sample — ready to order $15K" },
@@ -441,11 +441,11 @@ const repFollowUps = [
 ];
 
 const repCommissionPipeline = [
-  { order: "ORD-4821", contractor: "Westbrook Remodeling", amount: "$12,400", commissionPct: "5%", status: "Processing" },
-  { order: "ORD-4818", contractor: "Henderson Renovations", amount: "$8,900", commissionPct: "5%", status: "Shipped" },
-  { order: "ORD-4815", contractor: "Summit Kitchens", amount: "$6,200", commissionPct: "4%", status: "Delivered" },
-  { order: "ORD-4812", contractor: "Lakeside Builders", amount: "$4,800", commissionPct: "5%", status: "Pending" },
-  { order: "ORD-4810", contractor: "Metro Bath Co.", amount: "$3,100", commissionPct: "4%", status: "Paid" },
+  { order: "ORD-4821", contractor: "Westbrook Remodeling", amount: "$12,400", commissionPct: "2%", status: "Processing" },
+  { order: "ORD-4818", contractor: "Henderson Renovations", amount: "$8,900", commissionPct: "2.5%", status: "Shipped" },
+  { order: "ORD-4815", contractor: "Summit Kitchens", amount: "$6,200", commissionPct: "2%", status: "Delivered" },
+  { order: "ORD-4812", contractor: "Lakeside Builders", amount: "$4,800", commissionPct: "3%", status: "Pending" },
+  { order: "ORD-4810", contractor: "Metro Bath Co.", amount: "$3,100", commissionPct: "1.5%", status: "Paid" },
 ];
 
 const manufacturerStatsCards = [

@@ -46,18 +46,18 @@ const stats = [
   { label: "Total Contractors", value: "86", icon: HardHat, change: "+4 this month", color: "text-indigo-400" },
   { label: "Active Accounts", value: "72", icon: Users, change: "84% of total", color: "text-emerald-400" },
   { label: "Orders MTD", value: "134", icon: ShoppingCart, change: "+18% vs last month", color: "text-amber-400" },
-  { label: "Revenue MTD", value: "$284K", icon: DollarSign, change: "+12.3% MoM", color: "text-purple-400" },
+  { label: "Revenue MTD", value: "$127.4K", icon: DollarSign, change: "+8% MoM", color: "text-purple-400" },
 ];
 
 const contractors = [
   { id: "contractor-1", company: "Rivera General Contracting", contact: "Marcus Rivera", ordersMTD: 12, revenueMTD: 42800, status: "Active", lastOrder: "2026-03-20" },
   { id: "contractor-2", company: "Summit Builders LLC", contact: "Sarah Chen", ordersMTD: 8, revenueMTD: 31200, status: "Active", lastOrder: "2026-03-19" },
   { id: "contractor-3", company: "Harbor View Construction", contact: "Robert Nguyen", ordersMTD: 6, revenueMTD: 24500, status: "Active", lastOrder: "2026-03-18" },
-  { id: "contractor-4", company: "Brooks Concrete & Masonry", contact: "Michael Brooks", ordersMTD: 15, revenueMTD: 58300, status: "Active", lastOrder: "2026-03-17" },
+  { id: "contractor-4", company: "Brooks Design-Build", contact: "Michael Brooks", ordersMTD: 15, revenueMTD: 58300, status: "Active", lastOrder: "2026-03-17" },
   { id: "contractor-5", company: "Whitfield Custom Homes", contact: "Karen Whitfield", ordersMTD: 3, revenueMTD: 18700, status: "Pending", lastOrder: "2026-03-16" },
-  { id: "contractor-6", company: "Lone Star Foundations", contact: "Olivia Martinez", ordersMTD: 9, revenueMTD: 36100, status: "Active", lastOrder: "2026-03-16" },
-  { id: "contractor-7", company: "Parkway Electrical Services", contact: "David Park", ordersMTD: 4, revenueMTD: 8200, status: "Active", lastOrder: "2026-03-15" },
-  { id: "contractor-8", company: "BlueLine Plumbing Co.", contact: "Angela Foster", ordersMTD: 0, revenueMTD: 0, status: "Inactive", lastOrder: "2026-02-20" },
+  { id: "contractor-6", company: "Lone Star Renovations", contact: "Olivia Martinez", ordersMTD: 9, revenueMTD: 36100, status: "Active", lastOrder: "2026-03-16" },
+  { id: "contractor-7", company: "Parkway Home Design", contact: "David Park", ordersMTD: 4, revenueMTD: 8200, status: "Active", lastOrder: "2026-03-15" },
+  { id: "contractor-8", company: "BlueLine Kitchen Studio", contact: "Angela Foster", ordersMTD: 0, revenueMTD: 0, status: "Inactive", lastOrder: "2026-02-20" },
 ];
 
 export default function ContractorsPage() {

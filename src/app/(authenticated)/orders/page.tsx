@@ -39,6 +39,7 @@ import { toast } from "sonner";
 const statusColors: Record<string, string> = {
   Open: "bg-blue-500/20 text-blue-400 border-blue-500/30",
   Processing: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  "In Production": "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
   Shipped: "bg-purple-500/20 text-purple-400 border-purple-500/30",
   Delivered: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
 };
@@ -54,10 +55,10 @@ const orders = [
   { id: "ORD-4821", contractor: "Rivera General Contracting", items: "42\" Shaker Cabinets (12), Crown Molding", total: 18450, status: "Open", date: "2026-03-20" },
   { id: "ORD-4820", contractor: "Summit Builders LLC", items: "Quartz Countertop - Calacatta (3 slabs)", total: 8720, status: "Processing", date: "2026-03-19" },
   { id: "ORD-4819", contractor: "Harbor View Construction", items: "36\" Base Cabinets (8), Soft-Close Hinges", total: 12340, status: "Shipped", date: "2026-03-18" },
-  { id: "ORD-4817", contractor: "Brooks Concrete & Masonry", items: "Bathroom Vanity 60\" Double Sink", total: 3280, status: "Delivered", date: "2026-03-17" },
-  { id: "ORD-4815", contractor: "Whitfield Custom Homes", items: "Custom Island - Walnut w/ Waterfall Edge", total: 14500, status: "Processing", date: "2026-03-16" },
-  { id: "ORD-4813", contractor: "Lone Star Foundations", items: "Wall Cabinets 30\" (6), Lazy Susan Corner", total: 9870, status: "Open", date: "2026-03-16" },
-  { id: "ORD-4810", contractor: "Parkway Electrical Services", items: "Under-Cabinet LED Lighting Kit (4)", total: 1240, status: "Shipped", date: "2026-03-15" },
+  { id: "ORD-4817", contractor: "Brooks Design-Build", items: "Bathroom Vanity 60\" Double Sink", total: 3280, status: "Delivered", date: "2026-03-17" },
+  { id: "ORD-4815", contractor: "Whitfield Custom Homes", items: "Custom Island - Walnut w/ Waterfall Edge", total: 14500, status: "In Production", date: "2026-03-16" },
+  { id: "ORD-4813", contractor: "Lone Star Renovations", items: "Wall Cabinets 30\" (6), Lazy Susan Corner", total: 9870, status: "Open", date: "2026-03-16" },
+  { id: "ORD-4810", contractor: "Parkway Home Design", items: "Under-Cabinet LED Lighting Kit (4)", total: 1240, status: "Shipped", date: "2026-03-15" },
   { id: "ORD-4808", contractor: "Castillo Landscape Design", items: "Outdoor Kitchen Cabinet Set - Stainless", total: 22100, status: "Processing", date: "2026-03-14" },
   { id: "ORD-4805", contractor: "Rivera General Contracting", items: "Granite Countertop - Absolute Black (2)", total: 6450, status: "Delivered", date: "2026-03-13" },
   { id: "ORD-4802", contractor: "Summit Builders LLC", items: "Pantry Cabinet 84\" Tall (2), Pull-Out Shelves", total: 5680, status: "Shipped", date: "2026-03-12" },
@@ -130,6 +131,7 @@ export default function OrdersPage() {
             <SelectItem value="all">All</SelectItem>
             <SelectItem value="open">Open</SelectItem>
             <SelectItem value="processing">Processing</SelectItem>
+            <SelectItem value="in production">In Production</SelectItem>
             <SelectItem value="shipped">Shipped</SelectItem>
             <SelectItem value="delivered">Delivered</SelectItem>
           </SelectContent>

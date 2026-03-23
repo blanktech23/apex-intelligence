@@ -199,7 +199,7 @@ const repsData: Record<
 };
 
 const accountsData = [
-  { name: "Parkway Electrical Services", type: "Contractor", lastOrder: "2026-03-18", revenue: 48200 },
+  { name: "Parkway Home Design", type: "Contractor", lastOrder: "2026-03-18", revenue: 48200 },
   { name: "Summit Home Builders", type: "Builder", lastOrder: "2026-03-15", revenue: 62400 },
   { name: "Gulf Coast Plumbing Supply", type: "Dealer", lastOrder: "2026-03-12", revenue: 31800 },
   { name: "Atlantic Kitchen & Bath", type: "Dealer", lastOrder: "2026-03-10", revenue: 54100 },
@@ -219,7 +219,7 @@ const activityData = [
   { action: "Placed order #ORD-4821 for Atlantic Kitchen & Bath", type: "order", date: "2026-03-22T14:30:00" },
   { action: "Visited Summit Home Builders job site (Downtown Lofts project)", type: "visit", date: "2026-03-21T10:15:00" },
   { action: "Scheduled Q2 planning meeting with Gulf Coast Plumbing Supply", type: "meeting", date: "2026-03-20T16:45:00" },
-  { action: "Placed order #ORD-4798 for Parkway Electrical Services", type: "order", date: "2026-03-19T11:20:00" },
+  { action: "Placed order #ORD-4798 for Parkway Home Design", type: "order", date: "2026-03-19T11:20:00" },
   { action: "Onboarded new account: Tropical Tile & Stone", type: "account", date: "2026-03-18T09:00:00" },
   { action: "Submitted expense report for Southeast FL territory travel", type: "admin", date: "2026-03-17T15:30:00" },
   { action: "Visited Bayfront General Contractors (kitchen remodel walkthrough)", type: "visit", date: "2026-03-15T13:00:00" },

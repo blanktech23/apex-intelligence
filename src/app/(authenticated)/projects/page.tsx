@@ -134,7 +134,7 @@ const projects = [
   {
     id: "proj-004",
     name: "Lakewood Commercial Buildout",
-    client: "Brooks Concrete & Masonry",
+    client: "Brooks Design-Build",
     status: "In Progress",
     progress: 85,
     budget: 312000,
@@ -162,8 +162,8 @@ const projects = [
   },
   {
     id: "proj-006",
-    name: "Downtown Electrical Overhaul",
-    client: "Parkway Electrical Services",
+    name: "Downtown Kitchen Renovation",
+    client: "Parkway Home Design",
     status: "Completed",
     progress: 100,
     budget: 78500,
