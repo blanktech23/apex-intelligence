@@ -147,7 +147,7 @@ const personaCards: PersonaCard[] = [
 
 function StepIndicator({ currentStep }: { currentStep: number }) {
   return (
-    <div className="flex items-center justify-center gap-0 overflow-x-auto px-4 py-2">
+    <div className="flex items-center justify-center gap-0 px-2 py-2">
       {steps.map((step, i) => {
         const isCompleted = currentStep > step.number;
         const isActive = currentStep === step.number;
@@ -169,7 +169,7 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
                 {isCompleted ? <Check className="size-5" /> : step.number}
               </div>
               <span
-                className={`mt-2 hidden text-[11px] font-medium sm:block ${
+                className={`mt-2 w-16 text-center text-[10px] sm:text-[11px] font-medium leading-tight ${
                   isActive ? "text-foreground" : "text-muted-foreground"
                 }`}
               >
@@ -180,7 +180,7 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
             {/* Connecting line */}
             {!isLast && (
               <div
-                className={`mx-1.5 sm:mx-3 mb-6 h-0.5 w-6 sm:w-12 md:w-16 rounded-full transition-colors ${
+                className={`mx-1 sm:mx-2 mb-6 h-0.5 w-4 sm:w-8 md:w-12 flex-shrink rounded-full transition-colors ${
                   isCompleted ? "bg-green-500/50" : "bg-muted"
                 }`}
               />
