@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   UserCheck,
   Search,
+  Filter,
   DollarSign,
   TrendingUp,
   MapPin,
@@ -14,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -83,48 +85,47 @@ export default function RepsPage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6 lg:p-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Sales Reps</h1>
-        <p className="text-sm text-zinc-400 mt-1">
+        <h1 className="text-3xl font-bold text-gradient">Sales Reps</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           Manage your field sales representatives, territories, and performance
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card
-            key={stat.label}
-            className="bg-zinc-900/50 border-zinc-800 p-4"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-zinc-400">{stat.label}</span>
-              <stat.icon className={`h-4 w-4 ${stat.color}`} />
-            </div>
-            <div className="text-2xl font-bold text-white">{stat.value}</div>
-            <div className="flex items-center gap-1 mt-1">
-              <TrendingUp className="h-3 w-3 text-emerald-400" />
-              <span className="text-xs text-zinc-500">{stat.change}</span>
+          <Card key={stat.label} className="glass border-border p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</p>
+                <p className="mt-1 text-2xl font-bold text-foreground">{stat.value}</p>
+                <p className={`mt-1 text-xs ${stat.color}`}>{stat.change}</p>
+              </div>
+              <div className="rounded-xl bg-foreground/5 p-3">
+                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+              </div>
             </div>
           </Card>
         ))}
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search reps or territories..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 bg-zinc-900/50 border-zinc-800 text-white placeholder:text-zinc-600"
+            className="glass border-border bg-foreground/5 pl-10 text-foreground placeholder:text-muted-foreground focus:border-indigo-500/50"
           />
         </div>
         <Select value={filter} onValueChange={(v) => v && setFilter(v)}>
-          <SelectTrigger className="w-[140px] bg-zinc-900/50 border-zinc-800 text-white">
-            <SelectValue placeholder="Status" />
+          <SelectTrigger className="glass w-[160px] border-border bg-foreground/5 text-foreground">
+            <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
+            <SelectValue placeholder="Filter" />
           </SelectTrigger>
-          <SelectContent className="bg-zinc-900 border-zinc-800">
+          <SelectContent className="glass-strong border-border bg-popover">
             <SelectItem value="all">All Status</SelectItem>
             <SelectItem value="active">Active</SelectItem>
             <SelectItem value="on-leave">On Leave</SelectItem>
@@ -133,39 +134,41 @@ export default function RepsPage() {
         </Select>
       </div>
 
-      <Card className="bg-zinc-900/50 border-zinc-800 overflow-hidden">
+      <Separator className="bg-border" />
+
+      <Card className="glass border-border overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-zinc-800 hover:bg-transparent">
-              <TableHead className="text-zinc-400">Rep</TableHead>
-              <TableHead className="text-zinc-400">Territory</TableHead>
-              <TableHead className="text-zinc-400 text-center">Accounts</TableHead>
-              <TableHead className="text-zinc-400 text-center">Orders MTD</TableHead>
-              <TableHead className="text-zinc-400 text-right">Commission MTD</TableHead>
-              <TableHead className="text-zinc-400 text-center">Status</TableHead>
-              <TableHead className="text-zinc-400 text-right">Last Activity</TableHead>
+            <TableRow className="border-border hover:bg-transparent">
+              <TableHead className="text-muted-foreground">Rep</TableHead>
+              <TableHead className="text-muted-foreground">Territory</TableHead>
+              <TableHead className="text-muted-foreground text-center">Accounts</TableHead>
+              <TableHead className="text-muted-foreground text-center">Orders MTD</TableHead>
+              <TableHead className="text-muted-foreground text-right">Commission MTD</TableHead>
+              <TableHead className="text-muted-foreground">Status</TableHead>
+              <TableHead className="text-muted-foreground">Last Activity</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.map((rep) => (
               <TableRow
                 key={rep.name}
-                className="border-zinc-800/50 hover:bg-zinc-800/30 cursor-pointer"
+                className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer"
               >
-                <TableCell className="font-medium text-white">
+                <TableCell className="font-medium text-foreground">
                   {rep.name}
                 </TableCell>
-                <TableCell className="text-zinc-300">{rep.territory}</TableCell>
-                <TableCell className="text-center text-zinc-300">
+                <TableCell className="text-muted-foreground">{rep.territory}</TableCell>
+                <TableCell className="text-center text-muted-foreground">
                   {rep.accountsManaged}
                 </TableCell>
-                <TableCell className="text-center text-zinc-300">
+                <TableCell className="text-center text-muted-foreground">
                   {rep.ordersMTD}
                 </TableCell>
-                <TableCell className="text-right text-zinc-300">
-                  ${rep.commissionMTD.toLocaleString()}
+                <TableCell className="text-right font-medium text-foreground">
+                  {rep.commissionMTD > 0 ? `$${rep.commissionMTD.toLocaleString()}` : "--"}
                 </TableCell>
-                <TableCell className="text-center">
+                <TableCell>
                   <Badge
                     variant="outline"
                     className={statusColors[rep.status]}
@@ -173,8 +176,8 @@ export default function RepsPage() {
                     {rep.status}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-right text-zinc-500 text-sm">
-                  {rep.lastActivity}
+                <TableCell className="text-muted-foreground text-sm">
+                  {new Date(rep.lastActivity).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                 </TableCell>
               </TableRow>
             ))}
