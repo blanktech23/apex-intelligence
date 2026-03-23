@@ -403,6 +403,7 @@ const rep: PersonaTemplate = {
   sidebarItems: [
     "Dashboard",
     "Agents",
+    "Customers",
     "Territory",
     "Orders",
     "Commissions",
