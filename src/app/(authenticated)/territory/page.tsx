@@ -38,6 +38,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
@@ -53,7 +61,22 @@ const stats = [
   { label: "Revenue MTD", value: "$67K", icon: DollarSign, change: "+9.4% MoM", color: "text-amber-400" },
 ];
 
-const accounts = [
+type Account = {
+  id: string;
+  company: string;
+  lastVisit: string;
+  status: string;
+  pipeline: number;
+  rep: string;
+  phone: string;
+  email: string;
+  address: string;
+  revenueBreakdown: { cabinets: number; countertops: number; hardware: number };
+  recentOrders: { name: string; date: string; value: number }[];
+  visitHistory: { date: string; note: string }[];
+};
+
+const defaultAccounts: Account[] = [
   {
     id: "terr-001",
     company: "Austin Kitchen & Bath",
@@ -247,6 +270,24 @@ const accounts = [
   },
 ];
 
+interface AddAccountForm {
+  company: string;
+  contact: string;
+  phone: string;
+  email: string;
+  status: string;
+  pipeline: number;
+}
+
+const defaultAddForm = (): AddAccountForm => ({
+  company: "",
+  contact: "",
+  phone: "",
+  email: "",
+  status: "prospect",
+  pipeline: 0,
+});
+
 export default function TerritoryPage() {
   const { persona } = usePersona();
   const router = useRouter();
@@ -254,7 +295,18 @@ export default function TerritoryPage() {
   const [search, setSearch] = useState("");
   const [region, setRegion] = useState("all");
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
-  const [selectedAccount, setSelectedAccount] = useState<typeof accounts[0] | null>(null);
+  const [accounts, setAccounts] = useState(defaultAccounts);
+  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
+
+  // Log Visit inline form state
+  const [showVisitForm, setShowVisitForm] = useState(false);
+  const [visitDate, setVisitDate] = useState(new Date().toISOString().split("T")[0]);
+  const [visitNotes, setVisitNotes] = useState("");
+
+  // Add Account dialog state
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [addForm, setAddForm] = useState<AddAccountForm>(defaultAddForm());
+  const [addErrors, setAddErrors] = useState<Record<string, boolean>>({});
 
   useEffect(() => setMounted(true), []);
 
@@ -278,10 +330,77 @@ export default function TerritoryPage() {
     return matchesSearch && matchesRegion && matchesStatFilter;
   });
 
-  const totalRevenue = (account: typeof accounts[0]) => {
+  const totalRevenue = (account: Account) => {
     const { cabinets, countertops, hardware } = account.revenueBreakdown;
     return cabinets + countertops + hardware;
   };
+
+  const handleLogVisit = () => {
+    if (!selectedAccount || !visitNotes.trim()) return;
+
+    setAccounts((prev) =>
+      prev.map((a) =>
+        a.id === selectedAccount.id
+          ? {
+              ...a,
+              lastVisit: visitDate,
+              visitHistory: [{ date: visitDate, note: visitNotes }, ...a.visitHistory],
+            }
+          : a
+      )
+    );
+
+    // Update selected account in view too
+    setSelectedAccount((prev) =>
+      prev
+        ? {
+            ...prev,
+            lastVisit: visitDate,
+            visitHistory: [{ date: visitDate, note: visitNotes }, ...prev.visitHistory],
+          }
+        : null
+    );
+
+    setShowVisitForm(false);
+    setVisitNotes("");
+    setVisitDate(new Date().toISOString().split("T")[0]);
+    toast.success(`Visit logged for ${selectedAccount.company}`);
+  };
+
+  const handleAddAccount = () => {
+    const newErrors: Record<string, boolean> = {};
+    if (!addForm.company.trim()) newErrors.company = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setAddErrors(newErrors);
+      return;
+    }
+
+    const statusMap: Record<string, string> = { active: "Active", prospect: "Prospect" };
+    const newAccount: Account = {
+      id: `terr-${String(accounts.length + 1).padStart(3, "0")}`,
+      company: addForm.company,
+      lastVisit: new Date().toISOString().split("T")[0],
+      status: statusMap[addForm.status] || "Prospect",
+      pipeline: addForm.pipeline,
+      rep: "Marcus Chen",
+      phone: addForm.phone,
+      email: addForm.email,
+      address: "",
+      revenueBreakdown: { cabinets: 0, countertops: 0, hardware: 0 },
+      recentOrders: [],
+      visitHistory: [],
+    };
+
+    setAccounts((prev) => [newAccount, ...prev]);
+    setAddDialogOpen(false);
+    setAddForm(defaultAddForm());
+    setAddErrors({});
+    toast.success(`${addForm.company} added to territory`);
+  };
+
+  const inputClass = "glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60";
+  const errorClass = "border-red-500/50 ring-1 ring-red-500/30";
 
   return (
     <div className="space-y-6 p-6 lg:p-8">
@@ -357,7 +476,7 @@ export default function TerritoryPage() {
               <TableRow
                 key={a.id}
                 className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer"
-                onClick={() => setSelectedAccount(a)}
+                onClick={() => { setSelectedAccount(a); setShowVisitForm(false); }}
               >
                 <TableCell className="font-medium text-foreground">{a.company}</TableCell>
                 <TableCell className="text-muted-foreground text-sm">{new Date(a.lastVisit).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</TableCell>
@@ -372,14 +491,11 @@ export default function TerritoryPage() {
       {/* Account Detail Slide-Out Panel */}
       {selectedAccount && (
         <div className="fixed inset-0 z-50 flex justify-end">
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setSelectedAccount(null)}
           />
-          {/* Panel */}
           <div className="relative z-10 w-full max-w-md h-full overflow-y-auto border-l border-border bg-background/95 backdrop-blur-xl shadow-2xl animate-in slide-in-from-right duration-300">
-            {/* Close Button */}
             <button
               onClick={() => setSelectedAccount(null)}
               className="absolute top-4 right-4 z-20 rounded-lg bg-foreground/5 p-2 text-muted-foreground hover:text-foreground hover:bg-foreground/10 transition-colors"
@@ -387,7 +503,6 @@ export default function TerritoryPage() {
               <X className="h-4 w-4" />
             </button>
 
-            {/* Header */}
             <div className="bg-gradient-to-br from-indigo-600/30 to-violet-600/10 p-6 pb-8">
               <Badge variant="outline" className={`${statusColors[selectedAccount.status]} text-[10px] mb-3`}>
                 {selectedAccount.status}
@@ -396,7 +511,6 @@ export default function TerritoryPage() {
               <p className="text-sm text-muted-foreground mt-1">Rep: {selectedAccount.rep}</p>
             </div>
 
-            {/* Content */}
             <div className="p-6 space-y-6">
               {/* Contact Info */}
               <div>
@@ -514,23 +628,62 @@ export default function TerritoryPage() {
 
               {/* Actions */}
               <div className="space-y-3 pb-6">
-                <Button
-                  className="w-full bg-indigo-600 hover:bg-indigo-500 text-white gap-2"
-                  onClick={() => {
-                    toast.success(`Visit logged for ${selectedAccount.company}`);
-                    setSelectedAccount(null);
-                  }}
-                >
-                  <ClipboardCheck className="h-4 w-4" />
-                  Log Visit
-                </Button>
+                {/* Log Visit - inline form toggle */}
+                {showVisitForm ? (
+                  <div className="rounded-lg border border-border bg-foreground/[0.02] p-4 space-y-3">
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Log Visit</h4>
+                    <div>
+                      <label className="text-xs font-medium text-muted-foreground mb-1 block">Visit Date</label>
+                      <Input
+                        type="date"
+                        value={visitDate}
+                        onChange={(e) => setVisitDate(e.target.value)}
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                        Notes <span className="text-red-400">*</span>
+                      </label>
+                      <textarea
+                        placeholder="What happened during the visit?"
+                        value={visitNotes}
+                        onChange={(e) => setVisitNotes(e.target.value)}
+                        rows={3}
+                        className={`w-full rounded-lg px-2.5 py-1.5 text-sm resize-none ${inputClass}`}
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs"
+                        onClick={handleLogVisit}
+                        disabled={!visitNotes.trim()}
+                      >
+                        Save Visit
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10 text-xs"
+                        onClick={() => { setShowVisitForm(false); setVisitNotes(""); }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <Button
+                    className="w-full bg-indigo-600 hover:bg-indigo-500 text-white gap-2"
+                    onClick={() => setShowVisitForm(true)}
+                  >
+                    <ClipboardCheck className="h-4 w-4" />
+                    Log Visit
+                  </Button>
+                )}
+
                 <Button
                   variant="outline"
                   className="w-full border-border bg-foreground/5 text-foreground hover:bg-foreground/10 gap-2"
-                  onClick={() => {
-                    toast.success(`New account added to ${selectedAccount.company} territory`);
-                    setSelectedAccount(null);
-                  }}
+                  onClick={() => setAddDialogOpen(true)}
                 >
                   <UserPlus className="h-4 w-4" />
                   Add Account
@@ -540,6 +693,82 @@ export default function TerritoryPage() {
           </div>
         </div>
       )}
+
+      {/* Add Account Dialog */}
+      <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+        <DialogContent className="sm:max-w-lg glass-strong border-border bg-background" showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <div className="rounded-lg bg-indigo-500/10 p-2">
+                <UserPlus className="h-4 w-4 text-indigo-400" />
+              </div>
+              Add Account
+            </DialogTitle>
+            <DialogDescription>
+              Add a new account to your territory.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                Company Name <span className="text-red-400">*</span>
+              </label>
+              <Input
+                placeholder="Company name"
+                value={addForm.company}
+                onChange={(e) => { setAddForm((p) => ({ ...p, company: e.target.value })); setAddErrors((p) => ({ ...p, company: false })); }}
+                className={`${inputClass} ${addErrors.company ? errorClass : ""}`}
+              />
+              {addErrors.company && <p className="text-xs text-red-400 mt-1">Required</p>}
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Contact Person</label>
+                <Input placeholder="Contact name" value={addForm.contact} onChange={(e) => setAddForm((p) => ({ ...p, contact: e.target.value }))} className={inputClass} />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Phone</label>
+                <Input type="tel" placeholder="(555) 555-0000" value={addForm.phone} onChange={(e) => setAddForm((p) => ({ ...p, phone: e.target.value }))} className={inputClass} />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Email</label>
+              <Input type="email" placeholder="email@company.com" value={addForm.email} onChange={(e) => setAddForm((p) => ({ ...p, email: e.target.value }))} className={inputClass} />
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Status</label>
+                <Select value={addForm.status} onValueChange={(v) => setAddForm((p) => ({ ...p, status: v ?? "prospect" }))}>
+                  <SelectTrigger className={`w-full ${inputClass}`}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="glass-strong border-border bg-popover">
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="prospect">Prospect</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Estimated Pipeline ($)</label>
+                <Input type="number" min={0} value={addForm.pipeline || ""} onChange={(e) => setAddForm((p) => ({ ...p, pipeline: parseFloat(e.target.value) || 0 }))} className={inputClass} />
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10" onClick={() => { setAddDialogOpen(false); setAddForm(defaultAddForm()); setAddErrors({}); }}>
+              Cancel
+            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white" onClick={handleAddAccount}>
+              Add Account
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -34,6 +34,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
@@ -49,7 +57,7 @@ const stats = [
   { label: "Commission Paid MTD", value: "$10.9K", icon: DollarSign, change: "+9.1% MoM", color: "text-purple-400" },
 ];
 
-const reps = [
+const defaultReps = [
   { id: "rep-1", name: "Carlos Medina", territory: "Southeast FL", accountsManaged: 18, ordersMTD: 34, commissionMTD: 2523, status: "Active", lastActivity: "2026-03-22" },
   { id: "rep-2", name: "Jessica Palmer", territory: "DFW Metro", accountsManaged: 22, ordersMTD: 28, commissionMTD: 1640, status: "Active", lastActivity: "2026-03-22" },
   { id: "rep-3", name: "Derek Washington", territory: "Atlanta Metro", accountsManaged: 15, ordersMTD: 31, commissionMTD: 1820, status: "Active", lastActivity: "2026-03-21" },
@@ -62,12 +70,53 @@ const reps = [
   { id: "rep-10", name: "Lisa Huang", territory: "Bay Area", accountsManaged: 0, ordersMTD: 0, commissionMTD: 0, status: "Inactive", lastActivity: "2026-02-14" },
 ];
 
+const territories = [
+  "Southeast FL",
+  "DFW Metro",
+  "Atlanta Metro",
+  "SoCal Inland",
+  "Chicagoland",
+  "Nashville / TN",
+  "Northeast OH",
+  "Phoenix Metro",
+  "Charlotte / NC",
+  "Bay Area",
+  "Central TX",
+  "Pacific NW",
+];
+
+interface RepForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  territory: string;
+  commissionRate: number;
+  startDate: string;
+  notes: string;
+}
+
+const defaultForm = (): RepForm => ({
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  territory: "",
+  commissionRate: 2.0,
+  startDate: new Date().toISOString().split("T")[0],
+  notes: "",
+});
+
 export default function RepsPage() {
   const { persona } = usePersona();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const [reps, setReps] = useState(defaultReps);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [form, setForm] = useState<RepForm>(defaultForm());
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
 
   useEffect(() => setMounted(true), []);
 
@@ -88,6 +137,44 @@ export default function RepsPage() {
     return matchesSearch && matchesFilter;
   });
 
+  const handleSubmit = () => {
+    const newErrors: Record<string, boolean> = {};
+    if (!form.firstName.trim()) newErrors.firstName = true;
+    if (!form.lastName.trim()) newErrors.lastName = true;
+    if (!form.email.trim()) newErrors.email = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    const fullName = `${form.firstName} ${form.lastName}`;
+    const newRep = {
+      id: `rep-${reps.length + 1}`,
+      name: fullName,
+      territory: form.territory || "Unassigned",
+      accountsManaged: 0,
+      ordersMTD: 0,
+      commissionMTD: 0,
+      status: "Active",
+      lastActivity: new Date().toISOString().split("T")[0],
+    };
+
+    setReps((prev) => [newRep, ...prev]);
+    setDialogOpen(false);
+    setForm(defaultForm());
+    setErrors({});
+    toast.success(`Invitation sent to ${fullName}`);
+  };
+
+  const updateField = (field: keyof RepForm, value: string | number) => {
+    setForm((p) => ({ ...p, [field]: value }));
+    setErrors((p) => ({ ...p, [field]: false }));
+  };
+
+  const inputClass = "glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60";
+  const errorClass = "border-red-500/50 ring-1 ring-red-500/30";
+
   return (
     <div className="space-y-6 p-6 lg:p-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -99,7 +186,7 @@ export default function RepsPage() {
         </div>
         <Button
           className="bg-indigo-600 hover:bg-indigo-500 text-white"
-          onClick={() => toast.success("Invitation sent!")}
+          onClick={() => setDialogOpen(true)}
         >
           <UserPlus className="h-4 w-4 mr-2" />
           Invite Rep
@@ -204,6 +291,103 @@ export default function RepsPage() {
           </TableBody>
         </Table>
       </Card>
+
+      {/* Invite Rep Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-lg glass-strong border-border bg-background" showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <div className="rounded-lg bg-indigo-500/10 p-2">
+                <UserPlus className="h-4 w-4 text-indigo-400" />
+              </div>
+              Invite Sales Rep
+            </DialogTitle>
+            <DialogDescription>
+              Send an invitation to a new sales representative.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-5 py-2">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                  First Name <span className="text-red-400">*</span>
+                </label>
+                <Input placeholder="First name" value={form.firstName} onChange={(e) => updateField("firstName", e.target.value)} className={`${inputClass} ${errors.firstName ? errorClass : ""}`} />
+                {errors.firstName && <p className="text-xs text-red-400 mt-1">Required</p>}
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                  Last Name <span className="text-red-400">*</span>
+                </label>
+                <Input placeholder="Last name" value={form.lastName} onChange={(e) => updateField("lastName", e.target.value)} className={`${inputClass} ${errors.lastName ? errorClass : ""}`} />
+                {errors.lastName && <p className="text-xs text-red-400 mt-1">Required</p>}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                  Email <span className="text-red-400">*</span>
+                </label>
+                <Input type="email" placeholder="rep@company.com" value={form.email} onChange={(e) => updateField("email", e.target.value)} className={`${inputClass} ${errors.email ? errorClass : ""}`} />
+                {errors.email && <p className="text-xs text-red-400 mt-1">Required</p>}
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Phone</label>
+                <Input type="tel" placeholder="(555) 555-0000" value={form.phone} onChange={(e) => updateField("phone", e.target.value)} className={inputClass} />
+              </div>
+            </div>
+
+            <Separator className="bg-border" />
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Assigned Territory</label>
+                <Select value={form.territory} onValueChange={(v) => updateField("territory", v ?? "")}>
+                  <SelectTrigger className={`w-full ${inputClass}`}>
+                    <SelectValue placeholder="Select territory" />
+                  </SelectTrigger>
+                  <SelectContent className="glass-strong border-border bg-popover">
+                    {territories.map((t) => (
+                      <SelectItem key={t} value={t}>{t}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Commission Rate (%)</label>
+                <Input type="number" min={0} max={100} step={0.1} value={form.commissionRate} onChange={(e) => updateField("commissionRate", parseFloat(e.target.value) || 0)} className={inputClass} />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Start Date</label>
+              <Input type="date" value={form.startDate} onChange={(e) => updateField("startDate", e.target.value)} className={inputClass} />
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Notes</label>
+              <textarea
+                placeholder="Additional notes..."
+                value={form.notes}
+                onChange={(e) => updateField("notes", e.target.value)}
+                rows={2}
+                className={`w-full rounded-lg px-2.5 py-1.5 text-sm resize-none ${inputClass}`}
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10" onClick={() => { setDialogOpen(false); setForm(defaultForm()); setErrors({}); }}>
+              Cancel
+            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white" onClick={handleSubmit}>
+              Send Invitation
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {
   Truck,
   CheckCircle2,
   Clock,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +35,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
@@ -51,7 +60,7 @@ const stats = [
   { label: "Delivered", value: "156", icon: CheckCircle2, change: "+28 this month", color: "text-emerald-400" },
 ];
 
-const orders = [
+const defaultOrders = [
   { id: "ORD-4821", contractor: "Rivera General Contracting", items: "42\" Shaker Cabinets (12), Crown Molding", total: 18450, status: "Open", date: "2026-03-20" },
   { id: "ORD-4820", contractor: "Summit Builders LLC", items: "Quartz Countertop - Calacatta (3 slabs)", total: 8720, status: "Processing", date: "2026-03-19" },
   { id: "ORD-4819", contractor: "Harbor View Construction", items: "36\" Base Cabinets (8), Soft-Close Hinges", total: 12340, status: "Shipped", date: "2026-03-18" },
@@ -64,12 +73,52 @@ const orders = [
   { id: "ORD-4802", contractor: "Summit Builders LLC", items: "Pantry Cabinet 84\" Tall (2), Pull-Out Shelves", total: 5680, status: "Shipped", date: "2026-03-12" },
 ];
 
+const contractorOptions = [
+  "Rivera General Contracting",
+  "Summit Builders LLC",
+  "Harbor View Construction",
+  "Brooks Design-Build",
+  "Whitfield Custom Homes",
+  "Lone Star Renovations",
+  "Parkway Home Design",
+  "Castillo Landscape Design",
+];
+
+interface LineItem {
+  product: string;
+  sku: string;
+  qty: number;
+  unitPrice: number;
+}
+
+const emptyLineItem = (): LineItem => ({ product: "", sku: "", qty: 1, unitPrice: 0 });
+
+interface OrderForm {
+  contractor: string;
+  poNumber: string;
+  lineItems: LineItem[];
+  shipping: string;
+  notes: string;
+}
+
+const defaultForm = (): OrderForm => ({
+  contractor: "",
+  poNumber: "",
+  lineItems: [emptyLineItem()],
+  shipping: "standard",
+  notes: "",
+});
+
 export default function OrdersPage() {
   const { persona } = usePersona();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const [orders, setOrders] = useState(defaultOrders);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [form, setForm] = useState<OrderForm>(defaultForm());
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
 
   useEffect(() => setMounted(true), []);
 
@@ -87,6 +136,59 @@ export default function OrdersPage() {
     return matchesSearch && matchesFilter;
   });
 
+  const updateLineItem = (idx: number, field: keyof LineItem, value: string | number) => {
+    setForm((prev) => {
+      const items = [...prev.lineItems];
+      items[idx] = { ...items[idx], [field]: value };
+      return { ...prev, lineItems: items };
+    });
+  };
+
+  const addLineItem = () => {
+    setForm((prev) => ({ ...prev, lineItems: [...prev.lineItems, emptyLineItem()] }));
+  };
+
+  const removeLineItem = (idx: number) => {
+    if (form.lineItems.length <= 1) return;
+    setForm((prev) => ({ ...prev, lineItems: prev.lineItems.filter((_, i) => i !== idx) }));
+  };
+
+  const handleSubmit = () => {
+    const newErrors: Record<string, boolean> = {};
+    if (!form.contractor) newErrors.contractor = true;
+    if (form.lineItems.every((li) => !li.product.trim())) newErrors.lineItems = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    const total = form.lineItems.reduce((sum, li) => sum + li.qty * li.unitPrice, 0);
+    const itemsSummary = form.lineItems
+      .filter((li) => li.product.trim())
+      .map((li) => `${li.product} (${li.qty})`)
+      .join(", ");
+
+    const nextNum = 4822 + orders.length - defaultOrders.length;
+    const newOrder = {
+      id: `ORD-${nextNum}`,
+      contractor: form.contractor,
+      items: itemsSummary,
+      total,
+      status: "Open",
+      date: new Date().toISOString().split("T")[0],
+    };
+
+    setOrders((prev) => [newOrder, ...prev]);
+    setDialogOpen(false);
+    setForm(defaultForm());
+    setErrors({});
+    toast.success(`Order ${newOrder.id} created`);
+  };
+
+  const inputClass = "glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60";
+  const errorClass = "border-red-500/50 ring-1 ring-red-500/30";
+
   return (
     <div className="space-y-6 p-6 lg:p-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -94,7 +196,7 @@ export default function OrdersPage() {
           <h1 className="text-3xl font-bold text-gradient">Orders</h1>
           <p className="mt-1 text-sm text-muted-foreground">Track and manage your order queue</p>
         </div>
-        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => toast.success("Order created successfully!")}>
+        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => setDialogOpen(true)}>
           <Plus className="h-4 w-4" />
           New Order
         </Button>
@@ -166,6 +268,133 @@ export default function OrdersPage() {
           </TableBody>
         </Table>
       </Card>
+
+      {/* New Order Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-2xl glass-strong border-border bg-background" showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <div className="rounded-lg bg-indigo-500/10 p-2">
+                <ShoppingCart className="h-4 w-4 text-indigo-400" />
+              </div>
+              New Order
+            </DialogTitle>
+            <DialogDescription>
+              Create a new order by filling in the details below.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-5 py-2">
+            {/* Contractor & PO */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                  Contractor <span className="text-red-400">*</span>
+                </label>
+                <Select value={form.contractor} onValueChange={(v) => { setForm((p) => ({ ...p, contractor: v ?? "" })); setErrors((p) => ({ ...p, contractor: false })); }}>
+                  <SelectTrigger className={`w-full ${inputClass} ${errors.contractor ? errorClass : ""}`}>
+                    <SelectValue placeholder="Select contractor" />
+                  </SelectTrigger>
+                  <SelectContent className="glass-strong border-border bg-popover">
+                    {contractorOptions.map((c) => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.contractor && <p className="text-xs text-red-400 mt-1">Required</p>}
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">PO Number</label>
+                <Input placeholder="Optional PO #" value={form.poNumber} onChange={(e) => setForm((p) => ({ ...p, poNumber: e.target.value }))} className={inputClass} />
+              </div>
+            </div>
+
+            <Separator className="bg-border" />
+
+            {/* Line Items */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Package className="h-4 w-4 text-indigo-400" />
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Line Items</h3>
+                </div>
+                <Button type="button" variant="outline" size="sm" className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10 gap-1 text-xs" onClick={addLineItem}>
+                  <Plus className="h-3 w-3" /> Add Item
+                </Button>
+              </div>
+              {errors.lineItems && <p className="text-xs text-red-400 mb-2">At least one product is required</p>}
+              <div className="space-y-2">
+                {form.lineItems.map((li, idx) => (
+                  <div key={idx} className="grid grid-cols-[1fr_100px_60px_80px_32px] gap-2 items-end">
+                    <div>
+                      {idx === 0 && <label className="text-[10px] font-medium text-muted-foreground mb-0.5 block">Product</label>}
+                      <Input placeholder="Product name" value={li.product} onChange={(e) => { updateLineItem(idx, "product", e.target.value); setErrors((p) => ({ ...p, lineItems: false })); }} className={inputClass} />
+                    </div>
+                    <div>
+                      {idx === 0 && <label className="text-[10px] font-medium text-muted-foreground mb-0.5 block">SKU</label>}
+                      <Input placeholder="SKU" value={li.sku} onChange={(e) => updateLineItem(idx, "sku", e.target.value)} className={inputClass} />
+                    </div>
+                    <div>
+                      {idx === 0 && <label className="text-[10px] font-medium text-muted-foreground mb-0.5 block">Qty</label>}
+                      <Input type="number" min={1} value={li.qty} onChange={(e) => updateLineItem(idx, "qty", parseInt(e.target.value) || 1)} className={inputClass} />
+                    </div>
+                    <div>
+                      {idx === 0 && <label className="text-[10px] font-medium text-muted-foreground mb-0.5 block">Unit $</label>}
+                      <Input type="number" min={0} step={0.01} value={li.unitPrice || ""} onChange={(e) => updateLineItem(idx, "unitPrice", parseFloat(e.target.value) || 0)} className={inputClass} />
+                    </div>
+                    <Button type="button" variant="ghost" size="icon-sm" className="text-muted-foreground hover:text-red-400 mt-auto" onClick={() => removeLineItem(idx)} disabled={form.lineItems.length <= 1}>
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              {form.lineItems.some((li) => li.unitPrice > 0) && (
+                <div className="flex justify-end mt-2 text-sm font-medium text-foreground">
+                  Total: ${form.lineItems.reduce((s, li) => s + li.qty * li.unitPrice, 0).toLocaleString()}
+                </div>
+              )}
+            </div>
+
+            <Separator className="bg-border" />
+
+            {/* Shipping & Notes */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Shipping Method</label>
+                <Select value={form.shipping} onValueChange={(v) => setForm((p) => ({ ...p, shipping: v ?? "standard" }))}>
+                  <SelectTrigger className={`w-full ${inputClass}`}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="glass-strong border-border bg-popover">
+                    <SelectItem value="standard">Standard</SelectItem>
+                    <SelectItem value="expedited">Expedited</SelectItem>
+                    <SelectItem value="will-call">Will Call</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Notes</label>
+                <textarea
+                  placeholder="Order notes..."
+                  value={form.notes}
+                  onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))}
+                  rows={2}
+                  className={`w-full rounded-lg px-2.5 py-1.5 text-sm resize-none ${inputClass}`}
+                />
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10" onClick={() => { setDialogOpen(false); setForm(defaultForm()); setErrors({}); }}>
+              Cancel
+            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white" onClick={handleSubmit}>
+              Create Order
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

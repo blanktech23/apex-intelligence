@@ -27,6 +27,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 const categories: Record<string, string> = {
@@ -200,13 +208,39 @@ const products = [
   },
 ];
 
+type Product = typeof products[0];
+
+interface AddToOrderForm {
+  qty: number;
+  finish: string;
+  notes: string;
+}
+
+interface QuoteForm {
+  company: string;
+  contactEmail: string;
+  qty: number;
+  requirements: string;
+}
+
 export default function CatalogPage() {
   const { persona } = usePersona();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
-  const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  // Add to Order dialog
+  const [addToOrderOpen, setAddToOrderOpen] = useState(false);
+  const [addToOrderProduct, setAddToOrderProduct] = useState<Product | null>(null);
+  const [addToOrderForm, setAddToOrderForm] = useState<AddToOrderForm>({ qty: 1, finish: "", notes: "" });
+
+  // Request Quote dialog
+  const [quoteOpen, setQuoteOpen] = useState(false);
+  const [quoteProduct, setQuoteProduct] = useState<Product | null>(null);
+  const [quoteForm, setQuoteForm] = useState<QuoteForm>({ company: "", contactEmail: "", qty: 1, requirements: "" });
+  const [quoteErrors, setQuoteErrors] = useState<Record<string, boolean>>({});
 
   useEffect(() => setMounted(true), []);
 
@@ -223,6 +257,45 @@ export default function CatalogPage() {
     const matchesCat = category === "all" || p.category.toLowerCase() === category;
     return matchesSearch && matchesCat;
   });
+
+  const openAddToOrder = (product: Product) => {
+    setAddToOrderProduct(product);
+    setAddToOrderForm({ qty: 1, finish: product.finishOptions[0] || "", notes: "" });
+    setAddToOrderOpen(true);
+  };
+
+  const handleAddToOrder = () => {
+    if (!addToOrderProduct) return;
+    toast.success(`Added ${addToOrderForm.qty}x ${addToOrderProduct.name} to order`);
+    setAddToOrderOpen(false);
+    setAddToOrderProduct(null);
+  };
+
+  const openQuote = (product: Product) => {
+    setQuoteProduct(product);
+    setQuoteForm({ company: "", contactEmail: "", qty: 1, requirements: "" });
+    setQuoteErrors({});
+    setQuoteOpen(true);
+  };
+
+  const handleQuote = () => {
+    if (!quoteProduct) return;
+    const newErrors: Record<string, boolean> = {};
+    if (!quoteForm.company.trim()) newErrors.company = true;
+    if (!quoteForm.contactEmail.trim()) newErrors.contactEmail = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setQuoteErrors(newErrors);
+      return;
+    }
+
+    toast.success(`Quote request sent for ${quoteProduct.name}`);
+    setQuoteOpen(false);
+    setQuoteProduct(null);
+  };
+
+  const inputClass = "glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60";
+  const errorClass = "border-red-500/50 ring-1 ring-red-500/30";
 
   return (
     <div className="space-y-6 p-6 lg:p-8">
@@ -282,14 +355,11 @@ export default function CatalogPage() {
       {/* Product Detail Slide-Out Panel */}
       {selectedProduct && (
         <div className="fixed inset-0 z-50 flex justify-end">
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setSelectedProduct(null)}
           />
-          {/* Panel */}
           <div className="relative z-10 w-full max-w-md h-full overflow-y-auto border-l border-border bg-background/95 backdrop-blur-xl shadow-2xl animate-in slide-in-from-right duration-300">
-            {/* Close Button */}
             <button
               onClick={() => setSelectedProduct(null)}
               className="absolute top-4 right-4 z-20 rounded-lg bg-foreground/5 p-2 text-muted-foreground hover:text-foreground hover:bg-foreground/10 transition-colors"
@@ -297,14 +367,11 @@ export default function CatalogPage() {
               <X className="h-4 w-4" />
             </button>
 
-            {/* Product Image Placeholder */}
             <div className={`h-56 bg-gradient-to-br ${categoryGradients[selectedProduct.category]} flex items-center justify-center`}>
               <Package className="h-16 w-16 text-white/30" />
             </div>
 
-            {/* Content */}
             <div className="p-6 space-y-6">
-              {/* Header */}
               <div>
                 <Badge variant="outline" className={`${categories[selectedProduct.category]} text-[10px] mb-3`}>
                   {selectedProduct.category}
@@ -316,7 +383,6 @@ export default function CatalogPage() {
 
               <Separator className="bg-border" />
 
-              {/* Pricing */}
               <div>
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Pricing</h3>
                 <p className="text-2xl font-bold text-foreground">{selectedProduct.price}</p>
@@ -325,7 +391,6 @@ export default function CatalogPage() {
 
               <Separator className="bg-border" />
 
-              {/* Specifications */}
               <div>
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Specifications</h3>
                 <div className="space-y-3">
@@ -361,7 +426,6 @@ export default function CatalogPage() {
 
               <Separator className="bg-border" />
 
-              {/* Finish Options */}
               <div>
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
                   <Palette className="h-3.5 w-3.5 inline mr-1.5 text-indigo-400" />
@@ -382,14 +446,10 @@ export default function CatalogPage() {
 
               <Separator className="bg-border" />
 
-              {/* Actions */}
               <div className="space-y-3 pb-6">
                 <Button
                   className="w-full bg-indigo-600 hover:bg-indigo-500 text-white gap-2"
-                  onClick={() => {
-                    toast.success(`${selectedProduct.name} added to order`);
-                    setSelectedProduct(null);
-                  }}
+                  onClick={() => openAddToOrder(selectedProduct)}
                 >
                   <ShoppingCart className="h-4 w-4" />
                   Add to Order
@@ -397,10 +457,7 @@ export default function CatalogPage() {
                 <Button
                   variant="outline"
                   className="w-full border-border bg-foreground/5 text-foreground hover:bg-foreground/10 gap-2"
-                  onClick={() => {
-                    toast.success("Quote request submitted for " + selectedProduct.name);
-                    setSelectedProduct(null);
-                  }}
+                  onClick={() => openQuote(selectedProduct)}
                 >
                   <FileText className="h-4 w-4" />
                   Request Quote
@@ -410,6 +467,144 @@ export default function CatalogPage() {
           </div>
         </div>
       )}
+
+      {/* Add to Order Dialog */}
+      <Dialog open={addToOrderOpen} onOpenChange={setAddToOrderOpen}>
+        <DialogContent className="sm:max-w-sm glass-strong border-border bg-background" showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <div className="rounded-lg bg-indigo-500/10 p-2">
+                <ShoppingCart className="h-4 w-4 text-indigo-400" />
+              </div>
+              Add to Order
+            </DialogTitle>
+            <DialogDescription>
+              {addToOrderProduct?.name}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Quantity</label>
+              <Input
+                type="number"
+                min={1}
+                value={addToOrderForm.qty}
+                onChange={(e) => setAddToOrderForm((p) => ({ ...p, qty: parseInt(e.target.value) || 1 }))}
+                className={inputClass}
+              />
+            </div>
+            {addToOrderProduct && addToOrderProduct.finishOptions.length > 0 && (
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Finish</label>
+                <Select value={addToOrderForm.finish} onValueChange={(v) => setAddToOrderForm((p) => ({ ...p, finish: v ?? "" }))}>
+                  <SelectTrigger className={`w-full ${inputClass}`}>
+                    <SelectValue placeholder="Select finish" />
+                  </SelectTrigger>
+                  <SelectContent className="glass-strong border-border bg-popover">
+                    {addToOrderProduct.finishOptions.map((f) => (
+                      <SelectItem key={f} value={f}>{f}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Notes</label>
+              <textarea
+                placeholder="Special instructions..."
+                value={addToOrderForm.notes}
+                onChange={(e) => setAddToOrderForm((p) => ({ ...p, notes: e.target.value }))}
+                rows={2}
+                className={`w-full rounded-lg px-2.5 py-1.5 text-sm resize-none ${inputClass}`}
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10" onClick={() => setAddToOrderOpen(false)}>
+              Cancel
+            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white" onClick={handleAddToOrder}>
+              Add to Order
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Request Quote Dialog */}
+      <Dialog open={quoteOpen} onOpenChange={setQuoteOpen}>
+        <DialogContent className="sm:max-w-sm glass-strong border-border bg-background" showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <div className="rounded-lg bg-indigo-500/10 p-2">
+                <FileText className="h-4 w-4 text-indigo-400" />
+              </div>
+              Request Quote
+            </DialogTitle>
+            <DialogDescription>
+              {quoteProduct?.name}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                Company Name <span className="text-red-400">*</span>
+              </label>
+              <Input
+                placeholder="Your company"
+                value={quoteForm.company}
+                onChange={(e) => { setQuoteForm((p) => ({ ...p, company: e.target.value })); setQuoteErrors((p) => ({ ...p, company: false })); }}
+                className={`${inputClass} ${quoteErrors.company ? errorClass : ""}`}
+              />
+              {quoteErrors.company && <p className="text-xs text-red-400 mt-1">Required</p>}
+            </div>
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                Contact Email <span className="text-red-400">*</span>
+              </label>
+              <Input
+                type="email"
+                placeholder="email@company.com"
+                value={quoteForm.contactEmail}
+                onChange={(e) => { setQuoteForm((p) => ({ ...p, contactEmail: e.target.value })); setQuoteErrors((p) => ({ ...p, contactEmail: false })); }}
+                className={`${inputClass} ${quoteErrors.contactEmail ? errorClass : ""}`}
+              />
+              {quoteErrors.contactEmail && <p className="text-xs text-red-400 mt-1">Required</p>}
+            </div>
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Quantity</label>
+              <Input
+                type="number"
+                min={1}
+                value={quoteForm.qty}
+                onChange={(e) => setQuoteForm((p) => ({ ...p, qty: parseInt(e.target.value) || 1 }))}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Special Requirements</label>
+              <textarea
+                placeholder="Custom dimensions, bulk pricing, etc."
+                value={quoteForm.requirements}
+                onChange={(e) => setQuoteForm((p) => ({ ...p, requirements: e.target.value }))}
+                rows={3}
+                className={`w-full rounded-lg px-2.5 py-1.5 text-sm resize-none ${inputClass}`}
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10" onClick={() => setQuoteOpen(false)}>
+              Cancel
+            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white" onClick={handleQuote}>
+              Send Request
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

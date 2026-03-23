@@ -13,6 +13,7 @@ import {
   TrendingUp,
   Users,
   ShoppingCart,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +35,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
@@ -49,7 +58,7 @@ const stats = [
   { label: "Revenue MTD", value: "$127.4K", icon: DollarSign, change: "+8% MoM", color: "text-purple-400" },
 ];
 
-const contractors = [
+const defaultContractors = [
   { id: "contractor-1", company: "Rivera General Contracting", contact: "Marcus Rivera", ordersMTD: 12, revenueMTD: 42800, status: "Active", lastOrder: "2026-03-20" },
   { id: "contractor-2", company: "Summit Builders LLC", contact: "Sarah Chen", ordersMTD: 8, revenueMTD: 31200, status: "Active", lastOrder: "2026-03-19" },
   { id: "contractor-3", company: "Harbor View Construction", contact: "Robert Nguyen", ordersMTD: 6, revenueMTD: 24500, status: "Active", lastOrder: "2026-03-18" },
@@ -60,12 +69,44 @@ const contractors = [
   { id: "contractor-8", company: "BlueLine Kitchen Studio", contact: "Angela Foster", ordersMTD: 0, revenueMTD: 0, status: "Inactive", lastOrder: "2026-02-20" },
 ];
 
+interface ContractorForm {
+  company: string;
+  contact: string;
+  email: string;
+  phone: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  type: string;
+  status: string;
+  notes: string;
+}
+
+const defaultForm = (): ContractorForm => ({
+  company: "",
+  contact: "",
+  email: "",
+  phone: "",
+  street: "",
+  city: "",
+  state: "",
+  zip: "",
+  type: "general",
+  status: "active",
+  notes: "",
+});
+
 export default function ContractorsPage() {
   const { persona } = usePersona();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const [contractors, setContractors] = useState(defaultContractors);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [form, setForm] = useState<ContractorForm>(defaultForm());
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
 
   useEffect(() => setMounted(true), []);
 
@@ -83,6 +124,42 @@ export default function ContractorsPage() {
     return matchesSearch && matchesFilter;
   });
 
+  const handleSubmit = () => {
+    const newErrors: Record<string, boolean> = {};
+    if (!form.company.trim()) newErrors.company = true;
+    if (!form.contact.trim()) newErrors.contact = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    const statusMap: Record<string, string> = { active: "Active", pending: "Pending" };
+    const newContractor = {
+      id: `contractor-${contractors.length + 1}`,
+      company: form.company,
+      contact: form.contact,
+      ordersMTD: 0,
+      revenueMTD: 0,
+      status: statusMap[form.status] || "Pending",
+      lastOrder: new Date().toISOString().split("T")[0],
+    };
+
+    setContractors((prev) => [newContractor, ...prev]);
+    setDialogOpen(false);
+    setForm(defaultForm());
+    setErrors({});
+    toast.success(`${form.company} added to contractor accounts`);
+  };
+
+  const updateField = (field: keyof ContractorForm, value: string) => {
+    setForm((p) => ({ ...p, [field]: value }));
+    setErrors((p) => ({ ...p, [field]: false }));
+  };
+
+  const inputClass = "glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60";
+  const errorClass = "border-red-500/50 ring-1 ring-red-500/30";
+
   return (
     <div className="space-y-6 p-6 lg:p-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -90,7 +167,7 @@ export default function ContractorsPage() {
           <h1 className="text-3xl font-bold text-gradient">Contractor Accounts</h1>
           <p className="mt-1 text-sm text-muted-foreground">Manage your contractor relationships and order history</p>
         </div>
-        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => toast.success("Contractor added successfully")}>
+        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => setDialogOpen(true)}>
           <Plus className="h-4 w-4" />
           Add Contractor
         </Button>
@@ -160,6 +237,124 @@ export default function ContractorsPage() {
           </TableBody>
         </Table>
       </Card>
+
+      {/* Add Contractor Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-2xl glass-strong border-border bg-background" showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <div className="rounded-lg bg-indigo-500/10 p-2">
+                <Building2 className="h-4 w-4 text-indigo-400" />
+              </div>
+              Add Contractor
+            </DialogTitle>
+            <DialogDescription>
+              Fill in the details below to add a new contractor account.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-5 py-2">
+            {/* Company & Contact */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                  Company Name <span className="text-red-400">*</span>
+                </label>
+                <Input placeholder="Company name" value={form.company} onChange={(e) => updateField("company", e.target.value)} className={`${inputClass} ${errors.company ? errorClass : ""}`} />
+                {errors.company && <p className="text-xs text-red-400 mt-1">Required</p>}
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                  Contact Person <span className="text-red-400">*</span>
+                </label>
+                <Input placeholder="Full name" value={form.contact} onChange={(e) => updateField("contact", e.target.value)} className={`${inputClass} ${errors.contact ? errorClass : ""}`} />
+                {errors.contact && <p className="text-xs text-red-400 mt-1">Required</p>}
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Email</label>
+                <Input type="email" placeholder="email@company.com" value={form.email} onChange={(e) => updateField("email", e.target.value)} className={inputClass} />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Phone</label>
+                <Input type="tel" placeholder="(555) 555-0000" value={form.phone} onChange={(e) => updateField("phone", e.target.value)} className={inputClass} />
+              </div>
+            </div>
+
+            <Separator className="bg-border" />
+
+            {/* Address */}
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">Address</h3>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="sm:col-span-2">
+                  <Input placeholder="Street address" value={form.street} onChange={(e) => updateField("street", e.target.value)} className={inputClass} />
+                </div>
+                <div>
+                  <Input placeholder="City" value={form.city} onChange={(e) => updateField("city", e.target.value)} className={inputClass} />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <Input placeholder="State" value={form.state} onChange={(e) => updateField("state", e.target.value)} className={inputClass} />
+                  <Input placeholder="Zip" value={form.zip} onChange={(e) => updateField("zip", e.target.value)} className={inputClass} />
+                </div>
+              </div>
+            </div>
+
+            <Separator className="bg-border" />
+
+            {/* Type & Status */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Contractor Type</label>
+                <Select value={form.type} onValueChange={(v) => updateField("type", v ?? "general")}>
+                  <SelectTrigger className={`w-full ${inputClass}`}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="glass-strong border-border bg-popover">
+                    <SelectItem value="general">General Contractor</SelectItem>
+                    <SelectItem value="design-build">Design-Build</SelectItem>
+                    <SelectItem value="custom-home">Custom Home Builder</SelectItem>
+                    <SelectItem value="remodeler">Remodeler</SelectItem>
+                    <SelectItem value="kb-specialist">Kitchen & Bath Specialist</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Status</label>
+                <Select value={form.status} onValueChange={(v) => updateField("status", v ?? "active")}>
+                  <SelectTrigger className={`w-full ${inputClass}`}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="glass-strong border-border bg-popover">
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Notes</label>
+              <textarea
+                placeholder="Additional notes..."
+                value={form.notes}
+                onChange={(e) => updateField("notes", e.target.value)}
+                rows={2}
+                className={`w-full rounded-lg px-2.5 py-1.5 text-sm resize-none ${inputClass}`}
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10" onClick={() => { setDialogOpen(false); setForm(defaultForm()); setErrors({}); }}>
+              Cancel
+            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white" onClick={handleSubmit}>
+              Add Contractor
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
