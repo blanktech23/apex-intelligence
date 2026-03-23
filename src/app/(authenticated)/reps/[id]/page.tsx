@@ -67,7 +67,7 @@ const repsData: Record<
     address: "2740 Coral Way, Suite 310, Miami, FL 33145",
     accountsManaged: 18,
     ordersMTD: 34,
-    commissionMTD: 6800,
+    commissionMTD: 2523,
     ytdRevenue: 284500,
   },
   "rep-2": {
@@ -81,7 +81,7 @@ const repsData: Record<
     address: "5500 Greenville Ave, Dallas, TX 75206",
     accountsManaged: 22,
     ordersMTD: 28,
-    commissionMTD: 5450,
+    commissionMTD: 1640,
     ytdRevenue: 312800,
   },
   "rep-3": {
@@ -95,7 +95,7 @@ const repsData: Record<
     address: "1100 Peachtree St NE, Atlanta, GA 30309",
     accountsManaged: 15,
     ordersMTD: 31,
-    commissionMTD: 6200,
+    commissionMTD: 1820,
     ytdRevenue: 256200,
   },
   "rep-4": {
@@ -109,7 +109,7 @@ const repsData: Record<
     address: "3900 Market St, Suite 200, Riverside, CA 92501",
     accountsManaged: 20,
     ordersMTD: 26,
-    commissionMTD: 4900,
+    commissionMTD: 1368,
     ytdRevenue: 198700,
   },
   "rep-5": {
@@ -123,7 +123,7 @@ const repsData: Record<
     address: "233 S Wacker Dr, Chicago, IL 60606",
     accountsManaged: 16,
     ordersMTD: 22,
-    commissionMTD: 4100,
+    commissionMTD: 1300,
     ytdRevenue: 187400,
   },
   "rep-6": {
@@ -137,7 +137,7 @@ const repsData: Record<
     address: "1 Nashville Pl, Nashville, TN 37219",
     accountsManaged: 12,
     ordersMTD: 19,
-    commissionMTD: 3650,
+    commissionMTD: 840,
     ytdRevenue: 145600,
   },
   "rep-7": {
@@ -151,7 +151,7 @@ const repsData: Record<
     address: "200 Public Square, Cleveland, OH 44114",
     accountsManaged: 14,
     ordersMTD: 17,
-    commissionMTD: 3200,
+    commissionMTD: 750,
     ytdRevenue: 134900,
   },
   "rep-8": {
@@ -165,7 +165,7 @@ const repsData: Record<
     address: "2 N Central Ave, Phoenix, AZ 85004",
     accountsManaged: 11,
     ordersMTD: 15,
-    commissionMTD: 2800,
+    commissionMTD: 660,
     ytdRevenue: 112300,
   },
   "rep-9": {
@@ -210,9 +210,9 @@ const accountsData = [
 ];
 
 const performanceData = [
-  { month: "Jan 2026", orders: 29, revenue: 87400, commission: 5240, vsTarget: 108 },
-  { month: "Feb 2026", orders: 32, revenue: 96200, commission: 5770, vsTarget: 115 },
-  { month: "Mar 2026", orders: 34, revenue: 100900, commission: 6800, vsTarget: 121 },
+  { month: "Jan 2026", orders: 29, revenue: 87400, commission: 2185, vsTarget: 108 },
+  { month: "Feb 2026", orders: 32, revenue: 96200, commission: 2405, vsTarget: 115 },
+  { month: "Mar 2026", orders: 34, revenue: 100900, commission: 2523, vsTarget: 121 },
 ];
 
 const activityData = [

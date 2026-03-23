@@ -37,23 +37,23 @@ const statusColors: Record<string, string> = {
 };
 
 const stats = [
-  { label: "MTD Commission", value: "$4,280", icon: DollarSign, change: "+$820 this week", color: "text-emerald-400" },
-  { label: "Projected", value: "$5,100", icon: TrendingUp, change: "Based on pipeline", color: "text-blue-400" },
-  { label: "YTD Total", value: "$38,400", icon: Calendar, change: "+22% vs last year", color: "text-amber-400" },
-  { label: "Avg Rate", value: "8.5%", icon: Percent, change: "Across all orders", color: "text-purple-400" },
+  { label: "MTD Commission", value: "$2,109", icon: DollarSign, change: "+$370 this week", color: "text-emerald-400" },
+  { label: "Projected", value: "$2,500", icon: TrendingUp, change: "Based on pipeline", color: "text-blue-400" },
+  { label: "YTD Total", value: "$9,640", icon: Calendar, change: "+22% vs last year", color: "text-amber-400" },
+  { label: "Avg Rate", value: "2.1%", icon: Percent, change: "Across all orders", color: "text-purple-400" },
 ];
 
 const commissions = [
-  { order: "ORD-4821", contractor: "Rivera General Contracting", total: 18450, rate: 8, commission: 1476, status: "Pending", date: "2026-03-20" },
-  { order: "ORD-4820", contractor: "Summit Builders LLC", total: 8720, rate: 9, commission: 785, status: "Pending", date: "2026-03-19" },
-  { order: "ORD-4819", contractor: "Harbor View Construction", total: 12340, rate: 8, commission: 987, status: "Processing", date: "2026-03-18" },
-  { order: "ORD-4817", contractor: "Brooks Concrete & Masonry", total: 3280, rate: 10, commission: 328, status: "Paid", date: "2026-03-17" },
-  { order: "ORD-4815", contractor: "Whitfield Custom Homes", total: 14500, rate: 7.5, commission: 1088, status: "Processing", date: "2026-03-16" },
-  { order: "ORD-4813", contractor: "Lone Star Foundations", total: 9870, rate: 8.5, commission: 839, status: "Pending", date: "2026-03-16" },
-  { order: "ORD-4810", contractor: "Parkway Electrical Services", total: 1240, rate: 10, commission: 124, status: "Paid", date: "2026-03-15" },
-  { order: "ORD-4808", contractor: "Castillo Landscape Design", total: 22100, rate: 7, commission: 1547, status: "Processing", date: "2026-03-14" },
-  { order: "ORD-4805", contractor: "Rivera General Contracting", total: 6450, rate: 8, commission: 516, status: "Paid", date: "2026-03-13" },
-  { order: "ORD-4802", contractor: "Summit Builders LLC", total: 5680, rate: 9, commission: 511, status: "Paid", date: "2026-03-12" },
+  { order: "ORD-4821", contractor: "Rivera General Contracting", total: 18450, rate: 2, commission: 369, status: "Pending", date: "2026-03-20" },
+  { order: "ORD-4820", contractor: "Summit Builders LLC", total: 8720, rate: 2.5, commission: 218, status: "Pending", date: "2026-03-19" },
+  { order: "ORD-4819", contractor: "Harbor View Construction", total: 12340, rate: 2, commission: 247, status: "Processing", date: "2026-03-18" },
+  { order: "ORD-4817", contractor: "Brooks Concrete & Masonry", total: 3280, rate: 3, commission: 98, status: "Paid", date: "2026-03-17" },
+  { order: "ORD-4815", contractor: "Whitfield Custom Homes", total: 14500, rate: 2, commission: 290, status: "Processing", date: "2026-03-16" },
+  { order: "ORD-4813", contractor: "Lone Star Foundations", total: 9870, rate: 2.5, commission: 247, status: "Pending", date: "2026-03-16" },
+  { order: "ORD-4810", contractor: "Parkway Electrical Services", total: 1240, rate: 3, commission: 37, status: "Paid", date: "2026-03-15" },
+  { order: "ORD-4808", contractor: "Castillo Landscape Design", total: 22100, rate: 1.5, commission: 332, status: "Processing", date: "2026-03-14" },
+  { order: "ORD-4805", contractor: "Rivera General Contracting", total: 6450, rate: 2, commission: 129, status: "Paid", date: "2026-03-13" },
+  { order: "ORD-4802", contractor: "Summit Builders LLC", total: 5680, rate: 2.5, commission: 142, status: "Paid", date: "2026-03-12" },
 ];
 
 export default function CommissionsPage() {

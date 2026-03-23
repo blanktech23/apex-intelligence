@@ -46,18 +46,18 @@ const stats = [
   { label: "Total Reps", value: "14", icon: UserCheck, change: "+2 this quarter", color: "text-indigo-400" },
   { label: "Active Territories", value: "11", icon: MapPin, change: "79% coverage", color: "text-emerald-400" },
   { label: "Orders Placed MTD", value: "218", icon: Briefcase, change: "+22% vs last month", color: "text-amber-400" },
-  { label: "Commission Paid MTD", value: "$38.4K", icon: DollarSign, change: "+9.1% MoM", color: "text-purple-400" },
+  { label: "Commission Paid MTD", value: "$10.9K", icon: DollarSign, change: "+9.1% MoM", color: "text-purple-400" },
 ];
 
 const reps = [
-  { id: "rep-1", name: "Carlos Medina", territory: "Southeast FL", accountsManaged: 18, ordersMTD: 34, commissionMTD: 6800, status: "Active", lastActivity: "2026-03-22" },
-  { id: "rep-2", name: "Jessica Palmer", territory: "DFW Metro", accountsManaged: 22, ordersMTD: 28, commissionMTD: 5450, status: "Active", lastActivity: "2026-03-22" },
-  { id: "rep-3", name: "Derek Washington", territory: "Atlanta Metro", accountsManaged: 15, ordersMTD: 31, commissionMTD: 6200, status: "Active", lastActivity: "2026-03-21" },
-  { id: "rep-4", name: "Natalie Tran", territory: "SoCal Inland", accountsManaged: 20, ordersMTD: 26, commissionMTD: 4900, status: "Active", lastActivity: "2026-03-21" },
-  { id: "rep-5", name: "Brian Kowalski", territory: "Chicagoland", accountsManaged: 16, ordersMTD: 22, commissionMTD: 4100, status: "Active", lastActivity: "2026-03-20" },
-  { id: "rep-6", name: "Amanda Reeves", territory: "Nashville / TN", accountsManaged: 12, ordersMTD: 19, commissionMTD: 3650, status: "Active", lastActivity: "2026-03-20" },
-  { id: "rep-7", name: "Kevin O'Brien", territory: "Northeast OH", accountsManaged: 14, ordersMTD: 17, commissionMTD: 3200, status: "Active", lastActivity: "2026-03-19" },
-  { id: "rep-8", name: "Maria Santos", territory: "Phoenix Metro", accountsManaged: 11, ordersMTD: 15, commissionMTD: 2800, status: "Active", lastActivity: "2026-03-18" },
+  { id: "rep-1", name: "Carlos Medina", territory: "Southeast FL", accountsManaged: 18, ordersMTD: 34, commissionMTD: 2523, status: "Active", lastActivity: "2026-03-22" },
+  { id: "rep-2", name: "Jessica Palmer", territory: "DFW Metro", accountsManaged: 22, ordersMTD: 28, commissionMTD: 1640, status: "Active", lastActivity: "2026-03-22" },
+  { id: "rep-3", name: "Derek Washington", territory: "Atlanta Metro", accountsManaged: 15, ordersMTD: 31, commissionMTD: 1820, status: "Active", lastActivity: "2026-03-21" },
+  { id: "rep-4", name: "Natalie Tran", territory: "SoCal Inland", accountsManaged: 20, ordersMTD: 26, commissionMTD: 1368, status: "Active", lastActivity: "2026-03-21" },
+  { id: "rep-5", name: "Brian Kowalski", territory: "Chicagoland", accountsManaged: 16, ordersMTD: 22, commissionMTD: 1300, status: "Active", lastActivity: "2026-03-20" },
+  { id: "rep-6", name: "Amanda Reeves", territory: "Nashville / TN", accountsManaged: 12, ordersMTD: 19, commissionMTD: 840, status: "Active", lastActivity: "2026-03-20" },
+  { id: "rep-7", name: "Kevin O'Brien", territory: "Northeast OH", accountsManaged: 14, ordersMTD: 17, commissionMTD: 750, status: "Active", lastActivity: "2026-03-19" },
+  { id: "rep-8", name: "Maria Santos", territory: "Phoenix Metro", accountsManaged: 11, ordersMTD: 15, commissionMTD: 660, status: "Active", lastActivity: "2026-03-18" },
   { id: "rep-9", name: "Tyler Jameson", territory: "Charlotte / NC", accountsManaged: 9, ordersMTD: 0, commissionMTD: 0, status: "On Leave", lastActivity: "2026-03-05" },
   { id: "rep-10", name: "Lisa Huang", territory: "Bay Area", accountsManaged: 0, ordersMTD: 0, commissionMTD: 0, status: "Inactive", lastActivity: "2026-02-14" },
 ];
