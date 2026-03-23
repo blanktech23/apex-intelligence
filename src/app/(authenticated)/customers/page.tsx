@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { PaginationBar } from "@/components/ui/pagination-bar";
 import { useRouter } from "next/navigation";
 import {
@@ -14,6 +14,11 @@ import {
   Star,
   MoreHorizontal,
   ChevronRight,
+  X,
+  Building2,
+  User,
+  Briefcase,
+  Tag,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -37,6 +42,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
@@ -77,7 +90,7 @@ const stats = [
   },
 ];
 
-const customers = [
+const initialCustomers = [
   {
     id: "cust-001",
     name: "Marcus Rivera",
@@ -200,16 +213,169 @@ const customers = [
   },
 ];
 
+const companyTypes = [
+  "Contractor / Remodeler",
+  "Design-Build Firm",
+  "General Contractor",
+  "Kitchen & Bath Showroom",
+  "Custom Home Builder",
+  "Other",
+];
+
+const sourceOptions = [
+  "Referral",
+  "Trade Show",
+  "Website",
+  "Cold Outreach",
+  "Partner",
+  "Other",
+];
+
+const repOptions = [
+  "Unassigned",
+  "Jordan Mitchell",
+  "Priya Sharma",
+  "Alex Thompson",
+  "Casey Rodriguez",
+];
+
+const suggestedTags = [
+  "K&B",
+  "High Volume",
+  "New Construction",
+  "Remodel",
+  "Commercial",
+  "Residential",
+  "VIP",
+  "Austin Metro",
+];
+
+interface NewCustomerForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  jobTitle: string;
+  companyName: string;
+  companyType: string;
+  website: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  status: string;
+  assignedRep: string;
+  source: string;
+  notes: string;
+  tags: string[];
+}
+
+const emptyForm: NewCustomerForm = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  jobTitle: "",
+  companyName: "",
+  companyType: "",
+  website: "",
+  street: "",
+  city: "",
+  state: "",
+  zip: "",
+  status: "Lead",
+  assignedRep: "Unassigned",
+  source: "",
+  notes: "",
+  tags: [],
+};
+
 export default function CustomersPage() {
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [customers, setCustomers] = useState(initialCustomers);
+  const [addOpen, setAddOpen] = useState(false);
+  const [form, setForm] = useState<NewCustomerForm>({ ...emptyForm });
+  const [tagInput, setTagInput] = useState("");
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const t = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(t);
+  }, []);
+
+  const updateField = useCallback(
+    <K extends keyof NewCustomerForm>(key: K, value: NewCustomerForm[K]) => {
+      setForm((prev) => ({ ...prev, [key]: value }));
+      setErrors((prev) => ({ ...prev, [key]: false }));
+    },
+    []
+  );
+
+  const addTag = useCallback(
+    (tag: string) => {
+      const trimmed = tag.trim();
+      if (trimmed && !form.tags.includes(trimmed)) {
+        setForm((prev) => ({ ...prev, tags: [...prev.tags, trimmed] }));
+      }
+      setTagInput("");
+    },
+    [form.tags]
+  );
+
+  const removeTag = useCallback((tag: string) => {
+    setForm((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((t) => t !== tag),
+    }));
+  }, []);
+
+  const handleSubmit = useCallback(() => {
+    const newErrors: Record<string, boolean> = {};
+    if (!form.firstName.trim()) newErrors.firstName = true;
+    if (!form.lastName.trim()) newErrors.lastName = true;
+    if (!form.email.trim()) newErrors.email = true;
+    if (!form.companyName.trim()) newErrors.companyName = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    const initials =
+      form.firstName.charAt(0).toUpperCase() +
+      form.lastName.charAt(0).toUpperCase();
+    const today = new Date().toISOString().split("T")[0];
+
+    const newCustomer = {
+      id: `cust-${String(customers.length + 1).padStart(3, "0")}`,
+      name: `${form.firstName.trim()} ${form.lastName.trim()}`,
+      company: form.companyName.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim() || "--",
+      status: form.status,
+      projects: 0,
+      revenue: 0,
+      lastContact: today,
+      initials,
+    };
+
+    setCustomers((prev) => [newCustomer, ...prev]);
+    setAddOpen(false);
+    setForm({ ...emptyForm });
+    setErrors({});
+    setTagInput("");
+    toast.success(`Customer added — ${newCustomer.company}`);
+  }, [form, customers.length]);
+
+  const handleClose = useCallback(() => {
+    setAddOpen(false);
+    setForm({ ...emptyForm });
+    setErrors({});
+    setTagInput("");
   }, []);
 
   const filtered = customers.filter((c) => {
@@ -289,7 +455,7 @@ export default function CustomersPage() {
             Manage your clients and track relationships
           </p>
         </div>
-        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => toast.success("Customer added successfully!")}>
+        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => setAddOpen(true)}>
           <Plus className="h-4 w-4" />
           Add Customer
         </Button>
@@ -484,6 +650,386 @@ export default function CustomersPage() {
         itemsPerPage={25}
         onPageChange={setCurrentPage}
       />
+
+      {/* Add Customer Modal */}
+      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+        <DialogContent
+          className="sm:max-w-2xl glass-strong border-border bg-background"
+          showCloseButton={false}
+        >
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <div className="rounded-lg bg-indigo-500/10 p-2">
+                <Plus className="h-4 w-4 text-indigo-400" />
+              </div>
+              Add New Customer
+            </DialogTitle>
+            <DialogDescription>
+              Fill in the details below to create a new customer record.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6 py-2">
+            {/* Contact Information */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <User className="h-4 w-4 text-indigo-400" />
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                  Contact Information
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    First Name <span className="text-red-400">*</span>
+                  </label>
+                  <Input
+                    placeholder="First name"
+                    value={form.firstName}
+                    onChange={(e) => updateField("firstName", e.target.value)}
+                    className={`glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60 ${
+                      errors.firstName ? "border-red-500/50 ring-1 ring-red-500/30" : ""
+                    }`}
+                  />
+                  {errors.firstName && (
+                    <p className="text-xs text-red-400 mt-1">Required</p>
+                  )}
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Last Name <span className="text-red-400">*</span>
+                  </label>
+                  <Input
+                    placeholder="Last name"
+                    value={form.lastName}
+                    onChange={(e) => updateField("lastName", e.target.value)}
+                    className={`glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60 ${
+                      errors.lastName ? "border-red-500/50 ring-1 ring-red-500/30" : ""
+                    }`}
+                  />
+                  {errors.lastName && (
+                    <p className="text-xs text-red-400 mt-1">Required</p>
+                  )}
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Email <span className="text-red-400">*</span>
+                  </label>
+                  <Input
+                    type="email"
+                    placeholder="email@company.com"
+                    value={form.email}
+                    onChange={(e) => updateField("email", e.target.value)}
+                    className={`glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60 ${
+                      errors.email ? "border-red-500/50 ring-1 ring-red-500/30" : ""
+                    }`}
+                  />
+                  {errors.email && (
+                    <p className="text-xs text-red-400 mt-1">Required</p>
+                  )}
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Phone
+                  </label>
+                  <Input
+                    type="tel"
+                    placeholder="(555) 555-0000"
+                    value={form.phone}
+                    onChange={(e) => updateField("phone", e.target.value)}
+                    className="glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Job Title / Role
+                  </label>
+                  <Input
+                    placeholder="e.g. Owner, Project Manager, Designer"
+                    value={form.jobTitle}
+                    onChange={(e) => updateField("jobTitle", e.target.value)}
+                    className="glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <Separator className="bg-border" />
+
+            {/* Company Information */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Building2 className="h-4 w-4 text-indigo-400" />
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                  Company Information
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Company Name <span className="text-red-400">*</span>
+                  </label>
+                  <Input
+                    placeholder="Company name"
+                    value={form.companyName}
+                    onChange={(e) => updateField("companyName", e.target.value)}
+                    className={`glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60 ${
+                      errors.companyName ? "border-red-500/50 ring-1 ring-red-500/30" : ""
+                    }`}
+                  />
+                  {errors.companyName && (
+                    <p className="text-xs text-red-400 mt-1">Required</p>
+                  )}
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Company Type
+                  </label>
+                  <Select
+                    value={form.companyType}
+                    onValueChange={(v) => updateField("companyType", v ?? "")}
+                  >
+                    <SelectTrigger className="glass border-border bg-foreground/5 text-foreground">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent className="glass-strong border-border bg-popover">
+                      {companyTypes.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Website
+                  </label>
+                  <Input
+                    placeholder="https://company.com"
+                    value={form.website}
+                    onChange={(e) => updateField("website", e.target.value)}
+                    className="glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Street Address
+                  </label>
+                  <Input
+                    placeholder="123 Main St, Suite 100"
+                    value={form.street}
+                    onChange={(e) => updateField("street", e.target.value)}
+                    className="glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    City
+                  </label>
+                  <Input
+                    placeholder="City"
+                    value={form.city}
+                    onChange={(e) => updateField("city", e.target.value)}
+                    className="glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                      State
+                    </label>
+                    <Input
+                      placeholder="TX"
+                      value={form.state}
+                      onChange={(e) => updateField("state", e.target.value)}
+                      className="glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                      Zip
+                    </label>
+                    <Input
+                      placeholder="78701"
+                      value={form.zip}
+                      onChange={(e) => updateField("zip", e.target.value)}
+                      className="glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <Separator className="bg-border" />
+
+            {/* Account Details */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Briefcase className="h-4 w-4 text-indigo-400" />
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                  Account Details
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Status
+                  </label>
+                  <Select
+                    value={form.status}
+                    onValueChange={(v) => updateField("status", v ?? "Lead")}
+                  >
+                    <SelectTrigger className="glass border-border bg-foreground/5 text-foreground">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="glass-strong border-border bg-popover">
+                      <SelectItem value="Lead">Lead</SelectItem>
+                      <SelectItem value="Active">Active</SelectItem>
+                      <SelectItem value="Inactive">Inactive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Assigned Rep
+                  </label>
+                  <Select
+                    value={form.assignedRep}
+                    onValueChange={(v) => updateField("assignedRep", v ?? "Unassigned")}
+                  >
+                    <SelectTrigger className="glass border-border bg-foreground/5 text-foreground">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="glass-strong border-border bg-popover">
+                      {repOptions.map((rep) => (
+                        <SelectItem key={rep} value={rep}>
+                          {rep}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Source
+                  </label>
+                  <Select
+                    value={form.source}
+                    onValueChange={(v) => updateField("source", v ?? "")}
+                  >
+                    <SelectTrigger className="glass border-border bg-foreground/5 text-foreground">
+                      <SelectValue placeholder="Select source" />
+                    </SelectTrigger>
+                    <SelectContent className="glass-strong border-border bg-popover">
+                      {sourceOptions.map((src) => (
+                        <SelectItem key={src} value={src}>
+                          {src}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="sm:col-span-3">
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Notes
+                  </label>
+                  <textarea
+                    placeholder="Any relevant notes about this customer..."
+                    value={form.notes}
+                    onChange={(e) => updateField("notes", e.target.value)}
+                    rows={3}
+                    className="w-full rounded-md glass border border-border bg-foreground/5 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 resize-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <Separator className="bg-border" />
+
+            {/* Tags */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Tag className="h-4 w-4 text-indigo-400" />
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                  Tags
+                </h3>
+              </div>
+              {form.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {form.tags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="outline"
+                      className="bg-indigo-500/10 text-indigo-300 border-indigo-500/20 cursor-pointer hover:border-red-500/30 group transition-colors"
+                      onClick={() => removeTag(tag)}
+                    >
+                      {tag}
+                      <X className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-red-400" />
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Add a tag..."
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addTag(tagInput);
+                    }
+                  }}
+                  className="glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60 flex-1"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="border-border text-muted-foreground hover:text-foreground"
+                  onClick={() => addTag(tagInput)}
+                  disabled={!tagInput.trim()}
+                >
+                  Add
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {suggestedTags
+                  .filter((t) => !form.tags.includes(t))
+                  .map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="outline"
+                      className="bg-foreground/5 text-muted-foreground border-border cursor-pointer hover:bg-foreground/10 hover:text-foreground transition-colors text-xs"
+                      onClick={() => addTag(tag)}
+                    >
+                      <Plus className="h-2.5 w-2.5 mr-0.5" />
+                      {tag}
+                    </Badge>
+                  ))}
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter className="border-border bg-foreground/[0.02]">
+            <Button
+              variant="outline"
+              className="border-border text-muted-foreground hover:text-foreground"
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="bg-indigo-600 hover:bg-indigo-500 text-white"
+              onClick={handleSubmit}
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              Add Customer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
