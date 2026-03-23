@@ -253,6 +253,7 @@ export default function TerritoryPage() {
   const [mounted, setMounted] = useState(false);
   const [search, setSearch] = useState("");
   const [region, setRegion] = useState("all");
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [selectedAccount, setSelectedAccount] = useState<typeof accounts[0] | null>(null);
 
   useEffect(() => setMounted(true), []);
@@ -268,7 +269,13 @@ export default function TerritoryPage() {
   const filtered = accounts.filter((a) => {
     const matchesSearch = a.company.toLowerCase().includes(search.toLowerCase());
     const matchesRegion = region === "all" || a.status.toLowerCase().replace(" ", "-") === region;
-    return matchesSearch && matchesRegion;
+    const matchesStatFilter =
+      !statusFilter ||
+      (statusFilter === "Active" && a.status === "Active") ||
+      (statusFilter === "Prospect" && a.status === "Prospect") ||
+      statusFilter === "Total Accounts" ||
+      statusFilter === "Revenue MTD";
+    return matchesSearch && matchesRegion && matchesStatFilter;
   });
 
   const totalRevenue = (account: typeof accounts[0]) => {
@@ -299,7 +306,11 @@ export default function TerritoryPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.label} className="glass border-border p-5">
+          <Card
+            key={stat.label}
+            className={`glass border-border p-5 cursor-pointer transition-all duration-200 hover:bg-foreground/[0.05] hover:border-indigo-500/30 ${statusFilter === stat.label ? "ring-2 ring-indigo-500/50 border-indigo-500/40" : ""}`}
+            onClick={() => setStatusFilter(statusFilter === stat.label ? null : stat.label)}
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</p>
@@ -367,7 +378,7 @@ export default function TerritoryPage() {
             onClick={() => setSelectedAccount(null)}
           />
           {/* Panel */}
-          <div className="relative z-10 w-full max-w-md h-full overflow-y-auto border-l border-border bg-[#0c1120]/95 backdrop-blur-xl shadow-2xl animate-in slide-in-from-right duration-300">
+          <div className="relative z-10 w-full max-w-md h-full overflow-y-auto border-l border-border bg-background/95 backdrop-blur-xl shadow-2xl animate-in slide-in-from-right duration-300">
             {/* Close Button */}
             <button
               onClick={() => setSelectedAccount(null)}

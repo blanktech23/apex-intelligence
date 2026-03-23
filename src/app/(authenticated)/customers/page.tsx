@@ -289,7 +289,7 @@ export default function CustomersPage() {
             Manage your clients and track relationships
           </p>
         </div>
-        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => toast.success("Customer created successfully")}>
+        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => toast.success("Customer added successfully!")}>
           <Plus className="h-4 w-4" />
           Add Customer
         </Button>

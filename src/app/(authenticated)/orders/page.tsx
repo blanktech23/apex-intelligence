@@ -94,7 +94,7 @@ export default function OrdersPage() {
           <h1 className="text-3xl font-bold text-gradient">Orders</h1>
           <p className="mt-1 text-sm text-muted-foreground">Track and manage your order queue</p>
         </div>
-        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => toast.success("Order created successfully")}>
+        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-white gap-2" onClick={() => toast.success("Order created successfully!")}>
           <Plus className="h-4 w-4" />
           New Order
         </Button>

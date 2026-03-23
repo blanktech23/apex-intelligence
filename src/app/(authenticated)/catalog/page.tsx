@@ -288,7 +288,7 @@ export default function CatalogPage() {
             onClick={() => setSelectedProduct(null)}
           />
           {/* Panel */}
-          <div className="relative z-10 w-full max-w-md h-full overflow-y-auto border-l border-border bg-[#0c1120]/95 backdrop-blur-xl shadow-2xl animate-in slide-in-from-right duration-300">
+          <div className="relative z-10 w-full max-w-md h-full overflow-y-auto border-l border-border bg-background/95 backdrop-blur-xl shadow-2xl animate-in slide-in-from-right duration-300">
             {/* Close Button */}
             <button
               onClick={() => setSelectedProduct(null)}
