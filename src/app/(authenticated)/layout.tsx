@@ -21,8 +21,10 @@ export default function AuthenticatedLayout({
     <RoleProvider>
       <TourProvider>
         <div className="flex h-dvh flex-col overflow-hidden bg-background">
+          {/* Banners hidden for demo — uncomment when backend is wired:
           <DegradedBanner />
           <AiUsageBanner percent={68} />
+          */}
           <div className="flex flex-1 overflow-hidden">
             <Sidebar />
             <div className="flex flex-1 flex-col overflow-hidden">
