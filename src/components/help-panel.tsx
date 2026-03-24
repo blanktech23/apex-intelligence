@@ -26,6 +26,17 @@ import {
 import { cn } from "@/lib/utils";
 import { useRole } from "@/lib/role-context";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -853,6 +864,20 @@ export function HelpPanel() {
   const pathname = usePathname();
   const router = useRouter();
   const canScheduleCall = role === "owner" || role === "admin";
+  const [scheduleOpen, setScheduleOpen] = useState(false);
+  const [scheduleName, setScheduleName] = useState("");
+  const [scheduleEmail, setScheduleEmail] = useState("");
+  const [scheduleDate, setScheduleDate] = useState("");
+  const [scheduleTopic, setScheduleTopic] = useState("");
+
+  const handleScheduleSubmit = () => {
+    setScheduleOpen(false);
+    setScheduleName("");
+    setScheduleEmail("");
+    setScheduleDate("");
+    setScheduleTopic("");
+    toast.success("Call scheduled! We'll send a confirmation email.");
+  };
 
   const panelRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -1217,10 +1242,7 @@ export function HelpPanel() {
                 </a>
                 {canScheduleCall && (
                   <button
-                    onClick={() => {
-                      toast.success("Opening scheduling page...");
-                      handleClose();
-                    }}
+                    onClick={() => setScheduleOpen(true)}
                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary/10 px-4 py-2 text-[13px] font-medium text-primary transition-colors hover:bg-primary/20"
                   >
                     <Calendar className="h-3.5 w-3.5" />
@@ -1375,6 +1397,76 @@ export function HelpPanel() {
           </div>
         </div>
       </div>
+
+      {/* Schedule a Call Dialog */}
+      <Dialog open={scheduleOpen} onOpenChange={setScheduleOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Schedule a Call</DialogTitle>
+            <DialogDescription>
+              Book a time with our team. We&apos;ll send a confirmation to your email.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 py-2">
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Name</label>
+              <Input
+                value={scheduleName}
+                onChange={(e) => setScheduleName(e.target.value)}
+                placeholder="Your name"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Email</label>
+              <Input
+                type="email"
+                value={scheduleEmail}
+                onChange={(e) => setScheduleEmail(e.target.value)}
+                placeholder="you@company.com"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Preferred Date</label>
+              <Input
+                type="date"
+                value={scheduleDate}
+                onChange={(e) => setScheduleDate(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Topic</label>
+              <select
+                value={scheduleTopic}
+                onChange={(e) => setScheduleTopic(e.target.value)}
+                className="flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              >
+                <option value="">Select a topic...</option>
+                <option value="onboarding">Onboarding & Setup</option>
+                <option value="agents">Agent Configuration</option>
+                <option value="integrations">Integrations</option>
+                <option value="billing">Billing & Plans</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose
+              render={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 rounded-lg text-xs"
+                />
+              }
+            >
+              Cancel
+            </DialogClose>
+            <Button size="sm" className="h-8 rounded-lg text-xs" onClick={handleScheduleSubmit}>
+              Schedule
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useMemo } from "react"
 
+import { toast } from "sonner"
 import type { ChatMessage } from "@/lib/chat-types"
 import { MessageBubble } from "@/components/chat/message-bubble"
 import { ChatComposer } from "@/components/chat/chat-composer"
@@ -158,6 +159,9 @@ export function MessageThread({
           channelName={channelName}
           disabled={disabled}
           placeholder={`Message #${channelName}`}
+          onSend={(msg) => {
+            toast.success(`Message sent to #${channelName}`)
+          }}
         />
       </div>
     </div>

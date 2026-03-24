@@ -802,7 +802,15 @@ export default function MeetingsPage() {
                 onUseTemplate={useTemplate}
               />
             ))}
-            <button className="glass glass-hover flex w-full items-center justify-center gap-2 rounded-xl py-4 text-sm font-medium text-muted-foreground transition-all hover:text-foreground">
+            <button
+              className="glass glass-hover flex w-full items-center justify-center gap-2 rounded-xl py-4 text-sm font-medium text-muted-foreground transition-all hover:text-foreground"
+              onClick={() => {
+                setNewMeetingName('');
+                setSelectedTemplateName('Custom');
+                setScheduleOpen(true);
+                toast.info('Creating custom meeting — fill in the details');
+              }}
+            >
               <Plus className="h-4 w-4" />
               Create Custom Template
             </button>

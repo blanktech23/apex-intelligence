@@ -1404,7 +1404,10 @@ export default function IssuesPage() {
                       <h5 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
                         Related To
                       </h5>
-                      <div className="flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors">
+                      <div
+                        className="flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors"
+                        onClick={() => toast.info(`Navigating to: ${currentSelected.relatedTo}`)}
+                      >
                         <Link2 className="h-3.5 w-3.5" />
                         {currentSelected.relatedTo}
                       </div>

@@ -148,7 +148,15 @@ const priorityOptions = ["All", "Critical", "High", "Medium", "Low"];
 
 const statusOptions = ["All", "Open", "In Progress", "Resolved"];
 
-type OpenDropdown = "agent" | "priority" | "status" | null;
+type OpenDropdown = "agent" | "priority" | "status" | "dateRange" | null;
+
+const dateRangeOptions = [
+  { label: "Today", value: "today" },
+  { label: "Last 7 days", value: "last7" },
+  { label: "Last 30 days", value: "last30" },
+  { label: "Last 90 days", value: "last90" },
+  { label: "All time", value: "all" },
+];
 
 export default function EscalationsPage() {
   const router = useRouter();
@@ -159,6 +167,7 @@ export default function EscalationsPage() {
   const [selectedAgent, setSelectedAgent] = useState("All");
   const [selectedPriority, setSelectedPriority] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const [selectedDateRange, setSelectedDateRange] = useState("all");
   const [openDropdown, setOpenDropdown] = useState<OpenDropdown>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -436,11 +445,46 @@ export default function EscalationsPage() {
         </div>
 
         {/* Date range */}
-        <button className="glass glass-hover flex h-9 items-center gap-2 rounded-lg px-3 text-sm text-muted-foreground transition-all hover:text-foreground">
-          <Calendar className="h-3.5 w-3.5" />
-          <span>Date range</span>
-          <ChevronDown className="h-3 w-3 opacity-60" />
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => toggleDropdown("dateRange")}
+            className={`glass glass-hover flex h-9 items-center gap-2 rounded-lg px-3 text-sm transition-all ${
+              selectedDateRange !== "all"
+                ? "text-primary ring-1 ring-primary/30"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Calendar className="h-3.5 w-3.5" />
+            <span>
+              {selectedDateRange === "all"
+                ? "Date range"
+                : dateRangeOptions.find((o) => o.value === selectedDateRange)?.label}
+            </span>
+            <ChevronDown
+              className={`h-3 w-3 opacity-60 transition-transform ${openDropdown === "dateRange" ? "rotate-180" : ""}`}
+            />
+          </button>
+          {openDropdown === "dateRange" && (
+            <div className="glass absolute left-0 top-full z-50 mt-1.5 min-w-[180px] overflow-hidden rounded-lg border border-border/50 py-1 shadow-xl">
+              {dateRangeOptions.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => {
+                    setSelectedDateRange(option.value);
+                    setOpenDropdown(null);
+                  }}
+                  className={`flex w-full items-center px-3 py-2 text-left text-sm transition-colors hover:bg-muted/40 ${
+                    selectedDateRange === option.value
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Desktop table */}

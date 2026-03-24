@@ -1412,7 +1412,15 @@ export default function FitCheckPage() {
               const rpws = deptMembers.filter((m) => m.fitStatus === 'right-wrong').length;
               const wp = deptMembers.filter((m) => m.fitStatus === 'wrong').length;
               return (
-                <div key={dept} className="glass glass-hover rounded-xl p-4 cursor-pointer transition-all duration-300">
+                <div
+                  key={dept}
+                  className="glass glass-hover rounded-xl p-4 cursor-pointer transition-all duration-300"
+                  onClick={() => {
+                    setTeamFilter(dept);
+                    setActiveTab('analyzer');
+                    toast.success(`Filtered to ${dept} team`);
+                  }}
+                >
                   <h4 className="text-sm font-semibold text-foreground">{dept}</h4>
                   <p className="mt-0.5 text-[10px] text-muted-foreground">{deptMembers.length} members</p>
                   <div className="mt-3 flex items-center gap-3">

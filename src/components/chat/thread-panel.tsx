@@ -3,6 +3,7 @@
 import { useEffect, useCallback, useRef } from "react"
 import { ArrowLeft, X } from "lucide-react"
 
+import { toast } from "sonner"
 import type { ChatMessage } from "@/lib/chat-types"
 import { MessageBubble } from "@/components/chat/message-bubble"
 import { ChatComposer } from "@/components/chat/chat-composer"
@@ -127,6 +128,9 @@ export function ThreadPanel({
             channelName={channelName}
             placeholder="Reply..."
             variant="compact"
+            onSend={(msg) => {
+              toast.success("Reply sent to thread")
+            }}
           />
         </div>
       </aside>

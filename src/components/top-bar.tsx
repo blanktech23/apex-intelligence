@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { NotificationPanel } from "@/components/notification-panel";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useRole } from "@/lib/role-context";
+import { toast } from "sonner";
 
 const routeLabels: Record<string, string> = {
   dashboard: "Dashboard",
@@ -171,7 +172,7 @@ export function TopBar() {
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
-            <Link href="/login">
+            <Link href="/login" onClick={() => toast.success("Signed out")}>
               <DropdownMenuItem className="gap-2 px-2 py-1.5 text-red-400 focus:text-red-400">
                 <LogOut className="h-4 w-4" />
                 <span>Sign out</span>

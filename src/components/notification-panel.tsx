@@ -1,12 +1,16 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import {
   CheckCircle2,
   AlertTriangle,
   XCircle,
   Info,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface Notification {
   id: string;
@@ -17,7 +21,7 @@ interface Notification {
   unread: boolean;
 }
 
-const mockNotifications: Notification[] = [
+const initialNotifications: Notification[] = [
   {
     id: "1",
     type: "success",
@@ -88,7 +92,26 @@ interface NotificationPanelProps {
 }
 
 export function NotificationPanel({ open, onClose }: NotificationPanelProps) {
+  const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+
   if (!open) return null;
+
+  const handleMarkAllRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
+    toast.success("All marked as read");
+  };
+
+  const handleMarkRead = (id: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, unread: false } : n))
+    );
+    toast.success("Notification marked as read");
+  };
+
+  const handleDismiss = (id: string) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    toast.success("Notification dismissed");
+  };
 
   return (
     <>
@@ -101,25 +124,46 @@ export function NotificationPanel({ open, onClose }: NotificationPanelProps) {
           {/* Header */}
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
-            <button className="text-xs font-medium text-primary transition-colors hover:text-primary/80">
+            <button
+              onClick={handleMarkAllRead}
+              className="text-xs font-medium text-primary transition-colors hover:text-primary/80"
+            >
               Mark all as read
             </button>
           </div>
 
           {/* Notification list */}
           <div className="max-h-[400px] overflow-y-auto">
-            {mockNotifications.map((notification) => {
+            {notifications.length === 0 && (
+              <div className="px-4 py-8 text-center text-xs text-muted-foreground">
+                No notifications
+              </div>
+            )}
+            {notifications.map((notification) => {
               const Icon = iconMap[notification.type];
               const colors = colorMap[notification.type];
 
               return (
                 <div
                   key={notification.id}
+                  onClick={() => handleMarkRead(notification.id)}
                   className={cn(
-                    "flex gap-3 border-b border-border/50 px-4 py-3 transition-colors hover:bg-muted/50",
+                    "group relative flex cursor-pointer gap-3 border-b border-border/50 px-4 py-3 transition-colors hover:bg-muted/50",
                     notification.unread && "bg-muted/30"
                   )}
                 >
+                  {/* Dismiss button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDismiss(notification.id);
+                    }}
+                    className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded text-muted-foreground/40 opacity-0 transition-opacity hover:bg-muted hover:text-foreground group-hover:opacity-100"
+                    aria-label="Dismiss notification"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+
                   {/* Icon */}
                   <div
                     className={cn(
@@ -159,9 +203,13 @@ export function NotificationPanel({ open, onClose }: NotificationPanelProps) {
 
           {/* Footer */}
           <div className="border-t border-border px-4 py-2.5">
-            <button className="w-full text-center text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">
+            <Link
+              href="/notifications"
+              onClick={onClose}
+              className="block w-full text-center text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
               View all notifications
-            </button>
+            </Link>
           </div>
         </div>
       </div>

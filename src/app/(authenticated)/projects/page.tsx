@@ -32,6 +32,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 const statusConfig: Record<
@@ -177,12 +185,75 @@ const projects = [
   },
 ];
 
+const clientOptions = [
+  "Rivera General Contracting",
+  "Summit Builders LLC",
+  "Harbor View Construction",
+  "Brooks Design-Build",
+  "Whitfield Custom Homes",
+  "Lone Star Renovations",
+  "Parkway Home Design",
+  "Castillo Landscape Design",
+];
+
+interface ProjectForm {
+  name: string;
+  client: string;
+  status: string;
+  budget: string;
+  dueDate: string;
+  description: string;
+}
+
+const defaultForm = (): ProjectForm => ({
+  name: "",
+  client: "",
+  status: "Planning",
+  budget: "",
+  dueDate: "",
+  description: "",
+});
+
 export default function ProjectsPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [allProjects, setAllProjects] = useState(projects);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [form, setForm] = useState<ProjectForm>(defaultForm());
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
 
-  const filtered = projects.filter((p) => {
+  const handleCreateProject = () => {
+    const newErrors: Record<string, boolean> = {};
+    if (!form.name.trim()) newErrors.name = true;
+    if (!form.client) newErrors.client = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    const nextNum = allProjects.length + 1;
+    const newProject = {
+      id: `proj-${String(nextNum).padStart(3, "0")}`,
+      name: form.name,
+      client: form.client,
+      status: form.status,
+      progress: 0,
+      budget: form.budget ? parseFloat(form.budget) : 0,
+      dueDate: form.dueDate || "2026-08-01",
+      team: [{ initials: "JM", color: "bg-indigo-500/30 text-indigo-300" }],
+      aiManaged: false,
+    };
+
+    setAllProjects((prev) => [newProject, ...prev]);
+    setDialogOpen(false);
+    setForm(defaultForm());
+    setErrors({});
+    toast.success(`Project "${newProject.name}" created`);
+  };
+
+  const filtered = allProjects.filter((p) => {
     const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.client.toLowerCase().includes(search.toLowerCase());
@@ -202,7 +273,7 @@ export default function ProjectsPage() {
             Track and manage construction projects
           </p>
         </div>
-        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-primary-foreground gap-2" onClick={() => toast.success("Project created successfully")}>
+        <Button className="glow-primary bg-indigo-600 hover:bg-indigo-500 text-primary-foreground gap-2" onClick={() => setDialogOpen(true)}>
           <Plus className="h-4 w-4" />
           New Project
         </Button>
@@ -373,6 +444,111 @@ export default function ProjectsPage() {
         itemsPerPage={25}
         onPageChange={setCurrentPage}
       />
+
+      {/* New Project Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-lg glass-strong border-border bg-background" showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <div className="rounded-lg bg-indigo-500/10 p-2">
+                <FolderKanban className="h-4 w-4 text-indigo-400" />
+              </div>
+              New Project
+            </DialogTitle>
+            <DialogDescription>
+              Create a new project by filling in the details below.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                Project Name <span className="text-red-400">*</span>
+              </label>
+              <Input
+                placeholder="e.g. Riverside Kitchen Remodel"
+                value={form.name}
+                onChange={(e) => { setForm((p) => ({ ...p, name: e.target.value })); setErrors((p) => ({ ...p, name: false })); }}
+                className={`glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60 ${errors.name ? "border-red-500/50 ring-1 ring-red-500/30" : ""}`}
+              />
+              {errors.name && <p className="text-xs text-red-400 mt-1">Required</p>}
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                Client <span className="text-red-400">*</span>
+              </label>
+              <Select value={form.client} onValueChange={(v) => { setForm((p) => ({ ...p, client: v ?? "" })); setErrors((p) => ({ ...p, client: false })); }}>
+                <SelectTrigger className={`w-full glass border-border bg-foreground/5 text-foreground ${errors.client ? "border-red-500/50 ring-1 ring-red-500/30" : ""}`}>
+                  <SelectValue placeholder="Select client" />
+                </SelectTrigger>
+                <SelectContent className="glass-strong border-border bg-popover">
+                  {clientOptions.map((c) => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.client && <p className="text-xs text-red-400 mt-1">Required</p>}
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Status</label>
+                <Select value={form.status} onValueChange={(v) => v && setForm((p) => ({ ...p, status: v }))}>
+                  <SelectTrigger className="w-full glass border-border bg-foreground/5 text-foreground">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="glass-strong border-border bg-popover">
+                    <SelectItem value="Planning">Planning</SelectItem>
+                    <SelectItem value="In Progress">In Progress</SelectItem>
+                    <SelectItem value="On Hold">On Hold</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">Budget ($)</label>
+                <Input
+                  type="number"
+                  placeholder="e.g. 75000"
+                  value={form.budget}
+                  onChange={(e) => setForm((p) => ({ ...p, budget: e.target.value }))}
+                  className="glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Due Date</label>
+              <Input
+                type="date"
+                value={form.dueDate}
+                onChange={(e) => setForm((p) => ({ ...p, dueDate: e.target.value }))}
+                className="glass border-border bg-foreground/5 text-foreground w-48"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">Description</label>
+              <textarea
+                placeholder="Brief project description..."
+                value={form.description}
+                onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                rows={2}
+                className="w-full rounded-lg px-2.5 py-1.5 text-sm resize-none glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60"
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10" onClick={() => { setDialogOpen(false); setForm(defaultForm()); setErrors({}); }}>
+              Cancel
+            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white" onClick={handleCreateProject}>
+              Create Project
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
