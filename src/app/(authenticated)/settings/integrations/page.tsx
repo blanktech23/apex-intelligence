@@ -101,10 +101,21 @@ const INITIAL_INTEGRATIONS: Integration[] = [
   },
   {
     name: "Slack",
-    description: "Team messaging, notifications, and alert channels",
+    description: "Mirror project channels and DMs in Kiptra. Bidirectional message sync.",
     icon: MessageSquare,
     iconBg: "bg-purple-500/15",
-    status: "not_connected",
+    status: "connected",
+    lastSync: "2 min ago",
+    health: "healthy",
+  },
+  {
+    name: "Microsoft Teams",
+    description: "Mirror Teams channels in Kiptra. Requires admin consent.",
+    icon: MessageSquare,
+    iconBg: "bg-indigo-500/15",
+    status: "connected",
+    lastSync: "5 min ago",
+    health: "healthy",
   },
   {
     name: "Zapier",

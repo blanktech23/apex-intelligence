@@ -50,6 +50,7 @@ import {
   BookUser,
   Kanban,
   Activity,
+  MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRole } from "@/lib/role-context";
@@ -83,6 +84,7 @@ const NAV_ITEM_REGISTRY: Record<string, { icon: React.ComponentType<{ className?
   Dashboard:    { icon: LayoutDashboard, href: "/dashboard", dataTour: "dashboard-link" },
   Agents:       { icon: Bot, href: "/dashboard/agents", dataTour: "agents-link" },
   CRM:          { icon: BookUser, href: "/crm", dataTour: "crm-link" },
+  Chat:         { icon: MessageSquare, href: "/chat", badge: 5, dataTour: "chat-link" },
   Projects:     { icon: FolderKanban, href: "/projects", dataTour: "projects-link" },
   Escalations:  { icon: AlertTriangle, href: "/escalations", badge: 3, dataTour: "escalations-link" },
   Approvals:    { icon: CheckSquare, href: "/approvals", badge: 12, dataTour: "approvals-link" },
