@@ -155,7 +155,7 @@ const statusConfig: Record<
 > = {
   connected: {
     badge: "bg-emerald-400/10",
-    badgeText: "text-emerald-400",
+    badgeText: "text-emerald-600 dark:text-emerald-400",
     icon: CheckCircle2,
     label: "Connected",
     borderAccent: "border-l-emerald-400/50",
@@ -176,17 +176,17 @@ const healthConfig: Record<
   healthy: {
     dot: "bg-emerald-400",
     label: "Healthy",
-    textColor: "text-emerald-400",
+    textColor: "text-emerald-600 dark:text-emerald-400",
   },
   sync_delayed: {
     dot: "bg-amber-400",
     label: "Sync delayed",
-    textColor: "text-amber-400",
+    textColor: "text-amber-600 dark:text-amber-400",
   },
   reconnection_required: {
     dot: "bg-red-400",
     label: "Reconnection required",
-    textColor: "text-red-400",
+    textColor: "text-red-600 dark:text-red-400",
   },
 };
 
@@ -208,9 +208,9 @@ const syncLogs = [
 ];
 
 const syncStatusStyles = {
-  success: { bg: "bg-emerald-400/10", text: "text-emerald-400", label: "Success" },
-  warning: { bg: "bg-amber-400/10", text: "text-amber-400", label: "Warning" },
-  error: { bg: "bg-red-400/10", text: "text-red-400", label: "Error" },
+  success: { bg: "bg-emerald-400/10", text: "text-emerald-600 dark:text-emerald-400", label: "Success" },
+  warning: { bg: "bg-amber-400/10", text: "text-amber-600 dark:text-amber-400", label: "Warning" },
+  error: { bg: "bg-red-400/10", text: "text-red-600 dark:text-red-400", label: "Error" },
 };
 
 /* ------------------------------------------------------------------ */
@@ -330,7 +330,7 @@ function AgentPills({
   if (!isConnected && agents.length > 0) {
     return (
       <div className="mt-3">
-        <div className="flex items-center gap-1.5 text-amber-400">
+        <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
           <AlertCircle className="h-3 w-3 shrink-0" />
           <span className="text-[10px] font-semibold">
             {agents.length} agent{agents.length !== 1 ? "s" : ""} need{agents.length === 1 ? "s" : ""} this integration
@@ -566,8 +566,8 @@ function OAuthConnectModal({
               </div>
 
               <div className="flex items-start gap-2 rounded-lg bg-emerald-400/5 border border-emerald-400/10 px-3 py-2.5">
-                <Shield className="h-3.5 w-3.5 text-emerald-400 mt-0.5 shrink-0" />
-                <p className="text-[11px] leading-relaxed text-emerald-400/80">
+                <Shield className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                <p className="text-[11px] leading-relaxed text-emerald-600 dark:text-emerald-400/80">
                   Your data is encrypted with AES-256-GCM and never shared with
                   third parties.
                 </p>
@@ -632,11 +632,11 @@ function OAuthConnectModal({
               <>
                 <div className="relative">
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-400/15">
-                    <Check className="h-7 w-7 text-emerald-400" />
+                    <Check className="h-7 w-7 text-emerald-600 dark:text-emerald-400" />
                   </div>
                 </div>
                 <div className="text-center space-y-1">
-                  <p className="text-sm font-semibold text-emerald-400">
+                  <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                     Authorization successful
                   </p>
                   <p className="text-xs text-muted-foreground">
@@ -699,7 +699,7 @@ function OAuthConnectModal({
                   >
                     {isCompleted ? (
                       <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-400/20">
-                        <Check className="h-2.5 w-2.5 text-emerald-400" />
+                        <Check className="h-2.5 w-2.5 text-emerald-600 dark:text-emerald-400" />
                       </div>
                     ) : isActive ? (
                       <Loader2 className="h-4 w-4 shrink-0 text-primary animate-spin" />
@@ -709,7 +709,7 @@ function OAuthConnectModal({
                     <span
                       className={
                         isCompleted
-                          ? "text-emerald-400/90 font-medium"
+                          ? "text-emerald-600 dark:text-emerald-400/90 font-medium"
                           : isActive
                           ? "text-foreground"
                           : "text-muted-foreground"
@@ -718,7 +718,7 @@ function OAuthConnectModal({
                       {isCompleted ? item.replace("...", "") : item}
                     </span>
                     {isCompleted && (
-                      <CheckCircle2 className="ml-auto h-3 w-3 text-emerald-400/60" />
+                      <CheckCircle2 className="ml-auto h-3 w-3 text-emerald-600 dark:text-emerald-400/60" />
                     )}
                   </div>
                 );
@@ -861,7 +861,7 @@ export default function IntegrationsPage() {
 
             <div className="flex items-center gap-3 mb-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/15">
-                <AlertCircle className="h-5 w-5 text-red-400" />
+                <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
               </div>
               <div>
                 <h3 className="text-base font-semibold text-foreground">
@@ -923,7 +923,7 @@ export default function IntegrationsPage() {
             <div className="space-y-4 py-2">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/15">
-                  <AlertCircle className="h-5 w-5 text-red-400" />
+                  <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-foreground">Disconnect {configTarget?.name}?</p>
@@ -1056,7 +1056,7 @@ export default function IntegrationsPage() {
                     variant="outline"
                     size="sm"
                     onClick={() => setConfigDisconnectConfirm(true)}
-                    className="h-8 text-xs text-red-400 border-red-500/20 hover:bg-red-500/10 hover:text-red-400"
+                    className="h-8 text-xs text-red-600 dark:text-red-400 border-red-500/20 hover:bg-red-500/10 hover:text-red-600 dark:text-red-400"
                   >
                     Disconnect
                   </Button>
@@ -1166,12 +1166,12 @@ export default function IntegrationsPage() {
               {isConnected && testResults[integration.name] && (
                 <div className="mt-3">
                   {testResults[integration.name] === "ok" ? (
-                    <div className="flex items-center gap-1.5 rounded-lg bg-emerald-400/10 px-3 py-1.5 text-xs font-medium text-emerald-400">
+                    <div className="flex items-center gap-1.5 rounded-lg bg-emerald-400/10 px-3 py-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
                       <CheckCircle2 className="h-3 w-3" />
                       Connection OK
                     </div>
                   ) : (
-                    <div className="flex items-center gap-1.5 rounded-lg bg-red-400/10 px-3 py-1.5 text-xs font-medium text-red-400">
+                    <div className="flex items-center gap-1.5 rounded-lg bg-red-400/10 px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400">
                       <XCircle className="h-3 w-3" />
                       Connection failed
                     </div>
@@ -1233,7 +1233,7 @@ export default function IntegrationsPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => setDisconnectModal(integration.name)}
-                        className="h-7 gap-1.5 rounded-md border-red-500/20 px-2.5 text-xs font-medium text-red-400/70 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30"
+                        className="h-7 gap-1.5 rounded-md border-red-500/20 px-2.5 text-xs font-medium text-red-600 dark:text-red-400/70 hover:bg-red-500/10 hover:text-red-600 dark:text-red-400 hover:border-red-500/30"
                       >
                         Disconnect
                       </Button>

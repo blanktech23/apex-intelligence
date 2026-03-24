@@ -75,10 +75,10 @@ interface Integration {
 }
 
 const integrations: Integration[] = [
-  { name: "JobTread", description: "Construction project management", icon: HardDrive, iconBg: "bg-orange-500/15", iconColor: "text-orange-400", scopes: ["Projects", "Estimates", "Contacts"] },
-  { name: "QuickBooks", description: "Accounting & financial reporting", icon: PlugZap, iconBg: "bg-emerald-500/15", iconColor: "text-emerald-400", scopes: ["Reports", "Invoices", "Payments"] },
-  { name: "Google Calendar", description: "Scheduling & availability", icon: Calendar, iconBg: "bg-blue-500/15", iconColor: "text-blue-400", scopes: ["Events", "Free/Busy"] },
-  { name: "Gmail", description: "Email communication", icon: Mail, iconBg: "bg-red-500/15", iconColor: "text-red-400", scopes: ["Drafts", "Send"] },
+  { name: "JobTread", description: "Construction project management", icon: HardDrive, iconBg: "bg-orange-500/15", iconColor: "text-orange-600 dark:text-orange-400", scopes: ["Projects", "Estimates", "Contacts"] },
+  { name: "QuickBooks", description: "Accounting & financial reporting", icon: PlugZap, iconBg: "bg-emerald-500/15", iconColor: "text-emerald-600 dark:text-emerald-400", scopes: ["Reports", "Invoices", "Payments"] },
+  { name: "Google Calendar", description: "Scheduling & availability", icon: Calendar, iconBg: "bg-blue-500/15", iconColor: "text-blue-600 dark:text-blue-400", scopes: ["Events", "Free/Busy"] },
+  { name: "Gmail", description: "Email communication", icon: Mail, iconBg: "bg-red-500/15", iconColor: "text-red-600 dark:text-red-400", scopes: ["Drafts", "Send"] },
 ];
 
 interface Agent {
@@ -160,9 +160,9 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
               <div
                 className={`flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-full border-2 text-xs sm:text-sm font-bold transition-all duration-300 ${
                   isCompleted
-                    ? "border-green-500 bg-green-500/20 text-green-400"
+                    ? "border-green-500 bg-green-500/20 text-green-600 dark:text-green-400"
                     : isActive
-                      ? "border-indigo-500 bg-indigo-500/20 text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.3)]"
+                      ? "border-indigo-500 bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.3)]"
                       : "border-border bg-muted/30 text-muted-foreground"
                 }`}
               >
@@ -435,8 +435,8 @@ function IntegrationsStep({
 
                   {status === "connecting" && (
                     <div className="flex items-center gap-2 pr-1">
-                      <Loader2 className="size-4 animate-spin text-indigo-400" />
-                      <span className="text-xs font-medium text-indigo-400">
+                      <Loader2 className="size-4 animate-spin text-indigo-600 dark:text-indigo-400" />
+                      <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
                         Connecting...
                       </span>
                     </div>
@@ -445,14 +445,14 @@ function IntegrationsStep({
                   {status === "connected" && (
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle2 className="size-4 text-green-400" />
-                        <span className="text-xs font-medium text-green-400">
+                        <CheckCircle2 className="size-4 text-green-600 dark:text-green-400" />
+                        <span className="text-xs font-medium text-green-600 dark:text-green-400">
                           Connected
                         </span>
                       </div>
                       <button
                         onClick={() => onDisconnect(integration.name)}
-                        className="text-[11px] text-muted-foreground/60 hover:text-red-400 transition-colors"
+                        className="text-[11px] text-muted-foreground/60 hover:text-red-600 dark:text-red-400 transition-colors"
                       >
                         Disconnect
                       </button>
@@ -514,7 +514,7 @@ function AgentsStep({
             >
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-muted/50 p-2">
-                  <Icon className={`size-5 ${isEnabled ? "text-indigo-400" : "text-muted-foreground"}`} />
+                  <Icon className={`size-5 ${isEnabled ? "text-indigo-600 dark:text-indigo-400" : "text-muted-foreground"}`} />
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-foreground">{agent.name}</h3>
@@ -605,7 +605,7 @@ function InviteTeamStep({
               variant="ghost"
               size="sm"
               onClick={() => onRemove(index)}
-              className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:bg-red-500/10 hover:text-red-400"
+              className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:bg-red-500/10 hover:text-red-600 dark:text-red-400"
             >
               <X className="size-4" />
             </Button>
@@ -661,7 +661,7 @@ function ReviewStep({
         <div className="glass rounded-xl p-4">
           <div className="flex items-center gap-2">
             <div className="rounded-lg bg-indigo-500/10 p-1.5">
-              <Bot className="size-4 text-indigo-400" />
+              <Bot className="size-4 text-indigo-600 dark:text-indigo-400" />
             </div>
             <span className="text-sm font-medium text-foreground">Agents</span>
           </div>
@@ -673,7 +673,7 @@ function ReviewStep({
         <div className="glass rounded-xl p-4">
           <div className="flex items-center gap-2">
             <div className="rounded-lg bg-green-500/10 p-1.5">
-              <Plug className="size-4 text-green-400" />
+              <Plug className="size-4 text-green-600 dark:text-green-400" />
             </div>
             <span className="text-sm font-medium text-foreground">Integrations</span>
           </div>
@@ -685,7 +685,7 @@ function ReviewStep({
         <div className="glass rounded-xl p-4">
           <div className="flex items-center gap-2">
             <div className="rounded-lg bg-amber-500/10 p-1.5">
-              <Users className="size-4 text-amber-400" />
+              <Users className="size-4 text-amber-600 dark:text-amber-400" />
             </div>
             <span className="text-sm font-medium text-foreground">Team</span>
           </div>
@@ -707,7 +707,7 @@ function ReviewStep({
                 key={agent.name}
                 className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-1.5"
               >
-                <Icon className="size-3.5 text-indigo-400" />
+                <Icon className="size-3.5 text-indigo-600 dark:text-indigo-400" />
                 <span className="text-xs font-medium text-foreground">{agent.name}</span>
               </div>
             );
@@ -742,7 +742,7 @@ function ReviewStep({
                     <span className="text-xs font-medium text-foreground">
                       {integration.name}
                     </span>
-                    <CheckCircle2 className="size-3 text-green-400" />
+                    <CheckCircle2 className="size-3 text-green-600 dark:text-green-400" />
                   </div>
                 );
               })}

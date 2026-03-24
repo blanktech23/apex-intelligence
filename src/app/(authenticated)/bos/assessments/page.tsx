@@ -96,7 +96,7 @@ const baselineCategories: BaselineCategory[] = [
     id: 'vision',
     name: 'Vision',
     icon: Eye,
-    iconColor: 'text-violet-400',
+    iconColor: 'text-violet-600 dark:text-violet-400',
     iconBg: 'bg-violet-500/10',
     previousScore: 3.6,
     questions: [
@@ -111,7 +111,7 @@ const baselineCategories: BaselineCategory[] = [
     id: 'people',
     name: 'People',
     icon: Users,
-    iconColor: 'text-blue-400',
+    iconColor: 'text-blue-600 dark:text-blue-400',
     iconBg: 'bg-blue-500/10',
     previousScore: 3.4,
     questions: [
@@ -126,7 +126,7 @@ const baselineCategories: BaselineCategory[] = [
     id: 'data',
     name: 'Data',
     icon: BarChart3,
-    iconColor: 'text-cyan-400',
+    iconColor: 'text-cyan-600 dark:text-cyan-400',
     iconBg: 'bg-cyan-500/10',
     previousScore: 3.0,
     questions: [
@@ -141,7 +141,7 @@ const baselineCategories: BaselineCategory[] = [
     id: 'process',
     name: 'Process',
     icon: Settings,
-    iconColor: 'text-orange-400',
+    iconColor: 'text-orange-600 dark:text-orange-400',
     iconBg: 'bg-orange-500/10',
     previousScore: 2.8,
     questions: [
@@ -156,7 +156,7 @@ const baselineCategories: BaselineCategory[] = [
     id: 'traction',
     name: 'Traction',
     icon: Target,
-    iconColor: 'text-green-400',
+    iconColor: 'text-green-600 dark:text-green-400',
     iconBg: 'bg-green-500/10',
     previousScore: 3.8,
     questions: [
@@ -171,7 +171,7 @@ const baselineCategories: BaselineCategory[] = [
     id: 'issues',
     name: 'Issues',
     icon: Zap,
-    iconColor: 'text-amber-400',
+    iconColor: 'text-amber-600 dark:text-amber-400',
     iconBg: 'bg-amber-500/10',
     previousScore: 3.2,
     questions: [
@@ -186,7 +186,7 @@ const baselineCategories: BaselineCategory[] = [
     id: 'team-health',
     name: 'Team Health',
     icon: Heart,
-    iconColor: 'text-pink-400',
+    iconColor: 'text-pink-600 dark:text-pink-400',
     iconBg: 'bg-pink-500/10',
     previousScore: 3.6,
     questions: [
@@ -201,7 +201,7 @@ const baselineCategories: BaselineCategory[] = [
     id: 'leadership',
     name: 'Leadership',
     icon: Shield,
-    iconColor: 'text-indigo-400',
+    iconColor: 'text-indigo-600 dark:text-indigo-400',
     iconBg: 'bg-indigo-500/10',
     previousScore: 3.4,
     questions: [
@@ -593,7 +593,7 @@ function CreateAssessmentModal({
                   </div>
                   <button
                     onClick={() => removeQuestion(q.id)}
-                    className="text-muted-foreground/40 hover:text-red-400 transition-colors shrink-0"
+                    className="text-muted-foreground/40 hover:text-red-600 dark:text-red-400 transition-colors shrink-0"
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -628,7 +628,7 @@ function CreateAssessmentModal({
           <Button
             size="sm"
             variant="ghost"
-            className="h-7 gap-1 text-xs text-indigo-400 hover:bg-indigo-500/10"
+            className="h-7 gap-1 text-xs text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/10"
             onClick={addQuestion}
           >
             <Plus className="h-3 w-3" /> Add Question
@@ -796,7 +796,7 @@ export default function AssessmentsPage() {
             {key === 'custom' && (
               <Badge
                 variant="outline"
-                className="bg-cyan-500/15 text-cyan-400 border-cyan-500/20 text-[9px] px-1.5 py-0"
+                className="bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border-cyan-500/20 text-[9px] px-1.5 py-0"
               >
                 Beta
               </Badge>
@@ -846,7 +846,7 @@ export default function AssessmentsPage() {
                     <span className="text-[10px] text-muted-foreground">Q4 2025</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <TrendingUp className="h-3 w-3 text-green-400" />
+                    <TrendingUp className="h-3 w-3 text-green-600 dark:text-green-400" />
                     <span className="text-[10px] font-medium text-green-600 dark:text-green-400">+0.5 avg improvement</span>
                   </div>
                 </div>
@@ -998,7 +998,7 @@ export default function AssessmentsPage() {
             <div className="glass rounded-xl p-5">
               <div className="flex items-start justify-between">
                 <div className="inline-flex rounded-lg p-2.5 bg-green-500/10">
-                  <UserCheck className="h-5 w-5 text-green-400" />
+                  <UserCheck className="h-5 w-5 text-green-600 dark:text-green-400" />
                 </div>
               </div>
               <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
@@ -1012,7 +1012,7 @@ export default function AssessmentsPage() {
             <div className="glass rounded-xl p-5">
               <div className="flex items-start justify-between">
                 <div className="inline-flex rounded-lg p-2.5 bg-amber-500/10">
-                  <Users className="h-5 w-5 text-amber-400" />
+                  <Users className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                 </div>
               </div>
               <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
@@ -1026,7 +1026,7 @@ export default function AssessmentsPage() {
             <div className="glass rounded-xl p-5">
               <div className="flex items-start justify-between">
                 <div className="inline-flex rounded-lg p-2.5 bg-red-500/10">
-                  <Heart className="h-5 w-5 text-red-400" />
+                  <Heart className="h-5 w-5 text-red-600 dark:text-red-400" />
                 </div>
               </div>
               <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
@@ -1107,7 +1107,7 @@ export default function AssessmentsPage() {
                   >
                     {/* Avatar + name */}
                     <div className="flex items-center gap-3 w-56 shrink-0">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 text-xs font-semibold text-indigo-300">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 text-xs font-semibold text-indigo-700 dark:text-indigo-300">
                         {person.initials}
                       </div>
                       <div className="min-w-0">
@@ -1249,7 +1249,7 @@ export default function AssessmentsPage() {
           {/* Beta notice */}
           <div className="glass rounded-xl p-4 flex items-start gap-3">
             <div className="inline-flex rounded-lg p-2 bg-cyan-500/10 shrink-0">
-              <Sparkles className="h-4 w-4 text-cyan-400" />
+              <Sparkles className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
             </div>
             <div>
               <p className="text-xs font-medium text-foreground">Custom Assessments is in Beta</p>
@@ -1275,7 +1275,7 @@ export default function AssessmentsPage() {
                     {/* Icon + Title + Badge row */}
                     <div className="flex items-start sm:items-center gap-3 sm:flex-1 min-w-0">
                       <div className="inline-flex rounded-lg p-2.5 bg-indigo-500/10 shrink-0">
-                        <ClipboardCheck className="h-5 w-5 text-indigo-400" />
+                        <ClipboardCheck className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">

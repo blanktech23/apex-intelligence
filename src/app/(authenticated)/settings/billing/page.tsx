@@ -63,7 +63,7 @@ const usageBreakdown = [
     used: 6,
     limit: 7,
     color: "bg-emerald-400",
-    textColor: "text-emerald-400",
+    textColor: "text-emerald-600 dark:text-emerald-400",
     format: (n: number) => `${n}`,
   },
   {
@@ -72,7 +72,7 @@ const usageBreakdown = [
     used: 59.85,
     limit: 200,
     color: "bg-cyan-400",
-    textColor: "text-cyan-400",
+    textColor: "text-cyan-600 dark:text-cyan-400",
     format: (n: number) => `$${n % 1 === 0 ? n : n.toFixed(2)}`,
   },
   {
@@ -81,7 +81,7 @@ const usageBreakdown = [
     used: 6,
     limit: 15,
     color: "bg-amber-400",
-    textColor: "text-amber-400",
+    textColor: "text-amber-600 dark:text-amber-400",
     format: (n: number) => `${n}`,
   },
 ];
@@ -345,7 +345,7 @@ export default function BillingSettingsPage() {
                     </span>
                     <span
                       className={`min-w-[40px] text-right text-xs font-semibold ${
-                        isHigh ? "text-amber-400" : item.textColor
+                        isHigh ? "text-amber-600 dark:text-amber-400" : item.textColor
                       }`}
                     >
                       {pct}%
@@ -372,7 +372,7 @@ export default function BillingSettingsPage() {
       <div className="glass rounded-xl p-6">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-green-400" />
+            <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-400" />
             <h2 className="text-base font-semibold text-foreground">
               Agent ROI This Month
             </h2>
@@ -389,7 +389,7 @@ export default function BillingSettingsPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Clock className="h-4 w-4 text-green-400" />
+              <Clock className="h-4 w-4 text-green-600 dark:text-green-400" />
               <span className="text-xs text-muted-foreground">Time Saved</span>
             </div>
             <p className="text-2xl font-bold text-foreground">326 hrs</p>
@@ -398,7 +398,7 @@ export default function BillingSettingsPage() {
 
           <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4">
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign className="h-4 w-4 text-emerald-400" />
+              <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               <span className="text-xs text-muted-foreground">Net Savings</span>
             </div>
             <p className="text-2xl font-bold text-foreground">$9,240</p>
@@ -407,7 +407,7 @@ export default function BillingSettingsPage() {
 
           <div className="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Zap className="h-4 w-4 text-cyan-400" />
+              <Zap className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
               <span className="text-xs text-muted-foreground">Cost Reduction</span>
             </div>
             <p className="text-2xl font-bold text-foreground">94%</p>
@@ -450,7 +450,7 @@ export default function BillingSettingsPage() {
             </p>
             <p className="text-xs text-muted-foreground">Expires 12/2028</p>
           </div>
-          <Badge className="border-0 bg-emerald-500/15 text-emerald-400">
+          <Badge className="border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
             Default
           </Badge>
         </div>
@@ -502,7 +502,7 @@ export default function BillingSettingsPage() {
                     {item.amount}
                   </TableCell>
                   <TableCell>
-                    <Badge className="border-0 bg-emerald-500/15 text-emerald-400">
+                    <Badge className="border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
                       Paid
                     </Badge>
                   </TableCell>
@@ -534,7 +534,7 @@ export default function BillingSettingsPage() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-foreground">{item.amount}</span>
-                <Badge className="border-0 bg-emerald-500/15 text-emerald-400">
+                <Badge className="border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
                   Paid
                 </Badge>
               </div>
@@ -576,7 +576,7 @@ export default function BillingSettingsPage() {
                   <p className="text-sm font-medium text-foreground">Visa ending in 4242</p>
                   <p className="text-xs text-muted-foreground">Expires 12/2028</p>
                 </div>
-                <Badge className="border-0 bg-emerald-500/15 text-emerald-400">Default</Badge>
+                <Badge className="border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">Default</Badge>
               </div>
               <Button
                 variant="outline"
@@ -677,7 +677,7 @@ export default function BillingSettingsPage() {
               {confirmed && selectedPlan && (
                 <div className="flex flex-col items-center justify-center py-16">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500/15 animate-in zoom-in duration-300">
-                    <Check className="h-8 w-8 text-green-400" />
+                    <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
                   </div>
                   <p className="mt-4 text-lg font-semibold text-foreground">
                     Switched to {plans.find((p) => p.id === selectedPlan)?.name} Plan

@@ -125,18 +125,18 @@ export const PIPELINE_STAGES: {
   borderColor: string;
   icon: typeof Sparkles;
 }[] = [
-  { key: "new_lead", label: "New Lead", shortLabel: "Lead", color: "text-sky-400", bgColor: "bg-sky-500/20", borderColor: "border-sky-500/30", icon: Sparkles },
-  { key: "qualifying", label: "Qualifying", shortLabel: "Qual", color: "text-blue-400", bgColor: "bg-blue-500/20", borderColor: "border-blue-500/30", icon: Clock },
-  { key: "consultation_scheduled", label: "Consultation Scheduled", shortLabel: "Sched", color: "text-indigo-400", bgColor: "bg-indigo-500/20", borderColor: "border-indigo-500/30", icon: CalendarCheck },
-  { key: "consultation_complete", label: "Consultation Complete", shortLabel: "Consult", color: "text-violet-400", bgColor: "bg-violet-500/20", borderColor: "border-violet-500/30", icon: PenLine },
-  { key: "design_retainer", label: "Design Retainer", shortLabel: "Retainer", color: "text-purple-400", bgColor: "bg-purple-500/20", borderColor: "border-purple-500/30", icon: Compass },
-  { key: "in_design", label: "In Design", shortLabel: "Design", color: "text-fuchsia-400", bgColor: "bg-fuchsia-500/20", borderColor: "border-fuchsia-500/30", icon: Ruler },
-  { key: "estimating", label: "Estimating", shortLabel: "Est", color: "text-pink-400", bgColor: "bg-pink-500/20", borderColor: "border-pink-500/30", icon: FileSignature },
-  { key: "proposal_sent", label: "Proposal Sent", shortLabel: "Proposal", color: "text-rose-400", bgColor: "bg-rose-500/20", borderColor: "border-rose-500/30", icon: Send },
-  { key: "contract_signed", label: "Contract Signed", shortLabel: "Contract", color: "text-amber-400", bgColor: "bg-amber-500/20", borderColor: "border-amber-500/30", icon: Handshake },
-  { key: "pre_construction", label: "Pre-Construction", shortLabel: "Pre-Con", color: "text-orange-400", bgColor: "bg-orange-500/20", borderColor: "border-orange-500/30", icon: HardHat },
-  { key: "in_construction", label: "In Construction", shortLabel: "Build", color: "text-emerald-400", bgColor: "bg-emerald-500/20", borderColor: "border-emerald-500/30", icon: Construction },
-  { key: "warranty", label: "Warranty", shortLabel: "Warranty", color: "text-teal-400", bgColor: "bg-teal-500/20", borderColor: "border-teal-500/30", icon: ShieldCheck },
+  { key: "new_lead", label: "New Lead", shortLabel: "Lead", color: "text-sky-600 dark:text-sky-400", bgColor: "bg-sky-500/20", borderColor: "border-sky-500/30", icon: Sparkles },
+  { key: "qualifying", label: "Qualifying", shortLabel: "Qual", color: "text-blue-600 dark:text-blue-400", bgColor: "bg-blue-500/20", borderColor: "border-blue-500/30", icon: Clock },
+  { key: "consultation_scheduled", label: "Consultation Scheduled", shortLabel: "Sched", color: "text-indigo-600 dark:text-indigo-400", bgColor: "bg-indigo-500/20", borderColor: "border-indigo-500/30", icon: CalendarCheck },
+  { key: "consultation_complete", label: "Consultation Complete", shortLabel: "Consult", color: "text-violet-600 dark:text-violet-400", bgColor: "bg-violet-500/20", borderColor: "border-violet-500/30", icon: PenLine },
+  { key: "design_retainer", label: "Design Retainer", shortLabel: "Retainer", color: "text-purple-600 dark:text-purple-400", bgColor: "bg-purple-500/20", borderColor: "border-purple-500/30", icon: Compass },
+  { key: "in_design", label: "In Design", shortLabel: "Design", color: "text-fuchsia-600 dark:text-fuchsia-400", bgColor: "bg-fuchsia-500/20", borderColor: "border-fuchsia-500/30", icon: Ruler },
+  { key: "estimating", label: "Estimating", shortLabel: "Est", color: "text-pink-600 dark:text-pink-400", bgColor: "bg-pink-500/20", borderColor: "border-pink-500/30", icon: FileSignature },
+  { key: "proposal_sent", label: "Proposal Sent", shortLabel: "Proposal", color: "text-rose-600 dark:text-rose-400", bgColor: "bg-rose-500/20", borderColor: "border-rose-500/30", icon: Send },
+  { key: "contract_signed", label: "Contract Signed", shortLabel: "Contract", color: "text-amber-600 dark:text-amber-400", bgColor: "bg-amber-500/20", borderColor: "border-amber-500/30", icon: Handshake },
+  { key: "pre_construction", label: "Pre-Construction", shortLabel: "Pre-Con", color: "text-orange-600 dark:text-orange-400", bgColor: "bg-orange-500/20", borderColor: "border-orange-500/30", icon: HardHat },
+  { key: "in_construction", label: "In Construction", shortLabel: "Build", color: "text-emerald-600 dark:text-emerald-400", bgColor: "bg-emerald-500/20", borderColor: "border-emerald-500/30", icon: Construction },
+  { key: "warranty", label: "Warranty", shortLabel: "Warranty", color: "text-teal-600 dark:text-teal-400", bgColor: "bg-teal-500/20", borderColor: "border-teal-500/30", icon: ShieldCheck },
 ];
 
 // =============================================================
@@ -150,12 +150,12 @@ export const CONTACT_TYPES: {
   color: string;
   bgColor: string;
 }[] = [
-  { key: "homeowner", label: "Homeowner", icon: Users, color: "text-blue-400", bgColor: "bg-blue-500/20" },
-  { key: "contractor_gc", label: "Contractor / GC", icon: Building2, color: "text-amber-400", bgColor: "bg-amber-500/20" },
-  { key: "dealer_showroom", label: "Dealer / Showroom", icon: Store, color: "text-emerald-400", bgColor: "bg-emerald-500/20" },
-  { key: "manufacturer_rep", label: "Manufacturer Rep", icon: Briefcase, color: "text-purple-400", bgColor: "bg-purple-500/20" },
-  { key: "manufacturer", label: "Manufacturer", icon: Factory, color: "text-indigo-400", bgColor: "bg-indigo-500/20" },
-  { key: "subcontractor", label: "Subcontractor", icon: Wrench, color: "text-rose-400", bgColor: "bg-rose-500/20" },
+  { key: "homeowner", label: "Homeowner", icon: Users, color: "text-blue-600 dark:text-blue-400", bgColor: "bg-blue-500/20" },
+  { key: "contractor_gc", label: "Contractor / GC", icon: Building2, color: "text-amber-600 dark:text-amber-400", bgColor: "bg-amber-500/20" },
+  { key: "dealer_showroom", label: "Dealer / Showroom", icon: Store, color: "text-emerald-600 dark:text-emerald-400", bgColor: "bg-emerald-500/20" },
+  { key: "manufacturer_rep", label: "Manufacturer Rep", icon: Briefcase, color: "text-purple-600 dark:text-purple-400", bgColor: "bg-purple-500/20" },
+  { key: "manufacturer", label: "Manufacturer", icon: Factory, color: "text-indigo-600 dark:text-indigo-400", bgColor: "bg-indigo-500/20" },
+  { key: "subcontractor", label: "Subcontractor", icon: Wrench, color: "text-rose-600 dark:text-rose-400", bgColor: "bg-rose-500/20" },
 ];
 
 // =============================================================
@@ -168,15 +168,15 @@ export const ACTIVITY_TYPES: {
   icon: typeof Mail;
   color: string;
 }[] = [
-  { key: "email", label: "Email", icon: Mail, color: "text-blue-400" },
-  { key: "call", label: "Phone Call", icon: Phone, color: "text-emerald-400" },
-  { key: "site_visit", label: "Site Visit", icon: MapPin, color: "text-amber-400" },
-  { key: "design_presentation", label: "Design Presentation", icon: Presentation, color: "text-purple-400" },
-  { key: "material_selection", label: "Material Selection", icon: Palette, color: "text-fuchsia-400" },
-  { key: "change_order", label: "Change Order", icon: FileText, color: "text-rose-400" },
-  { key: "inspection", label: "Inspection", icon: ClipboardCheck, color: "text-orange-400" },
-  { key: "meeting", label: "Meeting", icon: Calendar, color: "text-indigo-400" },
-  { key: "note", label: "Note", icon: StickyNote, color: "text-zinc-400" },
+  { key: "email", label: "Email", icon: Mail, color: "text-blue-600 dark:text-blue-400" },
+  { key: "call", label: "Phone Call", icon: Phone, color: "text-emerald-600 dark:text-emerald-400" },
+  { key: "site_visit", label: "Site Visit", icon: MapPin, color: "text-amber-600 dark:text-amber-400" },
+  { key: "design_presentation", label: "Design Presentation", icon: Presentation, color: "text-purple-600 dark:text-purple-400" },
+  { key: "material_selection", label: "Material Selection", icon: Palette, color: "text-fuchsia-600 dark:text-fuchsia-400" },
+  { key: "change_order", label: "Change Order", icon: FileText, color: "text-rose-600 dark:text-rose-400" },
+  { key: "inspection", label: "Inspection", icon: ClipboardCheck, color: "text-orange-600 dark:text-orange-400" },
+  { key: "meeting", label: "Meeting", icon: Calendar, color: "text-indigo-600 dark:text-indigo-400" },
+  { key: "note", label: "Note", icon: StickyNote, color: "text-zinc-600 dark:text-zinc-400" },
 ];
 
 // =============================================================

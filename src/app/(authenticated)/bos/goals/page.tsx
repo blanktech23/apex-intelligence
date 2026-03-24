@@ -109,25 +109,25 @@ const statusConfig: Record<
   on_track: {
     label: "On Track",
     dot: "bg-emerald-400",
-    badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     icon: TrendingUp,
   },
   off_track: {
     label: "Off Track",
     dot: "bg-red-400",
-    badge: "bg-red-500/10 text-red-400 border-red-500/20",
+    badge: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20",
     icon: AlertTriangle,
   },
   at_risk: {
     label: "At Risk",
     dot: "bg-amber-400",
-    badge: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+    badge: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
     icon: AlertTriangle,
   },
   complete: {
     label: "Complete",
     dot: "bg-emerald-400",
-    badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     icon: CheckCircle2,
   },
 };
@@ -136,19 +136,19 @@ const rockTypeConfig: Record<RockType, { label: string; border: string; badge: s
   company: {
     label: "Company",
     border: "border-l-indigo-500/60",
-    badge: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+    badge: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
     icon: Building2,
   },
   department: {
     label: "Department",
     border: "border-l-purple-500/60",
-    badge: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+    badge: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
     icon: Layers,
   },
   individual: {
     label: "Individual",
     border: "border-l-teal-500/60",
-    badge: "bg-teal-500/10 text-teal-400 border-teal-500/20",
+    badge: "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20",
     icon: User,
   },
 };
@@ -173,7 +173,7 @@ const initialGoals: Goal[] = [
     title: "Increase revenue to $2.5M",
     description:
       "Drive quarterly revenue growth through new project acquisition, upselling existing clients, and improving close rates on estimates.",
-    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
+    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
     team: "Sales",
     status: "on_track",
     progress: 72,
@@ -196,7 +196,7 @@ const initialGoals: Goal[] = [
     sharedWith: ["Finance"],
     archived: false,
     comments: [
-      { id: "c1", author: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-300", text: "Referral program is showing early traction", date: "2026-03-10" },
+      { id: "c1", author: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300", text: "Referral program is showing early traction", date: "2026-03-10" },
     ],
     linkedItems: [
       { id: "li1", type: "kpi", title: "Revenue" },
@@ -208,7 +208,7 @@ const initialGoals: Goal[] = [
     title: "Reduce project delivery time by 20%",
     description:
       "Streamline operations workflows and reduce average project delivery time from 45 days to 36 days through better scheduling and AI-assisted coordination.",
-    owner: { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-300" },
+    owner: { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-700 dark:text-purple-300" },
     team: "Operations",
     status: "at_risk",
     progress: 40,
@@ -240,7 +240,7 @@ const initialGoals: Goal[] = [
     title: "Achieve 95% customer satisfaction score",
     description:
       "Improve customer communication and project transparency to achieve a 95% or higher satisfaction rating on post-project surveys.",
-    owner: { name: "Lisa Torres", initials: "LT", color: "bg-emerald-500/30 text-emerald-300" },
+    owner: { name: "Lisa Torres", initials: "LT", color: "bg-emerald-500/30 text-emerald-700 dark:text-emerald-300" },
     team: "Sales",
     status: "on_track",
     progress: 85,
@@ -269,7 +269,7 @@ const initialGoals: Goal[] = [
     title: "Reduce material waste by 15%",
     description:
       "Implement better material estimation, ordering processes, and on-site waste management to reduce material costs and environmental impact.",
-    owner: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-300" },
+    owner: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
     team: "Operations",
     status: "off_track",
     progress: 20,
@@ -299,7 +299,7 @@ const initialGoals: Goal[] = [
     title: "Hire and onboard 3 new team members",
     description:
       "Expand the team with a project coordinator, senior carpenter, and design assistant to support growing project volume.",
-    owner: { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-300" },
+    owner: { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-700 dark:text-teal-300" },
     team: "Leadership",
     status: "complete",
     progress: 100,
@@ -321,7 +321,7 @@ const initialGoals: Goal[] = [
     sharedWith: [],
     archived: false,
     comments: [
-      { id: "c2", author: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-300", text: "All three hires are settling in well", date: "2026-03-16" },
+      { id: "c2", author: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-700 dark:text-teal-300", text: "All three hires are settling in well", date: "2026-03-16" },
     ],
     linkedItems: [],
   },
@@ -330,7 +330,7 @@ const initialGoals: Goal[] = [
     title: "Launch kitchen & bath design tool MVP",
     description:
       "Build and deploy the first version of the AI-powered kitchen and bathroom design visualization tool for client presentations.",
-    owner: { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-300" },
+    owner: { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-700 dark:text-pink-300" },
     team: "Design",
     status: "on_track",
     progress: 60,
@@ -358,7 +358,7 @@ const initialGoals: Goal[] = [
     title: "Establish partnership with 2 major suppliers",
     description:
       "Negotiate volume discount agreements with at least 2 major material suppliers to reduce costs by 8-12% across lumber and fixtures.",
-    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
+    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
     team: "Finance",
     status: "on_track",
     progress: 50,
@@ -645,7 +645,7 @@ export default function GoalsPage() {
       id: generateId(),
       author: "You",
       initials: "YU",
-      color: "bg-blue-500/30 text-blue-300",
+      color: "bg-blue-500/30 text-blue-700 dark:text-blue-300",
       text,
       date: new Date().toISOString().slice(0, 10),
     };
@@ -714,12 +714,12 @@ export default function GoalsPage() {
       return;
     }
     const ownerMap: Record<string, { initials: string; color: string }> = {
-      "Marcus Rivera": { initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
-      "Sarah Chen": { initials: "SC", color: "bg-purple-500/30 text-purple-300" },
-      "David Park": { initials: "DP", color: "bg-amber-500/30 text-amber-300" },
-      "Lisa Torres": { initials: "LT", color: "bg-emerald-500/30 text-emerald-300" },
-      "Kevin Wu": { initials: "KW", color: "bg-teal-500/30 text-teal-300" },
-      "Amy Foster": { initials: "AF", color: "bg-pink-500/30 text-pink-300" },
+      "Marcus Rivera": { initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
+      "Sarah Chen": { initials: "SC", color: "bg-purple-500/30 text-purple-700 dark:text-purple-300" },
+      "David Park": { initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
+      "Lisa Torres": { initials: "LT", color: "bg-emerald-500/30 text-emerald-700 dark:text-emerald-300" },
+      "Kevin Wu": { initials: "KW", color: "bg-teal-500/30 text-teal-700 dark:text-teal-300" },
+      "Amy Foster": { initials: "AF", color: "bg-pink-500/30 text-pink-700 dark:text-pink-300" },
     };
     const ow = ownerMap[newRock.owner] || { initials: "??", color: "bg-gray-500/30 text-muted-foreground" };
 
@@ -895,7 +895,7 @@ export default function GoalsPage() {
                     onClick={() => !compact && setExpandedGoal(isExpanded ? null : goal.id)}
                     className="text-left"
                   >
-                    <h3 className="font-semibold text-foreground hover:text-indigo-400 transition-colors truncate">
+                    <h3 className="font-semibold text-foreground hover:text-indigo-600 dark:text-indigo-400 transition-colors truncate">
                       {goal.title}
                     </h3>
                   </button>
@@ -917,7 +917,7 @@ export default function GoalsPage() {
                     {renderRockTypeBadge(goal.rockType)}
                     {/* Shared badge */}
                     {goal.sharedWith.length > 0 && (
-                      <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-blue-500/20 bg-blue-500/10 text-blue-400">
+                      <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400">
                         <Share2 className="h-2.5 w-2.5 mr-0.5" />
                         Shared: {goal.sharedWith.join(", ")}
                       </Badge>
@@ -1090,7 +1090,7 @@ export default function GoalsPage() {
                             }`}
                           >
                             {milestone.completed && (
-                              <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+                              <CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                             )}
                           </button>
                           <span
@@ -1100,7 +1100,7 @@ export default function GoalsPage() {
                           >
                             {milestone.title}
                           </span>
-                          <span className={`text-xs shrink-0 ${isOverdue ? "text-red-400 font-medium" : "text-muted-foreground"}`} suppressHydrationWarning>
+                          <span className={`text-xs shrink-0 ${isOverdue ? "text-red-600 dark:text-red-400 font-medium" : "text-muted-foreground"}`} suppressHydrationWarning>
                             {isOverdue && <AlertCircle className="h-3 w-3 inline mr-1" />}
                             {new Date(milestone.dueDate).toLocaleDateString("en-US", {
                               month: "short",
@@ -1142,12 +1142,12 @@ export default function GoalsPage() {
                         {goal.linkedItems.map((item) => {
                           const typeIcon = item.type === "issue" ? AlertCircle : item.type === "todo" ? ListTodo : TrendingUp;
                           const TypeIcon = typeIcon;
-                          const typeColor = item.type === "issue" ? "text-red-400" : item.type === "todo" ? "text-blue-400" : "text-emerald-400";
+                          const typeColor = item.type === "issue" ? "text-red-600 dark:text-red-400" : item.type === "todo" ? "text-blue-600 dark:text-blue-400" : "text-emerald-600 dark:text-emerald-400";
                           return (
                             <div key={item.id} className="flex items-center gap-2 group">
                               <TypeIcon className={`h-3 w-3 ${typeColor}`} />
                               <button
-                                className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                                className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 transition-colors"
                                 onClick={() => {
                                   const routeMap: Record<string, string> = { goal: '/bos/goals', rock: '/bos/goals', milestone: '/bos/goals', kpi: '/bos/kpis', issue: '/bos/issues', todo: '/bos/goals' };
                                   router.push(routeMap[item.type] ?? '/bos');
@@ -1186,7 +1186,7 @@ export default function GoalsPage() {
                     {goal.relatedKpis.map((kpi) => (
                       <div
                         key={kpi}
-                        className="flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors"
+                        className="flex items-center gap-2 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 cursor-pointer transition-colors"
                         onClick={() => {
                           router.push('/bos/kpis');
                           toast.success(`Viewing KPI: ${kpi}`);
@@ -1292,12 +1292,12 @@ export default function GoalsPage() {
           {/* AI Assist */}
           <Button
             variant="outline"
-            className="gap-2 border-purple-500/30 text-purple-400 hover:bg-purple-500/10 hover:text-purple-300"
+            className="gap-2 border-purple-500/30 text-purple-600 dark:text-purple-400 hover:bg-purple-500/10 hover:text-purple-700 dark:text-purple-300"
             onClick={(e) => { e.stopPropagation(); setShowAiModal(true); }}
           >
             <Sparkles className="h-4 w-4" />
             AI Assist
-            <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-[9px] px-1 py-0 h-3.5 ml-1">
+            <Badge className="bg-purple-500/20 text-purple-700 dark:text-purple-300 border-purple-500/30 text-[9px] px-1 py-0 h-3.5 ml-1">
               Beta
             </Badge>
           </Button>
@@ -1399,10 +1399,10 @@ export default function GoalsPage() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {[
           { label: "Total", value: quarterStats.total, color: "text-foreground" },
-          { label: "On Track", value: quarterStats.onTrack, color: "text-emerald-400" },
-          { label: "At Risk", value: quarterStats.atRisk, color: "text-amber-400" },
-          { label: "Off Track", value: quarterStats.offTrack, color: "text-red-400" },
-          { label: "Complete", value: quarterStats.complete, color: "text-emerald-400" },
+          { label: "On Track", value: quarterStats.onTrack, color: "text-emerald-600 dark:text-emerald-400" },
+          { label: "At Risk", value: quarterStats.atRisk, color: "text-amber-600 dark:text-amber-400" },
+          { label: "Off Track", value: quarterStats.offTrack, color: "text-red-600 dark:text-red-400" },
+          { label: "Complete", value: quarterStats.complete, color: "text-emerald-600 dark:text-emerald-400" },
         ].map((s) => (
           <div key={s.label} className="glass rounded-xl p-4 text-center">
             <p className="text-2xl font-bold tabular-nums" style={{ color: "inherit" }}>
@@ -1696,7 +1696,7 @@ export default function GoalsPage() {
                   <label className="text-xs font-medium text-muted-foreground">Milestones</label>
                   <button
                     onClick={() => setNewRock((prev) => ({ ...prev, milestones: [...prev.milestones, { title: "", dueDate: "" }] }))}
-                    className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors"
+                    className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 flex items-center gap-1 transition-colors"
                   >
                     <Plus className="h-3 w-3" /> Add Milestone
                   </button>
@@ -1868,9 +1868,9 @@ export default function GoalsPage() {
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-purple-400" />
+                <Sparkles className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                 <h2 className="text-lg font-semibold text-foreground">AI Rock Assistant</h2>
-                <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-[9px] px-1 py-0 h-3.5">
+                <Badge className="bg-purple-500/20 text-purple-700 dark:text-purple-300 border-purple-500/30 text-[9px] px-1 py-0 h-3.5">
                   Beta
                 </Badge>
               </div>
@@ -1887,9 +1887,9 @@ export default function GoalsPage() {
                 <div className="glass rounded-lg p-4 space-y-2">
                   <p className="text-xs text-muted-foreground">AI will generate:</p>
                   <ul className="text-xs text-muted-foreground space-y-1">
-                    <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-emerald-400" /> SMART-formatted Rock title</li>
-                    <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-emerald-400" /> Detailed description with measurable outcomes</li>
-                    <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-emerald-400" /> 3-5 milestones with due dates</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-400" /> SMART-formatted Rock title</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-400" /> Detailed description with measurable outcomes</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-400" /> 3-5 milestones with due dates</li>
                   </ul>
                 </div>
                 <Button

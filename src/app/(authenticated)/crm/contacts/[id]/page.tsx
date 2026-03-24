@@ -55,22 +55,22 @@ import {
 } from "@/lib/crm-data";
 
 const statusColors: Record<string, string> = {
-  active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  lead: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  active: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  lead: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
   inactive: "bg-muted text-muted-foreground border-border",
 };
 
 const dealStatusColors: Record<string, string> = {
-  open: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  won: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  lost: "bg-red-500/20 text-red-400 border-red-500/30",
-  on_hold: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  open: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
+  won: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  lost: "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30",
+  on_hold: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
 };
 
 const projectStatusColors: Record<string, string> = {
-  Active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  Completed: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  Pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  Active: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  Completed: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
+  Pending: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
 };
 
 const projectStatusIcons: Record<string, typeof CheckCircle2> = {
@@ -116,10 +116,10 @@ const mockInvoices = [
 ];
 
 const invoiceStatusColors: Record<string, string> = {
-  paid: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  partial: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  overdue: "bg-red-500/20 text-red-400 border-red-500/30",
-  sent: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  paid: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  partial: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  overdue: "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30",
+  sent: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
   draft: "bg-muted text-muted-foreground border-border",
 };
 
@@ -168,7 +168,7 @@ export default function ContactDetailPage() {
         <p className="text-lg text-muted-foreground">Contact not found</p>
         <Link
           href="/crm/contacts"
-          className="inline-flex items-center gap-1.5 text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Contacts
@@ -246,7 +246,7 @@ export default function ContactDetailPage() {
         </Link>
         <div className="flex flex-wrap items-center gap-4">
           <Avatar className="h-14 w-14 border-2 border-indigo-500/30">
-            <AvatarFallback className="bg-indigo-500/20 text-lg text-indigo-300">
+            <AvatarFallback className="bg-indigo-500/20 text-lg text-indigo-700 dark:text-indigo-300">
               {contact.initials}
             </AvatarFallback>
           </Avatar>
@@ -295,13 +295,13 @@ export default function ContactDetailPage() {
           {contact.yoyGrowth !== 0 && (
             <div className="flex items-center gap-1 mt-1">
               {contact.yoyGrowth > 0 ? (
-                <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
+                <TrendingUp className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               ) : (
-                <TrendingDown className="h-3.5 w-3.5 text-red-400" />
+                <TrendingDown className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
               )}
               <span
                 className={`text-xs ${
-                  contact.yoyGrowth > 0 ? "text-emerald-400" : "text-red-400"
+                  contact.yoyGrowth > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
                 }`}
               >
                 {contact.yoyGrowth > 0 ? "+" : ""}
@@ -343,10 +343,10 @@ export default function ContactDetailPage() {
             <p
               className={`text-xs mt-1 ${
                 contact.speedToLead <= 5
-                  ? "text-emerald-400"
+                  ? "text-emerald-600 dark:text-emerald-400"
                   : contact.speedToLead <= 15
-                  ? "text-amber-400"
-                  : "text-red-400"
+                  ? "text-amber-600 dark:text-amber-400"
+                  : "text-red-600 dark:text-red-400"
               }`}
             >
               {contact.speedToLead <= 5
@@ -371,7 +371,7 @@ export default function ContactDetailPage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <Mail className="h-4 w-4 text-indigo-400" />
+                  <Mail className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Email</p>
@@ -380,7 +380,7 @@ export default function ContactDetailPage() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <Phone className="h-4 w-4 text-indigo-400" />
+                  <Phone className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Phone</p>
@@ -389,7 +389,7 @@ export default function ContactDetailPage() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <MapPin className="h-4 w-4 text-indigo-400" />
+                  <MapPin className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Address</p>
@@ -401,7 +401,7 @@ export default function ContactDetailPage() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <Globe className="h-4 w-4 text-indigo-400" />
+                  <Globe className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Website</p>
@@ -412,7 +412,7 @@ export default function ContactDetailPage() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <ArrowUpRight className="h-4 w-4 text-indigo-400" />
+                  <ArrowUpRight className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">
@@ -425,14 +425,14 @@ export default function ContactDetailPage() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <UserCheck className="h-4 w-4 text-indigo-400" />
+                  <UserCheck className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Referred By</p>
                   {referredByContact ? (
                     <Link
                       href={`/crm/contacts/${referredByContact.id}`}
-                      className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                      className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 transition-colors"
                     >
                       {referredByContact.name}
                     </Link>
@@ -449,31 +449,31 @@ export default function ContactDetailPage() {
             <TabsList className="glass border border-border bg-foreground/5">
               <TabsTrigger
                 value="deals"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Deals ({contactDeals.length})
               </TabsTrigger>
               <TabsTrigger
                 value="projects"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Projects
               </TabsTrigger>
               <TabsTrigger
                 value="activities"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Activities ({contactActivities.length})
               </TabsTrigger>
               <TabsTrigger
                 value="notes"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Notes
               </TabsTrigger>
               <TabsTrigger
                 value="financials"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Financials
               </TabsTrigger>
@@ -577,10 +577,10 @@ export default function ContactDetailPage() {
                         <StatusIcon
                           className={`h-4 w-4 ${
                             project.status === "Active"
-                              ? "text-emerald-400 animate-spin"
+                              ? "text-emerald-600 dark:text-emerald-400 animate-spin"
                               : project.status === "Completed"
-                              ? "text-blue-400"
-                              : "text-amber-400"
+                              ? "text-blue-600 dark:text-blue-400"
+                              : "text-amber-600 dark:text-amber-400"
                           }`}
                           style={
                             project.status === "Active"
@@ -643,7 +643,7 @@ export default function ContactDetailPage() {
                           <ActIcon
                             className={`h-4 w-4 ${
                               activity.agent === "ai"
-                                ? "text-amber-400"
+                                ? "text-amber-600 dark:text-amber-400"
                                 : actConfig.color
                             }`}
                           />
@@ -662,7 +662,7 @@ export default function ContactDetailPage() {
                             {activity.agent === "ai" && (
                               <Badge
                                 variant="outline"
-                                className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[10px] px-1.5 py-0"
+                                className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 text-[10px] px-1.5 py-0"
                               >
                                 <Bot className="h-3 w-3 mr-1" />
                                 {activity.agentName}
@@ -742,7 +742,7 @@ export default function ContactDetailPage() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         {note.author === "Support Agent" ? (
-                          <Bot className="h-4 w-4 text-amber-400" />
+                          <Bot className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                         ) : (
                           <User className="h-4 w-4 text-muted-foreground" />
                         )}
@@ -774,10 +774,10 @@ export default function ContactDetailPage() {
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   {[
-                    { label: "Current", value: 25905, color: "text-emerald-400" },
-                    { label: "1-30 Days", value: 0, color: "text-blue-400" },
-                    { label: "31-60 Days", value: 12000, color: "text-amber-400" },
-                    { label: "61-90 Days", value: 0, color: "text-red-400" },
+                    { label: "Current", value: 25905, color: "text-emerald-600 dark:text-emerald-400" },
+                    { label: "1-30 Days", value: 0, color: "text-blue-600 dark:text-blue-400" },
+                    { label: "31-60 Days", value: 12000, color: "text-amber-600 dark:text-amber-400" },
+                    { label: "61-90 Days", value: 0, color: "text-red-600 dark:text-red-400" },
                   ].map((bucket) => (
                     <div key={bucket.label}>
                       <p className="text-xs text-muted-foreground">
@@ -862,7 +862,7 @@ export default function ContactDetailPage() {
                       className="flex items-center justify-between py-2 border-b border-border/50 last:border-0"
                     >
                       <div className="flex items-center gap-3">
-                        <DollarSign className="h-4 w-4 text-emerald-400" />
+                        <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                         <div>
                           <p className="text-sm font-medium text-foreground">
                             ${payment.amount.toLocaleString()}
@@ -902,13 +902,13 @@ export default function ContactDetailPage() {
             {contact.yoyGrowth !== 0 && (
               <div className="flex items-center gap-1.5 mt-2">
                 {contact.yoyGrowth > 0 ? (
-                  <TrendingUp className="h-4 w-4 text-emerald-400" />
+                  <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 ) : (
-                  <TrendingDown className="h-4 w-4 text-red-400" />
+                  <TrendingDown className="h-4 w-4 text-red-600 dark:text-red-400" />
                 )}
                 <span
                   className={`text-sm ${
-                    contact.yoyGrowth > 0 ? "text-emerald-400" : "text-red-400"
+                    contact.yoyGrowth > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
                   }`}
                 >
                   {contact.yoyGrowth > 0 ? "+" : ""}
@@ -950,7 +950,7 @@ export default function ContactDetailPage() {
           {/* AI Insights */}
           <Card className="glass border-border p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="h-4 w-4 text-amber-400" />
+              <Sparkles className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                 AI Insights
               </h3>
@@ -978,7 +978,7 @@ export default function ContactDetailPage() {
           {/* Upcoming */}
           <Card className="glass border-border p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Clock className="h-4 w-4 text-indigo-400" />
+              <Clock className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                 Upcoming
               </h3>
@@ -990,7 +990,7 @@ export default function ContactDetailPage() {
                 .map((deal) => (
                   <div key={deal.id} className="flex items-start gap-3">
                     <div className="rounded-lg bg-indigo-500/10 p-2 mt-0.5">
-                      <Calendar className="h-4 w-4 text-indigo-400" />
+                      <Calendar className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                     </div>
                     <div>
                       <p className="text-sm font-medium text-foreground">
@@ -1018,7 +1018,7 @@ export default function ContactDetailPage() {
           {/* Tags */}
           <Card className="glass border-border p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Tag className="h-4 w-4 text-indigo-400" />
+              <Tag className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                 Tags
               </h3>
@@ -1035,13 +1035,13 @@ export default function ContactDetailPage() {
                   }}
                 >
                   {tag}
-                  <X className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-red-400" />
+                  <X className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-red-600 dark:text-red-400" />
                 </Badge>
               ))}
               <div className="relative" ref={tagPickerRef}>
                 <Badge
                   variant="outline"
-                  className="bg-indigo-500/10 text-indigo-400 border-indigo-500/20 cursor-pointer hover:bg-indigo-500/20 transition-colors"
+                  className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20 cursor-pointer hover:bg-indigo-500/20 transition-colors"
                   onClick={() => {
                     setShowTagPicker((prev) => !prev);
                     setTagSearch("");

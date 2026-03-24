@@ -151,7 +151,7 @@ function getUsageStyle(percent: number) {
   if (percent >= 100) {
     return {
       dotColor: "bg-red-500",
-      textColor: "text-red-400",
+      textColor: "text-red-600 dark:text-red-400",
       label: "Limit reached",
       pulse: false,
     };
@@ -159,7 +159,7 @@ function getUsageStyle(percent: number) {
   if (percent >= 80) {
     return {
       dotColor: "bg-orange-500",
-      textColor: "text-orange-400",
+      textColor: "text-orange-600 dark:text-orange-400",
       label: `Usage: ${percent}%`,
       pulse: true,
     };
@@ -167,7 +167,7 @@ function getUsageStyle(percent: number) {
   if (percent >= 60) {
     return {
       dotColor: "bg-amber-500",
-      textColor: "text-amber-400",
+      textColor: "text-amber-600 dark:text-amber-400",
       label: `Usage: ${percent}%`,
       pulse: false,
     };
@@ -282,7 +282,7 @@ export function Sidebar() {
           indent && !isCollapsedDesktop && "pl-9",
           active
             ? "bg-primary/10 text-foreground glow-primary"
-            : "text-slate-400 hover:bg-foreground/[0.06] hover:text-foreground"
+            : "text-slate-600 dark:text-slate-400 hover:bg-foreground/[0.06] hover:text-foreground"
         )}
       >
         {/* Active indicator bar */}
@@ -293,7 +293,7 @@ export function Sidebar() {
         <Icon
           className={cn(
             "h-[18px] w-[18px] shrink-0 transition-colors",
-            active ? "text-primary" : "text-slate-400 group-hover:text-foreground"
+            active ? "text-primary" : "text-slate-600 dark:text-slate-400 group-hover:text-foreground"
           )}
         />
 
@@ -301,7 +301,7 @@ export function Sidebar() {
           <>
             <span>{item.label}</span>
             {item.badge !== undefined && item.badge > 0 && (
-              <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500/20 px-1.5 text-[11px] font-semibold text-amber-400">
+              <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500/20 px-1.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
                 {item.badge}
               </span>
             )}

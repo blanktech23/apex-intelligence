@@ -94,7 +94,7 @@ function ChannelRow({
             "size-2.5 shrink-0",
             otherMember.isOnline
               ? "fill-emerald-500 text-emerald-500"
-              : "fill-zinc-400 text-zinc-400 dark:fill-zinc-600 dark:text-zinc-600"
+              : "fill-zinc-400 text-zinc-600 dark:text-zinc-400 dark:fill-zinc-600 dark:text-zinc-600"
           )}
         />
       ) : (

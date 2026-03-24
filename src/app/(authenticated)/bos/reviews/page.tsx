@@ -361,9 +361,9 @@ function StepIndicator({ currentStep }: { currentStep: ReviewStep }) {
 
 function CoreValueRatingDot({ rating }: { rating: CoreValueRating }) {
   const config = {
-    '+': { color: 'bg-green-400', text: 'text-green-400' },
-    '+/-': { color: 'bg-amber-400', text: 'text-amber-400' },
-    '-': { color: 'bg-red-400', text: 'text-red-400' },
+    '+': { color: 'bg-green-400', text: 'text-green-600 dark:text-green-400' },
+    '+/-': { color: 'bg-amber-400', text: 'text-amber-600 dark:text-amber-400' },
+    '-': { color: 'bg-red-400', text: 'text-red-600 dark:text-red-400' },
   };
   const c = config[rating];
 
@@ -382,10 +382,10 @@ function CoreValueRatingDot({ rating }: { rating: CoreValueRating }) {
 function CCCRatingBadge({ rating }: { rating: CCCRating }) {
   const color =
     rating === 'Exceeds'
-      ? 'text-green-400'
+      ? 'text-green-600 dark:text-green-400'
       : rating === 'Meets'
-        ? 'text-blue-400'
-        : 'text-red-400';
+        ? 'text-blue-600 dark:text-blue-400'
+        : 'text-red-600 dark:text-red-400';
   return <span className={`text-sm font-semibold ${color}`}>{rating}</span>;
 }
 
@@ -395,9 +395,9 @@ function CCCRatingBadge({ rating }: { rating: CCCRating }) {
 
 function LACIndicator({ action, onClick }: { action: LACAction; onClick?: () => void }) {
   const config = {
-    Lead: { bg: 'bg-green-500/10', border: 'border-green-500/20', text: 'text-green-400', label: 'L' },
-    Agree: { bg: 'bg-blue-500/10', border: 'border-blue-500/20', text: 'text-blue-400', label: 'A' },
-    Coach: { bg: 'bg-amber-500/10', border: 'border-amber-500/20', text: 'text-amber-400', label: 'C' },
+    Lead: { bg: 'bg-green-500/10', border: 'border-green-500/20', text: 'text-green-600 dark:text-green-400', label: 'L' },
+    Agree: { bg: 'bg-blue-500/10', border: 'border-blue-500/20', text: 'text-blue-600 dark:text-blue-400', label: 'A' },
+    Coach: { bg: 'bg-amber-500/10', border: 'border-amber-500/20', text: 'text-amber-600 dark:text-amber-400', label: 'C' },
   };
   const c = config[action];
 
@@ -425,15 +425,15 @@ function LACSummary({ detail }: { detail: ReviewDetail }) {
     <div className="flex items-center gap-3">
       <span className="flex items-center gap-1 text-xs">
         <span className="h-2 w-2 rounded-full bg-green-400" />
-        <span className="text-green-400 font-medium">Lead: {counts.lead}</span>
+        <span className="text-green-600 dark:text-green-400 font-medium">Lead: {counts.lead}</span>
       </span>
       <span className="flex items-center gap-1 text-xs">
         <span className="h-2 w-2 rounded-full bg-blue-400" />
-        <span className="text-blue-400 font-medium">Agree: {counts.agree}</span>
+        <span className="text-blue-600 dark:text-blue-400 font-medium">Agree: {counts.agree}</span>
       </span>
       <span className="flex items-center gap-1 text-xs">
         <span className="h-2 w-2 rounded-full bg-amber-400" />
-        <span className="text-amber-400 font-medium">Coach: {counts.coach}</span>
+        <span className="text-amber-600 dark:text-amber-400 font-medium">Coach: {counts.coach}</span>
       </span>
     </div>
   );
@@ -450,7 +450,7 @@ function FormCompletionBadges({ detail }: { detail: ReviewDetail }) {
         variant="outline"
         className={`text-[10px] gap-1 ${
           detail.selfFormComplete
-            ? 'bg-green-400/10 text-green-400 border-green-400/20'
+            ? 'bg-green-400/10 text-green-600 dark:text-green-400 border-green-400/20'
             : 'bg-muted/30 text-muted-foreground border-border'
         }`}
       >
@@ -465,7 +465,7 @@ function FormCompletionBadges({ detail }: { detail: ReviewDetail }) {
         variant="outline"
         className={`text-[10px] gap-1 ${
           detail.managerFormComplete
-            ? 'bg-green-400/10 text-green-400 border-green-400/20'
+            ? 'bg-green-400/10 text-green-600 dark:text-green-400 border-green-400/20'
             : 'bg-muted/30 text-muted-foreground border-border'
         }`}
       >
@@ -478,7 +478,7 @@ function FormCompletionBadges({ detail }: { detail: ReviewDetail }) {
       </Badge>
       <Badge
         variant="outline"
-        className="text-[10px] bg-indigo-500/10 text-indigo-400 border-indigo-500/20"
+        className="text-[10px] bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20"
       >
         Both Forms Required
       </Badge>
@@ -502,7 +502,7 @@ function PerformanceDataSection({ data }: { data: ReviewDetail['performanceData'
       </h4>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div className="rounded-lg bg-muted/30 px-3 py-3 text-center">
-          <Target className="mx-auto h-4 w-4 text-indigo-400 mb-1" />
+          <Target className="mx-auto h-4 w-4 text-indigo-600 dark:text-indigo-400 mb-1" />
           <p className="text-lg font-bold text-foreground">
             {data.rocksCompleted}/{data.rocksTotal}
           </p>
@@ -510,7 +510,7 @@ function PerformanceDataSection({ data }: { data: ReviewDetail['performanceData'
           <Progress value={rockPct} className="mt-1.5 h-1 bg-muted/30" />
         </div>
         <div className="rounded-lg bg-muted/30 px-3 py-3 text-center">
-          <ListChecks className="mx-auto h-4 w-4 text-cyan-400 mb-1" />
+          <ListChecks className="mx-auto h-4 w-4 text-cyan-600 dark:text-cyan-400 mb-1" />
           <p className="text-lg font-bold text-foreground">
             {data.todosCompleted}/{data.todosTotal}
           </p>
@@ -518,20 +518,20 @@ function PerformanceDataSection({ data }: { data: ReviewDetail['performanceData'
           <Progress value={todoPct} className="mt-1.5 h-1 bg-muted/30" />
         </div>
         <div className="rounded-lg bg-muted/30 px-3 py-3 text-center">
-          <TrendingUp className="mx-auto h-4 w-4 text-green-400 mb-1" />
+          <TrendingUp className="mx-auto h-4 w-4 text-green-600 dark:text-green-400 mb-1" />
           <p className="text-lg font-bold text-foreground">
-            <span className="text-green-400">{data.kpisOnTrack}</span>
+            <span className="text-green-600 dark:text-green-400">{data.kpisOnTrack}</span>
             <span className="text-muted-foreground/60 text-sm">/{data.kpisTotal}</span>
           </p>
           <p className="text-[10px] text-muted-foreground">KPIs On-Track</p>
           <div className="mt-1.5 flex items-center justify-center gap-1">
-            <span className={`text-[10px] font-medium ${data.kpisOnTrack >= data.kpisTotal * 0.7 ? 'text-green-400' : 'text-amber-400'}`}>
+            <span className={`text-[10px] font-medium ${data.kpisOnTrack >= data.kpisTotal * 0.7 ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}`}>
               {data.kpisTotal - data.kpisOnTrack} off-track
             </span>
           </div>
         </div>
         <div className="rounded-lg bg-muted/30 px-3 py-3 text-center">
-          <Users className="mx-auto h-4 w-4 text-purple-400 mb-1" />
+          <Users className="mx-auto h-4 w-4 text-purple-600 dark:text-purple-400 mb-1" />
           <p className="text-lg font-bold text-foreground">{data.meetingAttendance}%</p>
           <p className="text-[10px] text-muted-foreground">Meeting Attendance</p>
           <Progress value={data.meetingAttendance} className="mt-1.5 h-1 bg-muted/30" />
@@ -799,10 +799,10 @@ export default function ReviewsPage() {
               {tab.key === 'compare' && <ArrowLeftRight className="h-3 w-3" />}
               {tab.label}
               {tab.key === 'self' && detail.selfFormComplete && (
-                <CheckCircle2 className="h-3 w-3 text-green-400" />
+                <CheckCircle2 className="h-3 w-3 text-green-600 dark:text-green-400" />
               )}
               {tab.key === 'manager' && detail.managerFormComplete && (
-                <CheckCircle2 className="h-3 w-3 text-green-400" />
+                <CheckCircle2 className="h-3 w-3 text-green-600 dark:text-green-400" />
               )}
             </button>
           ))}
@@ -886,7 +886,7 @@ export default function ReviewsPage() {
 
             {/* LAC summary */}
             <div className="flex items-center gap-4 rounded-lg bg-muted/30 px-4 py-3">
-              <Award className="h-4 w-4 text-indigo-400" />
+              <Award className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <LACSummary detail={detail} />
             </div>
           </>
@@ -896,7 +896,7 @@ export default function ReviewsPage() {
         {currentTab === 'compare' && (
           <>
             <div className="flex items-center gap-3 rounded-lg bg-indigo-500/5 border border-indigo-500/20 px-4 py-3">
-              <ArrowLeftRight className="h-4 w-4 text-indigo-400" />
+              <ArrowLeftRight className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <div className="flex-1">
                 <p className="text-xs font-medium text-foreground">
                   Agreement Score: {getAgreementScore(detail)}%
@@ -948,7 +948,7 @@ export default function ReviewsPage() {
                           <CoreValueRatingDot rating={cv.managerRating} />
                         </div>
                         {level === 'major' && (
-                          <AlertTriangle className="h-3.5 w-3.5 text-red-400" />
+                          <AlertTriangle className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
                         )}
                       </div>
                     </div>
@@ -987,7 +987,7 @@ export default function ReviewsPage() {
                           <CCCRatingBadge rating={c.managerRating} />
                         </div>
                         {level === 'major' && (
-                          <AlertTriangle className="h-3.5 w-3.5 text-red-400" />
+                          <AlertTriangle className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
                         )}
                       </div>
                     </div>
@@ -998,7 +998,7 @@ export default function ReviewsPage() {
 
             {/* Overall rating comparison */}
             <div className="flex items-center gap-4 rounded-lg bg-primary/5 px-4 py-3">
-              <Star className="h-5 w-5 text-amber-400 fill-amber-400" />
+              <Star className="h-5 w-5 text-amber-600 dark:text-amber-400 fill-amber-400" />
               <div className="flex-1 flex items-center gap-6">
                 <div>
                   <p className="text-[10px] text-muted-foreground/60">Self Rating</p>
@@ -1016,10 +1016,10 @@ export default function ReviewsPage() {
                   <p className="text-[10px] text-muted-foreground/60">Difference</p>
                   <p className={`text-sm font-semibold ${
                     Math.abs(detail.overallSelfRating - detail.overallManagerRating) <= 0.3
-                      ? 'text-green-400'
+                      ? 'text-green-600 dark:text-green-400'
                       : Math.abs(detail.overallSelfRating - detail.overallManagerRating) <= 0.8
-                        ? 'text-amber-400'
-                        : 'text-red-400'
+                        ? 'text-amber-600 dark:text-amber-400'
+                        : 'text-red-600 dark:text-red-400'
                   }`}>
                     {Math.abs(detail.overallSelfRating - detail.overallManagerRating).toFixed(1)}
                   </p>
@@ -1029,7 +1029,7 @@ export default function ReviewsPage() {
 
             {/* LAC summary */}
             <div className="flex items-center gap-4 rounded-lg bg-muted/30 px-4 py-3">
-              <Award className="h-4 w-4 text-indigo-400" />
+              <Award className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <LACSummary detail={detail} />
             </div>
           </>
@@ -1083,10 +1083,10 @@ export default function ReviewsPage() {
                     <p
                       className={`mt-1 text-sm font-semibold ${
                         c.managerRating === 'Exceeds'
-                          ? 'text-green-400'
+                          ? 'text-green-600 dark:text-green-400'
                           : c.managerRating === 'Meets'
-                            ? 'text-blue-400'
-                            : 'text-red-400'
+                            ? 'text-blue-600 dark:text-blue-400'
+                            : 'text-red-600 dark:text-red-400'
                       }`}
                     >
                       {c.managerRating}
@@ -1098,7 +1098,7 @@ export default function ReviewsPage() {
 
             {/* LAC summary */}
             <div className="flex items-center gap-4 rounded-lg bg-muted/30 px-4 py-3">
-              <Award className="h-4 w-4 text-indigo-400" />
+              <Award className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <LACSummary detail={detail} />
             </div>
 
@@ -1121,9 +1121,9 @@ export default function ReviewsPage() {
                       className="mt-0.5 shrink-0 hover:opacity-70 transition-opacity"
                     >
                       {g.met ? (
-                        <CheckCircle2 className="h-4 w-4 text-green-400" />
+                        <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
                       ) : (
-                        <Circle className="h-4 w-4 text-red-400" />
+                        <Circle className="h-4 w-4 text-red-600 dark:text-red-400" />
                       )}
                     </button>
                     <div className="flex-1 min-w-0">
@@ -1138,7 +1138,7 @@ export default function ReviewsPage() {
             {/* Strengths & Growth */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-green-400/60">
+                <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-green-600 dark:text-green-400/60">
                   Strengths
                 </h4>
                 <ul className="space-y-1.5">
@@ -1151,7 +1151,7 @@ export default function ReviewsPage() {
                 </ul>
               </div>
               <div>
-                <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-amber-400/60">
+                <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400/60">
                   Areas for Growth
                 </h4>
                 <ul className="space-y-1.5">
@@ -1167,7 +1167,7 @@ export default function ReviewsPage() {
 
             {/* Overall Rating */}
             <div className="flex items-center gap-3 rounded-lg bg-primary/5 px-4 py-3">
-              <Star className="h-5 w-5 text-amber-400 fill-amber-400" />
+              <Star className="h-5 w-5 text-amber-600 dark:text-amber-400 fill-amber-400" />
               <div className="flex-1">
                 <p className="text-sm font-semibold text-foreground">
                   Overall Rating: {detail.overallManagerRating}/5.0
@@ -1199,7 +1199,7 @@ export default function ReviewsPage() {
                 : 'border-border bg-muted/30'
             }`}>
               {detail.selfSigned ? (
-                <CheckCircle2 className="h-4 w-4 text-green-400" />
+                <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
               ) : (
                 <Circle className="h-4 w-4 text-muted-foreground/40" />
               )}
@@ -1208,7 +1208,7 @@ export default function ReviewsPage() {
                   {person.name} (Self)
                 </p>
                 {detail.selfSigned && detail.selfSignedDate ? (
-                  <p className="text-[10px] text-green-400">Signed {detail.selfSignedDate}</p>
+                  <p className="text-[10px] text-green-600 dark:text-green-400">Signed {detail.selfSignedDate}</p>
                 ) : (
                   <p className="text-[10px] text-muted-foreground/60">Awaiting signature</p>
                 )}
@@ -1233,7 +1233,7 @@ export default function ReviewsPage() {
                 : 'border-border bg-muted/30'
             }`}>
               {detail.managerSigned ? (
-                <CheckCircle2 className="h-4 w-4 text-green-400" />
+                <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
               ) : (
                 <Circle className="h-4 w-4 text-muted-foreground/40" />
               )}
@@ -1242,7 +1242,7 @@ export default function ReviewsPage() {
                   {person.manager} (Manager)
                 </p>
                 {detail.managerSigned && detail.managerSignedDate ? (
-                  <p className="text-[10px] text-green-400">Signed {detail.managerSignedDate}</p>
+                  <p className="text-[10px] text-green-600 dark:text-green-400">Signed {detail.managerSignedDate}</p>
                 ) : (
                   <p className="text-[10px] text-muted-foreground/60">Awaiting signature</p>
                 )}
@@ -1362,13 +1362,13 @@ export default function ReviewsPage() {
                   </h2>
                   <Badge
                     variant="outline"
-                    className="bg-amber-400/10 text-amber-400 border-amber-400/20 text-[10px]"
+                    className="bg-amber-400/10 text-amber-600 dark:text-amber-400 border-amber-400/20 text-[10px]"
                   >
                     In Progress
                   </Badge>
                   <Badge
                     variant="outline"
-                    className="bg-red-400/10 text-red-400 border-red-400/20 text-[10px] gap-1"
+                    className="bg-red-400/10 text-red-600 dark:text-red-400 border-red-400/20 text-[10px] gap-1"
                   >
                     <Clock className="h-3 w-3" />
                     11 days remaining
@@ -1468,7 +1468,7 @@ export default function ReviewsPage() {
                             {localDetails[person.id].selfFormComplete && localDetails[person.id].managerFormComplete ? (
                               <Badge
                                 variant="outline"
-                                className="text-[9px] bg-green-400/10 text-green-400 border-green-400/20 gap-0.5"
+                                className="text-[9px] bg-green-400/10 text-green-600 dark:text-green-400 border-green-400/20 gap-0.5"
                               >
                                 <CheckCircle2 className="h-2.5 w-2.5" />
                                 <CheckCircle2 className="h-2.5 w-2.5" />
@@ -1477,7 +1477,7 @@ export default function ReviewsPage() {
                             ) : (
                               <Badge
                                 variant="outline"
-                                className="text-[9px] bg-amber-400/10 text-amber-400 border-amber-400/20"
+                                className="text-[9px] bg-amber-400/10 text-amber-600 dark:text-amber-400 border-amber-400/20"
                               >
                                 {localDetails[person.id].selfFormComplete ? '1' : '0'}/2 Forms
                               </Badge>
@@ -1490,10 +1490,10 @@ export default function ReviewsPage() {
                         <span
                           className={`text-[10px] font-medium ${
                             currentStep === 'Complete'
-                              ? 'text-green-400'
+                              ? 'text-green-600 dark:text-green-400'
                               : currentStep === 'Not Started'
                                 ? 'text-muted-foreground/60'
-                                : 'text-amber-400'
+                                : 'text-amber-600 dark:text-amber-400'
                           }`}
                         >
                           {currentStep}
@@ -1576,12 +1576,12 @@ export default function ReviewsPage() {
                         {cycle.completed} reviews
                       </span>
                       <span className="flex items-center gap-1.5">
-                        <Star className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
+                        <Star className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 fill-amber-400" />
                         {cycle.avgRating}/5.0 avg rating
                       </span>
                       <Badge
                         variant="outline"
-                        className="text-[10px] bg-green-400/10 text-green-400 border-green-400/20"
+                        className="text-[10px] bg-green-400/10 text-green-600 dark:text-green-400 border-green-400/20"
                       >
                         Completed
                       </Badge>
@@ -1636,14 +1636,14 @@ export default function ReviewsPage() {
                             <p className="text-[10px] text-muted-foreground">{person.role}</p>
                           </div>
                           <div className="flex items-center gap-1.5">
-                            <Star className="h-3 w-3 text-amber-400 fill-amber-400" />
+                            <Star className="h-3 w-3 text-amber-600 dark:text-amber-400 fill-amber-400" />
                             <span className="text-xs font-medium text-foreground">
                               {(3.5 + ((person.name.charCodeAt(0) % 15) / 10)).toFixed(1)}
                             </span>
                           </div>
                           <Badge
                             variant="outline"
-                            className="text-[9px] bg-green-400/10 text-green-400 border-green-400/20"
+                            className="text-[9px] bg-green-400/10 text-green-600 dark:text-green-400 border-green-400/20"
                           >
                             Complete
                           </Badge>
@@ -1735,7 +1735,7 @@ export default function ReviewsPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Shield className="h-4 w-4 text-indigo-400" />
+              <Shield className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               Sign & Submit Review
             </DialogTitle>
             <DialogDescription>
@@ -1794,7 +1794,7 @@ export default function ReviewsPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-indigo-400" />
+              <Calendar className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               Schedule Discussion
             </DialogTitle>
             <DialogDescription>
@@ -1876,7 +1876,7 @@ export default function ReviewsPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Plus className="h-4 w-4 text-indigo-400" />
+              <Plus className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               Create Follow-up Action Item
             </DialogTitle>
             <DialogDescription>
@@ -1961,7 +1961,7 @@ export default function ReviewsPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Plus className="h-4 w-4 text-indigo-400" />
+              <Plus className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               Start New Review Cycle
             </DialogTitle>
             <DialogDescription>
@@ -2049,7 +2049,7 @@ export default function ReviewsPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-indigo-400" />
+              <FileText className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               {templatePreview?.name}
             </DialogTitle>
             <DialogDescription>
@@ -2122,7 +2122,7 @@ export default function ReviewsPage() {
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <PenLine className="h-4 w-4 text-indigo-400" />
+              <PenLine className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               Customize Review Template
             </DialogTitle>
             <DialogDescription>
@@ -2171,7 +2171,7 @@ export default function ReviewsPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-8 px-2 text-muted-foreground hover:text-red-400"
+                        className="h-8 px-2 text-muted-foreground hover:text-red-600 dark:text-red-400"
                         onClick={() => setCustomQuestionInputs((prev) => prev.filter((_, j) => j !== i))}
                       >
                         &times;
@@ -2253,9 +2253,9 @@ export default function ReviewsPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              {reviewFormModal?.mode === 'start' && <Play className="h-4 w-4 text-green-400" />}
-              {reviewFormModal?.mode === 'continue' && <PenLine className="h-4 w-4 text-amber-400" />}
-              {reviewFormModal?.mode === 'view' && <Eye className="h-4 w-4 text-indigo-400" />}
+              {reviewFormModal?.mode === 'start' && <Play className="h-4 w-4 text-green-600 dark:text-green-400" />}
+              {reviewFormModal?.mode === 'continue' && <PenLine className="h-4 w-4 text-amber-600 dark:text-amber-400" />}
+              {reviewFormModal?.mode === 'view' && <Eye className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />}
               {reviewFormModal?.mode === 'start' && 'Start Review'}
               {reviewFormModal?.mode === 'continue' && 'Continue Review'}
               {reviewFormModal?.mode === 'view' && 'View Completed Review'}
@@ -2284,7 +2284,7 @@ export default function ReviewsPage() {
                     className="flex items-center gap-2 rounded-lg bg-muted/30 px-3 py-2"
                   >
                     {i < currentStep ? (
-                      <CheckCircle2 className="h-4 w-4 text-green-400 shrink-0" />
+                      <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400 shrink-0" />
                     ) : i === currentStep ? (
                       <div className="h-4 w-4 rounded-full border-2 border-amber-400 shrink-0" />
                     ) : (

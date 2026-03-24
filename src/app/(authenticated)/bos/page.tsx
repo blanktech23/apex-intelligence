@@ -86,7 +86,7 @@ const quickStats: QuickStat[] = [
     label: "Team Members",
     value: "18",
     icon: Users,
-    iconColor: "text-indigo-400",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
     iconBg: "bg-indigo-500/10",
     change: "+2 this month",
     changePositive: true,
@@ -96,7 +96,7 @@ const quickStats: QuickStat[] = [
     label: "Active Goals",
     value: "12",
     icon: Flag,
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
     change: "8 on track",
     changePositive: true,
@@ -106,7 +106,7 @@ const quickStats: QuickStat[] = [
     label: "Upcoming Meetings",
     value: "3",
     icon: CalendarDays,
-    iconColor: "text-cyan-400",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
     iconBg: "bg-cyan-500/10",
     change: "Next: Tomorrow 9 AM",
     href: "/bos/meetings",
@@ -115,7 +115,7 @@ const quickStats: QuickStat[] = [
     label: "Open Issues",
     value: "7",
     icon: CircleAlert,
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-500/10",
     change: "2 overdue",
     changePositive: false,
@@ -124,26 +124,26 @@ const quickStats: QuickStat[] = [
 ];
 
 const modules: ModuleCard[] = [
-  { name: "KPI Dashboard", description: "Track key performance indicators across your organization", icon: Target, href: "/bos/kpis", status: "active", iconColor: "text-indigo-400", iconBg: "bg-indigo-500/10", stat: "24 KPIs tracked" },
-  { name: "Meetings", description: "Manage Level 10 meetings, agendas, and action items", icon: CalendarDays, href: "/bos/meetings", status: "active", iconColor: "text-cyan-400", iconBg: "bg-cyan-500/10", stat: "3 upcoming" },
-  { name: "Goals & Milestones", description: "Set quarterly rocks and annual goals with tracking", icon: Flag, href: "/bos/goals", status: "active", iconColor: "text-green-400", iconBg: "bg-green-500/10", stat: "12 active rocks" },
-  { name: "Issues", description: "Identify, discuss, and solve organizational issues", icon: CircleAlert, href: "/bos/issues", status: "active", iconColor: "text-amber-400", iconBg: "bg-amber-500/10", stat: "7 open" },
-  { name: "Action Items", description: "Track to-dos with owners and due dates", icon: ListChecks, href: "/bos/actions", status: "active", iconColor: "text-purple-400", iconBg: "bg-purple-500/10", stat: "12 open, 3 overdue" },
-  { name: "Org Chart", description: "Visual organization structure with seats and roles", icon: Network, href: "/bos/org-chart", status: "active", iconColor: "text-blue-400", iconBg: "bg-blue-500/10", stat: "18 seats filled" },
-  { name: "People", description: "Team directory, roles, responsibilities, and reviews", icon: UserCircle, href: "/bos/people", status: "active", iconColor: "text-pink-400", iconBg: "bg-pink-500/10", stat: "18 team members" },
-  { name: "Vision Plan", description: "10-year vision, 3-year picture, 1-year plan", icon: Eye, href: "/bos/vision", status: "active", iconColor: "text-violet-400", iconBg: "bg-violet-500/10", stat: "Last updated 3d ago" },
-  { name: "Announcements", description: "Company news, wins, and team updates", icon: Megaphone, href: "/bos/announcements", status: "active", iconColor: "text-emerald-400", iconBg: "bg-emerald-500/10", stat: "6 this week" },
-  { name: "Reviews", description: "Quarterly and annual 1-on-1 performance reviews", icon: Star, href: "/bos/reviews", status: "active", iconColor: "text-yellow-400", iconBg: "bg-yellow-500/10", stat: "2 pending" },
-  { name: "Processes", description: "Document and optimize core business processes", icon: Workflow, href: "/bos/processes", status: "active", iconColor: "text-rose-400", iconBg: "bg-rose-500/10", stat: "8 documented" },
-  { name: "Assessments", description: "Organizational health and team assessments", icon: ClipboardCheck, href: "/bos/assessments", status: "beta", iconColor: "text-orange-400", iconBg: "bg-orange-500/10", stat: "3 available" },
-  { name: "Fit Check", description: "Evaluate team member alignment with core values and GWC", icon: UserCheck, href: "/bos/fit-check", status: "beta", iconColor: "text-lime-400", iconBg: "bg-lime-500/10", stat: "18 profiles" },
-  { name: "Knowledge Portal", description: "Company processes, SOPs, and knowledge base", icon: BookOpen, href: "/bos/knowledge", status: "active", iconColor: "text-teal-400", iconBg: "bg-teal-500/10", stat: "34 articles" },
-  { name: "Analytics", description: "Advanced analytics and trend reporting", icon: TrendingUp, href: "/bos/analytics", status: "active", iconColor: "text-emerald-400", iconBg: "bg-emerald-500/10", stat: "5 dashboards" },
-  { name: "Scorecards", description: "Weekly team and individual scorecards", icon: BarChart3, href: "/bos/kpis", status: "active", iconColor: "text-orange-400", iconBg: "bg-orange-500/10", stat: "4 active" },
-  { name: "My Dashboard", description: "Personal workspace with your tasks, goals, and meetings", icon: Briefcase, href: "/bos/my-dashboard", status: "active", iconColor: "text-indigo-400", iconBg: "bg-indigo-500/10", stat: "5 items today" },
+  { name: "KPI Dashboard", description: "Track key performance indicators across your organization", icon: Target, href: "/bos/kpis", status: "active", iconColor: "text-indigo-600 dark:text-indigo-400", iconBg: "bg-indigo-500/10", stat: "24 KPIs tracked" },
+  { name: "Meetings", description: "Manage Level 10 meetings, agendas, and action items", icon: CalendarDays, href: "/bos/meetings", status: "active", iconColor: "text-cyan-600 dark:text-cyan-400", iconBg: "bg-cyan-500/10", stat: "3 upcoming" },
+  { name: "Goals & Milestones", description: "Set quarterly rocks and annual goals with tracking", icon: Flag, href: "/bos/goals", status: "active", iconColor: "text-green-600 dark:text-green-400", iconBg: "bg-green-500/10", stat: "12 active rocks" },
+  { name: "Issues", description: "Identify, discuss, and solve organizational issues", icon: CircleAlert, href: "/bos/issues", status: "active", iconColor: "text-amber-600 dark:text-amber-400", iconBg: "bg-amber-500/10", stat: "7 open" },
+  { name: "Action Items", description: "Track to-dos with owners and due dates", icon: ListChecks, href: "/bos/actions", status: "active", iconColor: "text-purple-600 dark:text-purple-400", iconBg: "bg-purple-500/10", stat: "12 open, 3 overdue" },
+  { name: "Org Chart", description: "Visual organization structure with seats and roles", icon: Network, href: "/bos/org-chart", status: "active", iconColor: "text-blue-600 dark:text-blue-400", iconBg: "bg-blue-500/10", stat: "18 seats filled" },
+  { name: "People", description: "Team directory, roles, responsibilities, and reviews", icon: UserCircle, href: "/bos/people", status: "active", iconColor: "text-pink-600 dark:text-pink-400", iconBg: "bg-pink-500/10", stat: "18 team members" },
+  { name: "Vision Plan", description: "10-year vision, 3-year picture, 1-year plan", icon: Eye, href: "/bos/vision", status: "active", iconColor: "text-violet-600 dark:text-violet-400", iconBg: "bg-violet-500/10", stat: "Last updated 3d ago" },
+  { name: "Announcements", description: "Company news, wins, and team updates", icon: Megaphone, href: "/bos/announcements", status: "active", iconColor: "text-emerald-600 dark:text-emerald-400", iconBg: "bg-emerald-500/10", stat: "6 this week" },
+  { name: "Reviews", description: "Quarterly and annual 1-on-1 performance reviews", icon: Star, href: "/bos/reviews", status: "active", iconColor: "text-yellow-600 dark:text-yellow-400", iconBg: "bg-yellow-500/10", stat: "2 pending" },
+  { name: "Processes", description: "Document and optimize core business processes", icon: Workflow, href: "/bos/processes", status: "active", iconColor: "text-rose-600 dark:text-rose-400", iconBg: "bg-rose-500/10", stat: "8 documented" },
+  { name: "Assessments", description: "Organizational health and team assessments", icon: ClipboardCheck, href: "/bos/assessments", status: "beta", iconColor: "text-orange-600 dark:text-orange-400", iconBg: "bg-orange-500/10", stat: "3 available" },
+  { name: "Fit Check", description: "Evaluate team member alignment with core values and GWC", icon: UserCheck, href: "/bos/fit-check", status: "beta", iconColor: "text-lime-600 dark:text-lime-400", iconBg: "bg-lime-500/10", stat: "18 profiles" },
+  { name: "Knowledge Portal", description: "Company processes, SOPs, and knowledge base", icon: BookOpen, href: "/bos/knowledge", status: "active", iconColor: "text-teal-600 dark:text-teal-400", iconBg: "bg-teal-500/10", stat: "34 articles" },
+  { name: "Analytics", description: "Advanced analytics and trend reporting", icon: TrendingUp, href: "/bos/analytics", status: "active", iconColor: "text-emerald-600 dark:text-emerald-400", iconBg: "bg-emerald-500/10", stat: "5 dashboards" },
+  { name: "Scorecards", description: "Weekly team and individual scorecards", icon: BarChart3, href: "/bos/kpis", status: "active", iconColor: "text-orange-600 dark:text-orange-400", iconBg: "bg-orange-500/10", stat: "4 active" },
+  { name: "My Dashboard", description: "Personal workspace with your tasks, goals, and meetings", icon: Briefcase, href: "/bos/my-dashboard", status: "active", iconColor: "text-indigo-600 dark:text-indigo-400", iconBg: "bg-indigo-500/10", stat: "5 items today" },
   { name: "System Settings", description: "Configure Business OS preferences and defaults", icon: Settings, href: "/bos/onboarding", status: "active", iconColor: "text-gray-500 dark:text-gray-400", iconBg: "bg-gray-500/10" },
-  { name: "Integrations Hub", description: "Connect external tools and sync data", icon: Layers, href: "/bos/onboarding", status: "active", iconColor: "text-sky-400", iconBg: "bg-sky-500/10", stat: "2 connected" },
-  { name: "Strategic Compass", description: "AI-powered strategic direction insights", icon: Compass, href: "/bos/vision", status: "beta", iconColor: "text-fuchsia-400", iconBg: "bg-fuchsia-500/10" },
+  { name: "Integrations Hub", description: "Connect external tools and sync data", icon: Layers, href: "/bos/onboarding", status: "active", iconColor: "text-sky-600 dark:text-sky-400", iconBg: "bg-sky-500/10", stat: "2 connected" },
+  { name: "Strategic Compass", description: "AI-powered strategic direction insights", icon: Compass, href: "/bos/vision", status: "beta", iconColor: "text-fuchsia-600 dark:text-fuchsia-400", iconBg: "bg-fuchsia-500/10" },
 ];
 
 const initialChecklist: ChecklistItem[] = [
@@ -241,7 +241,7 @@ export default function BosHubPage() {
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
                 <div className="inline-flex rounded-lg bg-indigo-500/10 p-2.5">
-                  <Rocket className="size-5 text-indigo-400" />
+                  <Rocket className="size-5 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-foreground">Setup Wizard</h2>
@@ -274,7 +274,7 @@ export default function BosHubPage() {
                   }`}
                 >
                   {s.done ? (
-                    <CheckCircle2 className="h-5 w-5 shrink-0 text-green-400" />
+                    <CheckCircle2 className="h-5 w-5 shrink-0 text-green-600 dark:text-green-400" />
                   ) : (
                     <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border text-[10px] font-bold text-muted-foreground">
                       {s.step}
@@ -359,7 +359,7 @@ export default function BosHubPage() {
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="inline-flex rounded-lg bg-indigo-500/10 p-2.5">
-                <Rocket className="size-5 text-indigo-400" />
+                <Rocket className="size-5 text-indigo-600 dark:text-indigo-400" />
               </div>
               <div>
                 <h2 className="text-base font-semibold text-foreground">Getting Started</h2>
@@ -394,9 +394,9 @@ export default function BosHubPage() {
                   className="shrink-0"
                 >
                   {item.completed ? (
-                    <CheckCircle2 className="h-4 w-4 text-green-400" />
+                    <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
                   ) : (
-                    <Circle className="h-4 w-4 text-muted-foreground/40 hover:text-indigo-400 transition-colors" />
+                    <Circle className="h-4 w-4 text-muted-foreground/40 hover:text-indigo-600 dark:text-indigo-400 transition-colors" />
                   )}
                 </button>
                 <Link href={item.href} className="flex-1 flex items-center gap-2">
@@ -456,7 +456,7 @@ export default function BosHubPage() {
                 {module.stat && (
                   <p className="mt-1.5 text-[11px] text-muted-foreground/70">{module.stat}</p>
                 )}
-                <div className="mt-3 flex items-center gap-1 text-xs font-medium text-indigo-400">
+                <div className="mt-3 flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400">
                   Open <ArrowRight className="h-3 w-3" />
                 </div>
               </div>

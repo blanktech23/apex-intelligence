@@ -221,11 +221,11 @@ const initialArticles: Article[] = [
 // ---------------------------------------------------------------------------
 
 const categoryConfig: Record<ArticleCategory, { icon: typeof BookOpen; color: string }> = {
-  Onboarding: { icon: GraduationCap, color: 'bg-blue-500/15 text-blue-400 border-blue-500/30' },
-  'SOPs & Processes': { icon: FileText, color: 'bg-purple-500/15 text-purple-400 border-purple-500/30' },
-  'Company Policies': { icon: Shield, color: 'bg-red-500/15 text-red-400 border-red-500/30' },
-  'Training Materials': { icon: BookOpen, color: 'bg-amber-500/15 text-amber-400 border-amber-500/30' },
-  'Best Practices': { icon: CheckSquare, color: 'bg-green-500/15 text-green-400 border-green-500/30' },
+  Onboarding: { icon: GraduationCap, color: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30' },
+  'SOPs & Processes': { icon: FileText, color: 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border-purple-500/30' },
+  'Company Policies': { icon: Shield, color: 'bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/30' },
+  'Training Materials': { icon: BookOpen, color: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30' },
+  'Best Practices': { icon: CheckSquare, color: 'bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/30' },
 };
 
 const allCategories: (ArticleCategory | 'All Articles')[] = [
@@ -358,7 +358,7 @@ export default function KnowledgePage() {
                 {selectedArticle.required && (
                   <Badge
                     variant="outline"
-                    className="bg-red-500/10 text-red-400 border-red-500/20 text-[10px]"
+                    className="bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20 text-[10px]"
                   >
                     Required
                   </Badge>
@@ -366,7 +366,7 @@ export default function KnowledgePage() {
                 {selectedArticle.completionPercent === 100 && (
                   <Badge
                     variant="outline"
-                    className="bg-green-500/10 text-green-400 border-green-500/20 text-[10px]"
+                    className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20 text-[10px]"
                   >
                     <Check className="h-2.5 w-2.5 mr-0.5" />
                     Read
@@ -518,20 +518,20 @@ export default function KnowledgePage() {
       <div className="glass rounded-xl p-4">
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2">
-            <BookOpen className="h-4 w-4 text-indigo-400" />
+            <BookOpen className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <span className="text-sm font-medium text-foreground">{articles.length}</span>
             <span className="text-xs text-muted-foreground">Total Articles</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
-            <AlertCircle className="h-4 w-4 text-amber-400" />
-            <span className="text-sm font-medium text-amber-400">{requiredCount}</span>
+            <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+            <span className="text-sm font-medium text-amber-600 dark:text-amber-400">{requiredCount}</span>
             <span className="text-xs text-muted-foreground">Required Reading</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-            <span className="text-sm font-medium text-green-400">
+            <span className="text-sm font-medium text-green-600 dark:text-green-400">
               {completedRequired}/{requiredCount}
             </span>
             <span className="text-xs text-muted-foreground">Required Completed</span>
@@ -595,7 +595,7 @@ export default function KnowledgePage() {
                       {article.required && (
                         <Badge
                           variant="outline"
-                          className="bg-red-500/10 text-red-400 border-red-500/20 text-[10px]"
+                          className="bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20 text-[10px]"
                         >
                           Required
                         </Badge>
@@ -679,7 +679,7 @@ export default function KnowledgePage() {
                         {article.required && (
                           <Badge
                             variant="outline"
-                            className="bg-red-500/10 text-red-400 border-red-500/20 text-[10px] shrink-0"
+                            className="bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20 text-[10px] shrink-0"
                           >
                             Required
                           </Badge>
@@ -701,7 +701,7 @@ export default function KnowledgePage() {
                         <span
                           className={`text-xs font-medium ${
                             article.completionPercent === 100
-                              ? 'text-green-400'
+                              ? 'text-green-600 dark:text-green-400'
                               : 'text-muted-foreground'
                           }`}
                         >

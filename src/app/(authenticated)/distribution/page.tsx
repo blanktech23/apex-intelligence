@@ -36,17 +36,17 @@ import {
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
-  "Pending Shipment": "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
-  "In Transit": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  Delivered: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  Delayed: "bg-red-500/20 text-red-400 border-red-500/30",
+  "Pending Shipment": "bg-zinc-500/20 text-zinc-600 dark:text-zinc-400 border-zinc-500/30",
+  "In Transit": "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
+  Delivered: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  Delayed: "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30",
 };
 
 const stats = [
-  { label: "Pending Shipment", value: "5", icon: Package, change: "2 ready today", color: "text-zinc-400" },
-  { label: "In Transit", value: "8", icon: Truck, change: "3 arriving tomorrow", color: "text-blue-400" },
-  { label: "Delivered", value: "42", icon: CheckCircle2, change: "+12 this week", color: "text-emerald-400" },
-  { label: "Avg Lead Time", value: "12 days", icon: Timer, change: "-1.5 vs last month", color: "text-amber-400" },
+  { label: "Pending Shipment", value: "5", icon: Package, change: "2 ready today", color: "text-zinc-600 dark:text-zinc-400" },
+  { label: "In Transit", value: "8", icon: Truck, change: "3 arriving tomorrow", color: "text-blue-600 dark:text-blue-400" },
+  { label: "Delivered", value: "42", icon: CheckCircle2, change: "+12 this week", color: "text-emerald-600 dark:text-emerald-400" },
+  { label: "Avg Lead Time", value: "12 days", icon: Timer, change: "-1.5 vs last month", color: "text-amber-600 dark:text-amber-400" },
 ];
 
 const shipments = [
@@ -222,7 +222,7 @@ export default function DistributionPage() {
                         <td className="py-2 text-foreground font-medium">{row.shipment}</td>
                         <td className="py-2 text-muted-foreground text-xs">{row.carrier}</td>
                         <td className="py-2 text-muted-foreground hidden sm:table-cell">{row.origin}</td>
-                        <td className="py-2 text-blue-400 text-xs">{row.location}</td>
+                        <td className="py-2 text-blue-600 dark:text-blue-400 text-xs">{row.location}</td>
                         <td className="py-2 text-right text-muted-foreground">{row.eta}</td>
                       </tr>
                     ))}
@@ -240,7 +240,7 @@ export default function DistributionPage() {
                   <div key={d.day} className="flex flex-col items-center rounded-lg border border-border bg-foreground/[0.02] px-4 py-3">
                     <span className="text-xs text-muted-foreground">{d.day}</span>
                     <span className="text-xl font-bold text-foreground mt-1">{d.count}</span>
-                    <span className={`text-xs mt-1 ${d.onTime ? "text-emerald-400" : "text-amber-400"}`}>
+                    <span className={`text-xs mt-1 ${d.onTime ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}`}>
                       {d.onTime ? "All on time" : "1 delayed"}
                     </span>
                   </div>
@@ -248,8 +248,8 @@ export default function DistributionPage() {
               </div>
               <div className="flex items-center gap-4 text-xs text-muted-foreground">
                 <span>Total: <span className="font-medium text-foreground">42 deliveries</span></span>
-                <span>On-time: <span className="font-medium text-emerald-400">97.6%</span></span>
-                <span>Issues: <span className="font-medium text-amber-400">1 delayed (Thursday)</span></span>
+                <span>On-time: <span className="font-medium text-emerald-600 dark:text-emerald-400">97.6%</span></span>
+                <span>Issues: <span className="font-medium text-amber-600 dark:text-amber-400">1 delayed (Thursday)</span></span>
               </div>
             </div>
           )}
@@ -272,7 +272,7 @@ export default function DistributionPage() {
                       <tr key={row.month} className="border-b border-border/50">
                         <td className="py-2 text-foreground font-medium">{row.month}</td>
                         <td className="py-2 text-center text-muted-foreground">{row.days} days</td>
-                        <td className={`py-2 text-center text-xs ${row.trend === "down" ? "text-emerald-400" : "text-amber-400"}`}>
+                        <td className={`py-2 text-center text-xs ${row.trend === "down" ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}`}>
                           {row.trend === "down" ? "Improving" : "Increased"}
                         </td>
                         <td className="py-2 text-right">
@@ -285,7 +285,7 @@ export default function DistributionPage() {
                   </tbody>
                 </table>
               </div>
-              <div className="mt-3 text-xs text-muted-foreground">Overall trend: <span className="text-emerald-400 font-medium">-3 days</span> improvement over 6 months</div>
+              <div className="mt-3 text-xs text-muted-foreground">Overall trend: <span className="text-emerald-600 dark:text-emerald-400 font-medium">-3 days</span> improvement over 6 months</div>
             </div>
           )}
         </div>
@@ -384,14 +384,14 @@ export default function DistributionPage() {
                     return (
                       <div key={step} className="flex items-center gap-3">
                         <div className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-medium ${
-                          isComplete ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" :
-                          isCurrent ? "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30" :
+                          isComplete ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30" :
+                          isCurrent ? "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30" :
                           "bg-foreground/5 text-muted-foreground border border-border"
                         }`}>
                           {isComplete ? <CheckCircle2 className="h-3.5 w-3.5" /> : i + 1}
                         </div>
-                        <span className={`text-sm ${isCurrent ? "font-medium text-foreground" : isComplete ? "text-emerald-400" : "text-muted-foreground"}`}>{step}</span>
-                        {isCurrent && <Badge variant="outline" className="bg-indigo-500/10 text-indigo-400 border-indigo-500/30 text-[10px] px-1.5 py-0">Current</Badge>}
+                        <span className={`text-sm ${isCurrent ? "font-medium text-foreground" : isComplete ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`}>{step}</span>
+                        {isCurrent && <Badge variant="outline" className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/30 text-[10px] px-1.5 py-0">Current</Badge>}
                       </div>
                     );
                   })}

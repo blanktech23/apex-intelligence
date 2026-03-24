@@ -300,11 +300,11 @@ const ordersData: Record<string, {
 };
 
 const statusColors: Record<string, string> = {
-  Open: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  Processing: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  "In Production": "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  Shipped: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  Delivered: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+  Open: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
+  Processing: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  "In Production": "bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/30",
+  Shipped: "bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30",
+  Delivered: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
 };
 
 const timelineIcons: Record<string, typeof Clock> = {
@@ -359,7 +359,7 @@ export default function OrderDetailPage() {
         </Link>
         <div className="flex flex-wrap items-center gap-4">
           <div className="rounded-xl bg-indigo-500/10 p-3">
-            <Package className="h-6 w-6 text-indigo-400" />
+            <Package className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3">
@@ -418,7 +418,7 @@ export default function OrderDetailPage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="flex items-start gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <User className="h-4 w-4 text-indigo-400" />
+                  <User className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Contact</p>
@@ -428,7 +428,7 @@ export default function OrderDetailPage() {
               </div>
               <div className="flex items-start gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <Building2 className="h-4 w-4 text-indigo-400" />
+                  <Building2 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Company</p>
@@ -497,7 +497,7 @@ export default function OrderDetailPage() {
           {/* Notes / Comments */}
           <Card className="glass border-border p-5">
             <div className="flex items-center gap-2 mb-4">
-              <MessageSquare className="h-4 w-4 text-indigo-400" />
+              <MessageSquare className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                 Notes & Comments
               </h3>
@@ -561,7 +561,7 @@ export default function OrderDetailPage() {
           {/* Status Timeline */}
           <Card className="glass border-border p-5">
             <div className="flex items-center gap-2 mb-4">
-              <FileText className="h-4 w-4 text-indigo-400" />
+              <FileText className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                 Status Timeline
               </h3>
@@ -581,7 +581,7 @@ export default function OrderDetailPage() {
                     >
                       <Icon
                         className={`h-3.5 w-3.5 ${
-                          step.completed ? "text-emerald-400" : "text-muted-foreground"
+                          step.completed ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"
                         }`}
                       />
                     </div>
@@ -596,7 +596,7 @@ export default function OrderDetailPage() {
                       <p className="text-xs text-muted-foreground">{step.date}</p>
                     </div>
                     {step.completed && (
-                      <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-1.5 shrink-0" />
+                      <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mt-1.5 shrink-0" />
                     )}
                   </div>
                 );
@@ -661,7 +661,7 @@ export default function OrderDetailPage() {
                   }, 1000);
                 }}
               >
-                <Download className="h-4 w-4 text-indigo-400" />
+                <Download className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 {downloadingSide ? "Downloading..." : "Download Invoice"}
               </Button>
               <Button
@@ -669,7 +669,7 @@ export default function OrderDetailPage() {
                 className="w-full glass border-border text-foreground hover:bg-foreground/[0.05] justify-start gap-2"
                 onClick={() => setShowTracking(true)}
               >
-                <MapPin className="h-4 w-4 text-indigo-400" />
+                <MapPin className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 Track Shipment
               </Button>
               <Button
@@ -683,7 +683,7 @@ export default function OrderDetailPage() {
                   setShowReorderDialog(true);
                 }}
               >
-                <Package className="h-4 w-4 text-indigo-400" />
+                <Package className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 Reorder
               </Button>
             </div>
@@ -823,9 +823,9 @@ export default function OrderDetailPage() {
                     }`}
                   >
                     {step.done ? (
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                     ) : step.pending ? (
-                      <Clock className="h-3.5 w-3.5 text-amber-400" />
+                      <Clock className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                     ) : (
                       <Circle className="h-3.5 w-3.5 text-muted-foreground" />
                     )}
@@ -835,7 +835,7 @@ export default function OrderDetailPage() {
                       {step.label}
                     </p>
                     {step.date && <p className="text-xs text-muted-foreground">{step.date}</p>}
-                    {step.note && <p className="text-xs text-indigo-400 mt-0.5">{step.note}</p>}
+                    {step.note && <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-0.5">{step.note}</p>}
                   </div>
                 </div>
               ))}

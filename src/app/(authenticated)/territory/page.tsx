@@ -49,16 +49,16 @@ import {
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
-  Active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  Prospect: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  "At Risk": "bg-red-500/20 text-red-400 border-red-500/30",
+  Active: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  Prospect: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
+  "At Risk": "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30",
 };
 
 const stats = [
-  { label: "Total Accounts", value: "32", icon: Users, change: "+2 this quarter", color: "text-indigo-400" },
-  { label: "Active", value: "24", icon: TrendingUp, change: "75% of total", color: "text-emerald-400" },
-  { label: "Prospects", value: "8", icon: UserPlus, change: "3 warm leads", color: "text-blue-400" },
-  { label: "Revenue MTD", value: "$67K", icon: DollarSign, change: "+9.4% MoM", color: "text-amber-400" },
+  { label: "Total Accounts", value: "32", icon: Users, change: "+2 this quarter", color: "text-indigo-600 dark:text-indigo-400" },
+  { label: "Active", value: "24", icon: TrendingUp, change: "75% of total", color: "text-emerald-600 dark:text-emerald-400" },
+  { label: "Prospects", value: "8", icon: UserPlus, change: "3 warm leads", color: "text-blue-600 dark:text-blue-400" },
+  { label: "Revenue MTD", value: "$67K", icon: DollarSign, change: "+9.4% MoM", color: "text-amber-600 dark:text-amber-400" },
 ];
 
 type Account = {
@@ -518,19 +518,19 @@ export default function TerritoryPage() {
                 <div className="space-y-2.5">
                   <div className="flex items-center gap-3">
                     <div className="rounded-lg bg-indigo-500/10 p-2">
-                      <Phone className="h-3.5 w-3.5 text-indigo-400" />
+                      <Phone className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
                     </div>
                     <span className="text-sm text-foreground">{selectedAccount.phone}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="rounded-lg bg-indigo-500/10 p-2">
-                      <Mail className="h-3.5 w-3.5 text-indigo-400" />
+                      <Mail className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
                     </div>
                     <span className="text-sm text-foreground">{selectedAccount.email}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="rounded-lg bg-indigo-500/10 p-2">
-                      <Building2 className="h-3.5 w-3.5 text-indigo-400" />
+                      <Building2 className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
                     </div>
                     <span className="text-sm text-foreground">{selectedAccount.address}</span>
                   </div>
@@ -643,7 +643,7 @@ export default function TerritoryPage() {
                     </div>
                     <div>
                       <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                        Notes <span className="text-red-400">*</span>
+                        Notes <span className="text-red-600 dark:text-red-400">*</span>
                       </label>
                       <textarea
                         placeholder="What happened during the visit?"
@@ -700,7 +700,7 @@ export default function TerritoryPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <div className="rounded-lg bg-indigo-500/10 p-2">
-                <UserPlus className="h-4 w-4 text-indigo-400" />
+                <UserPlus className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               </div>
               Add Account
             </DialogTitle>
@@ -712,7 +712,7 @@ export default function TerritoryPage() {
           <div className="space-y-4 py-2">
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                Company Name <span className="text-red-400">*</span>
+                Company Name <span className="text-red-600 dark:text-red-400">*</span>
               </label>
               <Input
                 placeholder="Company name"
@@ -720,7 +720,7 @@ export default function TerritoryPage() {
                 onChange={(e) => { setAddForm((p) => ({ ...p, company: e.target.value })); setAddErrors((p) => ({ ...p, company: false })); }}
                 className={`${inputClass} ${addErrors.company ? errorClass : ""}`}
               />
-              {addErrors.company && <p className="text-xs text-red-400 mt-1">Required</p>}
+              {addErrors.company && <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>}
             </div>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

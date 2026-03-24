@@ -72,10 +72,10 @@ const project = {
   dueDate: "2026-06-15",
   progress: 67,
   team: [
-    { initials: "MR", name: "Marco Rivera", role: "Project Manager", color: "bg-indigo-500/30 text-indigo-300" },
-    { initials: "KL", name: "Karen Lee", role: "Site Supervisor", color: "bg-emerald-500/30 text-emerald-300" },
-    { initials: "DP", name: "David Park", role: "Lead Electrician", color: "bg-amber-500/30 text-amber-300" },
-    { initials: "JT", name: "James Torres", role: "Plumber", color: "bg-red-500/30 text-red-300" },
+    { initials: "MR", name: "Marco Rivera", role: "Project Manager", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
+    { initials: "KL", name: "Karen Lee", role: "Site Supervisor", color: "bg-emerald-500/30 text-emerald-700 dark:text-emerald-300" },
+    { initials: "DP", name: "David Park", role: "Lead Electrician", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
+    { initials: "JT", name: "James Torres", role: "Plumber", color: "bg-red-500/30 text-red-700 dark:text-red-300" },
   ],
 };
 
@@ -146,18 +146,18 @@ const documents = [
 ];
 
 const activity = [
-  { avatar: "KL", color: "bg-emerald-500/30 text-emerald-300", text: "Completed task: Electrical rough-in wiring", time: "2 hours ago", type: "task" },
-  { avatar: "AI", color: "bg-amber-500/30 text-amber-300", text: "Flagged potential 3-day delay on drywall delivery — auto-notified supplier", time: "3 hours ago", type: "ai" },
-  { avatar: "MR", color: "bg-indigo-500/30 text-indigo-300", text: "Uploaded revised floor plan blueprints v3", time: "5 hours ago", type: "upload" },
-  { avatar: "DP", color: "bg-amber-500/30 text-amber-300", text: "Updated task status: Plumbing rough-in to In Progress", time: "Yesterday, 4:30 PM", type: "status" },
-  { avatar: "AI", color: "bg-amber-500/30 text-amber-300", text: "Auto-scheduled plumbing inspection for Apr 18 based on timeline analysis", time: "Yesterday, 2:15 PM", type: "ai" },
-  { avatar: "MR", color: "bg-indigo-500/30 text-indigo-300", text: "Added note: Client approved accent wall color (Sherwin-Williams SW 6244)", time: "Yesterday, 11:00 AM", type: "note" },
-  { avatar: "AI", color: "bg-amber-500/30 text-amber-300", text: "Sent budget alert: electrical costs trending 8% over estimate", time: "2 days ago", type: "ai" },
-  { avatar: "JT", color: "bg-red-500/30 text-red-300", text: "Completed task: Rough-in inspection passed", time: "3 days ago", type: "task" },
-  { avatar: "KL", color: "bg-emerald-500/30 text-emerald-300", text: "Uploaded insurance certificate renewal", time: "4 days ago", type: "upload" },
-  { avatar: "MR", color: "bg-indigo-500/30 text-indigo-300", text: "Approved Change Order #001 — additional outlet placements ($2,400)", time: "5 days ago", type: "status" },
-  { avatar: "AI", color: "bg-amber-500/30 text-amber-300", text: "Generated weekly progress report and sent to client", time: "1 week ago", type: "ai" },
-  { avatar: "DP", color: "bg-amber-500/30 text-amber-300", text: "Completed task: Demolition of existing interior", time: "1 week ago", type: "task" },
+  { avatar: "KL", color: "bg-emerald-500/30 text-emerald-700 dark:text-emerald-300", text: "Completed task: Electrical rough-in wiring", time: "2 hours ago", type: "task" },
+  { avatar: "AI", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300", text: "Flagged potential 3-day delay on drywall delivery — auto-notified supplier", time: "3 hours ago", type: "ai" },
+  { avatar: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300", text: "Uploaded revised floor plan blueprints v3", time: "5 hours ago", type: "upload" },
+  { avatar: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300", text: "Updated task status: Plumbing rough-in to In Progress", time: "Yesterday, 4:30 PM", type: "status" },
+  { avatar: "AI", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300", text: "Auto-scheduled plumbing inspection for Apr 18 based on timeline analysis", time: "Yesterday, 2:15 PM", type: "ai" },
+  { avatar: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300", text: "Added note: Client approved accent wall color (Sherwin-Williams SW 6244)", time: "Yesterday, 11:00 AM", type: "note" },
+  { avatar: "AI", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300", text: "Sent budget alert: electrical costs trending 8% over estimate", time: "2 days ago", type: "ai" },
+  { avatar: "JT", color: "bg-red-500/30 text-red-700 dark:text-red-300", text: "Completed task: Rough-in inspection passed", time: "3 days ago", type: "task" },
+  { avatar: "KL", color: "bg-emerald-500/30 text-emerald-700 dark:text-emerald-300", text: "Uploaded insurance certificate renewal", time: "4 days ago", type: "upload" },
+  { avatar: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300", text: "Approved Change Order #001 — additional outlet placements ($2,400)", time: "5 days ago", type: "status" },
+  { avatar: "AI", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300", text: "Generated weekly progress report and sent to client", time: "1 week ago", type: "ai" },
+  { avatar: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300", text: "Completed task: Demolition of existing interior", time: "1 week ago", type: "task" },
 ];
 
 const budgetItems = [
@@ -188,14 +188,14 @@ const changeOrders = [
 // --- Helpers ---
 
 const priorityColors: Record<string, string> = {
-  High: "bg-red-500/20 text-red-400 border-red-500/30",
-  Medium: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  Low: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  High: "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30",
+  Medium: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  Low: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
 };
 
 const taskStatusColors: Record<string, string> = {
-  Completed: "text-emerald-400",
-  "In Progress": "text-amber-400",
+  Completed: "text-emerald-600 dark:text-emerald-400",
+  "In Progress": "text-amber-600 dark:text-amber-400",
   Upcoming: "text-muted-foreground",
 };
 
@@ -252,7 +252,7 @@ export default function ProjectDetailPage() {
               <h1 className="text-3xl font-bold text-gradient">{project.name}</h1>
               <Badge
                 variant="outline"
-                className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                className="bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
               >
                 {project.status}
               </Badge>
@@ -273,12 +273,12 @@ export default function ProjectDetailPage() {
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Budget</p>
               <p className="mt-1 text-2xl font-bold text-foreground">{formatCurrency(project.budget)}</p>
-              <p className="mt-1 text-xs text-amber-400">
+              <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
                 {formatCurrency(project.spent)} spent ({budgetPercent}%)
               </p>
             </div>
             <div className="rounded-xl bg-muted/30 p-3">
-              <DollarSign className="h-5 w-5 text-amber-400" />
+              <DollarSign className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             </div>
           </div>
         </Card>
@@ -288,10 +288,10 @@ export default function ProjectDetailPage() {
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Timeline</p>
               <p className="mt-1 text-lg font-bold text-foreground">Mar 1 - Jun 15</p>
-              <p className="mt-1 text-xs text-indigo-400">Started Mar 1, 2026</p>
+              <p className="mt-1 text-xs text-indigo-600 dark:text-indigo-400">Started Mar 1, 2026</p>
             </div>
             <div className="rounded-xl bg-muted/30 p-3">
-              <Calendar className="h-5 w-5 text-indigo-400" />
+              <Calendar className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
             </div>
           </div>
         </Card>
@@ -304,7 +304,7 @@ export default function ProjectDetailPage() {
               <Progress value={project.progress} className="mt-2 h-1.5 w-24 bg-muted/30" />
             </div>
             <div className="rounded-xl bg-muted/30 p-3">
-              <TrendingUp className="h-5 w-5 text-emerald-400" />
+              <TrendingUp className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             </div>
           </div>
         </Card>
@@ -314,10 +314,10 @@ export default function ProjectDetailPage() {
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Team</p>
               <p className="mt-1 text-2xl font-bold text-foreground">{project.team.length}</p>
-              <p className="mt-1 text-xs text-purple-400">members assigned</p>
+              <p className="mt-1 text-xs text-purple-600 dark:text-purple-400">members assigned</p>
             </div>
             <div className="rounded-xl bg-muted/30 p-3">
-              <Users className="h-5 w-5 text-purple-400" />
+              <Users className="h-5 w-5 text-purple-600 dark:text-purple-400" />
             </div>
           </div>
         </Card>
@@ -328,31 +328,31 @@ export default function ProjectDetailPage() {
         <TabsList className="glass overflow-x-auto border border-border bg-muted/30">
           <TabsTrigger
             value="overview"
-            className="data-active:bg-indigo-600/30 data-active:text-indigo-300"
+            className="data-active:bg-indigo-600/30 data-active:text-indigo-700 dark:text-indigo-300"
           >
             Overview
           </TabsTrigger>
           <TabsTrigger
             value="tasks"
-            className="data-active:bg-indigo-600/30 data-active:text-indigo-300"
+            className="data-active:bg-indigo-600/30 data-active:text-indigo-700 dark:text-indigo-300"
           >
             Tasks
           </TabsTrigger>
           <TabsTrigger
             value="documents"
-            className="data-active:bg-indigo-600/30 data-active:text-indigo-300"
+            className="data-active:bg-indigo-600/30 data-active:text-indigo-700 dark:text-indigo-300"
           >
             Documents
           </TabsTrigger>
           <TabsTrigger
             value="activity"
-            className="data-active:bg-indigo-600/30 data-active:text-indigo-300"
+            className="data-active:bg-indigo-600/30 data-active:text-indigo-700 dark:text-indigo-300"
           >
             Activity
           </TabsTrigger>
           <TabsTrigger
             value="financials"
-            className="data-active:bg-indigo-600/30 data-active:text-indigo-300"
+            className="data-active:bg-indigo-600/30 data-active:text-indigo-700 dark:text-indigo-300"
           >
             Financials
           </TabsTrigger>
@@ -430,9 +430,9 @@ export default function ProjectDetailPage() {
                 {milestones.map((m) => (
                   <div key={m.name} className="flex items-center gap-3">
                     {m.status === "completed" ? (
-                      <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-400" />
+                      <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
                     ) : m.status === "in-progress" ? (
-                      <Clock className="h-5 w-5 shrink-0 text-amber-400 animate-pulse" />
+                      <Clock className="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400 animate-pulse" />
                     ) : (
                       <Circle className="h-5 w-5 shrink-0 text-muted-foreground/20" />
                     )}
@@ -459,11 +459,11 @@ export default function ProjectDetailPage() {
             <Card className="glass border-border p-6 border-amber-500/20">
               <div className="flex items-center gap-3 mb-4">
                 <div className="rounded-xl bg-amber-500/10 p-2.5">
-                  <Bot className="h-5 w-5 text-amber-400" />
+                  <Bot className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-foreground">AI Project Agent</h2>
-                  <p className="text-xs text-amber-400">
+                  <p className="text-xs text-amber-600 dark:text-amber-400">
                     Project Management Agent is monitoring this project
                   </p>
                 </div>
@@ -475,7 +475,7 @@ export default function ProjectDetailPage() {
               <div className="space-y-3">
                 {aiActions.map((action, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <Sparkles className="h-4 w-4 shrink-0 text-amber-400 mt-0.5" />
+                    <Sparkles className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-muted-foreground">{action.text}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">{action.time}</p>
@@ -508,7 +508,7 @@ export default function ProjectDetailPage() {
                         }`}
                       >
                         {task.checked && (
-                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                         )}
                       </div>
 
@@ -566,10 +566,10 @@ export default function ProjectDetailPage() {
                 >
                   <div className="flex items-start gap-4">
                     <div className="rounded-xl bg-indigo-500/10 p-3 shrink-0">
-                      <Icon className="h-6 w-6 text-indigo-400" />
+                      <Icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-foreground group-hover:text-indigo-300 transition-colors truncate">
+                      <h3 className="text-sm font-semibold text-foreground group-hover:text-indigo-700 dark:text-indigo-300 transition-colors truncate">
                         {doc.name}
                       </h3>
                       <p className="text-xs text-muted-foreground mt-1">{doc.date}</p>
@@ -579,7 +579,7 @@ export default function ProjectDetailPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => toast.success(`Downloading ${doc.name}...`)}
-                          className="h-7 px-2 text-xs text-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-300"
+                          className="h-7 px-2 text-xs text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-700 dark:text-indigo-300"
                         >
                           <Download className="h-3.5 w-3.5 mr-1" />
                           Download
@@ -656,7 +656,7 @@ export default function ProjectDetailPage() {
                         </TableCell>
                         <TableCell
                           className={`text-right font-medium ${
-                            variance >= 0 ? "text-emerald-400" : "text-red-400"
+                            variance >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
                           }`}
                         >
                           {variance >= 0 ? "+" : ""}
@@ -687,7 +687,7 @@ export default function ProjectDetailPage() {
                     </TableCell>
                     <TableCell
                       className={`text-right font-bold ${
-                        budgetTotal - actualTotal >= 0 ? "text-emerald-400" : "text-red-400"
+                        budgetTotal - actualTotal >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
                       }`}
                     >
                       +{formatCurrency(budgetTotal - actualTotal)}
@@ -730,7 +730,7 @@ export default function ProjectDetailPage() {
                         <span className="text-foreground">{formatCurrency(item.actual)}</span>
                       </div>
                     </div>
-                    <p className={`text-sm font-medium ${variance >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                    <p className={`text-sm font-medium ${variance >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
                       {variance >= 0 ? "+" : ""}{formatCurrency(variance)} variance
                     </p>
                   </div>
@@ -750,7 +750,7 @@ export default function ProjectDetailPage() {
                     <span className="font-bold text-foreground">{formatCurrency(actualTotal)}</span>
                   </div>
                 </div>
-                <p className={`text-sm font-bold ${budgetTotal - actualTotal >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                <p className={`text-sm font-bold ${budgetTotal - actualTotal >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
                   +{formatCurrency(budgetTotal - actualTotal)} variance
                 </p>
               </div>
@@ -773,8 +773,8 @@ export default function ProjectDetailPage() {
                         variant="outline"
                         className={
                           co.status === "Approved"
-                            ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                            : "bg-amber-500/20 text-amber-400 border-amber-500/30"
+                            ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                            : "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30"
                         }
                       >
                         {co.status}

@@ -81,17 +81,17 @@ const priorityConfig: Record<
   high: {
     label: "High",
     dot: "bg-red-400",
-    badge: "bg-red-500/10 text-red-400 border-red-500/20",
+    badge: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20",
   },
   medium: {
     label: "Medium",
     dot: "bg-amber-400",
-    badge: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+    badge: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
   },
   low: {
     label: "Low",
     dot: "bg-blue-400",
-    badge: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+    badge: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
   },
 };
 
@@ -101,25 +101,25 @@ const statusConfig: Record<
 > = {
   open: {
     label: "Open",
-    badge: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+    badge: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
     icon: CircleAlert,
   },
   in_discussion: {
     label: "In Discussion",
-    badge: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+    badge: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
     icon: MessageSquare,
   },
   resolved: {
     label: "Resolved",
-    badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     icon: CheckCircle2,
   },
 };
 
 const categoryConfig: Record<IssueCategory, { label: string; badge: string }> = {
-  short_term: { label: "Short-term", badge: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
-  long_term: { label: "Long-term", badge: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
-  departmental: { label: "Departmental", badge: "bg-teal-500/10 text-teal-400 border-teal-500/20" },
+  short_term: { label: "Short-term", badge: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20" },
+  long_term: { label: "Long-term", badge: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20" },
+  departmental: { label: "Departmental", badge: "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20" },
 };
 
 const idsSteps: { step: IDSStep; label: string; description: string }[] = [
@@ -152,7 +152,7 @@ const initialIssues: Issue[] = [
     priorityRank: 1,
     status: "in_discussion",
     idsStep: "discuss",
-    raisedBy: { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-300" },
+    raisedBy: { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-700 dark:text-purple-300" },
     team: "Operations",
     category: "short_term",
     votes: 7,
@@ -177,7 +177,7 @@ const initialIssues: Issue[] = [
     priorityRank: 2,
     status: "open",
     idsStep: "identify",
-    raisedBy: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-300" },
+    raisedBy: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
     team: "Finance",
     category: "long_term",
     votes: 5,
@@ -200,7 +200,7 @@ const initialIssues: Issue[] = [
     priorityRank: 3,
     status: "open",
     idsStep: "identify",
-    raisedBy: { name: "Lisa Torres", initials: "LT", color: "bg-emerald-500/30 text-emerald-300" },
+    raisedBy: { name: "Lisa Torres", initials: "LT", color: "bg-emerald-500/30 text-emerald-700 dark:text-emerald-300" },
     team: "Sales",
     category: "short_term",
     votes: 4,
@@ -223,7 +223,7 @@ const initialIssues: Issue[] = [
     priorityRank: 1,
     status: "in_discussion",
     idsStep: "discuss",
-    raisedBy: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
+    raisedBy: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
     team: "Operations",
     category: "long_term",
     votes: 6,
@@ -248,7 +248,7 @@ const initialIssues: Issue[] = [
     priorityRank: 1,
     status: "resolved",
     idsStep: "solve",
-    raisedBy: { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-300" },
+    raisedBy: { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-700 dark:text-teal-300" },
     team: "Operations",
     category: "short_term",
     votes: 8,
@@ -275,7 +275,7 @@ const initialIssues: Issue[] = [
     priorityRank: 3,
     status: "open",
     idsStep: "identify",
-    raisedBy: { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-300" },
+    raisedBy: { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-700 dark:text-pink-300" },
     team: "Sales",
     category: "departmental",
     votes: 3,
@@ -298,7 +298,7 @@ const initialIssues: Issue[] = [
     priorityRank: 3,
     status: "in_discussion",
     idsStep: "discuss",
-    raisedBy: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-300" },
+    raisedBy: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
     team: "Finance",
     category: "long_term",
     votes: 4,
@@ -323,7 +323,7 @@ const initialIssues: Issue[] = [
     priorityRank: 5,
     status: "resolved",
     idsStep: "solve",
-    raisedBy: { name: "Lisa Torres", initials: "LT", color: "bg-emerald-500/30 text-emerald-300" },
+    raisedBy: { name: "Lisa Torres", initials: "LT", color: "bg-emerald-500/30 text-emerald-700 dark:text-emerald-300" },
     team: "Finance",
     category: "departmental",
     votes: 2,
@@ -350,7 +350,7 @@ const initialIssues: Issue[] = [
     priorityRank: 4,
     status: "open",
     idsStep: "identify",
-    raisedBy: { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-300" },
+    raisedBy: { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-700 dark:text-pink-300" },
     team: "Design",
     category: "short_term",
     votes: 3,
@@ -373,7 +373,7 @@ const initialIssues: Issue[] = [
     priorityRank: 3,
     status: "open",
     idsStep: "identify",
-    raisedBy: { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-300" },
+    raisedBy: { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-700 dark:text-purple-300" },
     team: "Operations",
     category: "long_term",
     votes: 5,
@@ -602,7 +602,7 @@ export default function IssuesPage() {
       priorityRank: createPriority === "high" ? 1 : createPriority === "medium" ? 3 : 5,
       status: "open",
       idsStep: "identify",
-      raisedBy: { name: "You", initials: "YO", color: "bg-indigo-500/30 text-indigo-300" },
+      raisedBy: { name: "You", initials: "YO", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
       team: createTeam,
       category: createCategory,
       votes: 0,
@@ -792,10 +792,10 @@ export default function IssuesPage() {
       {/* Stats row */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
-          { label: "Open", value: tabCounts.open, color: "text-amber-400", icon: CircleAlert },
-          { label: "In Discussion", value: tabCounts.in_discussion, color: "text-indigo-400", icon: MessageSquare },
-          { label: "Resolved", value: tabCounts.resolved, color: "text-emerald-400", icon: CheckCircle2 },
-          { label: "Hot Issues", value: hotIssues, color: "text-red-400", icon: Flame },
+          { label: "Open", value: tabCounts.open, color: "text-amber-600 dark:text-amber-400", icon: CircleAlert },
+          { label: "In Discussion", value: tabCounts.in_discussion, color: "text-indigo-600 dark:text-indigo-400", icon: MessageSquare },
+          { label: "Resolved", value: tabCounts.resolved, color: "text-emerald-600 dark:text-emerald-400", icon: CheckCircle2 },
+          { label: "Hot Issues", value: hotIssues, color: "text-red-600 dark:text-red-400", icon: Flame },
         ].map((s) => (
           <div key={s.label} className="glass rounded-xl p-4">
             <div className="flex items-center justify-between">
@@ -1064,7 +1064,7 @@ export default function IssuesPage() {
                         <div className="flex items-center gap-2 min-w-0">
                           <h3 className="font-medium text-foreground text-sm leading-snug truncate">{issue.title}</h3>
                           {isHot && (
-                            <Flame className="h-3.5 w-3.5 text-red-400 shrink-0 animate-pulse" />
+                            <Flame className="h-3.5 w-3.5 text-red-600 dark:text-red-400 shrink-0 animate-pulse" />
                           )}
                           {issue.category === "long_term" && (
                             <div className="h-1 w-1 rounded-full bg-purple-400 shrink-0" />
@@ -1095,7 +1095,7 @@ export default function IssuesPage() {
                         </Badge>
                         {/* Cascaded badge */}
                         {issue.cascadedTeams.length > 0 && (
-                          <Badge variant="outline" className="bg-cyan-500/10 text-cyan-400 border-cyan-500/20 text-[10px] px-1.5 py-0 h-4">
+                          <Badge variant="outline" className="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20 text-[10px] px-1.5 py-0 h-4">
                             <Share2 className="h-2.5 w-2.5 mr-0.5" />
                             {issue.cascadedTeams.length} team{issue.cascadedTeams.length > 1 ? "s" : ""}
                           </Badge>
@@ -1108,8 +1108,8 @@ export default function IssuesPage() {
                             handleVote(issue.id, 1);
                           }}
                         >
-                          <ThumbsUp className={`h-3 w-3 transition-colors ${issue.userVoted === 1 ? "text-indigo-400" : "text-muted-foreground group-hover:text-indigo-400"}`} />
-                          <span className={`${issue.userVoted === 1 ? "text-indigo-400 font-medium" : "text-muted-foreground"}`}>
+                          <ThumbsUp className={`h-3 w-3 transition-colors ${issue.userVoted === 1 ? "text-indigo-600 dark:text-indigo-400" : "text-muted-foreground group-hover:text-indigo-600 dark:text-indigo-400"}`} />
+                          <span className={`${issue.userVoted === 1 ? "text-indigo-600 dark:text-indigo-400 font-medium" : "text-muted-foreground"}`}>
                             {issue.votes}
                           </span>
                         </span>
@@ -1165,7 +1165,7 @@ export default function IssuesPage() {
                       {categoryConfig[currentSelected.category].label}
                     </Badge>
                     {currentSelected.cascadedTeams.length > 0 && (
-                      <Badge variant="outline" className="bg-cyan-500/10 text-cyan-400 border-cyan-500/20 text-[10px]">
+                      <Badge variant="outline" className="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20 text-[10px]">
                         <Share2 className="h-3 w-3 mr-1" />
                         {currentSelected.cascadedTeams.join(", ")}
                       </Badge>
@@ -1194,9 +1194,9 @@ export default function IssuesPage() {
                             <div
                               className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                                 isComplete
-                                  ? "bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/30"
+                                  ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-500/30"
                                   : isActive
-                                  ? "bg-indigo-500/20 text-indigo-400 ring-2 ring-indigo-500/40 shadow-lg shadow-indigo-500/20"
+                                  ? "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 ring-2 ring-indigo-500/40 shadow-lg shadow-indigo-500/20"
                                   : "bg-muted/20 text-muted-foreground/40"
                               }`}
                             >
@@ -1207,7 +1207,7 @@ export default function IssuesPage() {
                               )}
                             </div>
                             <span className={`text-[10px] mt-1 font-medium ${
-                              isActive ? "text-indigo-400" : isComplete ? "text-emerald-400" : "text-muted-foreground/40"
+                              isActive ? "text-indigo-600 dark:text-indigo-400" : isComplete ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground/40"
                             }`}>
                               {step.label}
                             </span>
@@ -1225,12 +1225,12 @@ export default function IssuesPage() {
                   {/* Discussion Timer */}
                   {currentSelected.idsStep === "discuss" && (
                     <div className="mt-3 flex items-center gap-2 rounded-lg bg-indigo-500/5 border border-indigo-500/10 p-2">
-                      <Timer className="h-4 w-4 text-indigo-400" />
-                      <span className="text-sm font-mono text-indigo-400 tabular-nums">{formatTime(discussionTimer)}</span>
+                      <Timer className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                      <span className="text-sm font-mono text-indigo-600 dark:text-indigo-400 tabular-nums">{formatTime(discussionTimer)}</span>
                       <div className="flex gap-1 ml-auto">
                         <button
                           onClick={() => setTimerRunning(!timerRunning)}
-                          className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500/30 transition-colors"
+                          className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/30 transition-colors"
                         >
                           {timerRunning ? "Pause" : "Start"}
                         </button>
@@ -1285,7 +1285,7 @@ export default function IssuesPage() {
                           currentSelected.priorityRank === rank
                             ? "bg-indigo-600 text-primary-foreground shadow-lg shadow-indigo-500/25"
                             : rank <= currentSelected.priorityRank
-                            ? "bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20"
+                            ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20"
                             : "bg-muted/20 text-muted-foreground hover:bg-muted/40"
                         }`}
                       >
@@ -1305,7 +1305,7 @@ export default function IssuesPage() {
                       onClick={() => handleVote(currentSelected.id, 1)}
                       className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all ${
                         currentSelected.userVoted === 1
-                          ? "bg-indigo-500/20 text-indigo-400 ring-1 ring-indigo-500/30"
+                          ? "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 ring-1 ring-indigo-500/30"
                           : "bg-muted/20 text-muted-foreground hover:bg-muted/40"
                       }`}
                     >
@@ -1317,7 +1317,7 @@ export default function IssuesPage() {
                       onClick={() => handleVote(currentSelected.id, -1)}
                       className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all ${
                         currentSelected.userVoted === -1
-                          ? "bg-red-500/20 text-red-400 ring-1 ring-red-500/30"
+                          ? "bg-red-500/20 text-red-600 dark:text-red-400 ring-1 ring-red-500/30"
                           : "bg-muted/20 text-muted-foreground hover:bg-muted/40"
                       }`}
                     >
@@ -1325,7 +1325,7 @@ export default function IssuesPage() {
                       Downvote
                     </button>
                     {currentSelected.votes >= 3 && currentSelected.status !== "resolved" && (
-                      <Flame className="h-4 w-4 text-red-400 animate-pulse" />
+                      <Flame className="h-4 w-4 text-red-600 dark:text-red-400 animate-pulse" />
                     )}
                   </div>
                 </div>
@@ -1359,14 +1359,14 @@ export default function IssuesPage() {
                     <Separator className="bg-border" />
                     <div>
                       <h5 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                         Resolution
                       </h5>
                       <p className="text-sm text-muted-foreground leading-relaxed">{currentSelected.resolution}</p>
                       <Button
                         variant="ghost"
                         size="sm"
-                        className={`mt-2 h-7 text-xs gap-1.5 ${actionItemsCreated.has(`${currentSelected.id}-resolution`) ? 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-default' : 'text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10'}`}
+                        className={`mt-2 h-7 text-xs gap-1.5 ${actionItemsCreated.has(`${currentSelected.id}-resolution`) ? 'text-emerald-600 dark:text-emerald-400 hover:text-emerald-600 dark:text-emerald-400 hover:bg-transparent cursor-default' : 'text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 hover:bg-indigo-500/10'}`}
                         disabled={actionItemsCreated.has(`${currentSelected.id}-resolution`)}
                         onClick={() => {
                           setActionItemsCreated((prev) => new Set(prev).add(`${currentSelected.id}-resolution`));
@@ -1402,7 +1402,7 @@ export default function IssuesPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className={`mt-2 h-7 text-xs gap-1.5 ${actionItemsCreated.has(`${currentSelected.id}-issue`) ? 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-default' : 'text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10'}`}
+                        className={`mt-2 h-7 text-xs gap-1.5 ${actionItemsCreated.has(`${currentSelected.id}-issue`) ? 'text-emerald-600 dark:text-emerald-400 hover:text-emerald-600 dark:text-emerald-400 hover:bg-transparent cursor-default' : 'text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 hover:bg-indigo-500/10'}`}
                         disabled={actionItemsCreated.has(`${currentSelected.id}-issue`)}
                         onClick={() => {
                           setActionItemsCreated((prev) => new Set(prev).add(`${currentSelected.id}-issue`));
@@ -1434,7 +1434,7 @@ export default function IssuesPage() {
                         Related To
                       </h5>
                       <div
-                        className="flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors"
+                        className="flex items-center gap-2 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 cursor-pointer transition-colors"
                         onClick={() => {
                           const text = (currentSelected.relatedTo ?? '').toLowerCase();
                           let route = '/bos';
@@ -1672,7 +1672,7 @@ export default function IssuesPage() {
           <div className="relative glass rounded-2xl border border-border p-6 w-full max-w-lg mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <Merge className="h-5 w-5 text-indigo-400" />
+                <Merge className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                 Merge Issue
               </h3>
               <button
@@ -1685,7 +1685,7 @@ export default function IssuesPage() {
 
             <div className="space-y-4">
               <div className="rounded-lg bg-amber-500/5 border border-amber-500/10 p-3">
-                <p className="text-xs text-amber-400 font-medium">Merging:</p>
+                <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">Merging:</p>
                 <p className="text-sm text-foreground mt-1">{currentSelected.title}</p>
               </div>
 
@@ -1721,7 +1721,7 @@ export default function IssuesPage() {
 
               {mergeTarget && (
                 <div className="rounded-lg bg-indigo-500/5 border border-indigo-500/10 p-3">
-                  <p className="text-xs text-indigo-400 font-medium mb-1">Preview merged issue:</p>
+                  <p className="text-xs text-indigo-600 dark:text-indigo-400 font-medium mb-1">Preview merged issue:</p>
                   <p className="text-sm text-foreground font-medium">{mergeTarget.title}</p>
                   <p className="text-xs text-muted-foreground mt-1">
                     Combined votes: {mergeTarget.votes + currentSelected.votes}
@@ -1757,7 +1757,7 @@ export default function IssuesPage() {
           <div className="relative glass rounded-2xl border border-border p-6 w-full max-w-lg mx-4 shadow-2xl">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                 Solve Issue
               </h3>
               <button
@@ -1770,7 +1770,7 @@ export default function IssuesPage() {
 
             <div className="space-y-4">
               <div className="rounded-lg bg-emerald-500/5 border border-emerald-500/10 p-3">
-                <p className="text-xs text-emerald-400 font-medium">Resolving:</p>
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Resolving:</p>
                 <p className="text-sm text-foreground mt-1">{currentSelected.title}</p>
                 {discussionTimer > 0 && (
                   <p className="text-xs text-muted-foreground mt-1">
@@ -1817,7 +1817,7 @@ export default function IssuesPage() {
           <div className="relative glass rounded-2xl border border-border p-6 w-full max-w-lg mx-4 shadow-2xl">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <Mountain className="h-5 w-5 text-indigo-400" />
+                <Mountain className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                 Convert to Rock
               </h3>
               <button
@@ -1847,7 +1847,7 @@ export default function IssuesPage() {
                 />
               </div>
               <div className="rounded-lg bg-indigo-500/5 border border-indigo-500/10 p-3">
-                <p className="text-xs text-indigo-400">
+                <p className="text-xs text-indigo-600 dark:text-indigo-400">
                   Original issue will be marked as resolved with a link to this Rock.
                 </p>
               </div>
@@ -1879,7 +1879,7 @@ export default function IssuesPage() {
           <div className="relative glass rounded-2xl border border-border p-6 w-full max-w-lg mx-4 shadow-2xl">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <ListChecks className="h-5 w-5 text-emerald-400" />
+                <ListChecks className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                 Convert to To-Do
               </h3>
               <button
@@ -1909,7 +1909,7 @@ export default function IssuesPage() {
                 />
               </div>
               <div className="rounded-lg bg-emerald-500/5 border border-emerald-500/10 p-3">
-                <p className="text-xs text-emerald-400">
+                <p className="text-xs text-emerald-600 dark:text-emerald-400">
                   Original issue will be marked as resolved with a link to this To-Do.
                 </p>
               </div>
@@ -1941,7 +1941,7 @@ export default function IssuesPage() {
           <div className="relative glass rounded-2xl border border-border p-6 w-full max-w-lg mx-4 shadow-2xl">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <Share2 className="h-5 w-5 text-cyan-400" />
+                <Share2 className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
                 Cascade to Teams
               </h3>
               <button
@@ -1984,10 +1984,10 @@ export default function IssuesPage() {
                           {team}
                         </span>
                         {alreadyCascaded && (
-                          <span className="text-[10px] text-cyan-400">Already shared</span>
+                          <span className="text-[10px] text-cyan-600 dark:text-cyan-400">Already shared</span>
                         )}
                         {isSelected && (
-                          <CheckCircle2 className="h-4 w-4 text-cyan-400" />
+                          <CheckCircle2 className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
                         )}
                       </button>
                     );

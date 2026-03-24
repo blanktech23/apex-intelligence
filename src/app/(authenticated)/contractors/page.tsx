@@ -47,16 +47,16 @@ import {
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
-  Active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  Pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  Inactive: "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
+  Active: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  Pending: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  Inactive: "bg-zinc-500/20 text-zinc-600 dark:text-zinc-400 border-zinc-500/30",
 };
 
 const stats = [
-  { label: "Total Contractors", value: "86", icon: HardHat, change: "+4 this month", color: "text-indigo-400" },
-  { label: "Active Accounts", value: "72", icon: Users, change: "84% of total", color: "text-emerald-400" },
-  { label: "Orders MTD", value: "134", icon: ShoppingCart, change: "+18% vs last month", color: "text-amber-400" },
-  { label: "Revenue MTD", value: "$127.4K", icon: DollarSign, change: "+8% MoM", color: "text-purple-400" },
+  { label: "Total Contractors", value: "86", icon: HardHat, change: "+4 this month", color: "text-indigo-600 dark:text-indigo-400" },
+  { label: "Active Accounts", value: "72", icon: Users, change: "84% of total", color: "text-emerald-600 dark:text-emerald-400" },
+  { label: "Orders MTD", value: "134", icon: ShoppingCart, change: "+18% vs last month", color: "text-amber-600 dark:text-amber-400" },
+  { label: "Revenue MTD", value: "$127.4K", icon: DollarSign, change: "+8% MoM", color: "text-purple-600 dark:text-purple-400" },
 ];
 
 const defaultContractors = [
@@ -214,12 +214,12 @@ export default function ContractorsPage() {
                 ].map((row) => (
                   <div key={row.type} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
                     <p className="text-sm text-foreground">{row.type}</p>
-                    <span className="text-sm font-medium text-indigo-400">{row.count}</span>
+                    <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">{row.count}</span>
                   </div>
                 ))}
                 <div className="flex items-center justify-between pt-2 border-t border-border">
                   <p className="text-sm font-semibold text-foreground">Total</p>
-                  <span className="text-sm font-bold text-indigo-400">86</span>
+                  <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">86</span>
                 </div>
               </div>
             </div>
@@ -237,7 +237,7 @@ export default function ContractorsPage() {
                 ].map((row) => (
                   <div key={row.company} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
                     <p className="text-sm text-foreground">{row.company}</p>
-                    <span className="text-sm font-medium text-emerald-400">{row.revenue}</span>
+                    <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">{row.revenue}</span>
                   </div>
                 ))}
               </div>
@@ -248,10 +248,10 @@ export default function ContractorsPage() {
               <h3 className="text-sm font-semibold text-foreground mb-3">Orders by Status</h3>
               <div className="space-y-3">
                 {[
-                  { status: "Open", count: 18, color: "text-blue-400" },
-                  { status: "Processing", count: 24, color: "text-amber-400" },
-                  { status: "Shipped", count: 47, color: "text-purple-400" },
-                  { status: "Delivered", count: 45, color: "text-emerald-400" },
+                  { status: "Open", count: 18, color: "text-blue-600 dark:text-blue-400" },
+                  { status: "Processing", count: 24, color: "text-amber-600 dark:text-amber-400" },
+                  { status: "Shipped", count: 47, color: "text-purple-600 dark:text-purple-400" },
+                  { status: "Delivered", count: 45, color: "text-emerald-600 dark:text-emerald-400" },
                 ].map((row) => (
                   <div key={row.status} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
                     <p className="text-sm text-foreground">{row.status}</p>
@@ -260,7 +260,7 @@ export default function ContractorsPage() {
                 ))}
                 <div className="flex items-center justify-between pt-2 border-t border-border">
                   <p className="text-sm font-semibold text-foreground">Total</p>
-                  <span className="text-sm font-bold text-amber-400">134</span>
+                  <span className="text-sm font-bold text-amber-600 dark:text-amber-400">134</span>
                 </div>
               </div>
             </div>
@@ -277,12 +277,12 @@ export default function ContractorsPage() {
                 ].map((row) => (
                   <div key={row.category} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
                     <p className="text-sm text-foreground">{row.category}</p>
-                    <span className="text-sm font-medium text-purple-400">{row.revenue}</span>
+                    <span className="text-sm font-medium text-purple-600 dark:text-purple-400">{row.revenue}</span>
                   </div>
                 ))}
                 <div className="flex items-center justify-between pt-2 border-t border-border">
                   <p className="text-sm font-semibold text-foreground">Total</p>
-                  <span className="text-sm font-bold text-purple-400">$127,400</span>
+                  <span className="text-sm font-bold text-purple-600 dark:text-purple-400">$127,400</span>
                 </div>
               </div>
             </div>
@@ -326,7 +326,7 @@ export default function ContractorsPage() {
           <TableBody>
             {filtered.map((c) => (
               <TableRow key={c.id} className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer" onClick={() => router.push(`/contractors/${c.id}`)}>
-                <TableCell className="font-medium text-foreground"><Link href={`/contractors/${c.id}`} className="text-indigo-400 hover:text-indigo-300 hover:underline" onClick={(e) => e.stopPropagation()}>{c.company}</Link></TableCell>
+                <TableCell className="font-medium text-foreground"><Link href={`/contractors/${c.id}`} className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 hover:underline" onClick={(e) => e.stopPropagation()}>{c.company}</Link></TableCell>
                 <TableCell className="text-muted-foreground">{c.contact}</TableCell>
                 <TableCell className="text-center text-muted-foreground">{c.ordersMTD}</TableCell>
                 <TableCell className="text-right font-medium text-foreground">{c.revenueMTD > 0 ? `$${c.revenueMTD.toLocaleString()}` : "--"}</TableCell>
@@ -344,7 +344,7 @@ export default function ContractorsPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <div className="rounded-lg bg-indigo-500/10 p-2">
-                <Building2 className="h-4 w-4 text-indigo-400" />
+                <Building2 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               </div>
               Add Contractor
             </DialogTitle>
@@ -358,17 +358,17 @@ export default function ContractorsPage() {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                  Company Name <span className="text-red-400">*</span>
+                  Company Name <span className="text-red-600 dark:text-red-400">*</span>
                 </label>
                 <Input placeholder="Company name" value={form.company} onChange={(e) => updateField("company", e.target.value)} className={`${inputClass} ${errors.company ? errorClass : ""}`} />
-                {errors.company && <p className="text-xs text-red-400 mt-1">Required</p>}
+                {errors.company && <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>}
               </div>
               <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                  Contact Person <span className="text-red-400">*</span>
+                  Contact Person <span className="text-red-600 dark:text-red-400">*</span>
                 </label>
                 <Input placeholder="Full name" value={form.contact} onChange={(e) => updateField("contact", e.target.value)} className={`${inputClass} ${errors.contact ? errorClass : ""}`} />
-                {errors.contact && <p className="text-xs text-red-400 mt-1">Required</p>}
+                {errors.contact && <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>}
               </div>
               <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">Email</label>

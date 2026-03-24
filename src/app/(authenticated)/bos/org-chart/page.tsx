@@ -530,11 +530,11 @@ function filterByDepartment(seat: Seat, department: string): Seat | null {
 function proficiencyColor(p: SkillProficiency): string {
   switch (p) {
     case 'Learning':
-      return 'bg-blue-500/15 text-blue-400 border-blue-500/30';
+      return 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30';
     case 'Proficient':
-      return 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
+      return 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30';
     case 'Expert':
-      return 'bg-purple-500/15 text-purple-400 border-purple-500/30';
+      return 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border-purple-500/30';
   }
 }
 
@@ -654,7 +654,7 @@ function SeatCard({
               <span className="text-xs font-medium text-foreground flex items-center gap-1">
                 {seat.person.name}
                 {isOverloaded && (
-                  <span title="Overloaded: 3+ seats"><AlertTriangle className="h-3 w-3 text-amber-400" /></span>
+                  <span title="Overloaded: 3+ seats"><AlertTriangle className="h-3 w-3 text-amber-600 dark:text-amber-400" /></span>
                 )}
               </span>
               {seat.tenure && (
@@ -714,7 +714,7 @@ function SeatCard({
           {editMode && (
             <button
               onClick={() => onAddSkill(seat.id)}
-              className="mt-1 text-[8px] text-indigo-400 hover:text-primary flex items-center gap-0.5"
+              className="mt-1 text-[8px] text-indigo-600 dark:text-indigo-400 hover:text-primary flex items-center gap-0.5"
             >
               <Plus className="h-2 w-2" /> Add Skill
             </button>
@@ -754,14 +754,14 @@ function SeatCard({
               onClick={() => {
                 toast.info(`Viewing profile for ${seat.person?.name ?? seat.title}`);
               }}
-              className="text-[9px] text-indigo-400 hover:text-primary flex items-center gap-0.5 bg-indigo-500/10 rounded px-1.5 py-0.5"
+              className="text-[9px] text-indigo-600 dark:text-indigo-400 hover:text-primary flex items-center gap-0.5 bg-indigo-500/10 rounded px-1.5 py-0.5"
             >
               <Eye className="h-2.5 w-2.5" /> View Profile
             </button>
             {editMode && (
               <button
                 onClick={() => onReassign(seat.id)}
-                className="text-[9px] text-emerald-400 hover:text-emerald-500 flex items-center gap-0.5 bg-emerald-500/10 rounded px-1.5 py-0.5"
+                className="text-[9px] text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 flex items-center gap-0.5 bg-emerald-500/10 rounded px-1.5 py-0.5"
               >
                 <ArrowRightLeft className="h-2.5 w-2.5" /> Reassign
               </button>
@@ -794,21 +794,21 @@ function SeatCard({
         <div className="mt-2 flex items-center gap-1 border-t border-border pt-2">
           <button
             onClick={() => onAddChild(seat.id)}
-            className="text-[9px] text-green-400 hover:text-green-500 flex items-center gap-0.5"
+            className="text-[9px] text-green-600 dark:text-green-400 hover:text-green-500 flex items-center gap-0.5"
             title="Add child seat"
           >
             <Plus className="h-2.5 w-2.5" />
           </button>
           <button
             onClick={() => onRemove(seat.id)}
-            className="text-[9px] text-red-400 hover:text-red-500 flex items-center gap-0.5"
+            className="text-[9px] text-red-600 dark:text-red-400 hover:text-red-500 flex items-center gap-0.5"
             title="Remove seat"
           >
             <Trash2 className="h-2.5 w-2.5" />
           </button>
           <button
             onClick={() => onMoveSeat(seat.id)}
-            className="text-[9px] text-blue-400 hover:text-blue-500 flex items-center gap-0.5"
+            className="text-[9px] text-blue-600 dark:text-blue-400 hover:text-blue-500 flex items-center gap-0.5"
             title="Move to different parent"
           >
             <ArrowRightLeft className="h-2.5 w-2.5" />
@@ -1297,7 +1297,7 @@ export default function OrgChartPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 gap-1.5 rounded-lg px-3 text-xs font-medium bg-green-500/15 text-green-400 hover:bg-green-500/20"
+                className="h-8 gap-1.5 rounded-lg px-3 text-xs font-medium bg-green-500/15 text-green-600 dark:text-green-400 hover:bg-green-500/20"
                 onClick={publishDraft}
               >
                 <Check className="h-3.5 w-3.5" />
@@ -1306,7 +1306,7 @@ export default function OrgChartPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 gap-1.5 rounded-lg px-3 text-xs font-medium bg-red-500/15 text-red-400 hover:bg-red-500/20"
+                className="h-8 gap-1.5 rounded-lg px-3 text-xs font-medium bg-red-500/15 text-red-600 dark:text-red-400 hover:bg-red-500/20"
                 onClick={discardDraft}
               >
                 <Undo2 className="h-3.5 w-3.5" />
@@ -1330,7 +1330,7 @@ export default function OrgChartPage() {
             size="sm"
             className={`h-8 gap-1.5 rounded-lg px-3 text-xs font-medium transition-all ${
               editMode
-                ? 'bg-amber-500/15 text-amber-400 hover:bg-amber-500/20'
+                ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
             onClick={() => setEditMode(!editMode)}
@@ -1352,7 +1352,7 @@ export default function OrgChartPage() {
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 gap-1.5 rounded-lg px-3 text-xs font-medium text-purple-400 hover:bg-purple-500/15"
+            className="h-8 gap-1.5 rounded-lg px-3 text-xs font-medium text-purple-600 dark:text-purple-400 hover:bg-purple-500/15"
             onClick={() => {
               setAiBuilderOpen(true);
               setAiInput('');
@@ -1383,15 +1383,15 @@ export default function OrgChartPage() {
       {isDraft && (
         <div className="rounded-xl border border-dashed border-amber-500/30 bg-amber-500/5 px-4 py-3 flex items-center gap-3 relative z-10">
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500/20">
-            <Pencil className="h-3 w-3 text-amber-400" />
+            <Pencil className="h-3 w-3 text-amber-600 dark:text-amber-400" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-amber-400">Draft Mode Active</p>
-            <p className="text-[10px] text-amber-400/60">
+            <p className="text-xs font-semibold text-amber-600 dark:text-amber-400">Draft Mode Active</p>
+            <p className="text-[10px] text-amber-600 dark:text-amber-400/60">
               Changes are highlighted in amber. Publish to make them live, or discard to revert.
             </p>
           </div>
-          <div className="ml-auto text-[10px] text-amber-400/60">
+          <div className="ml-auto text-[10px] text-amber-600 dark:text-amber-400/60">
             {draftChanges.size} change{draftChanges.size !== 1 ? 's' : ''}
           </div>
         </div>
@@ -1401,20 +1401,20 @@ export default function OrgChartPage() {
       <div className="glass rounded-xl p-4">
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2">
-            <Network className="h-4 w-4 text-indigo-400" />
+            <Network className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <span className="text-sm font-medium text-foreground">{totalSeats}</span>
             <span className="text-xs text-muted-foreground">Total Seats</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-            <span className="text-sm font-medium text-green-400">{filledSeats}</span>
+            <span className="text-sm font-medium text-green-600 dark:text-green-400">{filledSeats}</span>
             <span className="text-xs text-muted-foreground">Filled</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full border border-border bg-transparent" />
-            <span className="text-sm font-medium text-amber-400">{openSeats}</span>
+            <span className="text-sm font-medium text-amber-600 dark:text-amber-400">{openSeats}</span>
             <span className="text-xs text-muted-foreground">Open</span>
           </div>
           <div className="h-4 w-px bg-border" />
@@ -1451,7 +1451,7 @@ export default function OrgChartPage() {
               size="sm"
               className={`h-8 rounded-lg px-3 text-xs ${
                 viewMode === 'full'
-                  ? 'bg-indigo-500/15 text-indigo-400'
+                  ? 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
               onClick={() => {
@@ -1466,7 +1466,7 @@ export default function OrgChartPage() {
               size="sm"
               className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${
                 viewMode === 'department'
-                  ? 'bg-indigo-500/15 text-indigo-400'
+                  ? 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
               onClick={() => setViewMode('department')}
@@ -1678,7 +1678,7 @@ export default function OrgChartPage() {
             {reassignPersonName &&
               reassignPersonName !== '__vacant__' &&
               getPersonSeatCount(orgChart, reassignPersonName) >= 2 && (
-                <div className="flex items-center gap-1.5 text-[10px] text-amber-400">
+                <div className="flex items-center gap-1.5 text-[10px] text-amber-600 dark:text-amber-400">
                   <AlertTriangle className="h-3 w-3" />
                   This person already holds {getPersonSeatCount(orgChart, reassignPersonName)} seats. Assigning another may overload them.
                 </div>
@@ -1905,7 +1905,7 @@ export default function OrgChartPage() {
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-purple-400" />
+              <Sparkles className="h-4 w-4 text-purple-600 dark:text-purple-400" />
               AI Seat Builder
               <span className="rounded bg-purple-500/20 px-1.5 py-0.5 text-[9px] font-bold text-purple-500 uppercase tracking-wider">
                 Beta
@@ -1955,7 +1955,7 @@ export default function OrgChartPage() {
                   </p>
                   <ul className="space-y-0.5">
                     {aiResult.responsibilities.map((r, i) => (
-                      <li key={i} className="text-xs text-foreground before:mr-1.5 before:content-['\2022'] before:text-purple-400/50">
+                      <li key={i} className="text-xs text-foreground before:mr-1.5 before:content-['\2022'] before:text-purple-600 dark:text-purple-400/50">
                         {r}
                       </li>
                     ))}

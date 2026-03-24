@@ -57,8 +57,8 @@ interface ActionItem {
 // --- Config ---
 
 const sourceConfig: Record<ActionSource, { label: string; badge: string }> = {
-  meeting: { label: "From Meeting", badge: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
-  issue: { label: "From Issue", badge: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
+  meeting: { label: "From Meeting", badge: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20" },
+  issue: { label: "From Issue", badge: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20" },
   manual: { label: "Manual", badge: "bg-muted/50 text-muted-foreground border-border" },
 };
 
@@ -70,12 +70,12 @@ const tabItems: { label: string; value: ActionTab }[] = [
 ];
 
 const ownerOptions = [
-  { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
-  { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-300" },
-  { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-300" },
-  { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-300" },
-  { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-300" },
-  { name: "Lisa Torres", initials: "LT", color: "bg-emerald-500/30 text-emerald-300" },
+  { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
+  { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-700 dark:text-teal-300" },
+  { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
+  { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-700 dark:text-purple-300" },
+  { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-700 dark:text-pink-300" },
+  { name: "Lisa Torres", initials: "LT", color: "bg-emerald-500/30 text-emerald-700 dark:text-emerald-300" },
 ];
 
 const teamOptionsList = ["Sales", "Operations", "Finance", "Design"];
@@ -106,8 +106,8 @@ function getDueStatus(dateStr: string, completed: boolean): "overdue" | "due_thi
 function getDueDateColor(dateStr: string, completed: boolean): string {
   if (completed) return "text-muted-foreground";
   const status = getDueStatus(dateStr, completed);
-  if (status === "overdue") return "text-red-400";
-  if (status === "due_this_week") return "text-amber-400";
+  if (status === "overdue") return "text-red-600 dark:text-red-400";
+  if (status === "due_this_week") return "text-amber-600 dark:text-amber-400";
   return "text-muted-foreground";
 }
 
@@ -117,7 +117,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-001",
     description: "Follow up with Henderson client on revised kitchen estimate",
-    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
+    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
     team: "Sales",
     dueDate: "2026-03-14",
     createdDate: "2026-03-10",
@@ -130,7 +130,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-002",
     description: "Schedule safety training for new hires - Kevin and Jake",
-    owner: { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-300" },
+    owner: { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-700 dark:text-teal-300" },
     team: "Operations",
     dueDate: "2026-03-12",
     createdDate: "2026-03-05",
@@ -144,7 +144,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-003",
     description: "Review and update material cost spreadsheet with Q1 actuals",
-    owner: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-300" },
+    owner: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
     team: "Finance",
     dueDate: "2026-03-15",
     createdDate: "2026-03-10",
@@ -157,7 +157,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-004",
     description: "Send weekly progress photos to Riverside Office client",
-    owner: { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-300" },
+    owner: { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-700 dark:text-purple-300" },
     team: "Operations",
     dueDate: "2026-03-14",
     createdDate: "2026-03-12",
@@ -171,7 +171,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-005",
     description: "Get quotes from 3 expediter services for downtown permits",
-    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
+    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
     team: "Operations",
     dueDate: "2026-03-17",
     createdDate: "2026-03-10",
@@ -185,7 +185,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-006",
     description: "Finalize standardized estimate template v2",
-    owner: { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-300" },
+    owner: { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-700 dark:text-pink-300" },
     team: "Design",
     dueDate: "2026-03-19",
     createdDate: "2026-03-11",
@@ -199,7 +199,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-007",
     description: "Call lumber supplier about extended lead times - get written commitment",
-    owner: { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-300" },
+    owner: { name: "Sarah Chen", initials: "SC", color: "bg-purple-500/30 text-purple-700 dark:text-purple-300" },
     team: "Operations",
     dueDate: "2026-03-11",
     createdDate: "2026-03-07",
@@ -212,7 +212,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-008",
     description: "Set up mid-design check-in template for client communications",
-    owner: { name: "Lisa Torres", initials: "LT", color: "bg-emerald-500/30 text-emerald-300" },
+    owner: { name: "Lisa Torres", initials: "LT", color: "bg-emerald-500/30 text-emerald-700 dark:text-emerald-300" },
     team: "Sales",
     dueDate: "2026-03-18",
     createdDate: "2026-03-12",
@@ -226,7 +226,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-009",
     description: "Order replacement fixtures for Harbor View project - priority shipping",
-    owner: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-300" },
+    owner: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
     team: "Operations",
     dueDate: "2026-03-13",
     createdDate: "2026-03-10",
@@ -239,7 +239,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-010",
     description: "Prepare Q1 profitability report for leadership review",
-    owner: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-300" },
+    owner: { name: "David Park", initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
     team: "Finance",
     dueDate: "2026-03-21",
     createdDate: "2026-03-12",
@@ -252,7 +252,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-011",
     description: "Update crew scheduling board with new hires' availability",
-    owner: { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-300" },
+    owner: { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-700 dark:text-teal-300" },
     team: "Operations",
     dueDate: "2026-03-10",
     createdDate: "2026-03-03",
@@ -265,7 +265,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-012",
     description: "Send revised scope of work to Summit Builders for approval",
-    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
+    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
     team: "Sales",
     dueDate: "2026-03-08",
     createdDate: "2026-03-05",
@@ -278,7 +278,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-013",
     description: "Deploy end-of-shift safety checklist to all job sites",
-    owner: { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-300" },
+    owner: { name: "Kevin Wu", initials: "KW", color: "bg-teal-500/30 text-teal-700 dark:text-teal-300" },
     team: "Operations",
     dueDate: "2026-03-07",
     createdDate: "2026-03-03",
@@ -291,7 +291,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-014",
     description: "Review design tool wireframes with Lisa before client preview",
-    owner: { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-300" },
+    owner: { name: "Amy Foster", initials: "AF", color: "bg-pink-500/30 text-pink-700 dark:text-pink-300" },
     team: "Design",
     dueDate: "2026-03-20",
     createdDate: "2026-03-14",
@@ -304,7 +304,7 @@ const initialActions: ActionItem[] = [
   {
     id: "act-015",
     description: "Negotiate bulk pricing with tile supplier for Q2 projects",
-    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
+    owner: { name: "Marcus Rivera", initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
     team: "Finance",
     dueDate: "2026-03-25",
     createdDate: "2026-03-12",
@@ -571,21 +571,21 @@ export default function ActionsPage() {
           <div className="h-4 w-px bg-foreground/10" />
           <button
             onClick={handleBatchComplete}
-            className="flex items-center gap-1.5 rounded-lg bg-emerald-600/20 px-3 py-1.5 text-xs font-medium text-emerald-400 hover:bg-emerald-600/30 transition-colors"
+            className="flex items-center gap-1.5 rounded-lg bg-emerald-600/20 px-3 py-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:bg-emerald-600/30 transition-colors"
           >
             <CheckCircle2 className="h-3.5 w-3.5" />
             Complete All
           </button>
           <button
             onClick={() => setShowReassignModal(true)}
-            className="flex items-center gap-1.5 rounded-lg bg-indigo-600/20 px-3 py-1.5 text-xs font-medium text-indigo-400 hover:bg-indigo-600/30 transition-colors"
+            className="flex items-center gap-1.5 rounded-lg bg-indigo-600/20 px-3 py-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-600/30 transition-colors"
           >
             <UserPlus className="h-3.5 w-3.5" />
             Reassign
           </button>
           <button
             onClick={() => setShowDateModal(true)}
-            className="flex items-center gap-1.5 rounded-lg bg-amber-600/20 px-3 py-1.5 text-xs font-medium text-amber-400 hover:bg-amber-600/30 transition-colors"
+            className="flex items-center gap-1.5 rounded-lg bg-amber-600/20 px-3 py-1.5 text-xs font-medium text-amber-600 dark:text-amber-400 hover:bg-amber-600/30 transition-colors"
           >
             <CalendarDays className="h-3.5 w-3.5" />
             Change Due Date
@@ -602,10 +602,10 @@ export default function ActionsPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
-          { label: "Due This Week", value: tabCounts.due_this_week, color: "text-amber-400", icon: Clock },
-          { label: "Overdue", value: tabCounts.overdue, color: "text-red-400", icon: AlertTriangle },
+          { label: "Due This Week", value: tabCounts.due_this_week, color: "text-amber-600 dark:text-amber-400", icon: Clock },
+          { label: "Overdue", value: tabCounts.overdue, color: "text-red-600 dark:text-red-400", icon: AlertTriangle },
           { label: "Open", value: tabCounts.all_open, color: "text-foreground", icon: ListChecks },
-          { label: "Completed", value: tabCounts.completed, color: "text-emerald-400", icon: CheckCircle2 },
+          { label: "Completed", value: tabCounts.completed, color: "text-emerald-600 dark:text-emerald-400", icon: CheckCircle2 },
         ].map((s) => (
           <div key={s.label} className="glass rounded-xl p-4">
             <div className="flex items-center justify-between">
@@ -793,7 +793,7 @@ export default function ActionsPage() {
                           : "border-foreground/15 hover:border-indigo-500/30"
                       }`}
                     >
-                      {isSelected && <CheckCircle2 className="h-3 w-3 text-indigo-400" />}
+                      {isSelected && <CheckCircle2 className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />}
                     </button>
                   )}
 
@@ -809,7 +809,7 @@ export default function ActionsPage() {
                         : "border-foreground/20 hover:border-indigo-500/50"
                     }`}
                   >
-                    {completed && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />}
+                    {completed && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />}
                   </button>
 
                   {/* Content */}
@@ -846,25 +846,25 @@ export default function ActionsPage() {
                       </Badge>
                       {/* Recurring badge */}
                       {item.isRecurring && (
-                        <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-cyan-500/20 bg-cyan-500/10 text-cyan-400">
+                        <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-cyan-500/20 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">
                           <Repeat className="h-2.5 w-2.5 mr-0.5" />
                           {item.recurrence}
                         </Badge>
                       )}
                       {/* Linked item badge */}
                       {item.linkedTo && (
-                        <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-indigo-500/20 bg-indigo-500/10 text-indigo-400">
+                        <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-indigo-500/20 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
                           <Link2 className="h-2.5 w-2.5 mr-0.5" />
                           {item.linkedTo.type === "rock" ? "Rock" : "Issue"}
                         </Badge>
                       )}
                       {/* Carried forward */}
                       {item.carriedForward && !completed && (
-                        <span className="text-[10px] text-amber-400 flex items-center gap-1">
+                        <span className="text-[10px] text-amber-600 dark:text-amber-400 flex items-center gap-1">
                           <RotateCcw className="h-3 w-3" />
                           Carried Forward
                           {item.carryCount > 1 && (
-                            <span className="bg-amber-500/20 text-amber-400 rounded-full px-1 text-[9px] font-bold">
+                            <span className="bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-full px-1 text-[9px] font-bold">
                               x{item.carryCount}
                             </span>
                           )}
@@ -887,7 +887,7 @@ export default function ActionsPage() {
                       {dueStatus === "overdue" && (
                         <button
                           onClick={() => carryForward(item.id)}
-                          className="rounded-lg p-1.5 text-amber-400 hover:bg-amber-500/10 transition-colors"
+                          className="rounded-lg p-1.5 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-colors"
                           title="Carry Forward"
                         >
                           <ArrowRight className="h-3.5 w-3.5" />
@@ -981,7 +981,7 @@ export default function ActionsPage() {
                   onClick={() => setNewRecurring(!newRecurring)}
                   className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all ${
                     newRecurring
-                      ? "bg-cyan-500/10 text-cyan-400 ring-1 ring-cyan-500/30"
+                      ? "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 ring-1 ring-cyan-500/30"
                       : "bg-card text-muted-foreground hover:text-foreground"
                   }`}
                 >
@@ -1106,7 +1106,7 @@ export default function ActionsPage() {
                   onClick={() => handleLinkItem(r)}
                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground bg-muted/40 hover:bg-muted/60 transition-colors"
                 >
-                  <Flag className="h-3.5 w-3.5 text-green-400" />
+                  <Flag className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
                   {r.name}
                 </button>
               ))}
@@ -1119,7 +1119,7 @@ export default function ActionsPage() {
                   onClick={() => handleLinkItem(i)}
                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground bg-muted/40 hover:bg-muted/60 transition-colors"
                 >
-                  <CircleAlert className="h-3.5 w-3.5 text-amber-400" />
+                  <CircleAlert className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                   {i.name}
                 </button>
               ))}

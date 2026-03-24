@@ -254,16 +254,16 @@ const contractorsData: Record<string, {
 };
 
 const statusColors: Record<string, string> = {
-  Active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  Pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  Inactive: "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
+  Active: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  Pending: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  Inactive: "bg-zinc-500/20 text-zinc-600 dark:text-zinc-400 border-zinc-500/30",
 };
 
 const orderStatusColors: Record<string, string> = {
-  Open: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  Processing: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  Shipped: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  Delivered: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+  Open: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
+  Processing: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  Shipped: "bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30",
+  Delivered: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
 };
 
 export default function ContractorDetailPage() {
@@ -318,7 +318,7 @@ export default function ContractorDetailPage() {
         </Link>
         <div className="flex flex-wrap items-center gap-4">
           <Avatar className="h-14 w-14 border-2 border-indigo-500/30">
-            <AvatarFallback className="bg-indigo-500/20 text-lg text-indigo-300">
+            <AvatarFallback className="bg-indigo-500/20 text-lg text-indigo-700 dark:text-indigo-300">
               {contractor.initials}
             </AvatarFallback>
           </Avatar>
@@ -345,7 +345,7 @@ export default function ContractorDetailPage() {
               <p className="mt-1 text-2xl font-bold text-foreground">{contractor.totalOrders}</p>
             </div>
             <div className="rounded-xl bg-foreground/5 p-3">
-              <ShoppingCart className="h-5 w-5 text-indigo-400" />
+              <ShoppingCart className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
             </div>
           </div>
         </Card>
@@ -356,7 +356,7 @@ export default function ContractorDetailPage() {
               <p className="mt-1 text-2xl font-bold text-foreground">${contractor.revenueYTD.toLocaleString()}</p>
             </div>
             <div className="rounded-xl bg-foreground/5 p-3">
-              <DollarSign className="h-5 w-5 text-emerald-400" />
+              <DollarSign className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             </div>
           </div>
         </Card>
@@ -367,7 +367,7 @@ export default function ContractorDetailPage() {
               <p className="mt-1 text-2xl font-bold text-foreground">${contractor.avgOrderValue.toLocaleString()}</p>
             </div>
             <div className="rounded-xl bg-foreground/5 p-3">
-              <TrendingUp className="h-5 w-5 text-amber-400" />
+              <TrendingUp className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             </div>
           </div>
         </Card>
@@ -378,7 +378,7 @@ export default function ContractorDetailPage() {
               <p className="mt-1 text-2xl font-bold text-foreground">{accountAge}</p>
             </div>
             <div className="rounded-xl bg-foreground/5 p-3">
-              <Calendar className="h-5 w-5 text-purple-400" />
+              <Calendar className="h-5 w-5 text-purple-600 dark:text-purple-400" />
             </div>
           </div>
         </Card>
@@ -393,19 +393,19 @@ export default function ContractorDetailPage() {
             <TabsList className="glass border border-border bg-foreground/5">
               <TabsTrigger
                 value="orders"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Orders
               </TabsTrigger>
               <TabsTrigger
                 value="products"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Products
               </TabsTrigger>
               <TabsTrigger
                 value="notes"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Notes
               </TabsTrigger>
@@ -432,7 +432,7 @@ export default function ContractorDetailPage() {
                           className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer"
                           onClick={() => router.push(`/orders/${order.id}`)}
                         >
-                          <TableCell className="font-medium text-indigo-400 hover:text-indigo-300">{order.id}</TableCell>
+                          <TableCell className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300">{order.id}</TableCell>
                           <TableCell className="text-muted-foreground text-sm max-w-[240px] truncate">{order.items}</TableCell>
                           <TableCell className="text-right font-medium text-foreground">${order.total.toLocaleString()}</TableCell>
                           <TableCell>
@@ -529,7 +529,7 @@ export default function ContractorDetailPage() {
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           {note.author === "Sales Agent" ? (
-                            <MessageSquare className="h-4 w-4 text-amber-400" />
+                            <MessageSquare className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                           ) : (
                             <User className="h-4 w-4 text-muted-foreground" />
                           )}
@@ -566,7 +566,7 @@ export default function ContractorDetailPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <User className="h-4 w-4 text-indigo-400" />
+                  <User className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Contact Person</p>
@@ -575,7 +575,7 @@ export default function ContractorDetailPage() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <Mail className="h-4 w-4 text-indigo-400" />
+                  <Mail className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Email</p>
@@ -584,7 +584,7 @@ export default function ContractorDetailPage() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <Phone className="h-4 w-4 text-indigo-400" />
+                  <Phone className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Phone</p>
@@ -593,7 +593,7 @@ export default function ContractorDetailPage() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-indigo-500/10 p-2">
-                  <MapPin className="h-4 w-4 text-indigo-400" />
+                  <MapPin className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Address</p>
@@ -633,7 +633,7 @@ export default function ContractorDetailPage() {
               <Separator className="bg-border" />
               <div className="flex justify-between font-semibold">
                 <span className="text-foreground">Revenue YTD</span>
-                <span className="text-emerald-400">${contractor.revenueYTD.toLocaleString()}</span>
+                <span className="text-emerald-600 dark:text-emerald-400">${contractor.revenueYTD.toLocaleString()}</span>
               </div>
             </div>
           </Card>

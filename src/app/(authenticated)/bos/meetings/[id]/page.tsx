@@ -227,15 +227,15 @@ const aiPrepData = {
 // ---------------------------------------------------------------------------
 
 const priorityConfig = {
-  High: { bg: 'bg-red-500/15', text: 'text-red-400', border: 'border-red-500/20' },
-  Medium: { bg: 'bg-amber-500/15', text: 'text-amber-400', border: 'border-amber-500/20' },
-  Low: { bg: 'bg-blue-500/15', text: 'text-blue-400', border: 'border-blue-500/20' },
+  High: { bg: 'bg-red-500/15', text: 'text-red-600 dark:text-red-400', border: 'border-red-500/20' },
+  Medium: { bg: 'bg-amber-500/15', text: 'text-amber-600 dark:text-amber-400', border: 'border-amber-500/20' },
+  Low: { bg: 'bg-blue-500/15', text: 'text-blue-600 dark:text-blue-400', border: 'border-blue-500/20' },
 };
 
 const rockStatusConfig = {
-  'On Track': { bg: 'bg-green-500/15', text: 'text-green-400', ring: 'ring-green-500/20' },
-  'Off Track': { bg: 'bg-red-500/15', text: 'text-red-400', ring: 'ring-red-500/20' },
-  'At Risk': { bg: 'bg-amber-500/15', text: 'text-amber-400', ring: 'ring-amber-500/20' },
+  'On Track': { bg: 'bg-green-500/15', text: 'text-green-600 dark:text-green-400', ring: 'ring-green-500/20' },
+  'Off Track': { bg: 'bg-red-500/15', text: 'text-red-600 dark:text-red-400', ring: 'ring-red-500/20' },
+  'At Risk': { bg: 'bg-amber-500/15', text: 'text-amber-600 dark:text-amber-400', ring: 'ring-amber-500/20' },
 };
 
 // ---------------------------------------------------------------------------
@@ -312,7 +312,7 @@ function CircularTimer({
       <span
         className={cn(
           'absolute font-mono text-sm font-bold tabular-nums',
-          isOvertime ? 'text-red-400' : isLow ? 'text-amber-400' : 'text-foreground'
+          isOvertime ? 'text-red-600 dark:text-red-400' : isLow ? 'text-amber-600 dark:text-amber-400' : 'text-foreground'
         )}
       >
         {minutes}:{secs.toString().padStart(2, '0')}
@@ -388,9 +388,9 @@ function AIPrepPanel({ onClose }: { onClose: () => void }) {
     <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 animate-in fade-in slide-in-from-top-2 duration-300">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Brain className="h-4 w-4 text-indigo-400" />
+          <Brain className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
           <h3 className="text-sm font-semibold text-foreground">AI Meeting Prep</h3>
-          <span className="inline-flex items-center rounded-full bg-indigo-500/15 px-2 py-0.5 text-[9px] font-bold text-indigo-400 ring-1 ring-indigo-500/20">
+          <span className="inline-flex items-center rounded-full bg-indigo-500/15 px-2 py-0.5 text-[9px] font-bold text-indigo-600 dark:text-indigo-400 ring-1 ring-indigo-500/20">
             BETA
           </span>
         </div>
@@ -408,11 +408,11 @@ function AIPrepPanel({ onClose }: { onClose: () => void }) {
 
       <div className="grid grid-cols-3 gap-2 mb-3">
         <div className="rounded-lg bg-muted/20 p-2.5 text-center">
-          <p className="text-sm font-bold text-red-400">{aiPrepData.overdueTodos.length}</p>
+          <p className="text-sm font-bold text-red-600 dark:text-red-400">{aiPrepData.overdueTodos.length}</p>
           <p className="text-[10px] text-muted-foreground">Overdue To-Dos</p>
         </div>
         <div className="rounded-lg bg-muted/20 p-2.5 text-center">
-          <p className="text-sm font-bold text-amber-400">{aiPrepData.offTrackRocks.length}</p>
+          <p className="text-sm font-bold text-amber-600 dark:text-amber-400">{aiPrepData.offTrackRocks.length}</p>
           <p className="text-[10px] text-muted-foreground">Off-Track Rocks</p>
         </div>
         <div className="rounded-lg bg-muted/20 p-2.5 text-center">
@@ -424,7 +424,7 @@ function AIPrepPanel({ onClose }: { onClose: () => void }) {
       {/* Overdue to-dos */}
       {aiPrepData.overdueTodos.length > 0 && (
         <div className="mb-2">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-red-400/70 mb-1">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-red-600 dark:text-red-400/70 mb-1">
             Overdue To-Dos
           </p>
           {aiPrepData.overdueTodos.map((todo, i) => (
@@ -439,7 +439,7 @@ function AIPrepPanel({ onClose }: { onClose: () => void }) {
       {/* Off-track rocks */}
       {aiPrepData.offTrackRocks.length > 0 && (
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-400/70 mb-1">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400/70 mb-1">
             Off-Track Rocks
           </p>
           {aiPrepData.offTrackRocks.map((rock, i) => (
@@ -447,7 +447,7 @@ function AIPrepPanel({ onClose }: { onClose: () => void }) {
               <span className="text-xs text-foreground/80">{rock.name}</span>
               <span className={cn(
                 'inline-flex items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold',
-                rock.status === 'Off Track' ? 'bg-red-500/15 text-red-400' : 'bg-amber-500/15 text-amber-400'
+                rock.status === 'Off Track' ? 'bg-red-500/15 text-red-600 dark:text-red-400' : 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
               )}>
                 {rock.status}
               </span>
@@ -518,12 +518,12 @@ function ScorecardContent() {
                 </td>
                 <td className="px-4 py-2.5 text-center">
                   {kpi.onTrack ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-400 ring-1 ring-green-500/20">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-600 dark:text-green-400 ring-1 ring-green-500/20">
                       <CheckCircle2 className="h-3 w-3" />
                       On Track
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-red-500/15 px-2 py-0.5 text-[10px] font-semibold text-red-400 ring-1 ring-red-500/20">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-red-500/15 px-2 py-0.5 text-[10px] font-semibold text-red-600 dark:text-red-400 ring-1 ring-red-500/20">
                       <AlertTriangle className="h-3 w-3" />
                       Off Track
                     </span>
@@ -697,7 +697,7 @@ function ActionItemContent({
               className={cn(
                 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-all',
                 item.completed
-                  ? 'border-green-400 bg-green-400/20 text-green-400'
+                  ? 'border-green-400 bg-green-400/20 text-green-600 dark:text-green-400'
                   : 'border-border hover:border-primary'
               )}
             >
@@ -876,19 +876,19 @@ function IDSContent({
                   </span>
                   <button
                     onClick={() => onVote(issue.id)}
-                    className="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-green-500/10 hover:text-green-400"
+                    className="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-green-500/10 hover:text-green-600 dark:text-green-400"
                   >
                     <ThumbsUp className="h-3 w-3" />
                   </button>
                   <span className={cn(
                     'text-[11px] font-bold tabular-nums',
-                    netVotes > 0 ? 'text-green-400' : netVotes < 0 ? 'text-red-400' : 'text-muted-foreground'
+                    netVotes > 0 ? 'text-green-600 dark:text-green-400' : netVotes < 0 ? 'text-red-600 dark:text-red-400' : 'text-muted-foreground'
                   )}>
                     {netVotes}
                   </span>
                   <button
                     onClick={() => onDownvote(issue.id)}
-                    className="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-red-500/10 hover:text-red-400"
+                    className="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-red-500/10 hover:text-red-600 dark:text-red-400"
                   >
                     <ThumbsDown className="h-3 w-3" />
                   </button>
@@ -945,7 +945,7 @@ function IDSContent({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-7 gap-1 rounded-md px-2 text-[10px] text-green-400 hover:bg-green-500/10"
+                      className="h-7 gap-1 rounded-md px-2 text-[10px] text-green-600 dark:text-green-400 hover:bg-green-500/10"
                       onClick={() => onStatusChange(issue.id, 'resolved')}
                     >
                       <CheckCircle2 className="h-3 w-3" />
@@ -1002,8 +1002,8 @@ function ConcludeContent({
       {avgRating > 0 && (
         <div className="glass rounded-lg p-3 text-center">
           <div className="flex items-center justify-center gap-2">
-            <Star className="h-5 w-5 text-amber-400 fill-amber-400" />
-            <span className="text-2xl font-bold text-amber-400">{avgRating.toFixed(1)}</span>
+            <Star className="h-5 w-5 text-amber-600 dark:text-amber-400 fill-amber-400" />
+            <span className="text-2xl font-bold text-amber-600 dark:text-amber-400">{avgRating.toFixed(1)}</span>
             <span className="text-sm text-muted-foreground">/10 avg</span>
           </div>
           <p className="text-[10px] text-muted-foreground mt-1">
@@ -1036,7 +1036,7 @@ function ConcludeContent({
                         attendee.rating === n
                           ? 'bg-indigo-500 text-white'
                           : attendee.rating && n <= attendee.rating
-                          ? 'bg-indigo-500/20 text-indigo-400'
+                          ? 'bg-indigo-500/20 text-indigo-600 dark:text-indigo-400'
                           : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
                       )}
                     >
@@ -1116,7 +1116,7 @@ function TangentSidebar({
     <div className="fixed right-20 bottom-6 z-50 w-64 rounded-xl border border-amber-500/20 bg-background shadow-xl animate-in fade-in slide-in-from-right-4 duration-200">
       <div className="flex items-center justify-between border-b border-border px-3 py-2">
         <div className="flex items-center gap-2">
-          <Zap className="h-3.5 w-3.5 text-amber-400" />
+          <Zap className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
           <span className="text-xs font-semibold text-foreground">
             Tangents ({tangents.length})
           </span>
@@ -1351,7 +1351,7 @@ export default function ActiveMeetingPage() {
           <h1 className="text-sm font-semibold text-foreground hidden sm:block">
             Leadership Team Weekly Sync
           </h1>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-400/10 px-2.5 py-0.5 text-[10px] font-semibold text-amber-400 ring-1 ring-amber-400/20 animate-pulse">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-400/10 px-2.5 py-0.5 text-[10px] font-semibold text-amber-600 dark:text-amber-400 ring-1 ring-amber-400/20 animate-pulse">
             <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
             Meeting in Progress
           </span>
@@ -1364,7 +1364,7 @@ export default function ActiveMeetingPage() {
             className={cn(
               'lg:hidden h-7 gap-1.5 rounded-lg px-2.5 text-[10px] font-medium transition-colors',
               showMobileNotes
-                ? 'text-emerald-400 bg-emerald-500/10'
+                ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10'
                 : 'text-muted-foreground hover:text-foreground'
             )}
             onClick={() => setShowMobileNotes(!showMobileNotes)}
@@ -1379,14 +1379,14 @@ export default function ActiveMeetingPage() {
             className={cn(
               'h-7 gap-1.5 rounded-lg px-2.5 text-[10px] font-medium transition-colors',
               showAiPrep
-                ? 'text-indigo-400 bg-indigo-500/10'
+                ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-500/10'
                 : 'text-muted-foreground hover:text-foreground'
             )}
             onClick={() => setShowAiPrep(!showAiPrep)}
           >
             <Brain className="h-3 w-3" />
             <span className="hidden sm:inline">AI Prep</span>
-            <span className="hidden sm:inline-flex items-center rounded-full bg-indigo-500/15 px-1.5 py-0 text-[8px] font-bold text-indigo-400">
+            <span className="hidden sm:inline-flex items-center rounded-full bg-indigo-500/15 px-1.5 py-0 text-[8px] font-bold text-indigo-600 dark:text-indigo-400">
               BETA
             </span>
           </Button>
@@ -1534,7 +1534,7 @@ export default function ActiveMeetingPage() {
                   )}
                 >
                   {section.status === 'completed' ? (
-                    <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-green-400" />
+                    <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-green-600 dark:text-green-400" />
                   ) : section.status === 'active' ? (
                     <span
                       className={cn(
@@ -1684,13 +1684,13 @@ export default function ActiveMeetingPage() {
               >
                 {paused ? (
                   <>
-                    <Play className="h-3.5 w-3.5 text-green-400" />
-                    <span className="text-green-400">Resume</span>
+                    <Play className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
+                    <span className="text-green-600 dark:text-green-400">Resume</span>
                   </>
                 ) : (
                   <>
-                    <Pause className="h-3.5 w-3.5 text-amber-400" />
-                    <span className="text-amber-400">Pause</span>
+                    <Pause className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                    <span className="text-amber-600 dark:text-amber-400">Pause</span>
                   </>
                 )}
               </Button>
@@ -1734,9 +1734,9 @@ export default function ActiveMeetingPage() {
                 className={cn(
                   'font-mono text-lg font-bold tabular-nums',
                   isOvertime
-                    ? 'text-red-400'
+                    ? 'text-red-600 dark:text-red-400'
                     : isLowTime
-                    ? 'text-amber-400'
+                    ? 'text-amber-600 dark:text-amber-400'
                     : 'text-foreground'
                 )}
               >
@@ -1747,7 +1747,7 @@ export default function ActiveMeetingPage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 gap-1 rounded-lg px-3 text-xs text-red-400 hover:bg-red-500/10"
+                  className="h-8 gap-1 rounded-lg px-3 text-xs text-red-600 dark:text-red-400 hover:bg-red-500/10"
                 >
                   <X className="h-3.5 w-3.5" />
                   End
@@ -1781,8 +1781,8 @@ export default function ActiveMeetingPage() {
             </div>
             {showAiTyping && (
               <div className="mt-2 flex items-center gap-2">
-                <Sparkles className="h-3 w-3 text-indigo-400 animate-pulse" />
-                <span className="text-[10px] text-indigo-400 animate-pulse">
+                <Sparkles className="h-3 w-3 text-indigo-600 dark:text-indigo-400 animate-pulse" />
+                <span className="text-[10px] text-indigo-600 dark:text-indigo-400 animate-pulse">
                   AI is taking notes...
                 </span>
                 <span className="flex gap-0.5">
@@ -1816,7 +1816,7 @@ export default function ActiveMeetingPage() {
             {/* Current section notes (typed in) */}
             {activeSection && (
               <div className="space-y-1.5">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-400">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
                   {activeSection.name} (Current)
                 </p>
                 {typingNotes.map((note, i) => (
@@ -1836,7 +1836,7 @@ export default function ActiveMeetingPage() {
             <div className="border-t border-border px-4 py-2">
               <button
                 onClick={() => setTangentSidebarOpen(!tangentSidebarOpen)}
-                className="flex w-full items-center justify-between text-[10px] font-semibold text-amber-400"
+                className="flex w-full items-center justify-between text-[10px] font-semibold text-amber-600 dark:text-amber-400"
               >
                 <span className="flex items-center gap-1.5">
                   <Zap className="h-3 w-3" />

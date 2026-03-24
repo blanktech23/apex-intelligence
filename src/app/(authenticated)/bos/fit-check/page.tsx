@@ -644,7 +644,7 @@ function FitCheckWizard({
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20 text-sm font-semibold text-indigo-300">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20 text-sm font-semibold text-indigo-700 dark:text-indigo-300">
               {person.initials}
             </div>
             <div>
@@ -923,7 +923,7 @@ export default function FitCheckPage() {
     >
       <div className="flex items-center gap-1">
         {label}
-        <ArrowUpDown className={`h-3 w-3 ${sortKey === sortId ? 'text-indigo-400' : 'opacity-30'}`} />
+        <ArrowUpDown className={`h-3 w-3 ${sortKey === sortId ? 'text-indigo-600 dark:text-indigo-400' : 'opacity-30'}`} />
       </div>
     </th>
   );
@@ -953,7 +953,7 @@ export default function FitCheckPage() {
           <Button
             size="sm"
             variant="ghost"
-            className={`h-9 gap-2 rounded-lg px-3 text-xs ${exportFitState === 'done' ? 'text-emerald-400' : 'text-muted-foreground hover:text-foreground'}`}
+            className={`h-9 gap-2 rounded-lg px-3 text-xs ${exportFitState === 'done' ? 'text-emerald-600 dark:text-emerald-400' : 'text-muted-foreground hover:text-foreground'}`}
             disabled={exportFitState !== 'idle'}
             onClick={() => {
               setExportFitState('exporting');
@@ -997,7 +997,7 @@ export default function FitCheckPage() {
         <div className="glass rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-400/10">
-              <CheckCircle2 className="h-5 w-5 text-green-400" />
+              <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
             </div>
             <div>
               <p className="text-2xl font-bold text-green-600 dark:text-green-400">{rightRightCount}</p>
@@ -1008,7 +1008,7 @@ export default function FitCheckPage() {
         <div className="glass rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-400/10">
-              <AlertTriangle className="h-5 w-5 text-amber-400" />
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             </div>
             <div>
               <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">{atRiskCount}</p>
@@ -1019,7 +1019,7 @@ export default function FitCheckPage() {
         <div className="glass rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-400/10">
-              <XCircle className="h-5 w-5 text-red-400" />
+              <XCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
             </div>
             <div>
               <p className="text-2xl font-bold text-red-600 dark:text-red-400">{actionRequiredCount}</p>
@@ -1096,7 +1096,7 @@ export default function FitCheckPage() {
                   onClick={() => setStatusFilter(sf)}
                   className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                     statusFilter === sf
-                      ? 'bg-indigo-500/20 text-indigo-300 ring-1 ring-indigo-500/30'
+                      ? 'bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/30'
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'
                   }`}
                 >
@@ -1142,7 +1142,7 @@ export default function FitCheckPage() {
                             onClick={() => setExpandedId(isExpanded ? null : person.id)}
                           >
                             <ChevronRight className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 text-[11px] font-semibold text-indigo-300">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 text-[11px] font-semibold text-indigo-700 dark:text-indigo-300">
                               {person.initials}
                             </div>
                             <div>
@@ -1175,11 +1175,11 @@ export default function FitCheckPage() {
                         {(['competency', 'commitment', 'capacity'] as const).map((dim) => (
                           <td key={dim} className="border-b border-border/50 px-3 py-3 text-center">
                             {person.ccc[dim] ? (
-                              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-green-400/10 text-green-400">
+                              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-green-400/10 text-green-600 dark:text-green-400">
                                 <CheckCircle2 className="h-3.5 w-3.5" />
                               </span>
                             ) : (
-                              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-400/10 text-red-400">
+                              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-400/10 text-red-600 dark:text-red-400">
                                 <XCircle className="h-3.5 w-3.5" />
                               </span>
                             )}
@@ -1236,7 +1236,7 @@ export default function FitCheckPage() {
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-indigo-500/20 text-lg font-semibold text-indigo-300">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-indigo-500/20 text-lg font-semibold text-indigo-700 dark:text-indigo-300">
                       {person.initials}
                     </div>
                     <div>
@@ -1361,7 +1361,7 @@ export default function FitCheckPage() {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${scheduledOneOnOnes.has(person.id) ? 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-default' : 'text-muted-foreground hover:text-foreground'}`}
+                    className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${scheduledOneOnOnes.has(person.id) ? 'text-emerald-600 dark:text-emerald-400 hover:text-emerald-600 dark:text-emerald-400 hover:bg-transparent cursor-default' : 'text-muted-foreground hover:text-foreground'}`}
                     disabled={scheduledOneOnOnes.has(person.id)}
                     onClick={() => {
                       setScheduledOneOnOnes((prev) => new Set(prev).add(person.id));
@@ -1383,7 +1383,7 @@ export default function FitCheckPage() {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${plansCreated.has(person.id) ? 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-default' : 'text-muted-foreground hover:text-foreground'}`}
+                    className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${plansCreated.has(person.id) ? 'text-emerald-600 dark:text-emerald-400 hover:text-emerald-600 dark:text-emerald-400 hover:bg-transparent cursor-default' : 'text-muted-foreground hover:text-foreground'}`}
                     disabled={plansCreated.has(person.id)}
                     onClick={() => {
                       setPlansCreated((prev) => new Set(prev).add(person.id));
@@ -1405,7 +1405,7 @@ export default function FitCheckPage() {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${messagesSent.has(person.id) ? 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-default' : 'text-muted-foreground hover:text-foreground'}`}
+                    className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${messagesSent.has(person.id) ? 'text-emerald-600 dark:text-emerald-400 hover:text-emerald-600 dark:text-emerald-400 hover:bg-transparent cursor-default' : 'text-muted-foreground hover:text-foreground'}`}
                     disabled={messagesSent.has(person.id)}
                     onClick={() => {
                       setMessageTargetId(messageTargetId === person.id ? null : person.id);
@@ -1481,7 +1481,7 @@ export default function FitCheckPage() {
           {/* Heat Map */}
           <div className="glass rounded-xl p-5">
             <div className="mb-4 flex items-center gap-2">
-              <BarChart3 className="h-4 w-4 text-indigo-400" />
+              <BarChart3 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-sm font-semibold text-foreground">Core Values Heat Map</h3>
             </div>
             <TeamHeatMap members={members} />
@@ -1501,7 +1501,7 @@ export default function FitCheckPage() {
           {/* Department Comparison */}
           <div className="glass rounded-xl p-5">
             <div className="mb-4 flex items-center gap-2">
-              <Shield className="h-4 w-4 text-indigo-400" />
+              <Shield className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-sm font-semibold text-foreground">Department Comparison</h3>
             </div>
             <DepartmentChart members={members} />

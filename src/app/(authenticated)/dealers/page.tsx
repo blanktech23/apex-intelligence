@@ -48,15 +48,15 @@ import {
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
-  Active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  Pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  Suspended: "bg-red-500/20 text-red-400 border-red-500/30",
+  Active: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  Pending: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  Suspended: "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30",
 };
 
 const stats = [
-  { label: "Active Dealers", value: "12", icon: Store, change: "+1 this month", color: "text-emerald-400" },
-  { label: "Pending Applications", value: "2", icon: Clock, change: "Avg 3 day review", color: "text-amber-400" },
-  { label: "Total Revenue MTD", value: "$342K", icon: DollarSign, change: "+15.2% MoM", color: "text-indigo-400" },
+  { label: "Active Dealers", value: "12", icon: Store, change: "+1 this month", color: "text-emerald-600 dark:text-emerald-400" },
+  { label: "Pending Applications", value: "2", icon: Clock, change: "Avg 3 day review", color: "text-amber-600 dark:text-amber-400" },
+  { label: "Total Revenue MTD", value: "$342K", icon: DollarSign, change: "+15.2% MoM", color: "text-indigo-600 dark:text-indigo-400" },
 ];
 
 const dealers = [
@@ -244,7 +244,7 @@ export default function DealersPage() {
                         <td className="py-2 text-muted-foreground">{i + 1}</td>
                         <td className="py-2 text-foreground font-medium">{row.name}</td>
                         <td className="py-2 text-muted-foreground hidden sm:table-cell">{row.region}</td>
-                        <td className="py-2 text-right text-emerald-400 font-medium">{row.amount}</td>
+                        <td className="py-2 text-right text-emerald-600 dark:text-emerald-400 font-medium">{row.amount}</td>
                         <td className="py-2 text-right text-muted-foreground">{row.pct}</td>
                       </tr>
                     ))}
@@ -405,7 +405,7 @@ export default function DealersPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <div className="rounded-lg bg-indigo-500/10 p-2">
-                <Store className="h-4 w-4 text-indigo-400" />
+                <Store className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               </div>
               Invite Dealer
             </DialogTitle>
@@ -423,7 +423,7 @@ export default function DealersPage() {
                 placeholder="Acme Cabinetry"
                 className="mt-1 glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground"
               />
-              {inviteErrors.companyName && <p className="mt-1 text-xs text-red-400">{inviteErrors.companyName}</p>}
+              {inviteErrors.companyName && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{inviteErrors.companyName}</p>}
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground">Contact Person *</label>
@@ -433,7 +433,7 @@ export default function DealersPage() {
                 placeholder="John Smith"
                 className="mt-1 glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground"
               />
-              {inviteErrors.contactPerson && <p className="mt-1 text-xs text-red-400">{inviteErrors.contactPerson}</p>}
+              {inviteErrors.contactPerson && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{inviteErrors.contactPerson}</p>}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -445,7 +445,7 @@ export default function DealersPage() {
                   placeholder="john@acme.com"
                   className="mt-1 glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground"
                 />
-                {inviteErrors.email && <p className="mt-1 text-xs text-red-400">{inviteErrors.email}</p>}
+                {inviteErrors.email && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{inviteErrors.email}</p>}
               </div>
               <div>
                 <label className="text-xs font-medium text-muted-foreground">Phone</label>
@@ -471,7 +471,7 @@ export default function DealersPage() {
                   <SelectItem value="south-tx">South TX</SelectItem>
                 </SelectContent>
               </Select>
-              {inviteErrors.region && <p className="mt-1 text-xs text-red-400">{inviteErrors.region}</p>}
+              {inviteErrors.region && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{inviteErrors.region}</p>}
             </div>
           </div>
 

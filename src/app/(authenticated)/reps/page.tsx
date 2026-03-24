@@ -46,16 +46,16 @@ import {
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
-  Active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  "On Leave": "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  Inactive: "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
+  Active: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  "On Leave": "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  Inactive: "bg-zinc-500/20 text-zinc-600 dark:text-zinc-400 border-zinc-500/30",
 };
 
 const stats = [
-  { label: "Total Reps", value: "14", icon: UserCheck, change: "+2 this quarter", color: "text-indigo-400" },
-  { label: "Active Territories", value: "11", icon: MapPin, change: "79% coverage", color: "text-emerald-400" },
-  { label: "Orders Placed MTD", value: "218", icon: Briefcase, change: "+22% vs last month", color: "text-amber-400" },
-  { label: "Commission Paid MTD", value: "$10.9K", icon: DollarSign, change: "+9.1% MoM", color: "text-purple-400" },
+  { label: "Total Reps", value: "14", icon: UserCheck, change: "+2 this quarter", color: "text-indigo-600 dark:text-indigo-400" },
+  { label: "Active Territories", value: "11", icon: MapPin, change: "79% coverage", color: "text-emerald-600 dark:text-emerald-400" },
+  { label: "Orders Placed MTD", value: "218", icon: Briefcase, change: "+22% vs last month", color: "text-amber-600 dark:text-amber-400" },
+  { label: "Commission Paid MTD", value: "$10.9K", icon: DollarSign, change: "+9.1% MoM", color: "text-purple-600 dark:text-purple-400" },
 ];
 
 const defaultReps = [
@@ -227,9 +227,9 @@ export default function RepsPage() {
               <h3 className="text-sm font-semibold text-foreground mb-3">Breakdown by Status</h3>
               <div className="space-y-3">
                 {[
-                  { status: "Active", count: 11, color: "text-emerald-400" },
-                  { status: "On Leave", count: 1, color: "text-amber-400" },
-                  { status: "Inactive", count: 2, color: "text-zinc-400" },
+                  { status: "Active", count: 11, color: "text-emerald-600 dark:text-emerald-400" },
+                  { status: "On Leave", count: 1, color: "text-amber-600 dark:text-amber-400" },
+                  { status: "Inactive", count: 2, color: "text-zinc-600 dark:text-zinc-400" },
                 ].map((row) => (
                   <div key={row.status} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
                     <div className="flex items-center gap-2">
@@ -241,7 +241,7 @@ export default function RepsPage() {
                 ))}
                 <div className="flex items-center justify-between pt-2 border-t border-border">
                   <p className="text-sm font-semibold text-foreground">Total</p>
-                  <span className="text-sm font-bold text-indigo-400">14</span>
+                  <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">14</span>
                 </div>
               </div>
             </div>
@@ -265,7 +265,7 @@ export default function RepsPage() {
                 ].map((row) => (
                   <div key={row.territory} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
                     <p className="text-sm text-foreground">{row.territory}</p>
-                    <span className={`text-sm ${row.rep === "Unassigned" ? "text-muted-foreground italic" : "text-emerald-400 font-medium"}`}>{row.rep}</span>
+                    <span className={`text-sm ${row.rep === "Unassigned" ? "text-muted-foreground italic" : "text-emerald-600 dark:text-emerald-400 font-medium"}`}>{row.rep}</span>
                   </div>
                 ))}
               </div>
@@ -287,7 +287,7 @@ export default function RepsPage() {
                       <span className="text-xs font-bold text-muted-foreground w-5">#{i + 1}</span>
                       <p className="text-sm text-foreground">{row.rep}</p>
                     </div>
-                    <span className="text-sm font-medium text-amber-400">{row.orders} orders</span>
+                    <span className="text-sm font-medium text-amber-600 dark:text-amber-400">{row.orders} orders</span>
                   </div>
                 ))}
               </div>
@@ -309,7 +309,7 @@ export default function RepsPage() {
                       <span className="text-xs font-bold text-muted-foreground w-5">#{i + 1}</span>
                       <p className="text-sm text-foreground">{row.rep}</p>
                     </div>
-                    <span className="text-sm font-medium text-purple-400">{row.commission}</span>
+                    <span className="text-sm font-medium text-purple-600 dark:text-purple-400">{row.commission}</span>
                   </div>
                 ))}
               </div>
@@ -367,7 +367,7 @@ export default function RepsPage() {
                 <TableCell className="font-medium text-foreground">
                   <Link
                     href={`/reps/${rep.id}`}
-                    className="hover:text-indigo-400 transition-colors"
+                    className="hover:text-indigo-600 dark:text-indigo-400 transition-colors"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {rep.name}
@@ -406,7 +406,7 @@ export default function RepsPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <div className="rounded-lg bg-indigo-500/10 p-2">
-                <UserPlus className="h-4 w-4 text-indigo-400" />
+                <UserPlus className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               </div>
               Invite Sales Rep
             </DialogTitle>
@@ -419,27 +419,27 @@ export default function RepsPage() {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                  First Name <span className="text-red-400">*</span>
+                  First Name <span className="text-red-600 dark:text-red-400">*</span>
                 </label>
                 <Input placeholder="First name" value={form.firstName} onChange={(e) => updateField("firstName", e.target.value)} className={`${inputClass} ${errors.firstName ? errorClass : ""}`} />
-                {errors.firstName && <p className="text-xs text-red-400 mt-1">Required</p>}
+                {errors.firstName && <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>}
               </div>
               <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                  Last Name <span className="text-red-400">*</span>
+                  Last Name <span className="text-red-600 dark:text-red-400">*</span>
                 </label>
                 <Input placeholder="Last name" value={form.lastName} onChange={(e) => updateField("lastName", e.target.value)} className={`${inputClass} ${errors.lastName ? errorClass : ""}`} />
-                {errors.lastName && <p className="text-xs text-red-400 mt-1">Required</p>}
+                {errors.lastName && <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>}
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                  Email <span className="text-red-400">*</span>
+                  Email <span className="text-red-600 dark:text-red-400">*</span>
                 </label>
                 <Input type="email" placeholder="rep@company.com" value={form.email} onChange={(e) => updateField("email", e.target.value)} className={`${inputClass} ${errors.email ? errorClass : ""}`} />
-                {errors.email && <p className="text-xs text-red-400 mt-1">Required</p>}
+                {errors.email && <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>}
               </div>
               <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">Phone</label>

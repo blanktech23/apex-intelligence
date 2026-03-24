@@ -34,17 +34,17 @@ import {
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
-  "In Queue": "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
-  "In Production": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  "Quality Check": "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  "Ready to Ship": "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+  "In Queue": "bg-zinc-500/20 text-zinc-600 dark:text-zinc-400 border-zinc-500/30",
+  "In Production": "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
+  "Quality Check": "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  "Ready to Ship": "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
 };
 
 const stats = [
-  { label: "In Queue", value: "12", icon: Clock, change: "3 urgent", color: "text-zinc-400" },
-  { label: "In Production", value: "8", icon: Wrench, change: "On schedule", color: "text-blue-400" },
-  { label: "Quality Check", value: "3", icon: CheckCircle2, change: "1 flagged", color: "text-amber-400" },
-  { label: "Ready to Ship", value: "5", icon: Package, change: "2 today", color: "text-emerald-400" },
+  { label: "In Queue", value: "12", icon: Clock, change: "3 urgent", color: "text-zinc-600 dark:text-zinc-400" },
+  { label: "In Production", value: "8", icon: Wrench, change: "On schedule", color: "text-blue-600 dark:text-blue-400" },
+  { label: "Quality Check", value: "3", icon: CheckCircle2, change: "1 flagged", color: "text-amber-600 dark:text-amber-400" },
+  { label: "Ready to Ship", value: "5", icon: Package, change: "2 today", color: "text-emerald-600 dark:text-emerald-400" },
 ];
 
 const production = [
@@ -103,14 +103,14 @@ const readyToShip = [
 
 const priorityColors: Record<string, string> = {
   Normal: "text-muted-foreground",
-  Urgent: "text-amber-400 font-medium",
-  Rush: "text-red-400 font-medium",
+  Urgent: "text-amber-600 dark:text-amber-400 font-medium",
+  Rush: "text-red-600 dark:text-red-400 font-medium",
 };
 
 const qcResultColors: Record<string, string> = {
-  Pass: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  Fail: "bg-red-500/20 text-red-400 border-red-500/30",
-  Pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  Pass: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  Fail: "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30",
+  Pending: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
 };
 
 export default function ProductionPage() {
@@ -245,9 +245,9 @@ export default function ProductionPage() {
                         <td className="py-2 text-muted-foreground hidden sm:table-cell">{row.product}</td>
                         <td className="py-2 text-center">
                           <Badge variant="outline" className={
-                            row.stage === "Cutting" ? "bg-zinc-500/20 text-zinc-400 border-zinc-500/30" :
-                            row.stage === "Assembly" ? "bg-blue-500/20 text-blue-400 border-blue-500/30" :
-                            "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                            row.stage === "Cutting" ? "bg-zinc-500/20 text-zinc-600 dark:text-zinc-400 border-zinc-500/30" :
+                            row.stage === "Assembly" ? "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30" :
+                            "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
                           }>{row.stage}</Badge>
                         </td>
                         <td className="py-2 text-center">
@@ -418,14 +418,14 @@ export default function ProductionPage() {
                     return (
                       <div key={step} className="flex items-center gap-3">
                         <div className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-medium ${
-                          isComplete ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" :
-                          isCurrent ? "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30" :
+                          isComplete ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30" :
+                          isCurrent ? "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30" :
                           "bg-foreground/5 text-muted-foreground border border-border"
                         }`}>
                           {isComplete ? <CheckCircle2 className="h-3.5 w-3.5" /> : i + 1}
                         </div>
-                        <span className={`text-sm ${isCurrent ? "font-medium text-foreground" : isComplete ? "text-emerald-400" : "text-muted-foreground"}`}>{step}</span>
-                        {isCurrent && <Badge variant="outline" className="bg-indigo-500/10 text-indigo-400 border-indigo-500/30 text-[10px] px-1.5 py-0">Current</Badge>}
+                        <span className={`text-sm ${isCurrent ? "font-medium text-foreground" : isComplete ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`}>{step}</span>
+                        {isCurrent && <Badge variant="outline" className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/30 text-[10px] px-1.5 py-0">Current</Badge>}
                       </div>
                     );
                   })}

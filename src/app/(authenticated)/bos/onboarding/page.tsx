@@ -215,9 +215,9 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
                 className={cn(
                   "flex size-10 items-center justify-center rounded-full border-2 text-sm font-bold transition-all duration-300",
                   isCompleted
-                    ? "border-green-500 bg-green-500/20 text-green-400"
+                    ? "border-green-500 bg-green-500/20 text-green-600 dark:text-green-400"
                     : isActive
-                      ? "border-indigo-500 bg-indigo-500/20 text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.3)]"
+                      ? "border-indigo-500 bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.3)]"
                       : "border-border bg-muted/30 text-muted-foreground"
                 )}
               >
@@ -393,7 +393,7 @@ function CoreValuesStep({
       <div className="space-y-3">
         {values.map((value, index) => (
           <div key={index} className="flex items-center gap-2">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-xs font-bold text-indigo-400">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-xs font-bold text-indigo-600 dark:text-indigo-400">
               {index + 1}
             </div>
             <Input
@@ -407,7 +407,7 @@ function CoreValuesStep({
                 variant="ghost"
                 size="sm"
                 onClick={() => removeValue(index)}
-                className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:bg-red-500/10 hover:text-red-400"
+                className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:bg-red-500/10 hover:text-red-600 dark:text-red-400"
               >
                 <X className="size-4" />
               </Button>
@@ -431,7 +431,7 @@ function CoreValuesStep({
       {unusedSuggestions.length > 0 && (
         <div className="rounded-xl border border-border bg-muted/20 p-4">
           <div className="mb-3 flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-indigo-400" />
+            <Sparkles className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <span className="text-xs font-semibold text-foreground">
               AI Suggestions for {industry || "your industry"}
             </span>
@@ -511,7 +511,7 @@ function LeadershipTeamStep({
               variant="ghost"
               size="sm"
               onClick={() => removeEmail(index)}
-              className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:bg-red-500/10 hover:text-red-400"
+              className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:bg-red-500/10 hover:text-red-600 dark:text-red-400"
             >
               <X className="size-4" />
             </Button>
@@ -578,7 +578,7 @@ function KeyRolesStep({
       <div className="flex flex-col items-center gap-4 rounded-xl border border-border bg-muted/10 p-6">
         <div className="text-center">
           <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-500/20">
-            <UserCog className="h-6 w-6 text-indigo-400" />
+            <UserCog className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
           </div>
           <p className="text-xs font-semibold text-foreground">Your Organization</p>
         </div>
@@ -615,7 +615,7 @@ function KeyRolesStep({
                 variant="ghost"
                 size="sm"
                 onClick={() => removeRole(role.id)}
-                className="h-7 w-7 p-0 text-muted-foreground hover:bg-red-500/10 hover:text-red-400"
+                className="h-7 w-7 p-0 text-muted-foreground hover:bg-red-500/10 hover:text-red-600 dark:text-red-400"
               >
                 <X className="size-3.5" />
               </Button>
@@ -734,7 +734,7 @@ function KeyNumbersStep({
           onClick={loadSuggestions}
           className="h-8 gap-1.5 rounded-lg border-border text-xs text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground"
         >
-          <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
+          <Sparkles className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
           Load suggestions
         </Button>
       </div>
@@ -753,7 +753,7 @@ function KeyNumbersStep({
                 variant="ghost"
                 size="sm"
                 onClick={() => removeKPI(kpi.id)}
-                className="h-7 w-7 p-0 text-muted-foreground hover:bg-red-500/10 hover:text-red-400"
+                className="h-7 w-7 p-0 text-muted-foreground hover:bg-red-500/10 hover:text-red-600 dark:text-red-400"
               >
                 <X className="size-3.5" />
               </Button>
@@ -815,8 +815,8 @@ function KeyNumbersStep({
                     className={cn(
                       "flex h-9 w-9 items-center justify-center rounded-lg border transition-colors",
                       kpi.direction === "up"
-                        ? "border-green-500/30 bg-green-500/10 text-green-400"
-                        : "border-red-500/30 bg-red-500/10 text-red-400"
+                        ? "border-green-500/30 bg-green-500/10 text-green-600 dark:text-green-400"
+                        : "border-red-500/30 bg-red-500/10 text-red-600 dark:text-red-400"
                     )}
                   >
                     {kpi.direction === "up" ? (
@@ -881,7 +881,7 @@ function MeetingFormatStep({
             >
               <div className="mb-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-indigo-400" />
+                  <Clock className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                   <span className="text-sm font-semibold text-foreground">
                     {template.name}
                   </span>
@@ -976,7 +976,7 @@ function SuccessStep({
         >
           <Check
             className={cn(
-              "h-12 w-12 text-green-400 transition-all duration-500 delay-300",
+              "h-12 w-12 text-green-600 dark:text-green-400 transition-all duration-500 delay-300",
               showCheck ? "scale-100 opacity-100" : "scale-0 opacity-0"
             )}
           />

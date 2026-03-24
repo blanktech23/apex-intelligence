@@ -77,19 +77,19 @@ const priorityConfig: Record<
 > = {
   HIGH: {
     bg: "bg-red-400/10",
-    text: "text-red-400",
+    text: "text-red-600 dark:text-red-400",
     ring: "ring-red-400/20",
     label: "High",
   },
   MEDIUM: {
     bg: "bg-amber-400/10",
-    text: "text-amber-400",
+    text: "text-amber-600 dark:text-amber-400",
     ring: "ring-amber-400/20",
     label: "Medium",
   },
   LOW: {
     bg: "bg-blue-400/10",
-    text: "text-blue-400",
+    text: "text-blue-600 dark:text-blue-400",
     ring: "ring-blue-400/20",
     label: "Low",
   },
@@ -407,7 +407,7 @@ export default function ApprovalsPage() {
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Action Approvals
           </h1>
-          <span className="flex h-6 items-center rounded-full bg-amber-400/15 px-2.5 text-xs font-semibold text-amber-400 ring-1 ring-amber-400/20">
+          <span className="flex h-6 items-center rounded-full bg-amber-400/15 px-2.5 text-xs font-semibold text-amber-600 dark:text-amber-400 ring-1 ring-amber-400/20">
             {counts.pending} pending
           </span>
         </div>
@@ -445,7 +445,7 @@ export default function ApprovalsPage() {
         <div className="glass glow-primary rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-500/10">
-              <Clock className="h-5 w-5 text-amber-400" />
+              <Clock className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             </div>
             <div>
               <p className="text-2xl font-bold text-foreground">
@@ -462,7 +462,7 @@ export default function ApprovalsPage() {
         <div className="glass glow-primary rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-green-500/10">
-              <CheckCircle2 className="h-5 w-5 text-green-400" />
+              <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
             </div>
             <div>
               <p className="text-2xl font-bold text-foreground">{counts.approved}</p>
@@ -475,7 +475,7 @@ export default function ApprovalsPage() {
         <div className="glass glow-primary rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10">
-              <BarChart3 className="h-5 w-5 text-blue-400" />
+              <BarChart3 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
               <p className="text-2xl font-bold text-foreground">&lt; 5 min</p>
@@ -551,7 +551,7 @@ export default function ApprovalsPage() {
 
                     {/* Fix 1: Edited badge */}
                     {isEdited && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/10 px-2 py-0.5 text-[11px] font-semibold text-amber-400 ring-1 ring-amber-400/20">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/10 px-2 py-0.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400 ring-1 ring-amber-400/20">
                         <Pencil className="h-2.5 w-2.5" />
                         Edited
                       </span>
@@ -559,13 +559,13 @@ export default function ApprovalsPage() {
 
                     {/* Fix 5: Status badge with timestamp (when not pending) */}
                     {isApproved && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-green-400/10 px-2 py-0.5 text-[11px] font-semibold text-green-400 ring-1 ring-green-400/20">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-green-400/10 px-2 py-0.5 text-[11px] font-semibold text-green-600 dark:text-green-400 ring-1 ring-green-400/20">
                         <CheckCircle2 className="h-3 w-3" />
                         Approved {statusTime && <span className="font-normal opacity-70">{statusTime}</span>}
                       </span>
                     )}
                     {isRejected && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-red-400/10 px-2 py-0.5 text-[11px] font-semibold text-red-400 ring-1 ring-red-400/20">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-red-400/10 px-2 py-0.5 text-[11px] font-semibold text-red-600 dark:text-red-400 ring-1 ring-red-400/20">
                         <XCircle className="h-3 w-3" />
                         Rejected {statusTime && <span className="font-normal opacity-70">{statusTime}</span>}
                       </span>
@@ -619,7 +619,7 @@ export default function ApprovalsPage() {
 
                   {/* Approved flash message */}
                   {isFlashing && (
-                    <div className="mt-3 flex items-center gap-2 text-green-400">
+                    <div className="mt-3 flex items-center gap-2 text-green-600 dark:text-green-400">
                       <CheckCircle2 className="h-4 w-4" />
                       <span className="text-sm font-medium">Approved!</span>
                     </div>
@@ -640,7 +640,7 @@ export default function ApprovalsPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleEdit(action)}
-                        className="h-10 sm:h-8 gap-1.5 rounded-lg border-amber-500/30 px-3 text-xs font-medium text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
+                        className="h-10 sm:h-8 gap-1.5 rounded-lg border-amber-500/30 px-3 text-xs font-medium text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 hover:text-amber-700 dark:text-amber-300"
                       >
                         {editButtonIcon(action.buttons.edit)}
                         {action.buttons.edit}
@@ -649,7 +649,7 @@ export default function ApprovalsPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleReject(action.id)}
-                        className="h-10 sm:h-8 gap-1.5 rounded-lg border-red-500/30 px-3 text-xs font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300"
+                        className="h-10 sm:h-8 gap-1.5 rounded-lg border-red-500/30 px-3 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-500/10 hover:text-red-700 dark:text-red-300"
                       >
                         {rejectIcon}
                         {action.buttons.reject}

@@ -70,7 +70,7 @@ export default function InviteRegisterPage() {
 
         <div className="glass glow-primary relative z-10 w-full max-w-md rounded-2xl p-8 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20">
-            <Check className="h-8 w-8 text-green-400" />
+            <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
           </div>
           <h1 className="text-xl font-semibold text-foreground">
             Account Created
@@ -123,7 +123,7 @@ export default function InviteRegisterPage() {
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Complete registration to join as a{" "}
-            <span className="inline-flex items-center rounded-md bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
+            <span className="inline-flex items-center rounded-md bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
               Manager
             </span>
           </p>
@@ -207,7 +207,7 @@ export default function InviteRegisterPage() {
               htmlFor="fullName"
               className="text-sm font-medium text-foreground"
             >
-              Full Name <span className="text-red-400">*</span>
+              Full Name <span className="text-red-600 dark:text-red-400">*</span>
             </label>
             <Input
               id="fullName"
@@ -226,7 +226,7 @@ export default function InviteRegisterPage() {
               htmlFor="password"
               className="text-sm font-medium text-foreground"
             >
-              Password <span className="text-red-400">*</span>
+              Password <span className="text-red-600 dark:text-red-400">*</span>
             </label>
             <div className="relative">
               <Input

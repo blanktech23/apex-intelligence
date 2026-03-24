@@ -59,7 +59,7 @@ const ownerStatsCards = [
     trend: "neutral" as const,
     icon: Brain,
     glowClass: "glow-success",
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
     href: "/dashboard/agents",
   },
@@ -67,11 +67,11 @@ const ownerStatsCards = [
     label: "Pending Escalations",
     value: "3",
     subtitle: "1 critical",
-    subtitleColor: "text-red-400",
+    subtitleColor: "text-red-600 dark:text-red-400",
     trend: "up" as const,
     icon: AlertTriangle,
     glowClass: "glow-warning",
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-500/10",
     href: "/escalations",
   },
@@ -79,11 +79,11 @@ const ownerStatsCards = [
     label: "Today's Conversations",
     value: "247",
     subtitle: "+12% vs yesterday",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: Activity,
     glowClass: "",
-    iconColor: "text-cyan-400",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
     iconBg: "bg-cyan-500/10",
     href: "/reports",
   },
@@ -91,11 +91,11 @@ const ownerStatsCards = [
     label: "Monthly Savings",
     value: "$9,240",
     subtitle: "326 hrs saved this month",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: DollarSign,
     glowClass: "glow-success",
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
     href: "/reports/agent-roi",
   },
@@ -110,7 +110,7 @@ const managerStatsCards = [
     trend: "neutral" as const,
     icon: Brain,
     glowClass: "glow-success",
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
     href: "/dashboard/agents",
   },
@@ -118,11 +118,11 @@ const managerStatsCards = [
     label: "Pending Escalations",
     value: "2",
     subtitle: "1 high priority",
-    subtitleColor: "text-amber-400",
+    subtitleColor: "text-amber-600 dark:text-amber-400",
     trend: "up" as const,
     icon: AlertTriangle,
     glowClass: "glow-warning",
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-500/10",
     href: "/escalations",
   },
@@ -130,11 +130,11 @@ const managerStatsCards = [
     label: "Today's Conversations",
     value: "247",
     subtitle: "+12% vs yesterday",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: Activity,
     glowClass: "",
-    iconColor: "text-cyan-400",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
     iconBg: "bg-cyan-500/10",
     href: "/reports",
   },
@@ -142,11 +142,11 @@ const managerStatsCards = [
     label: "Active Projects",
     value: "12",
     subtitle: "3 on track, 1 delayed",
-    subtitleColor: "text-amber-400",
+    subtitleColor: "text-amber-600 dark:text-amber-400",
     trend: "neutral" as const,
     icon: FolderOpen,
     glowClass: "",
-    iconColor: "text-indigo-400",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
     iconBg: "bg-indigo-500/10",
     href: "/projects",
   },
@@ -157,11 +157,11 @@ const designerStatsCards = [
     label: "Active Projects",
     value: "4",
     subtitle: "2 in review phase",
-    subtitleColor: "text-cyan-400",
+    subtitleColor: "text-cyan-600 dark:text-cyan-400",
     trend: "neutral" as const,
     icon: FolderOpen,
     glowClass: "",
-    iconColor: "text-cyan-400",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
     iconBg: "bg-cyan-500/10",
     href: "/projects",
   },
@@ -169,11 +169,11 @@ const designerStatsCards = [
     label: "Pending Reviews",
     value: "3",
     subtitle: "1 due today",
-    subtitleColor: "text-amber-400",
+    subtitleColor: "text-amber-600 dark:text-amber-400",
     trend: "up" as const,
     icon: ClipboardCheck,
     glowClass: "glow-warning",
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-500/10",
     href: "/projects",
   },
@@ -184,11 +184,11 @@ const bookkeeperStatsCards = [
     label: "Active Invoices",
     value: "23",
     subtitle: "5 sent this week",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: FileText,
     glowClass: "",
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
     href: "/reports",
   },
@@ -196,11 +196,11 @@ const bookkeeperStatsCards = [
     label: "Pending Payments",
     value: "$14,200",
     subtitle: "8 invoices outstanding",
-    subtitleColor: "text-amber-400",
+    subtitleColor: "text-amber-600 dark:text-amber-400",
     trend: "neutral" as const,
     icon: CreditCard,
     glowClass: "glow-warning",
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-500/10",
     href: "/reports",
   },
@@ -208,11 +208,11 @@ const bookkeeperStatsCards = [
     label: "Monthly Revenue",
     value: "$284K",
     subtitle: "+8% vs last month",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: DollarSign,
     glowClass: "",
-    iconColor: "text-indigo-400",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
     iconBg: "bg-indigo-500/10",
     href: "/reports",
   },
@@ -220,11 +220,11 @@ const bookkeeperStatsCards = [
     label: "Overdue",
     value: "$3,400",
     subtitle: "2 invoices past due",
-    subtitleColor: "text-red-400",
+    subtitleColor: "text-red-600 dark:text-red-400",
     trend: "up" as const,
     icon: AlertTriangle,
     glowClass: "glow-warning",
-    iconColor: "text-red-400",
+    iconColor: "text-red-600 dark:text-red-400",
     iconBg: "bg-red-500/10",
     href: "/reports",
   },
@@ -317,11 +317,11 @@ const dealerStatsCards = [
     label: "Open Orders",
     value: "24",
     subtitle: "+3 today",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: ShoppingCart,
     glowClass: "",
-    iconColor: "text-cyan-400",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
     iconBg: "bg-cyan-500/10",
     href: "/orders",
   },
@@ -329,11 +329,11 @@ const dealerStatsCards = [
     label: "Contractor Accounts",
     value: "47",
     subtitle: "5 new this month",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: Users,
     glowClass: "",
-    iconColor: "text-indigo-400",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
     iconBg: "bg-indigo-500/10",
     href: "/contractors",
   },
@@ -341,11 +341,11 @@ const dealerStatsCards = [
     label: "Revenue MTD",
     value: "$127,400",
     subtitle: "+8% vs last month",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: DollarSign,
     glowClass: "glow-success",
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
     href: "/reports",
   },
@@ -357,7 +357,7 @@ const dealerStatsCards = [
     trend: "neutral" as const,
     icon: Package,
     glowClass: "",
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-500/10",
     href: "/catalog",
   },
@@ -386,11 +386,11 @@ const repStatsCards = [
     label: "Commission MTD",
     value: "$4,280",
     subtitle: "+12% vs last month",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: DollarSign,
     glowClass: "glow-success",
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
     href: "/commissions",
   },
@@ -402,7 +402,7 @@ const repStatsCards = [
     trend: "up" as const,
     icon: ShoppingCart,
     glowClass: "",
-    iconColor: "text-cyan-400",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
     iconBg: "bg-cyan-500/10",
     href: "/orders",
   },
@@ -410,11 +410,11 @@ const repStatsCards = [
     label: "Territory Accounts",
     value: "32",
     subtitle: "3 new prospects",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: MapPin,
     glowClass: "",
-    iconColor: "text-indigo-400",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
     iconBg: "bg-indigo-500/10",
     href: "/territory",
   },
@@ -426,7 +426,7 @@ const repStatsCards = [
     trend: "neutral" as const,
     icon: TrendingUp,
     glowClass: "",
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-500/10",
     href: "/reports",
   },
@@ -453,11 +453,11 @@ const manufacturerStatsCards = [
     label: "Production Orders",
     value: "38",
     subtitle: "5 new today",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: Factory,
     glowClass: "",
-    iconColor: "text-cyan-400",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
     iconBg: "bg-cyan-500/10",
     href: "/production",
   },
@@ -465,11 +465,11 @@ const manufacturerStatsCards = [
     label: "Active Dealers",
     value: "12",
     subtitle: "2 pending applications",
-    subtitleColor: "text-amber-400",
+    subtitleColor: "text-amber-600 dark:text-amber-400",
     trend: "neutral" as const,
     icon: Users,
     glowClass: "",
-    iconColor: "text-indigo-400",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
     iconBg: "bg-indigo-500/10",
     href: "/dealers",
   },
@@ -477,11 +477,11 @@ const manufacturerStatsCards = [
     label: "Revenue MTD",
     value: "$342,000",
     subtitle: "+15% vs last month",
-    subtitleColor: "text-green-400",
+    subtitleColor: "text-green-600 dark:text-green-400",
     trend: "up" as const,
     icon: DollarSign,
     glowClass: "glow-success",
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
     href: "/reports",
   },
@@ -493,7 +493,7 @@ const manufacturerStatsCards = [
     trend: "neutral" as const,
     icon: Truck,
     glowClass: "",
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
     href: "/distribution",
   },
@@ -661,9 +661,9 @@ function StatCard({
 }
 
 const priorityStyles = {
-  High: "bg-red-500/15 text-red-400 border border-red-500/20",
-  Medium: "bg-amber-500/15 text-amber-400 border border-amber-500/20",
-  Low: "bg-blue-500/15 text-blue-400 border border-blue-500/20",
+  High: "bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/20",
+  Medium: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/20",
+  Low: "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/20",
 } as const;
 
 function EscalationItem({
@@ -715,17 +715,17 @@ function EscalationItem({
 const statusConfig: Record<AgentStatus, { dot: string; badge: string; border: string }> = {
   Active: {
     dot: "bg-green-400",
-    badge: "bg-green-500/15 text-green-400 border-green-500/20",
+    badge: "bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20",
     border: "border-l-green-500/60",
   },
   Paused: {
     dot: "bg-gray-400",
-    badge: "bg-gray-500/15 text-gray-400 border-gray-500/20",
+    badge: "bg-gray-500/15 text-gray-600 dark:text-gray-400 border-gray-500/20",
     border: "border-l-gray-500/40",
   },
   Error: {
     dot: "bg-red-400",
-    badge: "bg-red-500/15 text-red-400 border-red-500/20",
+    badge: "bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/20",
     border: "border-l-red-500/60",
   },
 };
@@ -742,7 +742,7 @@ function AgentCard({ agent }: { agent: Agent }) {
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="rounded-lg bg-muted/50 p-2">
-              <Icon className="size-5 text-indigo-400" />
+              <Icon className="size-5 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
               <p className="text-sm font-semibold text-foreground">{agent.name}</p>
@@ -802,7 +802,7 @@ function DailyBriefingCard({ role }: { role: Role }) {
       >
         <div className="flex items-center gap-3">
           <div className="inline-flex rounded-lg bg-indigo-500/10 p-2.5">
-            <BarChart3 className="size-5 text-indigo-400" />
+            <BarChart3 className="size-5 text-indigo-600 dark:text-indigo-400" />
           </div>
           <div>
             <h2 className="text-base font-semibold text-foreground">Daily Briefing</h2>
@@ -900,7 +900,7 @@ function PersonaBriefingCard({
       >
         <div className="flex items-center gap-3">
           <div className="inline-flex rounded-lg bg-indigo-500/10 p-2.5">
-            <BarChart3 className="size-5 text-indigo-400" />
+            <BarChart3 className="size-5 text-indigo-600 dark:text-indigo-400" />
           </div>
           <div>
             <h2 className="text-base font-semibold text-foreground">Daily Briefing</h2>
@@ -929,18 +929,18 @@ function PersonaBriefingCard({
 // ---------------------------------------------------------------------------
 
 const orderStatusStyles: Record<string, string> = {
-  Processing: "bg-blue-500/15 text-blue-400 border border-blue-500/20",
-  Ready: "bg-green-500/15 text-green-400 border border-green-500/20",
-  Shipped: "bg-cyan-500/15 text-cyan-400 border border-cyan-500/20",
-  Delivered: "bg-green-500/15 text-green-400 border border-green-500/20",
-  "In Production": "bg-blue-500/15 text-blue-400 border border-blue-500/20",
-  "QC Review": "bg-amber-500/15 text-amber-400 border border-amber-500/20",
-  Shipping: "bg-cyan-500/15 text-cyan-400 border border-cyan-500/20",
-  Delayed: "bg-red-500/15 text-red-400 border border-red-500/20",
-  Pending: "bg-amber-500/15 text-amber-400 border border-amber-500/20",
-  Paid: "bg-green-500/15 text-green-400 border border-green-500/20",
-  Active: "bg-green-500/15 text-green-400 border border-green-500/20",
-  New: "bg-indigo-500/15 text-indigo-400 border border-indigo-500/20",
+  Processing: "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/20",
+  Ready: "bg-green-500/15 text-green-600 dark:text-green-400 border border-green-500/20",
+  Shipped: "bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20",
+  Delivered: "bg-green-500/15 text-green-600 dark:text-green-400 border border-green-500/20",
+  "In Production": "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/20",
+  "QC Review": "bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/20",
+  Shipping: "bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20",
+  Delayed: "bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/20",
+  Pending: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/20",
+  Paid: "bg-green-500/15 text-green-600 dark:text-green-400 border border-green-500/20",
+  Active: "bg-green-500/15 text-green-600 dark:text-green-400 border border-green-500/20",
+  New: "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20",
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -954,8 +954,8 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 function TrendIndicator({ trend }: { trend: string }) {
-  if (trend === "up") return <TrendingUp className="inline size-3 text-green-400" />;
-  if (trend === "down") return <TrendingUp className="inline size-3 text-red-400 rotate-180" />;
+  if (trend === "up") return <TrendingUp className="inline size-3 text-green-600 dark:text-green-400" />;
+  if (trend === "down") return <TrendingUp className="inline size-3 text-red-600 dark:text-red-400 rotate-180" />;
   return <span className="text-muted-foreground">—</span>;
 }
 
@@ -1019,7 +1019,7 @@ function DealerDashboard() {
                 </tbody>
               </table>
             </div>
-            <Link href="/orders" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+            <Link href="/orders" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 transition-colors hover:text-indigo-700 dark:text-indigo-300">
               View all orders <ArrowRight className="size-3" />
             </Link>
           </div>
@@ -1052,7 +1052,7 @@ function DealerDashboard() {
                 </tbody>
               </table>
             </div>
-            <Link href="/contractors" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+            <Link href="/contractors" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 transition-colors hover:text-indigo-700 dark:text-indigo-300">
               View all contractors <ArrowRight className="size-3" />
             </Link>
           </div>
@@ -1096,7 +1096,7 @@ function RepDashboard() {
           <div className="glass rounded-xl p-5">
             <h2 className="mb-4 text-base font-semibold text-foreground">
               Today&apos;s Follow-ups
-              <span className="ml-2 inline-flex size-5 items-center justify-center rounded-full bg-indigo-500/15 text-[10px] font-bold text-indigo-400">
+              <span className="ml-2 inline-flex size-5 items-center justify-center rounded-full bg-indigo-500/15 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
                 {repFollowUps.length}
               </span>
             </h2>
@@ -1111,7 +1111,7 @@ function RepDashboard() {
                 </div>
               ))}
             </div>
-            <Link href="/territory" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+            <Link href="/territory" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 transition-colors hover:text-indigo-700 dark:text-indigo-300">
               View territory <ArrowRight className="size-3" />
             </Link>
           </div>
@@ -1145,7 +1145,7 @@ function RepDashboard() {
                 </tbody>
               </table>
             </div>
-            <Link href="/commissions" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+            <Link href="/commissions" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 transition-colors hover:text-indigo-700 dark:text-indigo-300">
               View all commissions <ArrowRight className="size-3" />
             </Link>
           </div>
@@ -1215,7 +1215,7 @@ function ManufacturerDashboard() {
                 </tbody>
               </table>
             </div>
-            <Link href="/production" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+            <Link href="/production" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 transition-colors hover:text-indigo-700 dark:text-indigo-300">
               View all production <ArrowRight className="size-3" />
             </Link>
           </div>
@@ -1248,7 +1248,7 @@ function ManufacturerDashboard() {
                 </tbody>
               </table>
             </div>
-            <Link href="/catalog" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+            <Link href="/catalog" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 transition-colors hover:text-indigo-700 dark:text-indigo-300">
               View catalog <ArrowRight className="size-3" />
             </Link>
           </div>
@@ -1409,7 +1409,7 @@ function ContractorDashboard() {
             <div className="glass flex flex-col rounded-xl p-5 lg:col-span-2">
               <h2 className="mb-4 text-base font-semibold text-foreground">
                 Escalations
-                <span className="ml-2 inline-flex size-5 items-center justify-center rounded-full bg-amber-500/15 text-[10px] font-bold text-amber-400">
+                <span className="ml-2 inline-flex size-5 items-center justify-center rounded-full bg-amber-500/15 text-[10px] font-bold text-amber-600 dark:text-amber-400">
                   {escalations.length}
                 </span>
               </h2>
@@ -1419,7 +1419,7 @@ function ContractorDashboard() {
                 ))}
               </div>
               {!isViewer && (
-                <Link href="/escalations" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+                <Link href="/escalations" className="mt-4 flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 transition-colors hover:text-indigo-700 dark:text-indigo-300">
                   View all escalations <ArrowRight className="size-3" />
                 </Link>
               )}

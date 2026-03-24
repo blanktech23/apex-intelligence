@@ -121,12 +121,12 @@ const myIssues = [
 ];
 
 const recentActivity = [
-  { id: "r1", action: "Updated KPI", detail: "Revenue value updated to $284K", time: "2 hours ago", icon: TrendingUp, color: "text-green-400" },
-  { id: "r2", action: "Resolved Issue", detail: "Permit delay on Oak Street project", time: "5 hours ago", icon: CheckCircle2, color: "text-cyan-400" },
-  { id: "r3", action: "Completed Action", detail: "Reviewed Q1 hiring plan", time: "Yesterday", icon: CircleDot, color: "text-indigo-400" },
-  { id: "r4", action: "Goal Updated", detail: "Lead conversion progress to 84%", time: "Yesterday", icon: Target, color: "text-amber-400" },
-  { id: "r5", action: "Meeting Rated", detail: "Leadership L10 rated 8/10", time: "2 days ago", icon: Calendar, color: "text-cyan-400" },
-  { id: "r6", action: "Issue Created", detail: "Subcontractor scheduling conflicts", time: "3 days ago", icon: AlertCircle, color: "text-red-400" },
+  { id: "r1", action: "Updated KPI", detail: "Revenue value updated to $284K", time: "2 hours ago", icon: TrendingUp, color: "text-green-600 dark:text-green-400" },
+  { id: "r2", action: "Resolved Issue", detail: "Permit delay on Oak Street project", time: "5 hours ago", icon: CheckCircle2, color: "text-cyan-600 dark:text-cyan-400" },
+  { id: "r3", action: "Completed Action", detail: "Reviewed Q1 hiring plan", time: "Yesterday", icon: CircleDot, color: "text-indigo-600 dark:text-indigo-400" },
+  { id: "r4", action: "Goal Updated", detail: "Lead conversion progress to 84%", time: "Yesterday", icon: Target, color: "text-amber-600 dark:text-amber-400" },
+  { id: "r5", action: "Meeting Rated", detail: "Leadership L10 rated 8/10", time: "2 days ago", icon: Calendar, color: "text-cyan-600 dark:text-cyan-400" },
+  { id: "r6", action: "Issue Created", detail: "Subcontractor scheduling conflicts", time: "3 days ago", icon: AlertCircle, color: "text-red-600 dark:text-red-400" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -191,22 +191,22 @@ export default function MyDashboardPage() {
         <div className="glass rounded-xl p-4 transition-all duration-300 glass-hover">
           <p className="text-xs text-muted-foreground">My Goals</p>
           <p className="mt-1 text-2xl font-bold text-foreground">{myGoals.length}</p>
-          <p className="text-xs text-green-400">{myGoals.filter((g) => g.status === "on_track").length} on track</p>
+          <p className="text-xs text-green-600 dark:text-green-400">{myGoals.filter((g) => g.status === "on_track").length} on track</p>
         </div>
         <div className="glass rounded-xl p-4 transition-all duration-300 glass-hover">
           <p className="text-xs text-muted-foreground">Action Items</p>
           <p className="mt-1 text-2xl font-bold text-foreground">{myActionItems.length}</p>
-          <p className="text-xs text-red-400">{overdue} overdue</p>
+          <p className="text-xs text-red-600 dark:text-red-400">{overdue} overdue</p>
         </div>
         <div className="glass rounded-xl p-4 transition-all duration-300 glass-hover">
           <p className="text-xs text-muted-foreground">Open Issues</p>
           <p className="mt-1 text-2xl font-bold text-foreground">{myIssues.length}</p>
-          <p className="text-xs text-amber-400">{myIssues.filter((i) => i.priority === "high").length} high priority</p>
+          <p className="text-xs text-amber-600 dark:text-amber-400">{myIssues.filter((i) => i.priority === "high").length} high priority</p>
         </div>
         <div className="glass rounded-xl p-4 transition-all duration-300 glass-hover">
           <p className="text-xs text-muted-foreground">Next Meeting</p>
           <p className="mt-1 text-2xl font-bold text-foreground">{upcomingMeetings[0].time}</p>
-          <p className="text-xs text-cyan-400">{upcomingMeetings[0].date}</p>
+          <p className="text-xs text-cyan-600 dark:text-cyan-400">{upcomingMeetings[0].date}</p>
         </div>
       </div>
 
@@ -226,8 +226,8 @@ export default function MyDashboardPage() {
                   <span
                     className={`ml-2 inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                       goal.status === "on_track"
-                        ? "bg-green-500/15 text-green-400 shadow-[0_0_8px_rgba(34,197,94,0.3)]"
-                        : "bg-red-500/15 text-red-400 shadow-[0_0_8px_rgba(239,68,68,0.3)]"
+                        ? "bg-green-500/15 text-green-600 dark:text-green-400 shadow-[0_0_8px_rgba(34,197,94,0.3)]"
+                        : "bg-red-500/15 text-red-600 dark:text-red-400 shadow-[0_0_8px_rgba(239,68,68,0.3)]"
                     }`}
                   >
                     {goal.status === "on_track" ? "On Track" : "Off Track"}
@@ -264,8 +264,8 @@ export default function MyDashboardPage() {
                   <span
                     className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                       kpi.status === "on_track"
-                        ? "bg-green-500/15 text-green-400 shadow-[0_0_8px_rgba(34,197,94,0.3)]"
-                        : "bg-red-500/15 text-red-400 shadow-[0_0_8px_rgba(239,68,68,0.3)]"
+                        ? "bg-green-500/15 text-green-600 dark:text-green-400 shadow-[0_0_8px_rgba(34,197,94,0.3)]"
+                        : "bg-red-500/15 text-red-600 dark:text-red-400 shadow-[0_0_8px_rgba(239,68,68,0.3)]"
                     }`}
                   >
                     {kpi.status === "on_track" ? "On Track" : "Off Track"}
@@ -283,13 +283,13 @@ export default function MyDashboardPage() {
                   <div className="flex flex-col items-end gap-1">
                     <div className="flex items-center gap-1">
                       {kpi.trend > 0 ? (
-                        <TrendingUp className="size-3.5 text-green-400" />
+                        <TrendingUp className="size-3.5 text-green-600 dark:text-green-400" />
                       ) : (
-                        <TrendingDown className="size-3.5 text-red-400" />
+                        <TrendingDown className="size-3.5 text-red-600 dark:text-red-400" />
                       )}
                       <span
                         className={`text-xs font-medium ${
-                          kpi.trend > 0 ? "text-green-400" : "text-red-400"
+                          kpi.trend > 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
                         }`}
                       >
                         {kpi.trend > 0 ? "+" : ""}{kpi.trend}%
@@ -311,8 +311,8 @@ export default function MyDashboardPage() {
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-base font-semibold text-foreground">My Action Items</h2>
             <div className="flex items-center gap-3">
-              <span className="text-xs text-amber-400">{dueThisWeek} due this week</span>
-              <span className="text-xs text-red-400">{overdue} overdue</span>
+              <span className="text-xs text-amber-600 dark:text-amber-400">{dueThisWeek} due this week</span>
+              <span className="text-xs text-red-600 dark:text-red-400">{overdue} overdue</span>
             </div>
           </div>
           <div className="space-y-2">
@@ -331,24 +331,24 @@ export default function MyDashboardPage() {
                   }`}
                 >
                   {item.overdue ? (
-                    <AlertCircle className="size-3.5 text-red-400" />
+                    <AlertCircle className="size-3.5 text-red-600 dark:text-red-400" />
                   ) : (
                     <Clock className="size-3.5 text-muted-foreground" />
                   )}
                 </div>
                 <div className="flex-1">
                   <p className="text-sm text-foreground">{item.text}</p>
-                  <p className={`text-xs ${item.overdue ? "text-red-400" : "text-muted-foreground"}`}>
+                  <p className={`text-xs ${item.overdue ? "text-red-600 dark:text-red-400" : "text-muted-foreground"}`}>
                     {item.overdue ? `Overdue - was due ${item.due}` : `Due ${item.due}`}
                   </p>
                 </div>
                 <span
                   className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                     item.priority === "high"
-                      ? "bg-red-500/15 text-red-400"
+                      ? "bg-red-500/15 text-red-600 dark:text-red-400"
                       : item.priority === "medium"
-                        ? "bg-amber-500/15 text-amber-400"
-                        : "bg-gray-500/15 text-gray-400"
+                        ? "bg-amber-500/15 text-amber-600 dark:text-amber-400"
+                        : "bg-gray-500/15 text-gray-600 dark:text-gray-400"
                   }`}
                 >
                   {item.priority}
@@ -370,7 +370,7 @@ export default function MyDashboardPage() {
                 className="flex items-center gap-3 rounded-lg border border-border bg-muted/20 p-3"
               >
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10">
-                  <Calendar className="size-5 text-indigo-400" />
+                  <Calendar className="size-5 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-foreground">{meeting.name}</p>
@@ -405,8 +405,8 @@ export default function MyDashboardPage() {
                   <span
                     className={`ml-2 shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                       issue.priority === "high"
-                        ? "bg-red-500/15 text-red-400"
-                        : "bg-amber-500/15 text-amber-400"
+                        ? "bg-red-500/15 text-red-600 dark:text-red-400"
+                        : "bg-amber-500/15 text-amber-600 dark:text-amber-400"
                     }`}
                   >
                     {issue.priority}

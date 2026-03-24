@@ -63,23 +63,23 @@ const roomTypeConfig: Record<
   RoomType,
   { label: string; icon: React.ComponentType<{ className?: string }>; color: string }
 > = {
-  kitchen: { label: "Kitchen", icon: ChefHat, color: "text-amber-400 bg-amber-500/10" },
-  bathroom: { label: "Bathroom", icon: Bath, color: "text-cyan-400 bg-cyan-500/10" },
-  both: { label: "Both", icon: Layers, color: "text-indigo-400 bg-indigo-500/10" },
+  kitchen: { label: "Kitchen", icon: ChefHat, color: "text-amber-600 dark:text-amber-400 bg-amber-500/10" },
+  bathroom: { label: "Bathroom", icon: Bath, color: "text-cyan-600 dark:text-cyan-400 bg-cyan-500/10" },
+  both: { label: "Both", icon: Layers, color: "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10" },
 };
 
 const statusConfig: Record<
   ProjectStatus,
   { label: string; color: string }
 > = {
-  draft: { label: "Draft", color: "text-gray-400 bg-gray-500/10" },
-  "in-design": { label: "In Design", color: "text-indigo-400 bg-indigo-500/10" },
+  draft: { label: "Draft", color: "text-gray-600 dark:text-gray-400 bg-gray-500/10" },
+  "in-design": { label: "In Design", color: "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10" },
   "awaiting-estimate": {
     label: "Awaiting Estimate",
-    color: "text-amber-400 bg-amber-500/10",
+    color: "text-amber-600 dark:text-amber-400 bg-amber-500/10",
   },
-  approved: { label: "Approved", color: "text-green-400 bg-green-500/10" },
-  "in-production": { label: "In Production", color: "text-cyan-400 bg-cyan-500/10" },
+  approved: { label: "Approved", color: "text-green-600 dark:text-green-400 bg-green-500/10" },
+  "in-production": { label: "In Production", color: "text-cyan-600 dark:text-cyan-400 bg-cyan-500/10" },
 };
 
 const mockProjects: DesignProject[] = [
@@ -315,7 +315,7 @@ export default function DesignProjectsPage() {
           <div className="space-y-4 py-2">
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-foreground">
-                Project Name <span className="text-red-400">*</span>
+                Project Name <span className="text-red-600 dark:text-red-400">*</span>
               </label>
               <Input
                 value={newProjectName}
@@ -325,7 +325,7 @@ export default function DesignProjectsPage() {
             </div>
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-foreground">
-                Client Name <span className="text-red-400">*</span>
+                Client Name <span className="text-red-600 dark:text-red-400">*</span>
               </label>
               <Input
                 value={newClientName}

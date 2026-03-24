@@ -32,16 +32,16 @@ import {
 } from "@/components/ui/select";
 
 const statusColors: Record<string, string> = {
-  Paid: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  Pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  Processing: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  Paid: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  Pending: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  Processing: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
 };
 
 const stats = [
-  { label: "MTD Commission", value: "$2,109", icon: DollarSign, change: "+$370 this week", color: "text-emerald-400" },
-  { label: "Projected", value: "$2,500", icon: TrendingUp, change: "Based on pipeline", color: "text-blue-400" },
-  { label: "YTD Total", value: "$9,640", icon: Calendar, change: "+22% vs last year", color: "text-amber-400" },
-  { label: "Avg Rate", value: "2.1%", icon: Percent, change: "Across all orders", color: "text-purple-400" },
+  { label: "MTD Commission", value: "$2,109", icon: DollarSign, change: "+$370 this week", color: "text-emerald-600 dark:text-emerald-400" },
+  { label: "Projected", value: "$2,500", icon: TrendingUp, change: "Based on pipeline", color: "text-blue-600 dark:text-blue-400" },
+  { label: "YTD Total", value: "$9,640", icon: Calendar, change: "+22% vs last year", color: "text-amber-600 dark:text-amber-400" },
+  { label: "Avg Rate", value: "2.1%", icon: Percent, change: "Across all orders", color: "text-purple-600 dark:text-purple-400" },
 ];
 
 const commissions = [
@@ -147,7 +147,7 @@ export default function CommissionsPage() {
                     ].map((row) => (
                       <tr key={row.order} className="border-b border-border/50">
                         <td className="py-2 text-foreground font-medium">{row.order}</td>
-                        <td className="py-2 text-right text-emerald-400 font-medium">{row.amount}</td>
+                        <td className="py-2 text-right text-emerald-600 dark:text-emerald-400 font-medium">{row.amount}</td>
                         <td className="py-2 text-center">
                           <Badge variant="outline" className={statusColors[row.status]}>{row.status}</Badge>
                         </td>
@@ -174,12 +174,12 @@ export default function CommissionsPage() {
                       <p className="text-sm font-medium text-foreground">{row.order}</p>
                       <p className="text-xs text-muted-foreground">{row.contractor}</p>
                     </div>
-                    <p className="text-sm font-medium text-blue-400">{row.expected}</p>
+                    <p className="text-sm font-medium text-blue-600 dark:text-blue-400">{row.expected}</p>
                   </div>
                 ))}
                 <div className="flex items-center justify-between pt-2 border-t border-border">
                   <p className="text-sm font-semibold text-foreground">Total Projected</p>
-                  <p className="text-sm font-bold text-blue-400">$2,500</p>
+                  <p className="text-sm font-bold text-blue-600 dark:text-blue-400">$2,500</p>
                 </div>
               </div>
             </div>
@@ -196,7 +196,7 @@ export default function CommissionsPage() {
                   <div key={row.month} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
                     <p className="text-sm font-medium text-foreground">{row.month}</p>
                     <div className="flex items-center gap-6">
-                      <p className="text-sm font-medium text-amber-400">{row.amount}</p>
+                      <p className="text-sm font-medium text-amber-600 dark:text-amber-400">{row.amount}</p>
                       <p className="text-xs text-muted-foreground w-20 text-right">Running: {row.running}</p>
                     </div>
                   </div>
@@ -216,7 +216,7 @@ export default function CommissionsPage() {
                 ].map((row) => (
                   <div key={row.rate} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
                     <div className="flex items-center gap-3">
-                      <span className="text-sm font-bold text-purple-400 w-10">{row.rate}</span>
+                      <span className="text-sm font-bold text-purple-600 dark:text-purple-400 w-10">{row.rate}</span>
                       <span className="text-sm text-muted-foreground">{row.label}</span>
                     </div>
                     <span className="text-sm font-medium text-foreground">{row.orders} orders</span>
@@ -250,7 +250,7 @@ export default function CommissionsPage() {
                 <TableCell className="text-muted-foreground">{c.contractor}</TableCell>
                 <TableCell className="text-right text-muted-foreground">${c.total.toLocaleString()}</TableCell>
                 <TableCell className="text-center text-muted-foreground">{c.rate}%</TableCell>
-                <TableCell className="text-right font-medium text-emerald-400">${c.commission.toLocaleString()}</TableCell>
+                <TableCell className="text-right font-medium text-emerald-600 dark:text-emerald-400">${c.commission.toLocaleString()}</TableCell>
                 <TableCell><Badge variant="outline" className={statusColors[c.status]}>{c.status}</Badge></TableCell>
                 <TableCell className="text-muted-foreground text-sm">{new Date(c.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</TableCell>
               </TableRow>

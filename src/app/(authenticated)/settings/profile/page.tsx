@@ -170,7 +170,7 @@ export default function ProfileSettingsPage() {
                   </svg>
                   <span className="text-sm text-foreground">Google</span>
                 </div>
-                <Badge className="border-0 bg-emerald-500/15 text-emerald-400">
+                <Badge className="border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
                   Connected
                 </Badge>
               </div>
@@ -187,7 +187,7 @@ export default function ProfileSettingsPage() {
                   <span className="text-sm text-foreground">Microsoft</span>
                 </div>
                 {microsoftConnected ? (
-                  <Badge className="border-0 bg-emerald-500/15 text-emerald-400">
+                  <Badge className="border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
                     Connected
                   </Badge>
                 ) : (
@@ -319,7 +319,7 @@ export default function ProfileSettingsPage() {
             <>
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-emerald-400" />
+                  <Check className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                   Connected!
                 </DialogTitle>
                 <DialogDescription>

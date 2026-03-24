@@ -67,10 +67,10 @@ import {
 
 // ─── Deal status badge colors ────────────────────────────────
 const dealStatusColors: Record<string, string> = {
-  open: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  won: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  lost: "bg-red-500/20 text-red-400 border-red-500/30",
-  on_hold: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  open: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  won: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
+  lost: "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30",
+  on_hold: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
 };
 
 const dealStatusLabels: Record<string, string> = {
@@ -229,11 +229,11 @@ export default function DealDetailPage() {
   }
 
   const invoiceStatusColors: Record<string, string> = {
-    paid: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-    overdue: "bg-red-500/20 text-red-400 border-red-500/30",
-    sent: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+    paid: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+    overdue: "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30",
+    sent: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
     draft: "bg-muted text-muted-foreground border-border",
-    partial: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+    partial: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
   };
 
   return (
@@ -270,7 +270,7 @@ export default function DealDetailPage() {
               </span>
               {deal.grossProfit > 0 && (
                 <span className="text-sm">
-                  GP: <span className="text-emerald-400 font-medium">{deal.grossProfit}%</span>
+                  GP: <span className="text-emerald-600 dark:text-emerald-400 font-medium">{deal.grossProfit}%</span>
                 </span>
               )}
             </div>
@@ -313,12 +313,12 @@ export default function DealDetailPage() {
             className="flex flex-wrap items-center gap-4 group"
           >
             <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="h-10 w-10 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-sm font-medium text-indigo-300 shrink-0">
+              <div className="h-10 w-10 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-sm font-medium text-indigo-700 dark:text-indigo-300 shrink-0">
                 {contact.initials}
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-foreground group-hover:text-indigo-400 transition-colors">
+                  <span className="font-medium text-foreground group-hover:text-indigo-600 dark:text-indigo-400 transition-colors">
                     {contact.name}
                   </span>
                   <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -336,13 +336,13 @@ export default function DealDetailPage() {
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
               {contact.phone && (
                 <div className="flex items-center gap-1.5">
-                  <Phone className="h-3.5 w-3.5 text-indigo-400" />
+                  <Phone className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
                   <span>{contact.phone}</span>
                 </div>
               )}
               {contact.email && (
                 <div className="flex items-center gap-1.5">
-                  <Mail className="h-3.5 w-3.5 text-indigo-400" />
+                  <Mail className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
                   <span>{contact.email}</span>
                 </div>
               )}
@@ -356,7 +356,7 @@ export default function DealDetailPage() {
         <Card className="glass border-border p-4">
           <div className="flex items-center gap-2 mb-2">
             <div className="rounded-lg bg-indigo-500/10 p-2">
-              <DollarSign className="h-4 w-4 text-indigo-400" />
+              <DollarSign className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             </div>
             <span className="text-xs text-muted-foreground">Contract Amount</span>
           </div>
@@ -367,7 +367,7 @@ export default function DealDetailPage() {
         <Card className="glass border-border p-4">
           <div className="flex items-center gap-2 mb-2">
             <div className="rounded-lg bg-emerald-500/10 p-2">
-              <Receipt className="h-4 w-4 text-emerald-400" />
+              <Receipt className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             </div>
             <span className="text-xs text-muted-foreground">Billed to Date</span>
           </div>
@@ -378,7 +378,7 @@ export default function DealDetailPage() {
         <Card className="glass border-border p-4">
           <div className="flex items-center gap-2 mb-2">
             <div className="rounded-lg bg-amber-500/10 p-2">
-              <Timer className="h-4 w-4 text-amber-400" />
+              <Timer className="h-4 w-4 text-amber-600 dark:text-amber-400" />
             </div>
             <span className="text-xs text-muted-foreground">AR Aging</span>
           </div>
@@ -389,7 +389,7 @@ export default function DealDetailPage() {
         <Card className="glass border-border p-4">
           <div className="flex items-center gap-2 mb-2">
             <div className="rounded-lg bg-purple-500/10 p-2">
-              <Target className="h-4 w-4 text-purple-400" />
+              <Target className="h-4 w-4 text-purple-600 dark:text-purple-400" />
             </div>
             <span className="text-xs text-muted-foreground">Probability</span>
           </div>
@@ -423,7 +423,7 @@ export default function DealDetailPage() {
                     }`}
                   >
                     {isCompleted ? (
-                      <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                      <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     ) : (
                       <StageIcon
                         className={`h-4 w-4 ${
@@ -437,7 +437,7 @@ export default function DealDetailPage() {
                       isCurrent
                         ? `${stage.color} font-semibold`
                         : isCompleted
-                        ? "text-emerald-400/70"
+                        ? "text-emerald-600 dark:text-emerald-400/70"
                         : "text-muted-foreground/40"
                     }`}
                   >
@@ -467,19 +467,19 @@ export default function DealDetailPage() {
             <TabsList className="glass border border-border bg-foreground/5">
               <TabsTrigger
                 value="activities"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Activities
               </TabsTrigger>
               <TabsTrigger
                 value="financials"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Financials
               </TabsTrigger>
               <TabsTrigger
                 value="notes"
-                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+                className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
               >
                 Notes
               </TabsTrigger>
@@ -590,7 +590,7 @@ export default function DealDetailPage() {
                           <TypeIcon
                             className={`h-4 w-4 ${
                               activity.agent === "ai"
-                                ? "text-amber-400"
+                                ? "text-amber-600 dark:text-amber-400"
                                 : typeConfig?.color ?? "text-muted-foreground"
                             }`}
                           />
@@ -603,7 +603,7 @@ export default function DealDetailPage() {
                             {activity.agent === "ai" && (
                               <Badge
                                 variant="outline"
-                                className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[10px] px-1.5 py-0"
+                                className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 text-[10px] px-1.5 py-0"
                               >
                                 <Bot className="h-3 w-3 mr-1" />
                                 {activity.agentName}
@@ -612,9 +612,9 @@ export default function DealDetailPage() {
                             {activity.direction && (
                               <span className="text-muted-foreground">
                                 {activity.direction === "inbound" ? (
-                                  <ArrowDownLeft className="h-3.5 w-3.5 text-blue-400" />
+                                  <ArrowDownLeft className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                                 ) : (
-                                  <ArrowUpRight className="h-3.5 w-3.5 text-emerald-400" />
+                                  <ArrowUpRight className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                                 )}
                               </span>
                             )}
@@ -661,13 +661,13 @@ export default function DealDetailPage() {
                 </Card>
                 <Card className="glass border-border p-4 text-center">
                   <p className="text-xs text-muted-foreground mb-1">Billed</p>
-                  <p className="text-lg font-bold text-emerald-400">
+                  <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
                     ${deal.billedToDate.toLocaleString()}
                   </p>
                 </Card>
                 <Card className="glass border-border p-4 text-center">
                   <p className="text-xs text-muted-foreground mb-1">Outstanding</p>
-                  <p className="text-lg font-bold text-amber-400">
+                  <p className="text-lg font-bold text-amber-600 dark:text-amber-400">
                     ${(deal.contractAmount - deal.billedToDate).toLocaleString()}
                   </p>
                 </Card>
@@ -788,7 +788,7 @@ export default function DealDetailPage() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         {note.author.includes("Agent") ? (
-                          <Bot className="h-4 w-4 text-amber-400" />
+                          <Bot className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                         ) : (
                           <User className="h-4 w-4 text-muted-foreground" />
                         )}
@@ -816,7 +816,7 @@ export default function DealDetailPage() {
           {/* AI Deal Insights */}
           <Card className="glass border-border p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="h-4 w-4 text-amber-400" />
+              <Sparkles className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                 AI Deal Insights
               </h3>
@@ -844,7 +844,7 @@ export default function DealDetailPage() {
           {/* Similar Deals */}
           <Card className="glass border-border p-5">
             <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="h-4 w-4 text-indigo-400" />
+              <TrendingUp className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                 Similar Deals
               </h3>
@@ -878,7 +878,7 @@ export default function DealDetailPage() {
           {/* Key Dates */}
           <Card className="glass border-border p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Calendar className="h-4 w-4 text-indigo-400" />
+              <Calendar className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                 Key Dates
               </h3>

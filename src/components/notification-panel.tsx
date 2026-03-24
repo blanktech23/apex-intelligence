@@ -65,22 +65,22 @@ const iconMap = {
 
 const colorMap = {
   success: {
-    icon: "text-green-400",
+    icon: "text-green-600 dark:text-green-400",
     dot: "bg-green-400",
     bg: "bg-green-400/10",
   },
   warning: {
-    icon: "text-amber-400",
+    icon: "text-amber-600 dark:text-amber-400",
     dot: "bg-amber-400",
     bg: "bg-amber-400/10",
   },
   error: {
-    icon: "text-red-400",
+    icon: "text-red-600 dark:text-red-400",
     dot: "bg-red-400",
     bg: "bg-red-400/10",
   },
   info: {
-    icon: "text-cyan-400",
+    icon: "text-cyan-600 dark:text-cyan-400",
     dot: "bg-cyan-400",
     bg: "bg-cyan-400/10",
   },

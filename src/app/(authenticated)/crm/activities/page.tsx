@@ -326,21 +326,21 @@ export default function ActivitiesPage() {
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Card className="glass border-border p-4">
           <div className="flex items-center gap-2 mb-1">
-            <BarChart3 className="h-4 w-4 text-indigo-400" />
+            <BarChart3 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <span className="text-xs text-muted-foreground">This Week</span>
           </div>
           <p className="text-xl font-bold text-foreground">{stats.weekTotal}</p>
         </Card>
         <Card className="glass border-border p-4">
           <div className="flex items-center gap-2 mb-1">
-            <Zap className="h-4 w-4 text-amber-400" />
+            <Zap className="h-4 w-4 text-amber-600 dark:text-amber-400" />
             <span className="text-xs text-muted-foreground">AI-Handled</span>
           </div>
           <p className="text-xl font-bold text-foreground">{stats.aiHandled}</p>
         </Card>
         <Card className="glass border-border p-4">
           <div className="flex items-center gap-2 mb-1">
-            <Clock className="h-4 w-4 text-emerald-400" />
+            <Clock className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             <span className="text-xs text-muted-foreground">Avg Response</span>
           </div>
           <p className="text-xl font-bold text-foreground">
@@ -349,7 +349,7 @@ export default function ActivitiesPage() {
         </Card>
         <Card className="glass border-border p-4">
           <div className="flex items-center gap-2 mb-1">
-            <MapPin className="h-4 w-4 text-purple-400" />
+            <MapPin className="h-4 w-4 text-purple-600 dark:text-purple-400" />
             <span className="text-xs text-muted-foreground">Site Visits (Month)</span>
           </div>
           <p className="text-xl font-bold text-foreground">{stats.siteVisits}</p>
@@ -477,7 +477,7 @@ export default function ActivitiesPage() {
                         <TypeIcon
                           className={`h-4 w-4 ${
                             activity.agent === "ai"
-                              ? "text-amber-400"
+                              ? "text-amber-600 dark:text-amber-400"
                               : typeConfig?.color ?? "text-muted-foreground"
                           }`}
                         />
@@ -490,7 +490,7 @@ export default function ActivitiesPage() {
                           {activity.agent === "ai" && (
                             <Badge
                               variant="outline"
-                              className="bg-purple-500/10 text-purple-400 border-purple-500/20 text-[10px] px-1.5 py-0"
+                              className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20 text-[10px] px-1.5 py-0"
                             >
                               <Bot className="h-3 w-3 mr-1" />
                               AI
@@ -500,11 +500,11 @@ export default function ActivitiesPage() {
                             <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
                               {activity.direction === "inbound" ? (
                                 <>
-                                  <ArrowDownLeft className="h-3.5 w-3.5 text-blue-400" />
+                                  <ArrowDownLeft className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                                 </>
                               ) : (
                                 <>
-                                  <ArrowUpRight className="h-3.5 w-3.5 text-emerald-400" />
+                                  <ArrowUpRight className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                                 </>
                               )}
                             </span>
@@ -521,7 +521,7 @@ export default function ActivitiesPage() {
                             ? activity.description.slice(0, 100) + "..."
                             : activity.description}
                           {activity.description.length > 100 && (
-                            <button className="ml-1 text-indigo-400 hover:text-indigo-300 text-xs inline-flex items-center gap-0.5">
+                            <button className="ml-1 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 text-xs inline-flex items-center gap-0.5">
                               {isExpanded ? (
                                 <>
                                   less <ChevronUp className="h-3 w-3" />
@@ -538,7 +538,7 @@ export default function ActivitiesPage() {
                           {actContact && (
                             <Link
                               href={`/crm/contacts/${actContact.id}`}
-                              className="hover:text-indigo-400 transition-colors"
+                              className="hover:text-indigo-600 dark:text-indigo-400 transition-colors"
                             >
                               {actContact.name}
                             </Link>
@@ -548,7 +548,7 @@ export default function ActivitiesPage() {
                               <span className="text-border">|</span>
                               <Link
                                 href={`/crm/deals/${actDeal.id}`}
-                                className="hover:text-indigo-400 transition-colors"
+                                className="hover:text-indigo-600 dark:text-indigo-400 transition-colors"
                               >
                                 {actDeal.name}
                               </Link>

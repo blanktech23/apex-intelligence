@@ -141,9 +141,9 @@ const initialAgents: Agent[] = [
 // ---------------------------------------------------------------------------
 
 const statusStyles: Record<AgentStatus, { dot: string; badge: string }> = {
-  Active: { dot: "bg-green-400", badge: "bg-green-500/15 text-green-400 border-green-500/20" },
-  Paused: { dot: "bg-gray-400", badge: "bg-gray-500/15 text-gray-400 border-gray-500/20" },
-  Error: { dot: "bg-red-400", badge: "bg-red-500/15 text-red-400 border-red-500/20" },
+  Active: { dot: "bg-green-400", badge: "bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20" },
+  Paused: { dot: "bg-gray-400", badge: "bg-gray-500/15 text-gray-600 dark:text-gray-400 border-gray-500/20" },
+  Error: { dot: "bg-red-400", badge: "bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/20" },
 };
 
 const filterOptions: Array<{ label: string; value: AgentStatus | "All" }> = [
@@ -307,10 +307,10 @@ export default function AgentsListPage() {
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <div className="rounded-lg bg-indigo-500/10 p-2 ring-1 ring-indigo-500/20">
-                      <Icon className="size-5 text-indigo-400" />
+                      <Icon className="size-5 text-indigo-600 dark:text-indigo-400" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-semibold text-foreground group-hover:text-indigo-400 transition-colors">
+                      <h3 className="text-sm font-semibold text-foreground group-hover:text-indigo-600 dark:text-indigo-400 transition-colors">
                         {agent.name}
                       </h3>
                       <p className="mt-0.5 text-xs text-muted-foreground line-clamp-1">
@@ -348,8 +348,8 @@ export default function AgentsListPage() {
                               <TooltipTrigger
                                 className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium transition-colors ${
                                   isConnected
-                                    ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400/90"
-                                    : "border-red-500/20 bg-red-500/10 text-red-400/90"
+                                    ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400/90"
+                                    : "border-red-500/20 bg-red-500/10 text-red-600 dark:text-red-400/90"
                                 }`}
                               >
                                 <Plug className="size-2.5" />

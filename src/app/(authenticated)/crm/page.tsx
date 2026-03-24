@@ -121,7 +121,7 @@ export default function CRMDashboardPage() {
       label: "Total Contacts",
       value: contacts.length.toString(),
       subtitle: `${contacts.filter((c) => c.status === "active").length} active`,
-      color: "text-blue-400",
+      color: "text-blue-600 dark:text-blue-400",
       icon: Users,
     },
     {
@@ -129,7 +129,7 @@ export default function CRMDashboardPage() {
       label: "Pipeline Value",
       value: formatCurrency(stats.totalPipelineValue),
       subtitle: `Weighted: ${formatCurrency(stats.weightedValue)}`,
-      color: "text-emerald-400",
+      color: "text-emerald-600 dark:text-emerald-400",
       icon: DollarSign,
     },
     {
@@ -137,7 +137,7 @@ export default function CRMDashboardPage() {
       label: "Won This Month",
       value: `${wonThisMonthDeals.length} deals`,
       subtitle: formatCurrencyFull(stats.wonValue),
-      color: "text-amber-400",
+      color: "text-amber-600 dark:text-amber-400",
       icon: Trophy,
     },
     {
@@ -145,7 +145,7 @@ export default function CRMDashboardPage() {
       label: "Speed-to-Lead",
       value: `${avgSTL} min`,
       subtitle: `${contactsWithSTL.length} contacts tracked`,
-      color: "text-purple-400",
+      color: "text-purple-600 dark:text-purple-400",
       icon: Zap,
     },
   ];
@@ -286,10 +286,10 @@ export default function CRMDashboardPage() {
                       <span
                         className={`font-medium ${
                           c.speedToLead! <= 5
-                            ? "text-emerald-400"
+                            ? "text-emerald-600 dark:text-emerald-400"
                             : c.speedToLead! <= 15
-                            ? "text-amber-400"
-                            : "text-rose-400"
+                            ? "text-amber-600 dark:text-amber-400"
+                            : "text-rose-600 dark:text-rose-400"
                         }`}
                       >
                         {c.speedToLead} min
@@ -421,7 +421,7 @@ export default function CRMDashboardPage() {
                       variant="outline"
                       className={`text-[10px] px-1.5 py-0 ${
                         act.agent === "ai"
-                          ? "border-cyan-500/30 text-cyan-400 bg-cyan-500/10"
+                          ? "border-cyan-500/30 text-cyan-600 dark:text-cyan-400 bg-cyan-500/10"
                           : "border-border text-muted-foreground"
                       }`}
                     >
@@ -453,21 +453,21 @@ export default function CRMDashboardPage() {
                 href="/crm/contacts"
                 className="flex items-center gap-3 rounded-lg border border-border bg-foreground/[0.02] px-4 py-3 text-sm font-medium text-foreground transition-all hover:bg-foreground/[0.05] hover:border-blue-500/30"
               >
-                <UserPlus className="h-4 w-4 text-blue-400" />
+                <UserPlus className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 Add Contact
               </Link>
               <Link
                 href="/crm/pipeline"
                 className="flex items-center gap-3 rounded-lg border border-border bg-foreground/[0.02] px-4 py-3 text-sm font-medium text-foreground transition-all hover:bg-foreground/[0.05] hover:border-emerald-500/30"
               >
-                <Plus className="h-4 w-4 text-emerald-400" />
+                <Plus className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 Create Deal
               </Link>
               <Link
                 href="/crm/activities"
                 className="flex items-center gap-3 rounded-lg border border-border bg-foreground/[0.02] px-4 py-3 text-sm font-medium text-foreground transition-all hover:bg-foreground/[0.05] hover:border-purple-500/30"
               >
-                <Activity className="h-4 w-4 text-purple-400" />
+                <Activity className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                 View Activities
               </Link>
             </div>
@@ -476,7 +476,7 @@ export default function CRMDashboardPage() {
           {/* E. Referral Insights */}
           <Card className="glass border-border p-5">
             <div className="flex items-center gap-2 mb-3">
-              <Share2 className="h-4 w-4 text-cyan-400" />
+              <Share2 className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
               <h2 className="text-sm font-semibold text-foreground">
                 Referral Insights
               </h2>
@@ -504,7 +504,7 @@ export default function CRMDashboardPage() {
                 </span>
                 <Badge
                   variant="outline"
-                  className="border-cyan-500/30 text-cyan-400 bg-cyan-500/10 text-xs"
+                  className="border-cyan-500/30 text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 text-xs"
                 >
                   {referralRevenuePercent}%
                 </Badge>

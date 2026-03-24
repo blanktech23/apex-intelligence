@@ -78,7 +78,7 @@ export default function ResetPasswordPage() {
           {submitted ? (
             <div className="flex flex-col items-center gap-4 py-4 text-center">
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/10">
-                <CheckCircle className="h-7 w-7 text-emerald-400" />
+                <CheckCircle className="h-7 w-7 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold text-foreground">
@@ -138,12 +138,12 @@ export default function ResetPasswordPage() {
                       <span
                         className={`text-xs font-medium ${
                           strength.score <= 25
-                            ? "text-red-400"
+                            ? "text-red-600 dark:text-red-400"
                             : strength.score <= 50
-                              ? "text-amber-400"
+                              ? "text-amber-600 dark:text-amber-400"
                               : strength.score <= 75
-                                ? "text-blue-400"
-                                : "text-emerald-400"
+                                ? "text-blue-600 dark:text-blue-400"
+                                : "text-emerald-600 dark:text-emerald-400"
                         }`}
                       >
                         {strength.label}
@@ -192,12 +192,12 @@ export default function ResetPasswordPage() {
                   </button>
                 </div>
                 {confirmPassword.length > 0 && !passwordsMatch && (
-                  <p className="text-xs text-red-400">
+                  <p className="text-xs text-red-600 dark:text-red-400">
                     Passwords do not match
                   </p>
                 )}
                 {passwordsMatch && (
-                  <p className="text-xs text-emerald-400">Passwords match</p>
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400">Passwords match</p>
                 )}
               </div>
 

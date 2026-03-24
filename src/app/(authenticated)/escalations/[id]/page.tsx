@@ -191,28 +191,28 @@ const teamMembers = [
 const priorityStyles = {
   Critical: {
     bg: "bg-red-500/15",
-    text: "text-red-400",
+    text: "text-red-600 dark:text-red-400",
     ring: "ring-red-500/25",
     glow: "shadow-[0_0_12px_rgba(239,68,68,0.2)]",
     dot: "bg-red-400",
   },
   High: {
     bg: "bg-orange-400/15",
-    text: "text-orange-400",
+    text: "text-orange-600 dark:text-orange-400",
     ring: "ring-orange-400/25",
     glow: "",
     dot: "bg-orange-400",
   },
   Medium: {
     bg: "bg-amber-400/15",
-    text: "text-amber-400",
+    text: "text-amber-600 dark:text-amber-400",
     ring: "ring-amber-400/25",
     glow: "",
     dot: "bg-amber-400",
   },
   Low: {
     bg: "bg-blue-400/15",
-    text: "text-blue-400",
+    text: "text-blue-600 dark:text-blue-400",
     ring: "ring-blue-400/25",
     glow: "",
     dot: "bg-blue-400",
@@ -222,32 +222,32 @@ const priorityStyles = {
 const statusStyles = {
   Open: {
     bg: "bg-amber-400/10",
-    text: "text-amber-400",
+    text: "text-amber-600 dark:text-amber-400",
     ring: "ring-amber-400/20",
   },
   "In Progress": {
     bg: "bg-blue-400/10",
-    text: "text-blue-400",
+    text: "text-blue-600 dark:text-blue-400",
     ring: "ring-blue-400/20",
   },
   Resolved: {
     bg: "bg-green-400/10",
-    text: "text-green-400",
+    text: "text-green-600 dark:text-green-400",
     ring: "ring-green-400/20",
   },
   "Modified & Approved": {
     bg: "bg-emerald-400/10",
-    text: "text-emerald-400",
+    text: "text-emerald-600 dark:text-emerald-400",
     ring: "ring-emerald-400/20",
   },
   Approved: {
     bg: "bg-green-400/10",
-    text: "text-green-400",
+    text: "text-green-600 dark:text-green-400",
     ring: "ring-green-400/20",
   },
   Rejected: {
     bg: "bg-red-400/10",
-    text: "text-red-400",
+    text: "text-red-600 dark:text-red-400",
     ring: "ring-red-400/20",
   },
 };
@@ -294,7 +294,7 @@ export default function EscalationDetailPage() {
     <div className="min-h-full bg-mesh p-6 space-y-6">
       {/* ---- Toasts ---- */}
       {modifyApproved && (
-        <div className="fixed top-6 right-6 z-50 flex items-center gap-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-xl px-5 py-3 text-sm font-medium text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.15)] animate-in slide-in-from-top-2 fade-in duration-300">
+        <div className="fixed top-6 right-6 z-50 flex items-center gap-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-xl px-5 py-3 text-sm font-medium text-emerald-600 dark:text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.15)] animate-in slide-in-from-top-2 fade-in duration-300">
           <CheckCircle2 className="h-4 w-4" />
           Modified &amp; Approved successfully
         </div>
@@ -337,7 +337,7 @@ export default function EscalationDetailPage() {
           </span>
 
           <span className="ml-auto flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Timer className="h-3.5 w-3.5 text-amber-400" />
+            <Timer className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
             SLA: {escalation.details.slaRemaining} remaining
           </span>
         </div>
@@ -410,7 +410,7 @@ export default function EscalationDetailPage() {
                   setShowModifyEditor(!showModifyEditor);
                   setShowReassignDropdown(false);
                 }}
-                className="h-9 w-full sm:w-auto gap-2 rounded-lg bg-emerald-500/15 px-4 text-sm font-semibold text-emerald-400 border border-emerald-500/25 transition-all hover:bg-emerald-500/25 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]"
+                className="h-9 w-full sm:w-auto gap-2 rounded-lg bg-emerald-500/15 px-4 text-sm font-semibold text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 transition-all hover:bg-emerald-500/25 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]"
               >
                 <Edit3 className="h-3.5 w-3.5" />
                 Modify &amp; Approve
@@ -422,7 +422,7 @@ export default function EscalationDetailPage() {
                   setCurrentStatus("Rejected");
                   toast?.("Escalation rejected");
                 }}
-                className="h-9 w-full sm:w-auto gap-2 rounded-lg bg-red-500/15 px-4 text-sm font-semibold text-red-400 border border-red-500/25 transition-all hover:bg-red-500/25 hover:shadow-[0_0_20px_rgba(239,68,68,0.15)]"
+                className="h-9 w-full sm:w-auto gap-2 rounded-lg bg-red-500/15 px-4 text-sm font-semibold text-red-600 dark:text-red-400 border border-red-500/25 transition-all hover:bg-red-500/25 hover:shadow-[0_0_20px_rgba(239,68,68,0.15)]"
               >
                 <AlertTriangle className="h-3.5 w-3.5" />
                 Reject
@@ -487,7 +487,7 @@ export default function EscalationDetailPage() {
             {showModifyEditor && (
               <div className="mt-4 space-y-3 border-t border-border pt-4">
                 <div className="flex items-center gap-2">
-                  <Edit3 className="h-3.5 w-3.5 text-emerald-400" />
+                  <Edit3 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                   <p className="text-xs font-semibold text-foreground">
                     Edit agent draft before approving
                   </p>
@@ -536,7 +536,7 @@ export default function EscalationDetailPage() {
                   return (
                     <div key={i} className="flex justify-center">
                       <div className="flex items-center gap-2 rounded-full bg-muted/40 px-4 py-1.5 text-[11px] text-muted-foreground/70">
-                        <AlertTriangle className="h-3 w-3 text-amber-400/70" />
+                        <AlertTriangle className="h-3 w-3 text-amber-600 dark:text-amber-400/70" />
                         {msg.text}
                       </div>
                     </div>
@@ -555,7 +555,7 @@ export default function EscalationDetailPage() {
                       className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
                         isAgent
                           ? "bg-primary/15 text-primary"
-                          : "bg-amber-400/15 text-amber-400"
+                          : "bg-amber-400/15 text-amber-600 dark:text-amber-400"
                       }`}
                     >
                       {isAgent ? (
@@ -574,7 +574,7 @@ export default function EscalationDetailPage() {
                       <div className="flex items-center gap-2">
                         <span
                           className={`text-xs font-medium ${
-                            isAgent ? "text-primary" : "text-amber-400"
+                            isAgent ? "text-primary" : "text-amber-600 dark:text-amber-400"
                           }`}
                         >
                           {msg.name}
@@ -601,7 +601,7 @@ export default function EscalationDetailPage() {
             {/* Reply Input */}
             <div className="mt-6 border-t border-border pt-5">
               <div className="flex gap-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-400/15 text-xs font-bold text-green-400">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-400/15 text-xs font-bold text-green-600 dark:text-green-400">
                   JW
                 </div>
                 <div className="min-w-0 flex-1 space-y-3">
@@ -673,7 +673,7 @@ export default function EscalationDetailPage() {
                       </div>
 
                       {isLast && entry.type === "approve" && (
-                        <span className="shrink-0 inline-flex items-center rounded-full bg-emerald-400/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400 ring-1 ring-emerald-400/20">
+                        <span className="shrink-0 inline-flex items-center rounded-full bg-emerald-400/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-400/20">
                           Completed
                         </span>
                       )}
@@ -734,7 +734,7 @@ export default function EscalationDetailPage() {
                     Processing Time
                   </p>
                   <p className="text-sm text-foreground text-right">
-                    <span className="inline-flex items-center gap-1.5 text-emerald-400">
+                    <span className="inline-flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
                       <Sparkles className="h-3 w-3" />
                       4.2 seconds
                     </span>
@@ -787,7 +787,7 @@ export default function EscalationDetailPage() {
               <DetailRow
                 label="SLA Deadline"
                 value={
-                  <span className="flex items-center gap-1.5 text-amber-400">
+                  <span className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
                     <Timer className="h-3 w-3" />
                     {escalation.details.slaDeadline}
                   </span>
@@ -799,7 +799,7 @@ export default function EscalationDetailPage() {
           {/* — AI Summary Card — */}
           <div className="glass rounded-xl p-5">
             <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
-              <Sparkles className="h-4 w-4 text-cyan-400" />
+              <Sparkles className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
               AI Summary
             </h3>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
@@ -814,7 +814,7 @@ export default function EscalationDetailPage() {
           {/* — Suggested Actions Card — */}
           <div className="glass rounded-xl p-5">
             <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
-              <Lightbulb className="h-4 w-4 text-amber-400" />
+              <Lightbulb className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               Suggested Actions
             </h3>
             <p className="mt-2 text-xs text-muted-foreground/60">
@@ -852,7 +852,7 @@ export default function EscalationDetailPage() {
                         : "bg-primary/10 group-hover:bg-primary/20"
                     }`}>
                       {isDone ? (
-                        <Check className="h-3.5 w-3.5 text-emerald-400" />
+                        <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                       ) : (
                         <Icon className="h-3.5 w-3.5 text-primary" />
                       )}
@@ -860,7 +860,7 @@ export default function EscalationDetailPage() {
                     <div className="min-w-0 flex-1">
                       <p className={`text-sm font-medium transition-colors ${
                         isDone
-                          ? "text-emerald-400/80"
+                          ? "text-emerald-600 dark:text-emerald-400/80"
                           : "text-foreground group-hover:text-primary"
                       }`}>
                         {action.label}{isDone ? " — Done \u2713" : ""}
@@ -897,7 +897,7 @@ export default function EscalationDetailPage() {
                     </p>
                   </div>
                   <div className="ml-3 shrink-0 text-right">
-                    <span className="inline-flex items-center rounded-full bg-green-400/10 px-2 py-0.5 text-[10px] font-semibold text-green-400 ring-1 ring-green-400/20">
+                    <span className="inline-flex items-center rounded-full bg-green-400/10 px-2 py-0.5 text-[10px] font-semibold text-green-600 dark:text-green-400 ring-1 ring-green-400/20">
                       {ticket.status}
                     </span>
                     <p className="mt-0.5 text-[10px] text-muted-foreground/40">

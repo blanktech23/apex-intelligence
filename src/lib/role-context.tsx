@@ -24,7 +24,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
   owner: {
     label: "Owner",
     description: "Full access to everything. Business owner perspective.",
-    color: "text-purple-400 bg-purple-500/15 ring-purple-500/20",
+    color: "text-purple-600 dark:text-purple-400 bg-purple-500/15 ring-purple-500/20",
     avatar: "JW",
     name: "Joseph Wells",
     email: "joseph@kiptra.io",
@@ -45,7 +45,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
   admin: {
     label: "Admin",
     description: "System administration. Can configure agents, manage team, view billing.",
-    color: "text-blue-400 bg-blue-500/15 ring-blue-500/20",
+    color: "text-blue-600 dark:text-blue-400 bg-blue-500/15 ring-blue-500/20",
     avatar: "SC",
     name: "Sarah Chen",
     email: "sarah@kiptra.io",
@@ -66,7 +66,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
   manager: {
     label: "Manager",
     description: "Project oversight. Scope-relevant escalations and approvals.",
-    color: "text-emerald-400 bg-emerald-500/15 ring-emerald-500/20",
+    color: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/15 ring-emerald-500/20",
     avatar: "MT",
     name: "Mike Torres",
     email: "mike@kiptra.io",
@@ -87,7 +87,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
   designer: {
     label: "Designer",
     description: "Design specs and submittals. Works with Design Spec Assistant.",
-    color: "text-cyan-400 bg-cyan-500/15 ring-cyan-500/20",
+    color: "text-cyan-600 dark:text-cyan-400 bg-cyan-500/15 ring-cyan-500/20",
     avatar: "LP",
     name: "Lisa Park",
     email: "lisa@kiptra.io",
@@ -106,7 +106,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
   bookkeeper: {
     label: "Bookkeeper",
     description: "Financial operations. Works with Operations Controller and Support Agent.",
-    color: "text-amber-400 bg-amber-500/15 ring-amber-500/20",
+    color: "text-amber-600 dark:text-amber-400 bg-amber-500/15 ring-amber-500/20",
     avatar: "DK",
     name: "David Kim",
     email: "david@kiptra.io",
@@ -125,7 +125,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
   viewer: {
     label: "Viewer",
     description: "Read-only access. Can view agent output, projects, and integration status.",
-    color: "text-gray-400 bg-gray-500/15 ring-gray-500/20",
+    color: "text-gray-600 dark:text-gray-400 bg-gray-500/15 ring-gray-500/20",
     avatar: "AN",
     name: "Alex Nguyen",
     email: "alex@kiptra.io",

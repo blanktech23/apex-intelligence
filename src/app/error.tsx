@@ -16,7 +16,7 @@ export default function ErrorPage({
     <div className="bg-mesh flex min-h-screen items-center justify-center px-4">
       <div className="flex w-full max-w-lg flex-col items-center gap-6 text-center">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-500/10">
-          <AlertTriangle className="h-8 w-8 text-amber-400" />
+          <AlertTriangle className="h-8 w-8 text-amber-600 dark:text-amber-400" />
         </div>
 
         <div className="space-y-2">
@@ -31,7 +31,7 @@ export default function ErrorPage({
 
         <Card className="glass w-full border-border">
           <CardContent className="py-4">
-            <p className="break-all font-mono text-sm text-red-400/80">
+            <p className="break-all font-mono text-sm text-red-600 dark:text-red-400/80">
               {error.message || "An unknown error occurred"}
             </p>
             {error.digest && (

@@ -47,19 +47,19 @@ const statusConfig: Record<
   { color: string; icon: typeof CheckCircle2 }
 > = {
   Planning: {
-    color: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+    color: "bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30",
     icon: Clock,
   },
   "In Progress": {
-    color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+    color: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
     icon: Loader2,
   },
   "On Hold": {
-    color: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+    color: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
     icon: Pause,
   },
   Completed: {
-    color: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+    color: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
     icon: CheckCircle2,
   },
 };
@@ -70,28 +70,28 @@ const stats = [
     value: "47",
     icon: FolderKanban,
     change: "+3 this month",
-    color: "text-indigo-400",
+    color: "text-indigo-600 dark:text-indigo-400",
   },
   {
     label: "In Progress",
     value: "23",
     icon: TrendingUp,
     change: "49% of total",
-    color: "text-emerald-400",
+    color: "text-emerald-600 dark:text-emerald-400",
   },
   {
     label: "Completed This Month",
     value: "8",
     icon: CheckCircle2,
     change: "+2 vs last month",
-    color: "text-blue-400",
+    color: "text-blue-600 dark:text-blue-400",
   },
   {
     label: "Total Value",
     value: "$2.4M",
     icon: DollarSign,
     change: "+12.5% MoM",
-    color: "text-amber-400",
+    color: "text-amber-600 dark:text-amber-400",
   },
 ];
 
@@ -105,9 +105,9 @@ const projects = [
     budget: 185000,
     dueDate: "2026-05-15",
     team: [
-      { initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
-      { initials: "KL", color: "bg-emerald-500/30 text-emerald-300" },
-      { initials: "DP", color: "bg-amber-500/30 text-amber-300" },
+      { initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
+      { initials: "KL", color: "bg-emerald-500/30 text-emerald-700 dark:text-emerald-300" },
+      { initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
     ],
     aiManaged: true,
   },
@@ -120,8 +120,8 @@ const projects = [
     budget: 92500,
     dueDate: "2026-06-30",
     team: [
-      { initials: "SC", color: "bg-purple-500/30 text-purple-300" },
-      { initials: "JT", color: "bg-red-500/30 text-red-300" },
+      { initials: "SC", color: "bg-purple-500/30 text-purple-700 dark:text-purple-300" },
+      { initials: "JT", color: "bg-red-500/30 text-red-700 dark:text-red-300" },
     ],
     aiManaged: false,
   },
@@ -134,8 +134,8 @@ const projects = [
     budget: 47800,
     dueDate: "2026-07-20",
     team: [
-      { initials: "RN", color: "bg-cyan-500/30 text-cyan-300" },
-      { initials: "AF", color: "bg-pink-500/30 text-pink-300" },
+      { initials: "RN", color: "bg-cyan-500/30 text-cyan-700 dark:text-cyan-300" },
+      { initials: "AF", color: "bg-pink-500/30 text-pink-700 dark:text-pink-300" },
     ],
     aiManaged: true,
   },
@@ -148,9 +148,9 @@ const projects = [
     budget: 312000,
     dueDate: "2026-04-10",
     team: [
-      { initials: "MB", color: "bg-orange-500/30 text-orange-300" },
-      { initials: "DP", color: "bg-amber-500/30 text-amber-300" },
-      { initials: "KW", color: "bg-teal-500/30 text-teal-300" },
+      { initials: "MB", color: "bg-orange-500/30 text-orange-700 dark:text-orange-300" },
+      { initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
+      { initials: "KW", color: "bg-teal-500/30 text-teal-700 dark:text-teal-300" },
     ],
     aiManaged: false,
   },
@@ -163,8 +163,8 @@ const projects = [
     budget: 28500,
     dueDate: "2026-08-01",
     team: [
-      { initials: "LC", color: "bg-lime-500/30 text-lime-300" },
-      { initials: "MR", color: "bg-indigo-500/30 text-indigo-300" },
+      { initials: "LC", color: "bg-lime-500/30 text-lime-700 dark:text-lime-300" },
+      { initials: "MR", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" },
     ],
     aiManaged: false,
   },
@@ -177,9 +177,9 @@ const projects = [
     budget: 78500,
     dueDate: "2026-03-01",
     team: [
-      { initials: "DP", color: "bg-amber-500/30 text-amber-300" },
-      { initials: "JT", color: "bg-red-500/30 text-red-300" },
-      { initials: "SC", color: "bg-purple-500/30 text-purple-300" },
+      { initials: "DP", color: "bg-amber-500/30 text-amber-700 dark:text-amber-300" },
+      { initials: "JT", color: "bg-red-500/30 text-red-700 dark:text-red-300" },
+      { initials: "SC", color: "bg-purple-500/30 text-purple-700 dark:text-purple-300" },
     ],
     aiManaged: true,
   },
@@ -242,7 +242,7 @@ export default function ProjectsPage() {
       progress: 0,
       budget: form.budget ? parseFloat(form.budget) : 0,
       dueDate: form.dueDate || "2026-08-01",
-      team: [{ initials: "JM", color: "bg-indigo-500/30 text-indigo-300" }],
+      team: [{ initials: "JM", color: "bg-indigo-500/30 text-indigo-700 dark:text-indigo-300" }],
       aiManaged: false,
     };
 
@@ -345,7 +345,7 @@ export default function ProjectsPage() {
               {/* Top: Name + Status */}
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1 min-w-0 mr-3">
-                  <h3 className="font-semibold text-foreground group-hover:text-indigo-300 transition-colors truncate">
+                  <h3 className="font-semibold text-foreground group-hover:text-indigo-700 dark:text-indigo-300 transition-colors truncate">
                     {project.name}
                   </h3>
                   <p className="text-sm text-muted-foreground mt-0.5">
@@ -424,7 +424,7 @@ export default function ProjectsPage() {
                 {project.aiManaged && (
                   <Badge
                     variant="outline"
-                    className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[10px] px-2 py-0.5"
+                    className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 text-[10px] px-2 py-0.5"
                   >
                     <Bot className="h-3 w-3 mr-1" />
                     AI Managed
@@ -451,7 +451,7 @@ export default function ProjectsPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <div className="rounded-lg bg-indigo-500/10 p-2">
-                <FolderKanban className="h-4 w-4 text-indigo-400" />
+                <FolderKanban className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               </div>
               New Project
             </DialogTitle>
@@ -463,7 +463,7 @@ export default function ProjectsPage() {
           <div className="space-y-4 py-2">
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                Project Name <span className="text-red-400">*</span>
+                Project Name <span className="text-red-600 dark:text-red-400">*</span>
               </label>
               <Input
                 placeholder="e.g. Riverside Kitchen Remodel"
@@ -471,12 +471,12 @@ export default function ProjectsPage() {
                 onChange={(e) => { setForm((p) => ({ ...p, name: e.target.value })); setErrors((p) => ({ ...p, name: false })); }}
                 className={`glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground/60 ${errors.name ? "border-red-500/50 ring-1 ring-red-500/30" : ""}`}
               />
-              {errors.name && <p className="text-xs text-red-400 mt-1">Required</p>}
+              {errors.name && <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>}
             </div>
 
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                Client <span className="text-red-400">*</span>
+                Client <span className="text-red-600 dark:text-red-400">*</span>
               </label>
               <Select value={form.client} onValueChange={(v) => { setForm((p) => ({ ...p, client: v ?? "" })); setErrors((p) => ({ ...p, client: false })); }}>
                 <SelectTrigger className={`w-full glass border-border bg-foreground/5 text-foreground ${errors.client ? "border-red-500/50 ring-1 ring-red-500/30" : ""}`}>
@@ -488,7 +488,7 @@ export default function ProjectsPage() {
                   ))}
                 </SelectContent>
               </Select>
-              {errors.client && <p className="text-xs text-red-400 mt-1">Required</p>}
+              {errors.client && <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>}
             </div>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

@@ -113,22 +113,22 @@ const statusConfig: Record<
 > = {
   Pending: {
     bg: "bg-amber-400/10",
-    text: "text-amber-400",
+    text: "text-amber-600 dark:text-amber-400",
     ring: "ring-amber-400/20",
   },
   Approved: {
     bg: "bg-green-400/10",
-    text: "text-green-400",
+    text: "text-green-600 dark:text-green-400",
     ring: "ring-green-400/20",
   },
   Rejected: {
     bg: "bg-red-400/10",
-    text: "text-red-400",
+    text: "text-red-600 dark:text-red-400",
     ring: "ring-red-400/20",
   },
   Modified: {
     bg: "bg-blue-400/10",
-    text: "text-blue-400",
+    text: "text-blue-600 dark:text-blue-400",
     ring: "ring-blue-400/20",
   },
 };
@@ -305,7 +305,7 @@ export default function EscalationsPage() {
       {/* Header */}
       <div className="flex items-center gap-3">
         <h1 className="text-2xl font-bold text-foreground">Escalations</h1>
-        <span className="flex h-6 items-center rounded-full bg-amber-400/15 px-2.5 text-xs font-semibold text-amber-400 ring-1 ring-amber-400/20">
+        <span className="flex h-6 items-center rounded-full bg-amber-400/15 px-2.5 text-xs font-semibold text-amber-600 dark:text-amber-400 ring-1 ring-amber-400/20">
           {pendingCount} pending
         </span>
       </div>

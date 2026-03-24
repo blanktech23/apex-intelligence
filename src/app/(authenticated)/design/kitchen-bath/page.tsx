@@ -317,7 +317,7 @@ function View3DPlaceholder() {
     <div className="flex h-full w-full items-center justify-center">
       <div className="glass rounded-2xl p-12 text-center max-w-md">
         <div className="inline-flex rounded-xl bg-indigo-500/10 p-4 mb-4">
-          <Box className="size-10 text-indigo-400" />
+          <Box className="size-10 text-indigo-600 dark:text-indigo-400" />
         </div>
         <h3 className="text-lg font-semibold text-foreground mb-2">3D View</h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
@@ -369,7 +369,7 @@ export default function KitchenBathDesignerPage() {
         {/* Agent header */}
         <div className="flex items-center gap-3 border-b border-border px-4 py-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/15 ring-1 ring-indigo-500/20">
-            <Palette className="size-4 text-indigo-400" />
+            <Palette className="size-4 text-indigo-600 dark:text-indigo-400" />
           </div>
           <div className="flex-1">
             <h2 className="text-sm font-semibold text-foreground">
@@ -413,9 +413,9 @@ export default function KitchenBathDesignerPage() {
                     {msg.toolCalls.map((tc) => (
                       <div key={tc.label} className="flex items-center gap-2 text-xs text-muted-foreground">
                         {tc.status === "running" ? (
-                          <Loader2 className="size-3 animate-spin text-indigo-400" />
+                          <Loader2 className="size-3 animate-spin text-indigo-600 dark:text-indigo-400" />
                         ) : (
-                          <Check className="size-3 text-green-400" />
+                          <Check className="size-3 text-green-600 dark:text-green-400" />
                         )}
                         <span>{tc.label}</span>
                       </div>
@@ -436,7 +436,7 @@ export default function KitchenBathDesignerPage() {
                           <span className="flex items-center gap-1 font-medium text-foreground">
                             {item.value}
                             {item.pass !== undefined && (
-                              <Check className="size-3 text-green-400" />
+                              <Check className="size-3 text-green-600 dark:text-green-400" />
                             )}
                           </span>
                         </div>
@@ -576,7 +576,7 @@ export default function KitchenBathDesignerPage() {
             onClick={() => setSnapGrid(!snapGrid)}
             className={`hidden sm:flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-all ${
               snapGrid
-                ? "bg-indigo-500/15 text-indigo-400"
+                ? "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400"
                 : "text-muted-foreground hover:text-foreground"
             }`}
             title="Snap to grid"
@@ -640,7 +640,7 @@ export default function KitchenBathDesignerPage() {
         {/* Status bar */}
         <div className="flex items-center gap-4 border-t border-border bg-muted/20 px-4 py-1.5 text-xs text-muted-foreground">
           <span className="hidden sm:inline font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
-          <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-400">
+          <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-600 dark:text-green-400">
             <Check className="size-3" />
             Clearance Verified
           </span>
@@ -678,7 +678,7 @@ export default function KitchenBathDesignerPage() {
             </div>
 
             {/* Category badge */}
-            <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-medium text-blue-400">
+            <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-medium text-blue-600 dark:text-blue-400">
               {mockSelectedItem.category}
             </span>
 
@@ -706,7 +706,7 @@ export default function KitchenBathDesignerPage() {
                   <p
                     className={`text-sm ${
                       field.highlight
-                        ? "font-semibold text-green-400"
+                        ? "font-semibold text-green-600 dark:text-green-400"
                         : field.mono
                           ? "font-mono text-xs text-muted-foreground"
                           : "text-foreground"
@@ -814,7 +814,7 @@ export default function KitchenBathDesignerPage() {
                   <span className="text-muted-foreground">{item.rule}</span>
                   <span
                     className={`flex items-center gap-1 font-medium ${
-                      item.pass ? "text-green-400" : "text-red-400"
+                      item.pass ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
                     }`}
                   >
                     <Check className="size-3" />

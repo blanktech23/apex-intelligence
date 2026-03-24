@@ -210,52 +210,52 @@ const agentStatusMap: Record<string, AgentStatus> = {
 
 const agentStatsMap: Record<string, AgentStat[]> = {
   "customer-support": [
-    { label: "Total Conversations", value: "2,847", delta: "+12.4%", deltaType: "up", icon: MessageSquare, color: "text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
-    { label: "Resolution Rate", value: "22.4%", delta: "+4.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
-    { label: "Avg Response Time", value: "1.8s", delta: "-0.4s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
-    { label: "Customer Satisfaction", value: "4.7/5", delta: "+0.2", deltaType: "up", icon: Star, color: "text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
+    { label: "Total Conversations", value: "2,847", delta: "+12.4%", deltaType: "up", icon: MessageSquare, color: "text-indigo-600 dark:text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
+    { label: "Resolution Rate", value: "22.4%", delta: "+4.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
+    { label: "Avg Response Time", value: "1.8s", delta: "-0.4s", deltaType: "up", icon: Clock, color: "text-cyan-600 dark:text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
+    { label: "Customer Satisfaction", value: "4.7/5", delta: "+0.2", deltaType: "up", icon: Star, color: "text-amber-600 dark:text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
   ],
   "sales-outreach": [
-    { label: "Leads Processed", value: "1,234", delta: "+18.7%", deltaType: "up", icon: Target, color: "text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
-    { label: "Conversion Rate", value: "23%", delta: "+4.2%", deltaType: "up", icon: TrendingUp, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
-    { label: "Avg Response Time", value: "3.2s", delta: "-0.8s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
-    { label: "Pipeline Value", value: "$1.2M", delta: "+$180K", deltaType: "up", icon: DollarSign, color: "text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
+    { label: "Leads Processed", value: "1,234", delta: "+18.7%", deltaType: "up", icon: Target, color: "text-indigo-600 dark:text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
+    { label: "Conversion Rate", value: "23%", delta: "+4.2%", deltaType: "up", icon: TrendingUp, color: "text-green-600 dark:text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
+    { label: "Avg Response Time", value: "3.2s", delta: "-0.8s", deltaType: "up", icon: Clock, color: "text-cyan-600 dark:text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
+    { label: "Pipeline Value", value: "$1.2M", delta: "+$180K", deltaType: "up", icon: DollarSign, color: "text-amber-600 dark:text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
   ],
   "scheduling": [
-    { label: "Schedules Managed", value: "892", delta: "+8.3%", deltaType: "up", icon: Calendar, color: "text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
-    { label: "On-Time Rate", value: "98.1%", delta: "+1.4%", deltaType: "up", icon: CheckCircle2, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
-    { label: "Avg Response Time", value: "0.8s", delta: "-0.2s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
-    { label: "Avg Conflicts/Week", value: "4", delta: "-2", deltaType: "up", icon: AlertTriangle, color: "text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
+    { label: "Schedules Managed", value: "892", delta: "+8.3%", deltaType: "up", icon: Calendar, color: "text-indigo-600 dark:text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
+    { label: "On-Time Rate", value: "98.1%", delta: "+1.4%", deltaType: "up", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
+    { label: "Avg Response Time", value: "0.8s", delta: "-0.2s", deltaType: "up", icon: Clock, color: "text-cyan-600 dark:text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
+    { label: "Avg Conflicts/Week", value: "4", delta: "-2", deltaType: "up", icon: AlertTriangle, color: "text-amber-600 dark:text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
   ],
   "estimation": [
-    { label: "Estimates Created", value: "456", delta: "+22.1%", deltaType: "up", icon: FileText, color: "text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
-    { label: "Accuracy Rate", value: "87%", delta: "+5.3%", deltaType: "up", icon: Target, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
-    { label: "Avg Generation Time", value: "12s", delta: "-3s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
-    { label: "Total Estimated", value: "$4.8M", delta: "+$620K", deltaType: "up", icon: DollarSign, color: "text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
+    { label: "Estimates Created", value: "456", delta: "+22.1%", deltaType: "up", icon: FileText, color: "text-indigo-600 dark:text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
+    { label: "Accuracy Rate", value: "87%", delta: "+5.3%", deltaType: "up", icon: Target, color: "text-green-600 dark:text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
+    { label: "Avg Generation Time", value: "12s", delta: "-3s", deltaType: "up", icon: Clock, color: "text-cyan-600 dark:text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
+    { label: "Total Estimated", value: "$4.8M", delta: "+$620K", deltaType: "up", icon: DollarSign, color: "text-amber-600 dark:text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
   ],
   "bookkeeping": [
-    { label: "Transactions Processed", value: "3,421", delta: "+9.8%", deltaType: "up", icon: BarChart3, color: "text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
-    { label: "Accuracy Rate", value: "99.7%", delta: "+0.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
-    { label: "Avg Processing Time", value: "2.1s", delta: "-0.3s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
-    { label: "Monthly Volume", value: "$284K", delta: "+$32K", deltaType: "up", icon: DollarSign, color: "text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
+    { label: "Transactions Processed", value: "3,421", delta: "+9.8%", deltaType: "up", icon: BarChart3, color: "text-indigo-600 dark:text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
+    { label: "Accuracy Rate", value: "99.7%", delta: "+0.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
+    { label: "Avg Processing Time", value: "2.1s", delta: "-0.3s", deltaType: "up", icon: Clock, color: "text-cyan-600 dark:text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
+    { label: "Monthly Volume", value: "$284K", delta: "+$32K", deltaType: "up", icon: DollarSign, color: "text-amber-600 dark:text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
   ],
   "project-management": [
-    { label: "Projects Tracked", value: "47", delta: "+6", deltaType: "up", icon: FolderKanban, color: "text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
-    { label: "On-Schedule Rate", value: "92%", delta: "+4.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
-    { label: "Avg Report Time", value: "5.4s", delta: "-1.2s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
-    { label: "Risks Flagged", value: "3", delta: "-1", deltaType: "up", icon: AlertTriangle, color: "text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
+    { label: "Projects Tracked", value: "47", delta: "+6", deltaType: "up", icon: FolderKanban, color: "text-indigo-600 dark:text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
+    { label: "On-Schedule Rate", value: "92%", delta: "+4.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
+    { label: "Avg Report Time", value: "5.4s", delta: "-1.2s", deltaType: "up", icon: Clock, color: "text-cyan-600 dark:text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
+    { label: "Risks Flagged", value: "3", delta: "-1", deltaType: "up", icon: AlertTriangle, color: "text-amber-600 dark:text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
   ],
   "field-operations": [
-    { label: "Inspections Completed", value: "234", delta: "+15.2%", deltaType: "up", icon: ClipboardCheck, color: "text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
-    { label: "Pass Rate", value: "96%", delta: "+2.8%", deltaType: "up", icon: CheckCircle2, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
-    { label: "Avg Report Time", value: "45s", delta: "-8s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
-    { label: "Safety Alerts", value: "12", delta: "+3", deltaType: "down", icon: Shield, color: "text-red-400", glowColor: "shadow-[0_0_12px_rgba(239,68,68,0.2)]" },
+    { label: "Inspections Completed", value: "234", delta: "+15.2%", deltaType: "up", icon: ClipboardCheck, color: "text-indigo-600 dark:text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
+    { label: "Pass Rate", value: "96%", delta: "+2.8%", deltaType: "up", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
+    { label: "Avg Report Time", value: "45s", delta: "-8s", deltaType: "up", icon: Clock, color: "text-cyan-600 dark:text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
+    { label: "Safety Alerts", value: "12", delta: "+3", deltaType: "down", icon: Shield, color: "text-red-600 dark:text-red-400", glowColor: "shadow-[0_0_12px_rgba(239,68,68,0.2)]" },
   ],
   "design-spec": [
-    { label: "Specs Processed", value: "234", delta: "+18.3%", deltaType: "up", icon: FileText, color: "text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
-    { label: "Submittals Generated", value: "89", delta: "+12.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
-    { label: "Avg Extraction Time", value: "8.2s", delta: "-2.1s", deltaType: "up", icon: Clock, color: "text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
-    { label: "Materials Identified", value: "1,847", delta: "+246", deltaType: "up", icon: Target, color: "text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
+    { label: "Specs Processed", value: "234", delta: "+18.3%", deltaType: "up", icon: FileText, color: "text-indigo-600 dark:text-indigo-400", glowColor: "shadow-[0_0_12px_rgba(99,102,241,0.2)]" },
+    { label: "Submittals Generated", value: "89", delta: "+12.1%", deltaType: "up", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", glowColor: "shadow-[0_0_12px_rgba(34,197,94,0.2)]" },
+    { label: "Avg Extraction Time", value: "8.2s", delta: "-2.1s", deltaType: "up", icon: Clock, color: "text-cyan-600 dark:text-cyan-400", glowColor: "shadow-[0_0_12px_rgba(34,211,238,0.2)]" },
+    { label: "Materials Identified", value: "1,847", delta: "+246", deltaType: "up", icon: Target, color: "text-amber-600 dark:text-amber-400", glowColor: "shadow-[0_0_12px_rgba(245,158,11,0.2)]" },
   ],
 };
 
@@ -971,26 +971,26 @@ function buildAgent(id: string): AgentDetail {
 // ---------------------------------------------------------------------------
 
 const statusConfig: Record<AgentStatus, { dot: string; badge: string }> = {
-  Active: { dot: "bg-green-400", badge: "bg-green-500/15 text-green-400 border-green-500/20" },
-  Paused: { dot: "bg-gray-400", badge: "bg-gray-500/15 text-gray-400 border-gray-500/20" },
+  Active: { dot: "bg-green-400", badge: "bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20" },
+  Paused: { dot: "bg-gray-400", badge: "bg-gray-500/15 text-gray-600 dark:text-gray-400 border-gray-500/20" },
 };
 
 const conversationStatusStyles: Record<ConversationStatus, string> = {
-  Resolved: "bg-green-500/15 text-green-400",
-  "In Progress": "bg-indigo-500/15 text-indigo-400",
-  Escalated: "bg-amber-500/15 text-amber-400",
+  Resolved: "bg-green-500/15 text-green-600 dark:text-green-400",
+  "In Progress": "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400",
+  Escalated: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
 };
 
 const sentimentStyles: Record<Sentiment, { color: string; icon: LucideIcon }> = {
-  Positive: { color: "text-green-400", icon: ArrowUpRight },
-  Neutral: { color: "text-gray-400", icon: Activity },
-  Negative: { color: "text-red-400", icon: AlertTriangle },
+  Positive: { color: "text-green-600 dark:text-green-400", icon: ArrowUpRight },
+  Neutral: { color: "text-gray-600 dark:text-gray-400", icon: Activity },
+  Negative: { color: "text-red-600 dark:text-red-400", icon: AlertTriangle },
 };
 
 const logLevelStyles: Record<LogLevel, { bg: string; text: string; icon: LucideIcon }> = {
-  info: { bg: "bg-indigo-500/15", text: "text-indigo-400", icon: Info },
-  warn: { bg: "bg-amber-500/15", text: "text-amber-400", icon: AlertTriangle },
-  error: { bg: "bg-red-500/15", text: "text-red-400", icon: XCircle },
+  info: { bg: "bg-indigo-500/15", text: "text-indigo-600 dark:text-indigo-400", icon: Info },
+  warn: { bg: "bg-amber-500/15", text: "text-amber-600 dark:text-amber-400", icon: AlertTriangle },
+  error: { bg: "bg-red-500/15", text: "text-red-600 dark:text-red-400", icon: XCircle },
 };
 
 // ---------------------------------------------------------------------------
@@ -1148,8 +1148,8 @@ function OverviewTab({ agent }: { agent: AgentDetail }) {
             {/* Status banner */}
             {allConnected ? (
               <div className="mb-4 flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5">
-                <CheckCircle2 className="size-4 text-emerald-400" />
-                <span className="text-sm font-medium text-emerald-400">
+                <CheckCircle2 className="size-4 text-emerald-600 dark:text-emerald-400" />
+                <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
                   All integrations healthy
                 </span>
               </div>
@@ -1160,12 +1160,12 @@ function OverviewTab({ agent }: { agent: AgentDetail }) {
                     key={d.name}
                     className="flex items-center gap-2 rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-2.5"
                   >
-                    <AlertTriangle className="size-4 shrink-0 text-amber-400" />
-                    <span className="text-sm text-amber-400">
+                    <AlertTriangle className="size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                    <span className="text-sm text-amber-600 dark:text-amber-400">
                       This agent requires <span className="font-semibold">{d.name}</span> to function.{" "}
                       <Link
                         href="/settings/integrations"
-                        className="underline underline-offset-2 transition-colors hover:text-amber-300"
+                        className="underline underline-offset-2 transition-colors hover:text-amber-700 dark:text-amber-300"
                       >
                         Connect it in Settings &gt; Integrations
                       </Link>
@@ -1212,8 +1212,8 @@ function OverviewTab({ agent }: { agent: AgentDetail }) {
                       <span
                         className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                           isConnected
-                            ? "bg-emerald-400/10 text-emerald-400"
-                            : "bg-red-400/10 text-red-400"
+                            ? "bg-emerald-400/10 text-emerald-600 dark:text-emerald-400"
+                            : "bg-red-400/10 text-red-600 dark:text-red-400"
                         }`}
                       >
                         <span
@@ -1371,13 +1371,13 @@ function ConfigurationTab({ agent }: { agent: AgentDetail }) {
       {/* Model Settings */}
       <div className="glass rounded-xl p-6">
         <div className="mb-4 flex items-center gap-2">
-          <Settings2 className="size-4 text-indigo-400" />
+          <Settings2 className="size-4 text-indigo-600 dark:text-indigo-400" />
           <h3 className="text-sm font-semibold text-foreground">Model Settings</h3>
         </div>
         <div className="space-y-4">
           <div className="flex items-center justify-between rounded-lg bg-muted/30 px-4 py-3">
             <span className="text-sm text-muted-foreground">Model</span>
-            <span className="rounded-md bg-indigo-500/15 px-2.5 py-1 font-mono text-xs text-indigo-400">
+            <span className="rounded-md bg-indigo-500/15 px-2.5 py-1 font-mono text-xs text-indigo-600 dark:text-indigo-400">
               {config.model}
             </span>
           </div>
@@ -1401,7 +1401,7 @@ function ConfigurationTab({ agent }: { agent: AgentDetail }) {
       {/* Tools Enabled */}
       <div className="glass rounded-xl p-6">
         <div className="mb-4 flex items-center gap-2">
-          <Zap className="size-4 text-amber-400" />
+          <Zap className="size-4 text-amber-600 dark:text-amber-400" />
           <h3 className="text-sm font-semibold text-foreground">Tools Enabled</h3>
         </div>
         <div className="space-y-2">
@@ -1414,7 +1414,7 @@ function ConfigurationTab({ agent }: { agent: AgentDetail }) {
               <span
                 className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                   tool.enabled
-                    ? "bg-green-500/15 text-green-400"
+                    ? "bg-green-500/15 text-green-600 dark:text-green-400"
                     : "bg-muted/50 text-muted-foreground/50"
                 }`}
               >
@@ -1428,7 +1428,7 @@ function ConfigurationTab({ agent }: { agent: AgentDetail }) {
       {/* System Prompt */}
       <div className="glass rounded-xl p-6 lg:col-span-2">
         <div className="mb-4 flex items-center gap-2">
-          <MessageSquare className="size-4 text-cyan-400" />
+          <MessageSquare className="size-4 text-cyan-600 dark:text-cyan-400" />
           <h3 className="text-sm font-semibold text-foreground">System Prompt</h3>
         </div>
         <div className="rounded-lg border border-border bg-muted/20 p-4">
@@ -1441,7 +1441,7 @@ function ConfigurationTab({ agent }: { agent: AgentDetail }) {
       {/* Escalation Rules */}
       <div className="glass rounded-xl p-6 lg:col-span-2">
         <div className="mb-4 flex items-center gap-2">
-          <Shield className="size-4 text-red-400" />
+          <Shield className="size-4 text-red-600 dark:text-red-400" />
           <h3 className="text-sm font-semibold text-foreground">Escalation Rules</h3>
         </div>
         <div className="space-y-2">
@@ -1451,12 +1451,12 @@ function ConfigurationTab({ agent }: { agent: AgentDetail }) {
               className="flex flex-col gap-1 rounded-lg bg-muted/30 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
             >
               <div className="flex items-center gap-2">
-                <span className="flex size-5 shrink-0 items-center justify-center rounded bg-amber-500/15 text-[10px] font-bold text-amber-400">
+                <span className="flex size-5 shrink-0 items-center justify-center rounded bg-amber-500/15 text-[10px] font-bold text-amber-600 dark:text-amber-400">
                   {idx + 1}
                 </span>
                 <span className="text-sm text-foreground/80">{rule.condition}</span>
               </div>
-              <span className="text-xs text-indigo-400 sm:shrink-0">
+              <span className="text-xs text-indigo-600 dark:text-indigo-400 sm:shrink-0">
                 {rule.action}
               </span>
             </div>
@@ -1549,7 +1549,7 @@ export default function AgentDetailPage() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
               <div className="rounded-xl bg-indigo-500/10 p-3.5 ring-1 ring-indigo-500/20">
-                <Icon className="size-8 text-indigo-400" />
+                <Icon className="size-8 text-indigo-600 dark:text-indigo-400" />
               </div>
               <div>
                 <div className="flex items-center gap-3">
@@ -1571,14 +1571,14 @@ export default function AgentDetailPage() {
             <div className="flex items-center gap-3">
               <Link
                 href={`/dashboard/agents/${id}/chat`}
-                className="inline-flex items-center gap-2 rounded-lg bg-indigo-500/15 px-4 py-2 text-sm font-medium text-indigo-400 ring-1 ring-indigo-500/20 transition-colors hover:bg-indigo-500/25"
+                className="inline-flex items-center gap-2 rounded-lg bg-indigo-500/15 px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 ring-1 ring-indigo-500/20 transition-colors hover:bg-indigo-500/25"
               >
                 <MessageSquare className="size-4" />
                 Open Chat
               </Link>
               <Link
                 href={`/dashboard/agents/${id}/workspace`}
-                className="inline-flex items-center gap-2 rounded-lg bg-cyan-500/15 px-4 py-2 text-sm font-medium text-cyan-400 ring-1 ring-cyan-500/20 transition-colors hover:bg-cyan-500/25"
+                className="inline-flex items-center gap-2 rounded-lg bg-cyan-500/15 px-4 py-2 text-sm font-medium text-cyan-600 dark:text-cyan-400 ring-1 ring-cyan-500/20 transition-colors hover:bg-cyan-500/25"
               >
                 <Activity className="size-4" />
                 View Workspace
@@ -1601,9 +1601,9 @@ export default function AgentDetailPage() {
                   <span
                     className={`text-xs font-semibold ${
                       stat.deltaType === "up"
-                        ? "text-green-400"
+                        ? "text-green-600 dark:text-green-400"
                         : stat.deltaType === "down"
-                        ? "text-red-400"
+                        ? "text-red-600 dark:text-red-400"
                         : "text-muted-foreground"
                     }`}
                   >

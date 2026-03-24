@@ -47,18 +47,18 @@ import {
 import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
-  Open: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  Processing: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  "In Production": "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  Shipped: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  Delivered: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+  Open: "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
+  Processing: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  "In Production": "bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/30",
+  Shipped: "bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30",
+  Delivered: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
 };
 
 const stats = [
-  { label: "Open", value: "12", icon: Clock, change: "+3 today", color: "text-blue-400" },
-  { label: "Processing", value: "8", icon: Package, change: "Avg 2.1 days", color: "text-amber-400" },
-  { label: "Shipped", value: "45", icon: Truck, change: "12 this week", color: "text-purple-400" },
-  { label: "Delivered", value: "156", icon: CheckCircle2, change: "+28 this month", color: "text-emerald-400" },
+  { label: "Open", value: "12", icon: Clock, change: "+3 today", color: "text-blue-600 dark:text-blue-400" },
+  { label: "Processing", value: "8", icon: Package, change: "Avg 2.1 days", color: "text-amber-600 dark:text-amber-400" },
+  { label: "Shipped", value: "45", icon: Truck, change: "12 this week", color: "text-purple-600 dark:text-purple-400" },
+  { label: "Delivered", value: "156", icon: CheckCircle2, change: "+28 this month", color: "text-emerald-600 dark:text-emerald-400" },
 ];
 
 const defaultOrders = [
@@ -286,7 +286,7 @@ export default function OrdersPage() {
                       <tr key={row.order} className="border-b border-border/50">
                         <td className="py-2 text-foreground font-medium">{row.order}</td>
                         <td className="py-2 text-muted-foreground">{row.contractor}</td>
-                        <td className="py-2 text-right text-amber-400">{row.ship}</td>
+                        <td className="py-2 text-right text-amber-600 dark:text-amber-400">{row.ship}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -316,7 +316,7 @@ export default function OrdersPage() {
                     ].map((row) => (
                       <tr key={row.order} className="border-b border-border/50">
                         <td className="py-2 text-foreground font-medium">{row.order}</td>
-                        <td className="py-2 text-purple-400">{row.status}</td>
+                        <td className="py-2 text-purple-600 dark:text-purple-400">{row.status}</td>
                         <td className="py-2 text-right text-muted-foreground">{row.eta}</td>
                       </tr>
                     ))}
@@ -339,7 +339,7 @@ export default function OrdersPage() {
                     <p className="text-sm text-foreground">{row.week}</p>
                     <div className="flex items-center gap-4">
                       <span className="text-sm font-medium text-foreground">{row.count} delivered</span>
-                      <span className="text-xs text-emerald-400">{row.onTime} on-time</span>
+                      <span className="text-xs text-emerald-600 dark:text-emerald-400">{row.onTime} on-time</span>
                     </div>
                   </div>
                 ))}
@@ -347,7 +347,7 @@ export default function OrdersPage() {
                   <p className="text-sm font-semibold text-foreground">Total</p>
                   <div className="flex items-center gap-4">
                     <span className="text-sm font-bold text-foreground">156 delivered</span>
-                    <span className="text-xs font-medium text-emerald-400">95% on-time</span>
+                    <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">95% on-time</span>
                   </div>
                 </div>
               </div>
@@ -394,7 +394,7 @@ export default function OrdersPage() {
           <TableBody>
             {filtered.map((order) => (
               <TableRow key={order.id} className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer" onClick={() => router.push(`/orders/${order.id}`)}>
-                <TableCell className="font-medium text-foreground"><Link href={`/orders/${order.id}`} className="text-indigo-400 hover:text-indigo-300 hover:underline" onClick={(e) => e.stopPropagation()}>{order.id}</Link></TableCell>
+                <TableCell className="font-medium text-foreground"><Link href={`/orders/${order.id}`} className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 hover:underline" onClick={(e) => e.stopPropagation()}>{order.id}</Link></TableCell>
                 <TableCell className="text-muted-foreground">{order.contractor}</TableCell>
                 <TableCell className="text-muted-foreground text-sm hidden lg:table-cell max-w-[280px] truncate">{order.items}</TableCell>
                 <TableCell className="text-right font-medium text-foreground">${order.total.toLocaleString()}</TableCell>
@@ -412,7 +412,7 @@ export default function OrdersPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <div className="rounded-lg bg-indigo-500/10 p-2">
-                <ShoppingCart className="h-4 w-4 text-indigo-400" />
+                <ShoppingCart className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               </div>
               New Order
             </DialogTitle>
@@ -426,7 +426,7 @@ export default function OrdersPage() {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                  Contractor <span className="text-red-400">*</span>
+                  Contractor <span className="text-red-600 dark:text-red-400">*</span>
                 </label>
                 <Select value={form.contractor} onValueChange={(v) => { setForm((p) => ({ ...p, contractor: v ?? "" })); setErrors((p) => ({ ...p, contractor: false })); }}>
                   <SelectTrigger className={`w-full ${inputClass} ${errors.contractor ? errorClass : ""}`}>
@@ -438,7 +438,7 @@ export default function OrdersPage() {
                     ))}
                   </SelectContent>
                 </Select>
-                {errors.contractor && <p className="text-xs text-red-400 mt-1">Required</p>}
+                {errors.contractor && <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>}
               </div>
               <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">PO Number</label>
@@ -452,14 +452,14 @@ export default function OrdersPage() {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Package className="h-4 w-4 text-indigo-400" />
+                  <Package className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                   <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Line Items</h3>
                 </div>
                 <Button type="button" variant="outline" size="sm" className="border-border bg-foreground/5 text-foreground hover:bg-foreground/10 gap-1 text-xs" onClick={addLineItem}>
                   <Plus className="h-3 w-3" /> Add Item
                 </Button>
               </div>
-              {errors.lineItems && <p className="text-xs text-red-400 mb-2">At least one product is required</p>}
+              {errors.lineItems && <p className="text-xs text-red-600 dark:text-red-400 mb-2">At least one product is required</p>}
               <div className="space-y-2">
                 {form.lineItems.map((li, idx) => (
                   <div key={idx} className="grid grid-cols-[1fr_100px_60px_80px_32px] gap-2 items-end">
@@ -479,7 +479,7 @@ export default function OrdersPage() {
                       {idx === 0 && <label className="text-[10px] font-medium text-muted-foreground mb-0.5 block">Unit $</label>}
                       <Input type="number" min={0} step={0.01} value={li.unitPrice || ""} onChange={(e) => updateLineItem(idx, "unitPrice", parseFloat(e.target.value) || 0)} className={inputClass} />
                     </div>
-                    <Button type="button" variant="ghost" size="icon-sm" className="text-muted-foreground hover:text-red-400 mt-auto" onClick={() => removeLineItem(idx)} disabled={form.lineItems.length <= 1}>
+                    <Button type="button" variant="ghost" size="icon-sm" className="text-muted-foreground hover:text-red-600 dark:text-red-400 mt-auto" onClick={() => removeLineItem(idx)} disabled={form.lineItems.length <= 1}>
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   </div>

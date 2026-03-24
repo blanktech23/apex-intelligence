@@ -137,7 +137,7 @@ export default function NotificationsSettingsPage() {
       {/* Success toast */}
       <div
         className={cn(
-          "overflow-hidden rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-400 transition-all duration-500",
+          "overflow-hidden rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-600 dark:text-emerald-400 transition-all duration-500",
           showSuccess
             ? "max-h-20 opacity-100"
             : "max-h-0 border-0 py-0 opacity-0"

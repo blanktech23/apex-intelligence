@@ -195,10 +195,10 @@ const agentWorkspaceData: Record<string, AgentWorkspaceData> = {
       { id: "cs-ro5", title: "Customer summary - Rivera GC", timeAgo: "5 hr ago" },
     ],
     metrics: [
-      { label: "Tickets Resolved", value: "34", icon: CheckCircle2, color: "text-green-400", bg: "bg-green-500/10" },
-      { label: "Emails Sent", value: "12", icon: Send, color: "text-indigo-400", bg: "bg-indigo-500/10" },
-      { label: "Avg Response", value: "1.8s", icon: Gauge, color: "text-cyan-400", bg: "bg-cyan-500/10" },
-      { label: "CSAT", value: "96%", icon: Target, color: "text-amber-400", bg: "bg-amber-500/10" },
+      { label: "Tickets Resolved", value: "34", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", bg: "bg-green-500/10" },
+      { label: "Emails Sent", value: "12", icon: Send, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
+      { label: "Avg Response", value: "1.8s", icon: Gauge, color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-500/10" },
+      { label: "CSAT", value: "96%", icon: Target, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
     ],
   },
 
@@ -279,10 +279,10 @@ const agentWorkspaceData: Record<string, AgentWorkspaceData> = {
       { id: "so-ro5", title: "LinkedIn outreach summary", timeAgo: "4 hr ago" },
     ],
     metrics: [
-      { label: "Leads Qualified", value: "8", icon: CheckCircle2, color: "text-green-400", bg: "bg-green-500/10" },
-      { label: "Emails Sent", value: "24", icon: Send, color: "text-indigo-400", bg: "bg-indigo-500/10" },
-      { label: "Meetings Booked", value: "3", icon: Gauge, color: "text-cyan-400", bg: "bg-cyan-500/10" },
-      { label: "Pipeline Added", value: "$420K", icon: Target, color: "text-amber-400", bg: "bg-amber-500/10" },
+      { label: "Leads Qualified", value: "8", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", bg: "bg-green-500/10" },
+      { label: "Emails Sent", value: "24", icon: Send, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
+      { label: "Meetings Booked", value: "3", icon: Gauge, color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-500/10" },
+      { label: "Pipeline Added", value: "$420K", icon: Target, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
     ],
   },
 
@@ -361,10 +361,10 @@ const agentWorkspaceData: Record<string, AgentWorkspaceData> = {
       { id: "sc-ro5", title: "Weather-adjusted schedule - This week", timeAgo: "2 hr ago" },
     ],
     metrics: [
-      { label: "Schedules Updated", value: "5", icon: CheckCircle2, color: "text-green-400", bg: "bg-green-500/10" },
-      { label: "Conflicts Resolved", value: "2", icon: Zap, color: "text-indigo-400", bg: "bg-indigo-500/10" },
-      { label: "Crews Notified", value: "8", icon: Send, color: "text-cyan-400", bg: "bg-cyan-500/10" },
-      { label: "Routes Optimized", value: "3", icon: Target, color: "text-amber-400", bg: "bg-amber-500/10" },
+      { label: "Schedules Updated", value: "5", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", bg: "bg-green-500/10" },
+      { label: "Conflicts Resolved", value: "2", icon: Zap, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
+      { label: "Crews Notified", value: "8", icon: Send, color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-500/10" },
+      { label: "Routes Optimized", value: "3", icon: Target, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
     ],
   },
 
@@ -444,10 +444,10 @@ const agentWorkspaceData: Record<string, AgentWorkspaceData> = {
       { id: "es-ro5", title: "Labor rate report - Bay Area Q1 2026", timeAgo: "2 hr ago" },
     ],
     metrics: [
-      { label: "Estimates Created", value: "3", icon: CheckCircle2, color: "text-green-400", bg: "bg-green-500/10" },
-      { label: "Line Items Priced", value: "147", icon: Zap, color: "text-indigo-400", bg: "bg-indigo-500/10" },
-      { label: "Comparisons Run", value: "6", icon: Gauge, color: "text-cyan-400", bg: "bg-cyan-500/10" },
-      { label: "PDFs Exported", value: "2", icon: FileText, color: "text-amber-400", bg: "bg-amber-500/10" },
+      { label: "Estimates Created", value: "3", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", bg: "bg-green-500/10" },
+      { label: "Line Items Priced", value: "147", icon: Zap, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
+      { label: "Comparisons Run", value: "6", icon: Gauge, color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-500/10" },
+      { label: "PDFs Exported", value: "2", icon: FileText, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
     ],
   },
 
@@ -528,10 +528,10 @@ const agentWorkspaceData: Record<string, AgentWorkspaceData> = {
       { id: "bk-ro5", title: "Accounts receivable aging report", timeAgo: "2 hr ago" },
     ],
     metrics: [
-      { label: "Transactions", value: "247", icon: CheckCircle2, color: "text-green-400", bg: "bg-green-500/10" },
-      { label: "Invoices Generated", value: "8", icon: FileText, color: "text-indigo-400", bg: "bg-indigo-500/10" },
-      { label: "Reconciled", value: "$284K", icon: Gauge, color: "text-cyan-400", bg: "bg-cyan-500/10" },
-      { label: "Discrepancies", value: "2", icon: Target, color: "text-amber-400", bg: "bg-amber-500/10" },
+      { label: "Transactions", value: "247", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", bg: "bg-green-500/10" },
+      { label: "Invoices Generated", value: "8", icon: FileText, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
+      { label: "Reconciled", value: "$284K", icon: Gauge, color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-500/10" },
+      { label: "Discrepancies", value: "2", icon: Target, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
     ],
   },
 
@@ -610,10 +610,10 @@ const agentWorkspaceData: Record<string, AgentWorkspaceData> = {
       { id: "pm-ro5", title: "Milestone report - 142 Pine St framing", timeAgo: "2 hr ago" },
     ],
     metrics: [
-      { label: "Projects Monitored", value: "5", icon: CheckCircle2, color: "text-green-400", bg: "bg-green-500/10" },
-      { label: "Alerts Sent", value: "3", icon: Send, color: "text-indigo-400", bg: "bg-indigo-500/10" },
-      { label: "Reports Generated", value: "2", icon: FileText, color: "text-cyan-400", bg: "bg-cyan-500/10" },
-      { label: "Risks Flagged", value: "1", icon: Target, color: "text-amber-400", bg: "bg-amber-500/10" },
+      { label: "Projects Monitored", value: "5", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", bg: "bg-green-500/10" },
+      { label: "Alerts Sent", value: "3", icon: Send, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
+      { label: "Reports Generated", value: "2", icon: FileText, color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-500/10" },
+      { label: "Risks Flagged", value: "1", icon: Target, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
     ],
   },
 
@@ -693,10 +693,10 @@ const agentWorkspaceData: Record<string, AgentWorkspaceData> = {
       { id: "fo-ro5", title: "Photo documentation - 142 Pine St", timeAgo: "1 hr ago" },
     ],
     metrics: [
-      { label: "Inspections Logged", value: "4", icon: CheckCircle2, color: "text-green-400", bg: "bg-green-500/10" },
-      { label: "Safety Checks", value: "6", icon: Zap, color: "text-indigo-400", bg: "bg-indigo-500/10" },
-      { label: "Material Orders", value: "2", icon: Send, color: "text-cyan-400", bg: "bg-cyan-500/10" },
-      { label: "Weather Alerts", value: "1", icon: Target, color: "text-amber-400", bg: "bg-amber-500/10" },
+      { label: "Inspections Logged", value: "4", icon: CheckCircle2, color: "text-green-600 dark:text-green-400", bg: "bg-green-500/10" },
+      { label: "Safety Checks", value: "6", icon: Zap, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
+      { label: "Material Orders", value: "2", icon: Send, color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-500/10" },
+      { label: "Weather Alerts", value: "1", icon: Target, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
     ],
   },
 };
@@ -715,7 +715,7 @@ const taskStatusConfig: Record<
   running: {
     label: "Running",
     bg: "bg-indigo-500/15",
-    text: "text-indigo-400",
+    text: "text-indigo-600 dark:text-indigo-400",
     icon: Loader2,
   },
   queued: {
@@ -727,15 +727,15 @@ const taskStatusConfig: Record<
   "awaiting-approval": {
     label: "Awaiting Approval",
     bg: "bg-amber-500/15",
-    text: "text-amber-400",
+    text: "text-amber-600 dark:text-amber-400",
     icon: Pause,
   },
 };
 
 const logColorMap: Record<string, string> = {
-  green: "text-green-400",
-  amber: "text-amber-400",
-  cyan: "text-cyan-400",
+  green: "text-green-600 dark:text-green-400",
+  amber: "text-amber-600 dark:text-amber-400",
+  cyan: "text-cyan-600 dark:text-cyan-400",
   white: "text-foreground/90",
   muted: "text-muted-foreground/70",
 };
@@ -783,7 +783,7 @@ export default function AgentWorkspacePage() {
                   <h1 className="text-xl font-bold tracking-tight text-foreground">
                     {agentName}
                   </h1>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-green-500/20 bg-green-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-green-400">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-green-500/20 bg-green-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-green-600 dark:text-green-400">
                     <span className="size-1.5 rounded-full bg-green-400" />
                     Active
                   </span>
@@ -801,7 +801,7 @@ export default function AgentWorkspacePage() {
             </div>
             <Link
               href={`/dashboard/agents/${id}/chat`}
-              className="inline-flex items-center gap-2 rounded-lg bg-indigo-500/15 px-4 py-2 text-sm font-medium text-indigo-400 ring-1 ring-indigo-500/20 transition-colors hover:bg-indigo-500/25"
+              className="inline-flex items-center gap-2 rounded-lg bg-indigo-500/15 px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 ring-1 ring-indigo-500/20 transition-colors hover:bg-indigo-500/25"
             >
               <MessageSquare className="size-4" />
               Open Chat
@@ -819,7 +819,7 @@ export default function AgentWorkspacePage() {
                 <h2 className="text-sm font-semibold text-foreground">
                   Active Tasks
                 </h2>
-                <span className="rounded-full bg-indigo-500/15 px-2 py-0.5 text-[11px] font-semibold text-indigo-400">
+                <span className="rounded-full bg-indigo-500/15 px-2 py-0.5 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400">
                   {activeTasks.length}
                 </span>
               </div>
@@ -883,7 +883,7 @@ export default function AgentWorkspacePage() {
                 <h2 className="text-sm font-semibold text-foreground">
                   Completed Today
                 </h2>
-                <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[11px] font-semibold text-green-400">
+                <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[11px] font-semibold text-green-600 dark:text-green-400">
                   {completedTasks.length}
                 </span>
               </div>
@@ -893,7 +893,7 @@ export default function AgentWorkspacePage() {
                     key={task.id}
                     className="flex items-start gap-2.5 rounded-lg px-2 py-2 transition-colors hover:bg-muted/20"
                   >
-                    <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-green-400" />
+                    <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-green-600 dark:text-green-400" />
                     <div className="min-w-0 flex-1">
                       <p className="text-xs leading-snug text-foreground/80">
                         {task.name}
@@ -1003,15 +1003,15 @@ export default function AgentWorkspacePage() {
                       <CircleDot
                         className={`size-3 ${
                           tool.status === "connected"
-                            ? "text-green-400"
-                            : "text-amber-400"
+                            ? "text-green-600 dark:text-green-400"
+                            : "text-amber-600 dark:text-amber-400"
                         }`}
                       />
                       <span
                         className={`text-[10px] font-medium ${
                           tool.status === "connected"
-                            ? "text-green-400"
-                            : "text-amber-400"
+                            ? "text-green-600 dark:text-green-400"
+                            : "text-amber-600 dark:text-amber-400"
                         }`}
                       >
                         {tool.status === "connected"
@@ -1036,7 +1036,7 @@ export default function AgentWorkspacePage() {
                     className="group flex items-start justify-between gap-2 rounded-lg px-3 py-2.5 transition-colors hover:bg-muted/20"
                   >
                     <div className="flex items-start gap-2.5 min-w-0">
-                      <FileText className="mt-0.5 size-3.5 shrink-0 text-indigo-400" />
+                      <FileText className="mt-0.5 size-3.5 shrink-0 text-indigo-600 dark:text-indigo-400" />
                       <div className="min-w-0">
                         <p className="text-xs font-medium leading-snug text-foreground/80 line-clamp-1">
                           {output.title}

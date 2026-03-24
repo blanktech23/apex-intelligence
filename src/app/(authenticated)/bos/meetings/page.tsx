@@ -187,18 +187,18 @@ const statusConfig: Record<
 > = {
   Scheduled: {
     bg: 'bg-blue-400/10',
-    text: 'text-blue-400',
+    text: 'text-blue-600 dark:text-blue-400',
     ring: 'ring-blue-400/20',
   },
   'In Progress': {
     bg: 'bg-amber-400/10',
-    text: 'text-amber-400',
+    text: 'text-amber-600 dark:text-amber-400',
     ring: 'ring-amber-400/20',
     pulse: true,
   },
   Completed: {
     bg: 'bg-green-400/10',
-    text: 'text-green-400',
+    text: 'text-green-600 dark:text-green-400',
     ring: 'ring-green-400/20',
   },
   Cancelled: {
@@ -258,7 +258,7 @@ function MeetingCard({
                     setEditing(false);
                     toast.success('Meeting renamed');
                   }}
-                  className="flex h-6 w-6 items-center justify-center rounded-md text-green-400 hover:bg-green-500/10 transition-colors"
+                  className="flex h-6 w-6 items-center justify-center rounded-md text-green-600 dark:text-green-400 hover:bg-green-500/10 transition-colors"
                 >
                   <Check className="h-3.5 w-3.5" />
                 </button>
@@ -306,8 +306,8 @@ function MeetingCard({
 
           {meeting.avgRating !== undefined && (
             <div className="mt-2.5 flex items-center gap-1.5">
-              <Star className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
-              <span className="text-xs font-medium text-amber-400">
+              <Star className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 fill-amber-400" />
+              <span className="text-xs font-medium text-amber-600 dark:text-amber-400">
                 {meeting.avgRating}/10
               </span>
             </div>
@@ -330,14 +330,14 @@ function MeetingCard({
               </button>
               {confirmDelete ? (
                 <div className="flex items-center gap-1 animate-in fade-in slide-in-from-right-2 duration-200">
-                  <span className="text-[10px] text-red-400 mr-1">Delete?</span>
+                  <span className="text-[10px] text-red-600 dark:text-red-400 mr-1">Delete?</span>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       onDelete(meeting.id);
                       toast.success('Meeting deleted');
                     }}
-                    className="flex h-7 w-7 items-center justify-center rounded-md text-red-400 hover:bg-red-500/10 transition-colors"
+                    className="flex h-7 w-7 items-center justify-center rounded-md text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors"
                   >
                     <Check className="h-3.5 w-3.5" />
                   </button>
@@ -357,7 +357,7 @@ function MeetingCard({
                     e.stopPropagation();
                     setConfirmDelete(true);
                   }}
-                  className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                  className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors"
                   title="Delete"
                 >
                   <Trash2 className="h-3.5 w-3.5" />

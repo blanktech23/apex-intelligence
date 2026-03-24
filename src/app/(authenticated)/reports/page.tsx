@@ -117,7 +117,7 @@ const statsCards = [
     change: "+12%",
     changePositive: true,
     icon: DollarSign,
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
   },
   {
@@ -126,7 +126,7 @@ const statsCards = [
     change: "+8.3%",
     changePositive: true,
     icon: MessageSquare,
-    iconColor: "text-indigo-400",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
     iconBg: "bg-indigo-500/10",
   },
   {
@@ -135,7 +135,7 @@ const statsCards = [
     change: "+2.1%",
     changePositive: true,
     icon: CheckCircle2,
-    iconColor: "text-cyan-400",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
     iconBg: "bg-cyan-500/10",
   },
   {
@@ -144,7 +144,7 @@ const statsCards = [
     change: "+18%",
     changePositive: true,
     icon: TrendingUp,
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-500/10",
   },
 ];
@@ -173,9 +173,9 @@ const conversationBreakdown = [
 ];
 
 const resolutionBreakdown = [
-  { type: "Auto-resolved", pct: "72.8%", color: "text-emerald-400" },
-  { type: "Escalated to human", pct: "21.4%", color: "text-amber-400" },
-  { type: "Pending resolution", pct: "5.8%", color: "text-red-400" },
+  { type: "Auto-resolved", pct: "72.8%", color: "text-emerald-600 dark:text-emerald-400" },
+  { type: "Escalated to human", pct: "21.4%", color: "text-amber-600 dark:text-amber-400" },
+  { type: "Pending resolution", pct: "5.8%", color: "text-red-600 dark:text-red-400" },
 ];
 
 const savingsBreakdown = [
@@ -313,7 +313,7 @@ export default function ReportsPage() {
                 <div className="flex items-center gap-2">
                   <span
                     className={`text-xs font-semibold ${
-                      card.changePositive ? "text-green-400" : "text-red-400"
+                      card.changePositive ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
                     }`}
                   >
                     {card.change}
@@ -344,7 +344,7 @@ export default function ReportsPage() {
                       <div key={item.name} className="flex items-center justify-between rounded-lg border border-border bg-foreground/[0.02] px-4 py-2.5">
                         <span className="text-sm text-foreground">{item.name}</span>
                         <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium text-emerald-400">{item.amount}</span>
+                          <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">{item.amount}</span>
                           <span className="text-xs text-muted-foreground w-12 text-right">{item.pct}</span>
                         </div>
                       </div>
@@ -358,7 +358,7 @@ export default function ReportsPage() {
                       <div key={item.name} className="flex items-center justify-between rounded-lg border border-border bg-foreground/[0.02] px-4 py-2.5">
                         <span className="text-sm text-foreground">{item.name}</span>
                         <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium text-indigo-400">{item.amount}</span>
+                          <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">{item.amount}</span>
                           <span className="text-xs text-muted-foreground w-12 text-right">{item.pct}</span>
                         </div>
                       </div>
@@ -387,7 +387,7 @@ export default function ReportsPage() {
                       <tr key={row.agent} className="border-b border-border/50">
                         <td className="py-2 text-foreground font-medium">{row.agent}</td>
                         <td className="py-2 text-right text-muted-foreground">{row.count}</td>
-                        <td className="py-2 text-right text-indigo-400 font-medium">{row.pct}</td>
+                        <td className="py-2 text-right text-indigo-600 dark:text-indigo-400 font-medium">{row.pct}</td>
                         <td className="py-2 text-right hidden sm:table-cell">
                           <div className="flex items-center justify-end">
                             <div className="h-1.5 rounded-full bg-indigo-500 transition-all" style={{ width: `${parseFloat(row.pct) * 3}px` }} />
@@ -413,7 +413,7 @@ export default function ReportsPage() {
                   </div>
                 ))}
               </div>
-              <div className="mt-3 text-xs text-muted-foreground">Overall resolution rate: <span className="font-medium text-cyan-400">94.2%</span> (+2.1% vs last period)</div>
+              <div className="mt-3 text-xs text-muted-foreground">Overall resolution rate: <span className="font-medium text-cyan-600 dark:text-cyan-400">94.2%</span> (+2.1% vs last period)</div>
             </div>
           )}
 
@@ -433,14 +433,14 @@ export default function ReportsPage() {
                     {savingsBreakdown.map((row) => (
                       <tr key={row.category} className="border-b border-border/50">
                         <td className="py-2 text-foreground font-medium">{row.category}</td>
-                        <td className="py-2 text-right text-amber-400 font-medium">{row.amount}</td>
+                        <td className="py-2 text-right text-amber-600 dark:text-amber-400 font-medium">{row.amount}</td>
                         <td className="py-2 text-muted-foreground text-xs hidden sm:table-cell">{row.desc}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <div className="mt-3 text-xs text-muted-foreground">Total savings: <span className="font-medium text-amber-400">$47,000</span> (+18% vs last period)</div>
+              <div className="mt-3 text-xs text-muted-foreground">Total savings: <span className="font-medium text-amber-600 dark:text-amber-400">$47,000</span> (+18% vs last period)</div>
             </div>
           )}
         </div>
@@ -619,7 +619,7 @@ export default function ReportsPage() {
       <div className="glass rounded-xl p-6">
         <div className="mb-4 flex items-center gap-2">
           <div className="inline-flex rounded-lg bg-indigo-500/10 p-2">
-            <Sparkles className="size-5 text-indigo-400" />
+            <Sparkles className="size-5 text-indigo-600 dark:text-indigo-400" />
           </div>
           <div>
             <h2 className="text-base font-semibold text-foreground">
@@ -632,7 +632,7 @@ export default function ReportsPage() {
         </div>
         <div className="space-y-4 rounded-lg border border-border bg-muted/20 p-5">
           <div className="flex items-start gap-3">
-            <Brain className="mt-0.5 size-4 shrink-0 text-indigo-400" />
+            <Brain className="mt-0.5 size-4 shrink-0 text-indigo-600 dark:text-indigo-400" />
             <p className="text-sm leading-relaxed text-muted-foreground">
               <span className="font-medium text-foreground">Discovery Concierge</span> had
               a 23% increase in lead qualification accuracy this month. The improved prompt
@@ -642,7 +642,7 @@ export default function ReportsPage() {
           </div>
           <div className="h-px bg-border" />
           <div className="flex items-start gap-3">
-            <Calendar className="mt-0.5 size-4 shrink-0 text-cyan-400" />
+            <Calendar className="mt-0.5 size-4 shrink-0 text-cyan-600 dark:text-cyan-400" />
             <p className="text-sm leading-relaxed text-muted-foreground">
               <span className="font-medium text-foreground">Project Orchestrator</span>{" "}
               resolved 847 scheduling conflicts automatically, up from 612 last month. Crew
@@ -651,7 +651,7 @@ export default function ReportsPage() {
           </div>
           <div className="h-px bg-border" />
           <div className="flex items-start gap-3">
-            <TrendingUp className="mt-0.5 size-4 shrink-0 text-green-400" />
+            <TrendingUp className="mt-0.5 size-4 shrink-0 text-green-600 dark:text-green-400" />
             <p className="text-sm leading-relaxed text-muted-foreground">
               Overall AI-driven cost savings reached{" "}
               <span className="font-medium text-foreground">$47,200</span> this period,
@@ -668,7 +668,7 @@ export default function ReportsPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <div className="rounded-lg bg-indigo-500/10 p-2">
-                <Download className="h-4 w-4 text-indigo-400" />
+                <Download className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               </div>
               Export Report
             </DialogTitle>

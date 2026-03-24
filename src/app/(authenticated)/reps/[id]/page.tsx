@@ -34,9 +34,9 @@ import {
 } from "@/components/ui/table";
 
 const statusColors: Record<string, string> = {
-  Active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  "On Leave": "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  Inactive: "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
+  Active: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  "On Leave": "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  Inactive: "bg-zinc-500/20 text-zinc-600 dark:text-zinc-400 border-zinc-500/30",
 };
 
 const repsData: Record<
@@ -238,18 +238,18 @@ const activityIcons: Record<string, typeof ShoppingCart> = {
 };
 
 const activityColors: Record<string, string> = {
-  order: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
-  visit: "border-indigo-500/30 bg-indigo-500/10 text-indigo-400",
-  meeting: "border-amber-500/30 bg-amber-500/10 text-amber-400",
-  account: "border-cyan-500/30 bg-cyan-500/10 text-cyan-400",
-  admin: "border-zinc-500/30 bg-zinc-500/10 text-zinc-400",
-  training: "border-purple-500/30 bg-purple-500/10 text-purple-400",
+  order: "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  visit: "border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+  meeting: "border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  account: "border-cyan-500/30 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",
+  admin: "border-zinc-500/30 bg-zinc-500/10 text-zinc-600 dark:text-zinc-400",
+  training: "border-purple-500/30 bg-purple-500/10 text-purple-600 dark:text-purple-400",
 };
 
 const typeColors: Record<string, string> = {
-  Contractor: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  Builder: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  Dealer: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
+  Contractor: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
+  Builder: "bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/30",
+  Dealer: "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border-indigo-500/30",
 };
 
 export default function RepDetailPage({
@@ -285,7 +285,7 @@ export default function RepDetailPage({
           <h2 className="text-xl font-bold text-foreground mb-2">Rep not found</h2>
           <Link
             href="/reps"
-            className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+            className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 transition-colors"
           >
             Back to Sales Reps
           </Link>
@@ -295,10 +295,10 @@ export default function RepDetailPage({
   }
 
   const statCards = [
-    { label: "Accounts Managed", value: rep.accountsManaged.toString(), icon: Users, color: "text-indigo-400" },
-    { label: "Orders MTD", value: rep.ordersMTD.toString(), icon: Briefcase, color: "text-emerald-400" },
-    { label: "Commission MTD", value: `$${rep.commissionMTD.toLocaleString()}`, icon: DollarSign, color: "text-amber-400" },
-    { label: "YTD Revenue", value: `$${rep.ytdRevenue.toLocaleString()}`, icon: TrendingUp, color: "text-purple-400" },
+    { label: "Accounts Managed", value: rep.accountsManaged.toString(), icon: Users, color: "text-indigo-600 dark:text-indigo-400" },
+    { label: "Orders MTD", value: rep.ordersMTD.toString(), icon: Briefcase, color: "text-emerald-600 dark:text-emerald-400" },
+    { label: "Commission MTD", value: `$${rep.commissionMTD.toLocaleString()}`, icon: DollarSign, color: "text-amber-600 dark:text-amber-400" },
+    { label: "YTD Revenue", value: `$${rep.ytdRevenue.toLocaleString()}`, icon: TrendingUp, color: "text-purple-600 dark:text-purple-400" },
   ];
 
   return (
@@ -316,7 +316,7 @@ export default function RepDetailPage({
         {/* Header */}
         <div className="flex flex-wrap items-center gap-4">
           <Avatar className="h-14 w-14 border-2 border-indigo-500/30">
-            <AvatarFallback className="bg-indigo-500/20 text-lg text-indigo-300">
+            <AvatarFallback className="bg-indigo-500/20 text-lg text-indigo-700 dark:text-indigo-300">
               {rep.initials}
             </AvatarFallback>
           </Avatar>
@@ -342,7 +342,7 @@ export default function RepDetailPage({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="flex items-center gap-3">
             <div className="rounded-lg bg-indigo-500/10 p-2">
-              <Mail className="h-4 w-4 text-indigo-400" />
+              <Mail className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Email</p>
@@ -351,7 +351,7 @@ export default function RepDetailPage({
           </div>
           <div className="flex items-center gap-3">
             <div className="rounded-lg bg-indigo-500/10 p-2">
-              <Phone className="h-4 w-4 text-indigo-400" />
+              <Phone className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Phone</p>
@@ -360,7 +360,7 @@ export default function RepDetailPage({
           </div>
           <div className="flex items-center gap-3">
             <div className="rounded-lg bg-indigo-500/10 p-2">
-              <MapPin className="h-4 w-4 text-indigo-400" />
+              <MapPin className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Address</p>
@@ -394,19 +394,19 @@ export default function RepDetailPage({
         <TabsList className="glass border border-border bg-foreground/5">
           <TabsTrigger
             value="accounts"
-            className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+            className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
           >
             Accounts
           </TabsTrigger>
           <TabsTrigger
             value="performance"
-            className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+            className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
           >
             Performance
           </TabsTrigger>
           <TabsTrigger
             value="activity"
-            className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-300"
+            className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-indigo-700 dark:text-indigo-300"
           >
             Activity
           </TabsTrigger>
@@ -491,8 +491,8 @@ export default function RepDetailPage({
                         variant="outline"
                         className={
                           row.vsTarget >= 100
-                            ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                            : "bg-red-500/20 text-red-400 border-red-500/30"
+                            ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                            : "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30"
                         }
                       >
                         {row.vsTarget}%

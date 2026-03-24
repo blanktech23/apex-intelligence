@@ -85,11 +85,11 @@ type Invitation = {
 const allRoles = ["Owner", "Admin", "Manager", "Designer", "Bookkeeper", "Viewer"];
 
 const roleStyles: Record<string, { bg: string; text: string }> = {
-  Owner: { bg: "bg-purple-500/15", text: "text-purple-400" },
-  Admin: { bg: "bg-blue-500/15", text: "text-blue-400" },
-  Manager: { bg: "bg-emerald-500/15", text: "text-emerald-400" },
-  Designer: { bg: "bg-cyan-500/15", text: "text-cyan-400" },
-  Bookkeeper: { bg: "bg-amber-500/15", text: "text-amber-400" },
+  Owner: { bg: "bg-purple-500/15", text: "text-purple-600 dark:text-purple-400" },
+  Admin: { bg: "bg-blue-500/15", text: "text-blue-600 dark:text-blue-400" },
+  Manager: { bg: "bg-emerald-500/15", text: "text-emerald-600 dark:text-emerald-400" },
+  Designer: { bg: "bg-cyan-500/15", text: "text-cyan-600 dark:text-cyan-400" },
+  Bookkeeper: { bg: "bg-amber-500/15", text: "text-amber-600 dark:text-amber-400" },
   Viewer: { bg: "bg-muted", text: "text-muted-foreground" },
 };
 
@@ -572,7 +572,7 @@ function TeamSettingsContent({
           </form>
 
           {inviteSuccess && (
-            <div className="mt-3 flex items-center gap-2 text-sm text-emerald-400">
+            <div className="mt-3 flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
               <Check className="h-4 w-4" />
               Invitation sent successfully!
             </div>
@@ -586,11 +586,11 @@ function TeamSettingsContent({
       {invitations.length > 0 && (
         <div className="glass rounded-xl p-6">
           <div className="mb-4 flex items-center gap-2">
-            <Clock className="h-4 w-4 text-amber-400" />
+            <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
             <h2 className="text-base font-semibold text-foreground">
               Pending invitations
             </h2>
-            <Badge className="border-0 bg-amber-500/15 text-amber-400 text-[10px]">
+            <Badge className="border-0 bg-amber-500/15 text-amber-600 dark:text-amber-400 text-[10px]">
               {invitations.length}
             </Badge>
           </div>
@@ -632,8 +632,8 @@ function TeamSettingsContent({
                         >
                           {isResent ? (
                             <>
-                              <Check className="mr-1 h-3.5 w-3.5 text-emerald-400" />
-                              <span className="text-emerald-400">Resent!</span>
+                              <Check className="mr-1 h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                              <span className="text-emerald-600 dark:text-emerald-400">Resent!</span>
                             </>
                           ) : (
                             <>
@@ -751,7 +751,7 @@ function TeamSettingsContent({
                           {member.name}
                         </span>
                         {member.role === "Owner" && (
-                          <Crown className="h-3.5 w-3.5 text-amber-400" />
+                          <Crown className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                         )}
                       </div>
                     </div>
@@ -773,7 +773,7 @@ function TeamSettingsContent({
                     ) : (
                       <div className="flex items-center gap-1.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                        <span className="text-sm text-emerald-400">Active</span>
+                        <span className="text-sm text-emerald-600 dark:text-emerald-400">Active</span>
                       </div>
                     )}
                   </TableCell>
@@ -791,7 +791,7 @@ function TeamSettingsContent({
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 gap-1.5 text-xs text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-300"
+                          className="h-7 gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-700 dark:text-emerald-300"
                           onClick={() => openReactivate(member)}
                         >
                           <UserCheck className="h-3.5 w-3.5" />
@@ -807,7 +807,7 @@ function TeamSettingsContent({
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-7 gap-1.5 text-xs text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
+                        className="h-7 gap-1.5 text-xs text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 hover:text-amber-700 dark:text-amber-300"
                         onClick={openTransferOwnership}
                       >
                         <ArrowRightLeft className="h-3.5 w-3.5" />
@@ -837,7 +837,7 @@ function TeamSettingsContent({
                             <>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem
-                                className="text-amber-400 focus:text-amber-400"
+                                className="text-amber-600 dark:text-amber-400 focus:text-amber-600 dark:text-amber-400"
                                 onClick={() => openDeactivate(member)}
                               >
                                 <UserX className="mr-2 h-4 w-4" />
@@ -902,7 +902,7 @@ function TeamSettingsContent({
                         {member.name}
                       </span>
                       {member.role === "Owner" && (
-                        <Crown className="h-3.5 w-3.5 text-amber-400" />
+                        <Crown className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                       )}
                     </div>
                     <Badge className={`border-0 ${style.bg} ${style.text} text-[10px] mt-0.5`}>
@@ -916,7 +916,7 @@ function TeamSettingsContent({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-7 gap-1.5 text-xs text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-300"
+                      className="h-7 gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-700 dark:text-emerald-300"
                       onClick={() => openReactivate(member)}
                     >
                       <UserCheck className="h-3.5 w-3.5" />
@@ -927,7 +927,7 @@ function TeamSettingsContent({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-7 gap-1.5 text-xs text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
+                    className="h-7 gap-1.5 text-xs text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 hover:text-amber-700 dark:text-amber-300"
                     onClick={openTransferOwnership}
                   >
                     <ArrowRightLeft className="h-3.5 w-3.5" />
@@ -951,7 +951,7 @@ function TeamSettingsContent({
                         <>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
-                            className="text-amber-400 focus:text-amber-400"
+                            className="text-amber-600 dark:text-amber-400 focus:text-amber-600 dark:text-amber-400"
                             onClick={() => openDeactivate(member)}
                           >
                             <UserX className="mr-2 h-4 w-4" />
@@ -986,7 +986,7 @@ function TeamSettingsContent({
                   ) : (
                     <div className="flex items-center gap-1.5">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                      <span className="text-emerald-400">Active</span>
+                      <span className="text-emerald-600 dark:text-emerald-400">Active</span>
                     </div>
                   )}
                   <span className="text-muted-foreground">{member.lastActive}</span>
@@ -1047,7 +1047,7 @@ function TeamSettingsContent({
             </div>
 
             {roleSuccess && (
-              <div className="flex items-center gap-2 text-sm text-emerald-400">
+              <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
                 <Check className="h-4 w-4" />
                 Role updated successfully!
               </div>
@@ -1160,7 +1160,7 @@ function TeamSettingsContent({
             </div>
 
             {messageSent && (
-              <div className="flex items-center gap-2 text-sm text-emerald-400">
+              <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
                 <Check className="h-4 w-4" />
                 Message sent!
               </div>
@@ -1218,7 +1218,7 @@ function TeamSettingsContent({
               </div>
             </div>
             <div className="mt-3 flex items-start gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
-              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
               <p className="text-xs text-amber-200/80">
                 Deactivating {deactivateTarget?.name} will revoke their access.
                 They can be reactivated later.
@@ -1353,7 +1353,7 @@ function TeamSettingsContent({
             </div>
 
             {transferSuccess && (
-              <div className="flex items-center gap-2 text-sm text-emerald-400">
+              <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
                 <Check className="h-4 w-4" />
                 Ownership transferred successfully!
               </div>

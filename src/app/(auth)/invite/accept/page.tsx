@@ -55,7 +55,7 @@ export default function InviteAcceptPage() {
           <div className="flex flex-col items-center gap-4 text-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-500/20">
               <svg
-                className="h-7 w-7 text-green-400"
+                className="h-7 w-7 text-green-600 dark:text-green-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={2.5}
@@ -103,7 +103,7 @@ export default function InviteAcceptPage() {
                   Slate Design Remodel
                 </span>{" "}
                 as a{" "}
-                <span className="inline-flex items-center rounded-md bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
+                <span className="inline-flex items-center rounded-md bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
                   Manager
                 </span>
               </p>

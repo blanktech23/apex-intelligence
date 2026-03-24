@@ -71,10 +71,10 @@ const bomItems: BomItem[] = [
 ];
 
 const statusConfig = {
-  confirmed: { label: "Confirmed", icon: CheckCircle2, color: "text-green-400 bg-green-500/10" },
-  stale: { label: "Stale Price", icon: Clock, color: "text-amber-400 bg-amber-500/10" },
-  discontinued: { label: "Discontinued", icon: AlertTriangle, color: "text-red-400 bg-red-500/10" },
-  unresolved: { label: "Unresolved", icon: HelpCircle, color: "text-gray-400 bg-gray-500/10" },
+  confirmed: { label: "Confirmed", icon: CheckCircle2, color: "text-green-600 dark:text-green-400 bg-green-500/10" },
+  stale: { label: "Stale Price", icon: Clock, color: "text-amber-600 dark:text-amber-400 bg-amber-500/10" },
+  discontinued: { label: "Discontinued", icon: AlertTriangle, color: "text-red-600 dark:text-red-400 bg-red-500/10" },
+  unresolved: { label: "Unresolved", icon: HelpCircle, color: "text-gray-600 dark:text-gray-400 bg-gray-500/10" },
 };
 
 /* ------------------------------------------------------------------ */
@@ -103,7 +103,7 @@ export function BomPreview({
       <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">
-            <Package className="size-5 text-indigo-400" />
+            <Package className="size-5 text-indigo-600 dark:text-indigo-400" />
             Bill of Materials — Kitchen Design v3
           </DialogTitle>
           <DialogDescription>
@@ -114,10 +114,10 @@ export function BomPreview({
         {/* Summary cards */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
-            { label: "Total Items", value: totalItems.toString(), icon: Package, iconColor: "text-indigo-400", iconBg: "bg-indigo-500/10" },
-            { label: "Material Cost", value: `$${materialCost.toLocaleString()}`, icon: DollarSign, iconColor: "text-green-400", iconBg: "bg-green-500/10" },
-            { label: "Unresolved", value: unresolvedCount.toString(), icon: HelpCircle, iconColor: "text-gray-400", iconBg: "bg-gray-500/10" },
-            { label: "Price Warnings", value: warningCount.toString(), icon: AlertTriangle, iconColor: "text-amber-400", iconBg: "bg-amber-500/10" },
+            { label: "Total Items", value: totalItems.toString(), icon: Package, iconColor: "text-indigo-600 dark:text-indigo-400", iconBg: "bg-indigo-500/10" },
+            { label: "Material Cost", value: `$${materialCost.toLocaleString()}`, icon: DollarSign, iconColor: "text-green-600 dark:text-green-400", iconBg: "bg-green-500/10" },
+            { label: "Unresolved", value: unresolvedCount.toString(), icon: HelpCircle, iconColor: "text-gray-600 dark:text-gray-400", iconBg: "bg-gray-500/10" },
+            { label: "Price Warnings", value: warningCount.toString(), icon: AlertTriangle, iconColor: "text-amber-600 dark:text-amber-400", iconBg: "bg-amber-500/10" },
           ].map((card) => {
             const Icon = card.icon;
             return (
@@ -158,7 +158,7 @@ export function BomPreview({
                     <TableCell className="font-medium text-foreground">
                       {item.item}
                       {item.priceNote && (
-                        <span className="block text-[10px] text-amber-400 mt-0.5">
+                        <span className="block text-[10px] text-amber-600 dark:text-amber-400 mt-0.5">
                           {item.priceNote}
                         </span>
                       )}

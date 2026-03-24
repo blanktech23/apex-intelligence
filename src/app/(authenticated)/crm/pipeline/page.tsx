@@ -342,7 +342,7 @@ export default function PipelinePage() {
         {/* Summary Strip */}
         <div className="flex items-center gap-6 mt-4 px-4 py-2.5 rounded-lg bg-foreground/[0.03] border border-border">
           <div className="flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-emerald-400" />
+            <DollarSign className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <div>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                 Pipeline
@@ -354,7 +354,7 @@ export default function PipelinePage() {
           </div>
           <div className="w-px h-8 bg-border" />
           <div className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-blue-400" />
+            <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <div>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                 Weighted
@@ -366,7 +366,7 @@ export default function PipelinePage() {
           </div>
           <div className="w-px h-8 bg-border" />
           <div className="flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-amber-400" />
+            <BarChart3 className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             <div>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                 Open Deals
@@ -378,7 +378,7 @@ export default function PipelinePage() {
           </div>
           <div className="w-px h-8 bg-border" />
           <div className="flex items-center gap-2">
-            <Trophy className="w-4 h-4 text-purple-400" />
+            <Trophy className="w-4 h-4 text-purple-600 dark:text-purple-400" />
             <div>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                 Win Rate
@@ -522,15 +522,15 @@ function DealCard({
 }) {
   const gpBadgeColor =
     deal.grossProfit >= 30
-      ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+      ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
       : deal.grossProfit >= 20
-      ? "bg-amber-500/20 text-amber-400 border-amber-500/30"
-      : "bg-red-500/20 text-red-400 border-red-500/30";
+      ? "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30"
+      : "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30";
 
   const statusIndicator = {
-    won: { icon: CheckCircle2, color: "text-emerald-400", label: "Won" },
-    lost: { icon: XCircle, color: "text-red-400", label: "Lost" },
-    on_hold: { icon: PauseCircle, color: "text-amber-400", label: "On Hold" },
+    won: { icon: CheckCircle2, color: "text-emerald-600 dark:text-emerald-400", label: "Won" },
+    lost: { icon: XCircle, color: "text-red-600 dark:text-red-400", label: "Lost" },
+    on_hold: { icon: PauseCircle, color: "text-amber-600 dark:text-amber-400", label: "On Hold" },
     open: null,
   }[deal.dealStatus];
 

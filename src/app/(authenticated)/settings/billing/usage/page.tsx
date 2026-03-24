@@ -200,12 +200,12 @@ const dateRanges = [
 /* ------------------------------------------------------------------ */
 
 const roleBadgeColor: Record<string, string> = {
-  Owner: "bg-purple-500/15 text-purple-400",
-  Admin: "bg-blue-500/15 text-blue-400",
-  Manager: "bg-emerald-500/15 text-emerald-400",
-  Designer: "bg-cyan-500/15 text-cyan-400",
-  Bookkeeper: "bg-amber-500/15 text-amber-400",
-  Viewer: "bg-gray-500/15 text-gray-400",
+  Owner: "bg-purple-500/15 text-purple-600 dark:text-purple-400",
+  Admin: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
+  Manager: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
+  Designer: "bg-cyan-500/15 text-cyan-600 dark:text-cyan-400",
+  Bookkeeper: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
+  Viewer: "bg-gray-500/15 text-gray-600 dark:text-gray-400",
 };
 
 /* ------------------------------------------------------------------ */
@@ -351,7 +351,7 @@ export default function UsagePage() {
         <div className="glass rounded-xl p-5">
           <div className="flex items-center gap-2">
             <div className="inline-flex rounded-lg bg-green-500/10 p-2">
-              <Clock className="size-4 text-green-400" />
+              <Clock className="size-4 text-green-600 dark:text-green-400" />
             </div>
           </div>
           <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
@@ -366,7 +366,7 @@ export default function UsagePage() {
         <div className="glass rounded-xl p-5">
           <div className="flex items-center gap-2">
             <div className="inline-flex rounded-lg bg-emerald-500/10 p-2">
-              <DollarSign className="size-4 text-emerald-400" />
+              <DollarSign className="size-4 text-emerald-600 dark:text-emerald-400" />
             </div>
           </div>
           <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
@@ -381,7 +381,7 @@ export default function UsagePage() {
         <div className="glass rounded-xl p-5">
           <div className="flex items-center gap-2">
             <div className="inline-flex rounded-lg bg-cyan-500/10 p-2">
-              <ArrowDown className="size-4 text-cyan-400" />
+              <ArrowDown className="size-4 text-cyan-600 dark:text-cyan-400" />
             </div>
           </div>
           <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
@@ -396,7 +396,7 @@ export default function UsagePage() {
         <div className="glass rounded-xl p-5">
           <div className="flex items-center gap-2">
             <div className="inline-flex rounded-lg bg-indigo-500/10 p-2">
-              <Zap className="size-4 text-indigo-400" />
+              <Zap className="size-4 text-indigo-600 dark:text-indigo-400" />
             </div>
           </div>
           <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">

@@ -50,25 +50,25 @@ const typeConfig: Record<
 > = {
   info: {
     icon: Info,
-    iconColor: "text-blue-400",
+    iconColor: "text-blue-600 dark:text-blue-400",
     iconBg: "bg-blue-500/10",
     border: "border-l-blue-500/40",
   },
   warning: {
     icon: AlertTriangle,
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-500/10",
     border: "border-l-amber-500/40",
   },
   success: {
     icon: CheckCircle2,
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
     border: "border-l-green-500/40",
   },
   error: {
     icon: XCircle,
-    iconColor: "text-red-400",
+    iconColor: "text-red-600 dark:text-red-400",
     iconBg: "bg-red-500/10",
     border: "border-l-red-500/40",
   },
@@ -272,7 +272,7 @@ export default function NotificationsPage() {
             Notifications
           </h1>
           {unreadCount > 0 && (
-            <span className="flex h-6 items-center rounded-full bg-indigo-500/15 px-2.5 text-xs font-semibold text-indigo-400 ring-1 ring-indigo-500/20">
+            <span className="flex h-6 items-center rounded-full bg-indigo-500/15 px-2.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 ring-1 ring-indigo-500/20">
               {unreadCount} unread
             </span>
           )}
@@ -301,7 +301,7 @@ export default function NotificationsPage() {
           >
             {tab.label}
             {tab.value === "unread" && unreadCount > 0 && (
-              <span className="ml-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-500/20 px-1 text-[10px] text-indigo-300">
+              <span className="ml-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-500/20 px-1 text-[10px] text-indigo-700 dark:text-indigo-300">
                 {unreadCount}
               </span>
             )}

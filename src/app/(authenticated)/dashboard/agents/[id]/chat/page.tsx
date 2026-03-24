@@ -107,37 +107,37 @@ const agentColorMap: Record<
   { icon: string; glow: string; bubble: string }
 > = {
   "customer-support": {
-    icon: "bg-indigo-500/15 text-indigo-400 ring-indigo-500/20",
+    icon: "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 ring-indigo-500/20",
     glow: "shadow-[0_0_16px_rgba(99,102,241,0.15)]",
     bubble: "border-indigo-500/10",
   },
   "sales-outreach": {
-    icon: "bg-pink-500/15 text-pink-400 ring-pink-500/20",
+    icon: "bg-pink-500/15 text-pink-600 dark:text-pink-400 ring-pink-500/20",
     glow: "shadow-[0_0_16px_rgba(236,72,153,0.15)]",
     bubble: "border-pink-500/10",
   },
   scheduling: {
-    icon: "bg-cyan-500/15 text-cyan-400 ring-cyan-500/20",
+    icon: "bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 ring-cyan-500/20",
     glow: "shadow-[0_0_16px_rgba(34,211,238,0.15)]",
     bubble: "border-cyan-500/10",
   },
   estimation: {
-    icon: "bg-amber-500/15 text-amber-400 ring-amber-500/20",
+    icon: "bg-amber-500/15 text-amber-600 dark:text-amber-400 ring-amber-500/20",
     glow: "shadow-[0_0_16px_rgba(245,158,11,0.15)]",
     bubble: "border-amber-500/10",
   },
   bookkeeping: {
-    icon: "bg-green-500/15 text-green-400 ring-green-500/20",
+    icon: "bg-green-500/15 text-green-600 dark:text-green-400 ring-green-500/20",
     glow: "shadow-[0_0_16px_rgba(34,197,94,0.15)]",
     bubble: "border-green-500/10",
   },
   "project-management": {
-    icon: "bg-violet-500/15 text-violet-400 ring-violet-500/20",
+    icon: "bg-violet-500/15 text-violet-600 dark:text-violet-400 ring-violet-500/20",
     glow: "shadow-[0_0_16px_rgba(139,92,246,0.15)]",
     bubble: "border-violet-500/10",
   },
   "field-operations": {
-    icon: "bg-orange-500/15 text-orange-400 ring-orange-500/20",
+    icon: "bg-orange-500/15 text-orange-600 dark:text-orange-400 ring-orange-500/20",
     glow: "shadow-[0_0_16px_rgba(249,115,22,0.15)]",
     bubble: "border-orange-500/10",
   },
@@ -177,7 +177,7 @@ const v3IconMap: Record<string, LucideIcon> = {
 };
 
 const defaultColor = {
-  icon: "bg-indigo-500/15 text-indigo-400 ring-indigo-500/20",
+  icon: "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 ring-indigo-500/20",
   glow: "shadow-[0_0_16px_rgba(99,102,241,0.15)]",
   bubble: "border-indigo-500/10",
 };
@@ -1543,7 +1543,7 @@ function InvoiceCard({ data }: { data: Record<string, unknown> }) {
     <div className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20">
       {/* Card header */}
       <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-        <FileText className="size-4 text-indigo-400" />
+        <FileText className="size-4 text-indigo-600 dark:text-indigo-400" />
         <span className="text-xs font-semibold text-foreground">
           Invoice {data.invoiceNumber as string}
         </span>
@@ -1563,7 +1563,7 @@ function InvoiceCard({ data }: { data: Record<string, unknown> }) {
             <span className="text-sm text-muted-foreground">{row.label}</span>
             <span
               className={`text-sm font-semibold ${
-                row.highlight ? "text-amber-400" : "text-foreground"
+                row.highlight ? "text-amber-600 dark:text-amber-400" : "text-foreground"
               }`}
             >
               {row.value}
@@ -1624,9 +1624,9 @@ function LeadsCard({ data }: { data: Record<string, unknown> }) {
   }>;
 
   const scoreColorMap: Record<string, string> = {
-    green: "bg-green-500/15 text-green-400 ring-green-500/20",
-    amber: "bg-amber-500/15 text-amber-400 ring-amber-500/20",
-    red: "bg-red-500/15 text-red-400 ring-red-500/20",
+    green: "bg-green-500/15 text-green-600 dark:text-green-400 ring-green-500/20",
+    amber: "bg-amber-500/15 text-amber-600 dark:text-amber-400 ring-amber-500/20",
+    red: "bg-red-500/15 text-red-600 dark:text-red-400 ring-red-500/20",
   };
 
   return (
@@ -1708,7 +1708,7 @@ function ScheduleCard({ data }: { data: Record<string, unknown> }) {
       <div className="border-b border-border px-4 py-3">
         <p className="text-xs font-semibold text-foreground">{title}</p>
         {conflict && (
-          <p className="mt-1 text-[11px] text-amber-400">{conflict}</p>
+          <p className="mt-1 text-[11px] text-amber-600 dark:text-amber-400">{conflict}</p>
         )}
       </div>
       {/* Schedule grid */}
@@ -1724,7 +1724,7 @@ function ScheduleCard({ data }: { data: Record<string, unknown> }) {
                   key={i}
                   className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] ${
                     a.highlight
-                      ? "bg-amber-500/10 text-amber-400 ring-1 ring-amber-500/20"
+                      ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 ring-1 ring-amber-500/20"
                       : "bg-muted/30 text-foreground/70"
                   }`}
                 >
@@ -1732,7 +1732,7 @@ function ScheduleCard({ data }: { data: Record<string, unknown> }) {
                   <span className="text-muted-foreground/50">\u2192</span>
                   <span>{a.site}</span>
                   {a.label && (
-                    <span className="ml-1 rounded bg-amber-500/20 px-1 text-[9px] font-bold text-amber-400">
+                    <span className="ml-1 rounded bg-amber-500/20 px-1 text-[9px] font-bold text-amber-600 dark:text-amber-400">
                       {a.label}
                     </span>
                   )}
@@ -1759,7 +1759,7 @@ function ScheduleCard({ data }: { data: Record<string, unknown> }) {
                   {opt.label}
                 </span>
                 {opt.recommended && (
-                  <span className="rounded bg-green-500/20 px-1.5 py-0.5 text-[9px] font-bold text-green-400">
+                  <span className="rounded bg-green-500/20 px-1.5 py-0.5 text-[9px] font-bold text-green-600 dark:text-green-400">
                     RECOMMENDED
                   </span>
                 )}
@@ -1807,14 +1807,14 @@ function EstimateCard({ data }: { data: Record<string, unknown> }) {
             <div>
               <span className="text-sm text-muted-foreground">{row.label}</span>
               {row.note && (
-                <span className="ml-2 text-[10px] text-amber-400">
+                <span className="ml-2 text-[10px] text-amber-600 dark:text-amber-400">
                   {row.note}
                 </span>
               )}
             </div>
             <span
               className={`text-sm font-semibold ${
-                row.highlight ? "text-amber-400" : "text-foreground"
+                row.highlight ? "text-amber-600 dark:text-amber-400" : "text-foreground"
               }`}
             >
               {row.value}
@@ -1831,7 +1831,7 @@ function EstimateCard({ data }: { data: Record<string, unknown> }) {
         <span className="text-sm font-bold text-foreground">Total</span>
         <span
           className={`text-base font-bold ${
-            totalHighlight ? "text-amber-400" : "text-foreground"
+            totalHighlight ? "text-amber-600 dark:text-amber-400" : "text-foreground"
           }`}
         >
           {total}
@@ -1872,7 +1872,7 @@ function FinancialCard({ data }: { data: Record<string, unknown> }) {
             <span className="text-sm text-muted-foreground">{row.label}</span>
             <span
               className={`text-sm font-semibold ${
-                row.highlight ? "text-red-400" : "text-foreground"
+                row.highlight ? "text-red-600 dark:text-red-400" : "text-foreground"
               }`}
             >
               {row.value}
@@ -1896,16 +1896,16 @@ function FinancialCard({ data }: { data: Record<string, unknown> }) {
                   <span className="text-xs font-bold text-foreground">
                     {issue.invoice}
                   </span>
-                  <span className="text-xs font-semibold text-amber-400">
+                  <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">
                     {issue.amount}
                   </span>
                 </div>
                 <div className="mt-1 flex items-center gap-2 text-[11px]">
-                  <span className="text-red-400/70 line-through">
+                  <span className="text-red-600 dark:text-red-400/70 line-through">
                     {issue.wrongProject}
                   </span>
                   <span className="text-muted-foreground/50">\u2192</span>
-                  <span className="text-green-400">{issue.correctProject}</span>
+                  <span className="text-green-600 dark:text-green-400">{issue.correctProject}</span>
                 </div>
               </div>
             ))}
@@ -1954,7 +1954,7 @@ function PnlCard({ data }: { data: Record<string, unknown> }) {
             <span
               className={`text-sm ${
                 row.bold ? "font-bold" : "font-semibold"
-              } ${row.highlight ? "text-green-400" : "text-foreground"}`}
+              } ${row.highlight ? "text-green-600 dark:text-green-400" : "text-foreground"}`}
             >
               {row.value}
             </span>
@@ -1977,9 +1977,9 @@ function DashboardCard({ data }: { data: Record<string, unknown> }) {
   }>;
 
   const statusStyles: Record<string, string> = {
-    green: "bg-green-500/15 text-green-400 ring-green-500/20",
-    amber: "bg-amber-500/15 text-amber-400 ring-amber-500/20",
-    red: "bg-red-500/15 text-red-400 ring-red-500/20",
+    green: "bg-green-500/15 text-green-600 dark:text-green-400 ring-green-500/20",
+    amber: "bg-amber-500/15 text-amber-600 dark:text-amber-400 ring-amber-500/20",
+    red: "bg-red-500/15 text-red-600 dark:text-red-400 ring-red-500/20",
   };
 
   const barColors: Record<string, string> = {
@@ -2095,9 +2095,9 @@ function InspectionCard({ data }: { data: Record<string, unknown> }) {
         {checklist.map((item, i) => (
           <div key={i} className="flex items-center gap-2">
             {item.passed ? (
-              <CheckCircle2 className="size-4 shrink-0 text-green-400" />
+              <CheckCircle2 className="size-4 shrink-0 text-green-600 dark:text-green-400" />
             ) : (
-              <X className="size-4 shrink-0 text-red-400" />
+              <X className="size-4 shrink-0 text-red-600 dark:text-red-400" />
             )}
             <span className="text-xs text-foreground/80">{item.item}</span>
           </div>
@@ -2134,7 +2134,7 @@ function WeatherCard({ data }: { data: Record<string, unknown> }) {
             <div className="flex items-center gap-3">
               <span
                 className={`text-xs font-semibold ${
-                  day.alert ? "text-amber-400" : "text-foreground"
+                  day.alert ? "text-amber-600 dark:text-amber-400" : "text-foreground"
                 }`}
               >
                 {day.day}
@@ -2147,7 +2147,7 @@ function WeatherCard({ data }: { data: Record<string, unknown> }) {
               <span
                 className={
                   day.alert
-                    ? "font-semibold text-amber-400"
+                    ? "font-semibold text-amber-600 dark:text-amber-400"
                     : "text-muted-foreground"
                 }
               >
@@ -2175,7 +2175,7 @@ function DesignPreviewCard({ data }: { data: Record<string, unknown> }) {
   return (
     <div className="mt-2 rounded-xl border border-border/60 bg-muted/20 overflow-hidden">
       <div className="px-4 py-2.5 border-b border-border/40 bg-gradient-to-r from-cyan-500/10 to-indigo-500/10">
-        <p className="text-xs font-semibold text-cyan-400 flex items-center gap-2">
+        <p className="text-xs font-semibold text-cyan-600 dark:text-cyan-400 flex items-center gap-2">
           <Palette className="size-3.5" />
           {d.title}
         </p>
@@ -2219,7 +2219,7 @@ function DesignPreviewCard({ data }: { data: Record<string, unknown> }) {
       {/* Simulated SVG floor plan preview */}
       <div className="mx-4 mb-4 rounded-lg border border-border/40 bg-[#0c1222] p-4 relative overflow-hidden">
         <div className="absolute top-2 right-2 flex gap-1.5">
-          <span className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-medium">
+          <span className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 font-medium">
             AutoCAD 2D
           </span>
           <span className="text-[9px] px-1.5 py-0.5 rounded bg-muted/40 text-muted-foreground font-medium">
@@ -2583,15 +2583,15 @@ function StatusCard({
       {items.map((item, i) => (
         <div key={i} className="flex items-start gap-2.5">
           {complete ? (
-            <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-green-400" />
+            <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-green-600 dark:text-green-400" />
           ) : (
-            <Loader2 className="mt-0.5 size-4 shrink-0 animate-spin text-indigo-400" />
+            <Loader2 className="mt-0.5 size-4 shrink-0 animate-spin text-indigo-600 dark:text-indigo-400" />
           )}
           <span className="text-sm text-foreground/80">{item}</span>
         </div>
       ))}
       {complete && (
-        <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-green-500/10 px-3 py-1.5 text-xs font-semibold text-green-400 ring-1 ring-green-500/20">
+        <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-green-500/10 px-3 py-1.5 text-xs font-semibold text-green-600 dark:text-green-400 ring-1 ring-green-500/20">
           <CheckCircle2 className="size-3" />
           All actions completed
         </div>
@@ -2604,7 +2604,7 @@ function AttachmentChip({ name }: { name: string }) {
   return (
     <div className="mt-3 inline-flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2 transition-colors hover:bg-muted/50">
       <div className="flex size-8 items-center justify-center rounded-md bg-red-500/15">
-        <FileText className="size-4 text-red-400" />
+        <FileText className="size-4 text-red-600 dark:text-red-400" />
       </div>
       <div>
         <p className="text-xs font-medium text-foreground">{name}</p>
@@ -2617,11 +2617,11 @@ function AttachmentChip({ name }: { name: string }) {
 function ActionButtons({ actions }: { actions: ActionButton[] }) {
   const variantStyles: Record<string, string> = {
     primary:
-      "bg-indigo-500/15 text-indigo-400 ring-1 ring-indigo-500/25 hover:bg-indigo-500/25 hover:ring-indigo-500/40",
+      "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 ring-1 ring-indigo-500/25 hover:bg-indigo-500/25 hover:ring-indigo-500/40",
     secondary:
       "bg-muted/50 text-foreground/80 ring-1 ring-border hover:bg-muted/80",
     danger:
-      "bg-red-500/10 text-red-400 ring-1 ring-red-500/20 hover:bg-red-500/20",
+      "bg-red-500/10 text-red-600 dark:text-red-400 ring-1 ring-red-500/20 hover:bg-red-500/20",
   };
 
   return (
@@ -3016,7 +3016,7 @@ function View3DKitchen() {
 
       {/* Top-left: render status */}
       <div className="absolute top-3 left-3 flex items-center gap-2">
-        <span className="rounded bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-400 backdrop-blur-sm">
+        <span className="rounded bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 backdrop-blur-sm">
           REALTIME
         </span>
         <span className="text-[10px] text-white/60">
@@ -3252,7 +3252,7 @@ export default function AgentChatPage() {
                 {/* Mobile: show toast instead of opening canvas */}
                 <button
                   onClick={() => toast.info("Canvas is only available on desktop. Please log into your computer to access this feature.")}
-                  className="inline-flex items-center rounded-lg p-2 text-xs font-semibold bg-cyan-500/15 text-cyan-400 ring-1 ring-cyan-500/25 transition-all hover:bg-cyan-500/25 lg:hidden"
+                  className="inline-flex items-center rounded-lg p-2 text-xs font-semibold bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 ring-1 ring-cyan-500/25 transition-all hover:bg-cyan-500/25 lg:hidden"
                   title="Open Canvas"
                 >
                   <Palette className="size-4" />
@@ -3262,8 +3262,8 @@ export default function AgentChatPage() {
                   onClick={() => setCanvasOpen(!canvasOpen)}
                   className={`hidden lg:inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all ${
                     canvasOpen
-                      ? "bg-cyan-500/25 text-cyan-300 ring-1 ring-cyan-400/40"
-                      : "bg-cyan-500/15 text-cyan-400 ring-1 ring-cyan-500/25 hover:bg-cyan-500/25"
+                      ? "bg-cyan-500/25 text-cyan-700 dark:text-cyan-300 ring-1 ring-cyan-400/40"
+                      : "bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 ring-1 ring-cyan-500/25 hover:bg-cyan-500/25"
                   }`}
                   title={canvasOpen ? "Close Canvas" : "Open Canvas"}
                 >
@@ -3273,7 +3273,7 @@ export default function AgentChatPage() {
               </>
             )}
             <button
-              className="inline-flex items-center rounded-lg bg-indigo-500/15 p-2 sm:gap-1.5 sm:px-3.5 sm:py-2 text-xs font-semibold text-indigo-400 ring-1 ring-indigo-500/25 transition-all hover:bg-indigo-500/25"
+              className="inline-flex items-center rounded-lg bg-indigo-500/15 p-2 sm:gap-1.5 sm:px-3.5 sm:py-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 ring-1 ring-indigo-500/25 transition-all hover:bg-indigo-500/25"
               title="New Conversation"
             >
               <MessageSquarePlus className="size-4" />
@@ -3394,7 +3394,7 @@ export default function AgentChatPage() {
                           {msg.timestamp}
                         </p>
                       </div>
-                      <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 text-xs font-bold text-indigo-300 ring-1 ring-indigo-500/30">
+                      <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 text-xs font-bold text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/30">
                         JW
                       </div>
                     </div>
@@ -3463,7 +3463,7 @@ export default function AgentChatPage() {
                   return (
                     <button
                       key={action.label}
-                      className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/20 px-3 py-1.5 text-[11px] font-medium text-muted-foreground transition-all duration-150 hover:border-indigo-500/30 hover:bg-indigo-500/10 hover:text-indigo-400"
+                      className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/20 px-3 py-1.5 text-[11px] font-medium text-muted-foreground transition-all duration-150 hover:border-indigo-500/30 hover:bg-indigo-500/10 hover:text-indigo-600 dark:text-indigo-400"
                     >
                       <Icon className="size-3" />
                       {action.label}
@@ -3598,7 +3598,7 @@ export default function AgentChatPage() {
                 onClick={() => setSnapGrid(!snapGrid)}
                 className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-all ${
                   snapGrid
-                    ? "bg-indigo-500/15 text-indigo-400"
+                    ? "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
                 title="Snap to grid"
@@ -3687,7 +3687,7 @@ export default function AgentChatPage() {
                     </div>
 
                     {/* Category badge */}
-                    <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-medium text-blue-400">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-medium text-blue-600 dark:text-blue-400">
                       {mockSelectedItem.category}
                     </span>
 
@@ -3715,7 +3715,7 @@ export default function AgentChatPage() {
                           <p
                             className={`text-sm ${
                               field.highlight
-                                ? "font-semibold text-green-400"
+                                ? "font-semibold text-green-600 dark:text-green-400"
                                 : field.mono
                                   ? "font-mono text-xs text-muted-foreground"
                                   : "text-foreground"
@@ -3815,7 +3815,7 @@ export default function AgentChatPage() {
                           <span className="text-muted-foreground">{item.rule}</span>
                           <span
                             className={`flex items-center gap-1 font-medium ${
-                              item.pass ? "text-green-400" : "text-red-400"
+                              item.pass ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
                             }`}
                           >
                             <Check className="size-3" />
@@ -3845,7 +3845,7 @@ export default function AgentChatPage() {
             {/* Status bar */}
             <div className="flex items-center gap-4 border-t border-border bg-muted/20 px-4 py-1.5 text-xs text-muted-foreground">
               <span className="hidden sm:inline font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-400">
+              <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-600 dark:text-green-400">
                 <Check className="size-3" />
                 Clearance Verified
               </span>

@@ -20,13 +20,13 @@ export function AiUsageBanner({ percent }: AiUsageBannerProps) {
   if (percent >= 100) {
     return (
       <div className="flex items-center justify-center gap-2 border-b border-red-500/20 bg-red-500/10 px-4 py-2 text-sm">
-        <XCircle className="h-4 w-4 shrink-0 text-red-400" />
-        <span className="text-red-300">
+        <XCircle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400" />
+        <span className="text-red-700 dark:text-red-300">
           AI usage limit reached. Agent execution paused.
         </span>
         <Link
           href="/reports/agent-roi"
-          className="ml-1 font-medium text-red-400 underline underline-offset-2 transition-colors hover:text-red-300"
+          className="ml-1 font-medium text-red-600 dark:text-red-400 underline underline-offset-2 transition-colors hover:text-red-700 dark:text-red-300"
         >
           Upgrade plan
         </Link>
@@ -37,13 +37,13 @@ export function AiUsageBanner({ percent }: AiUsageBannerProps) {
   if (percent >= 80) {
     return (
       <div className="flex items-center justify-center gap-2 border-b border-amber-500/20 bg-amber-500/10 px-4 py-2 text-sm">
-        <AlertTriangle className="h-4 w-4 shrink-0 text-amber-400" />
-        <span className="text-amber-300">
+        <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+        <span className="text-amber-700 dark:text-amber-300">
           Approaching AI usage limit &mdash; {percent}% of monthly budget used
         </span>
         <Link
           href="/settings/billing"
-          className="ml-1 font-medium text-amber-400 underline underline-offset-2 transition-colors hover:text-amber-300"
+          className="ml-1 font-medium text-amber-600 dark:text-amber-400 underline underline-offset-2 transition-colors hover:text-amber-700 dark:text-amber-300"
         >
           View usage
         </Link>

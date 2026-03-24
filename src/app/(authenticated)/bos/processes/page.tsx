@@ -586,7 +586,7 @@ export default function ProcessesPage() {
                       className="mt-0.5 shrink-0 transition-colors"
                     >
                       {step.completed ? (
-                        <CheckCircle2 className="h-5 w-5 text-green-400" />
+                        <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
                       ) : (
                         <Circle className="h-5 w-5 text-muted-foreground/40 hover:text-foreground" />
                       )}
@@ -811,7 +811,7 @@ export default function ProcessesPage() {
       <div className="glass rounded-xl p-4">
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2">
-            <Workflow className="h-4 w-4 text-indigo-400" />
+            <Workflow className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <span className="text-sm font-medium text-foreground">{processes.length}</span>
             <span className="text-xs text-muted-foreground">Total Processes</span>
           </div>
@@ -835,7 +835,7 @@ export default function ProcessesPage() {
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
-            <Hash className="h-4 w-4 text-cyan-400" />
+            <Hash className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
             <span className="text-sm font-medium text-foreground">{totalSteps}</span>
             <span className="text-xs text-muted-foreground">Total Steps</span>
           </div>
@@ -924,7 +924,7 @@ export default function ProcessesPage() {
                             </button>
                             <button
                               onClick={(e) => { e.stopPropagation(); setShowArchiveConfirm(proc.id); }}
-                              className="rounded p-1 text-muted-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                              className="rounded p-1 text-muted-foreground/50 hover:text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors"
                               title="Archive"
                             >
                               <Archive className="h-3.5 w-3.5" />
@@ -1130,7 +1130,7 @@ export default function ProcessesPage() {
                             </button>
                             <button
                               onClick={(e) => { e.stopPropagation(); setShowArchiveConfirm(proc.id); }}
-                              className="rounded p-1.5 text-muted-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                              className="rounded p-1.5 text-muted-foreground/50 hover:text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors"
                               title="Archive"
                             >
                               <Archive className="h-3.5 w-3.5" />
@@ -1292,7 +1292,7 @@ export default function ProcessesPage() {
           <div className="relative z-10 w-full max-w-sm rounded-xl border border-border bg-background p-6 shadow-2xl">
             <div className="mb-4 flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/10">
-                <AlertCircle className="h-5 w-5 text-red-400" />
+                <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
               </div>
               <div>
                 <h2 className="text-base font-semibold text-foreground">Archive Process</h2>

@@ -173,7 +173,7 @@ export function TopBar() {
             </Link>
             <DropdownMenuSeparator />
             <Link href="/login" onClick={() => toast.success("Signed out")}>
-              <DropdownMenuItem className="gap-2 px-2 py-1.5 text-red-400 focus:text-red-400">
+              <DropdownMenuItem className="gap-2 px-2 py-1.5 text-red-600 dark:text-red-400 focus:text-red-600 dark:text-red-400">
                 <LogOut className="h-4 w-4" />
                 <span>Sign out</span>
               </DropdownMenuItem>

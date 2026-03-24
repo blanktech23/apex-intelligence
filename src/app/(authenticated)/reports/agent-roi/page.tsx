@@ -182,7 +182,7 @@ export default function AgentROIPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="glass rounded-xl p-5">
           <div className="inline-flex rounded-lg bg-green-500/10 p-2">
-            <Clock className="size-4 text-green-400" />
+            <Clock className="size-4 text-green-600 dark:text-green-400" />
           </div>
           <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
             {Math.round(totalHumanHours)}h
@@ -195,7 +195,7 @@ export default function AgentROIPage() {
 
         <div className="glass rounded-xl p-5">
           <div className="inline-flex rounded-lg bg-emerald-500/10 p-2">
-            <DollarSign className="size-4 text-emerald-400" />
+            <DollarSign className="size-4 text-emerald-600 dark:text-emerald-400" />
           </div>
           <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
             ${totalSavings.toLocaleString()}
@@ -208,7 +208,7 @@ export default function AgentROIPage() {
 
         <div className="glass rounded-xl p-5">
           <div className="inline-flex rounded-lg bg-cyan-500/10 p-2">
-            <ArrowDown className="size-4 text-cyan-400" />
+            <ArrowDown className="size-4 text-cyan-600 dark:text-cyan-400" />
           </div>
           <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
             {totalSavingsPct}%
@@ -221,7 +221,7 @@ export default function AgentROIPage() {
 
         <div className="glass rounded-xl p-5">
           <div className="inline-flex rounded-lg bg-indigo-500/10 p-2">
-            <Zap className="size-4 text-indigo-400" />
+            <Zap className="size-4 text-indigo-600 dark:text-indigo-400" />
           </div>
           <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
             {totalTasks.toLocaleString()}

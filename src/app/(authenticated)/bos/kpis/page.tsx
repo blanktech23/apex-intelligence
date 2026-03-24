@@ -127,9 +127,9 @@ function statusLabel(s: KPIStatus): string {
 
 function statusClasses(s: KPIStatus): string {
   switch (s) {
-    case "on_track": return "bg-green-500/15 text-green-400 shadow-[0_0_8px_rgba(34,197,94,0.3)]";
-    case "at_risk": return "bg-amber-500/15 text-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.3)]";
-    case "off_track": return "bg-red-500/15 text-red-400 shadow-[0_0_8px_rgba(239,68,68,0.3)]";
+    case "on_track": return "bg-green-500/15 text-green-600 dark:text-green-400 shadow-[0_0_8px_rgba(34,197,94,0.3)]";
+    case "at_risk": return "bg-amber-500/15 text-amber-600 dark:text-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.3)]";
+    case "off_track": return "bg-red-500/15 text-red-600 dark:text-red-400 shadow-[0_0_8px_rgba(239,68,68,0.3)]";
     case "no_data": return "bg-gray-500/15 text-muted-foreground";
   }
 }
@@ -588,7 +588,7 @@ function Toast({ message, visible }: { message: string; visible: boolean }) {
       }`}
     >
       <div className="glass-strong rounded-lg px-4 py-3 shadow-xl flex items-center gap-2">
-        <CheckCircle2 className="size-4 text-green-400" />
+        <CheckCircle2 className="size-4 text-green-600 dark:text-green-400" />
         <span className="text-sm text-foreground">{message}</span>
       </div>
     </div>
@@ -636,7 +636,7 @@ function KPIDetailModal({
 
         {/* Header */}
         <div className="mb-6 flex items-start gap-4">
-          <div className="flex size-10 items-center justify-center rounded-full bg-indigo-500/20 text-sm font-semibold text-indigo-300">
+          <div className="flex size-10 items-center justify-center rounded-full bg-indigo-500/20 text-sm font-semibold text-indigo-700 dark:text-indigo-300">
             {kpi.owner.initials}
           </div>
           <div className="flex-1">
@@ -646,7 +646,7 @@ function KPIDetailModal({
                 {statusLabel(status)}
               </span>
               {kpi.isFormula && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/15 px-2 py-0.5 text-[10px] font-semibold text-indigo-400">
+                <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/15 px-2 py-0.5 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400">
                   <Calculator className="size-3" /> Formula
                 </span>
               )}
@@ -691,16 +691,16 @@ function KPIDetailModal({
           {/* Current & Goal */}
           <div className="rounded-xl bg-muted/40 p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Target className="size-4 text-indigo-400" />
+              <Target className="size-4 text-indigo-600 dark:text-indigo-400" />
               <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Current vs Goal</h4>
             </div>
             <p className="text-2xl font-bold text-foreground">{formatValue(kpi.currentValue, kpi.unit)}</p>
             <p className="text-sm text-muted-foreground">Goal: {formatValue(kpi.goalValue, kpi.unit)}</p>
             <div className="mt-2 flex items-center gap-1">
               {kpi.goalDirection === "above" ? (
-                <ArrowUp className="size-3.5 text-green-400" />
+                <ArrowUp className="size-3.5 text-green-600 dark:text-green-400" />
               ) : (
-                <ArrowDown className="size-3.5 text-green-400" />
+                <ArrowDown className="size-3.5 text-green-600 dark:text-green-400" />
               )}
               <span className="text-xs text-muted-foreground">
                 {kpi.goalDirection === "above" ? "Higher is better" : "Lower is better"}
@@ -711,7 +711,7 @@ function KPIDetailModal({
           {/* Owner & Last Updated */}
           <div className="rounded-xl bg-muted/40 p-4">
             <div className="flex items-center gap-2 mb-2">
-              <User className="size-4 text-indigo-400" />
+              <User className="size-4 text-indigo-600 dark:text-indigo-400" />
               <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Owner Details</h4>
             </div>
             <p className="text-sm font-medium text-foreground">{kpi.owner.name}</p>
@@ -731,7 +731,7 @@ function KPIDetailModal({
         {kpi.goalHistory && kpi.goalHistory.length > 0 && (
           <div className="mb-4 rounded-xl bg-muted/40 p-4">
             <div className="flex items-center gap-2 mb-3">
-              <History className="size-4 text-indigo-400" />
+              <History className="size-4 text-indigo-600 dark:text-indigo-400" />
               <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Goal History</h4>
             </div>
             <div className="space-y-1.5">
@@ -749,7 +749,7 @@ function KPIDetailModal({
         {kpi.relatedRocks && kpi.relatedRocks.length > 0 && (
           <div className="mb-4 rounded-xl bg-muted/40 p-4">
             <div className="flex items-center gap-2 mb-3">
-              <Link2 className="size-4 text-indigo-400" />
+              <Link2 className="size-4 text-indigo-600 dark:text-indigo-400" />
               <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Related Rocks / Goals</h4>
             </div>
             <div className="space-y-1.5">
@@ -767,7 +767,7 @@ function KPIDetailModal({
         {kpi.notes && kpi.notes.length > 0 && (
           <div className="rounded-xl bg-muted/40 p-4">
             <div className="flex items-center gap-2 mb-3">
-              <MessageSquare className="size-4 text-indigo-400" />
+              <MessageSquare className="size-4 text-indigo-600 dark:text-indigo-400" />
               <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Notes &amp; Comments</h4>
             </div>
             <div className="space-y-2">
@@ -895,7 +895,7 @@ function FormulaBuilderModal({
         </button>
 
         <div className="flex items-center gap-2 mb-6">
-          <Calculator className="size-5 text-indigo-400" />
+          <Calculator className="size-5 text-indigo-600 dark:text-indigo-400" />
           <h2 className="text-lg font-bold text-foreground">Add Calculated Metric</h2>
         </div>
 
@@ -961,10 +961,10 @@ function FormulaBuilderModal({
                 key={i}
                 className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-medium ${
                   t.type === "kpi"
-                    ? "bg-indigo-500/20 text-indigo-300"
+                    ? "bg-indigo-500/20 text-indigo-700 dark:text-indigo-300"
                     : t.type === "operator"
-                    ? "bg-amber-500/20 text-amber-300"
-                    : "bg-cyan-500/20 text-cyan-300"
+                    ? "bg-amber-500/20 text-amber-700 dark:text-amber-300"
+                    : "bg-cyan-500/20 text-cyan-700 dark:text-cyan-300"
                 }`}
               >
                 {t.value}
@@ -973,7 +973,7 @@ function FormulaBuilderModal({
             {tokens.length > 0 && (
               <button
                 onClick={removeLastToken}
-                className="ml-1 rounded p-0.5 text-muted-foreground hover:text-red-400 transition-colors"
+                className="ml-1 rounded p-0.5 text-muted-foreground hover:text-red-600 dark:text-red-400 transition-colors"
                 title="Remove last"
               >
                 <X className="size-3" />
@@ -1017,7 +1017,7 @@ function FormulaBuilderModal({
               <button
                 key={op}
                 onClick={() => addOperator(op)}
-                className="glass rounded-lg px-3 py-1.5 text-xs font-mono font-bold text-amber-300 transition-all hover:bg-muted/60"
+                className="glass rounded-lg px-3 py-1.5 text-xs font-mono font-bold text-amber-700 dark:text-amber-300 transition-all hover:bg-muted/60"
               >
                 {op}
               </button>
@@ -1039,7 +1039,7 @@ function FormulaBuilderModal({
                 addNumber(numInput);
                 setNumInput("");
               }}
-              className="glass rounded-lg px-3 py-1.5 text-xs font-medium text-cyan-300 transition-all hover:bg-muted/60"
+              className="glass rounded-lg px-3 py-1.5 text-xs font-medium text-cyan-700 dark:text-cyan-300 transition-all hover:bg-muted/60"
             >
               Add
             </button>
@@ -1396,7 +1396,7 @@ export default function KPIsPage() {
               }}
               className="glass flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-foreground transition-all hover:bg-muted/60"
             >
-              <FileText className="size-3.5 text-indigo-400" />
+              <FileText className="size-3.5 text-indigo-600 dark:text-indigo-400" />
               {activeScorecard === "all"
                 ? "All Scorecards"
                 : scorecards.find((s) => s.id === activeScorecard)?.name || "Scorecard"}
@@ -1441,7 +1441,7 @@ export default function KPIsPage() {
                     setScorecardDropdownOpen(false);
                     setShowCreateScorecard(true);
                   }}
-                  className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-xs text-indigo-400 transition-all hover:bg-muted/50"
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-xs text-indigo-600 dark:text-indigo-400 transition-all hover:bg-muted/50"
                 >
                   <Plus className="size-3" />
                   Create Scorecard
@@ -1546,7 +1546,7 @@ export default function KPIsPage() {
           {/* Add Calculated Metric */}
           <button
             onClick={() => setShowFormulaBuilder(true)}
-            className="glass flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-indigo-400 transition-all hover:bg-muted/60"
+            className="glass flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-indigo-600 dark:text-indigo-400 transition-all hover:bg-muted/60"
           >
             <Calculator className="size-3.5" />
             Add Calculated Metric
@@ -1592,26 +1592,26 @@ export default function KPIsPage() {
       <div className="glass rounded-xl p-4">
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2">
-            <Target className="size-4 text-indigo-400" />
+            <Target className="size-4 text-indigo-600 dark:text-indigo-400" />
             <span className="text-sm font-medium text-foreground">{filtered.length}</span>
             <span className="text-xs text-muted-foreground">Total Measurables</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className={`size-2 rounded-full ${statusDotClasses("on_track")}`} />
-            <span className="text-sm font-medium text-green-400">{onTrack}</span>
+            <span className="text-sm font-medium text-green-600 dark:text-green-400">{onTrack}</span>
             <span className="text-xs text-muted-foreground">On Track</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className={`size-2 rounded-full ${statusDotClasses("at_risk")}`} />
-            <span className="text-sm font-medium text-amber-400">{atRisk}</span>
+            <span className="text-sm font-medium text-amber-600 dark:text-amber-400">{atRisk}</span>
             <span className="text-xs text-muted-foreground">At Risk</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className={`size-2 rounded-full ${statusDotClasses("off_track")}`} />
-            <span className="text-sm font-medium text-red-400">{offTrack}</span>
+            <span className="text-sm font-medium text-red-600 dark:text-red-400">{offTrack}</span>
             <span className="text-xs text-muted-foreground">Off Track</span>
           </div>
           <div className="h-4 w-px bg-border" />
@@ -1646,7 +1646,7 @@ export default function KPIsPage() {
                 <div className="mb-3 flex items-start justify-between">
                   <div className="flex items-center gap-1.5">
                     <h3 className="text-sm font-semibold text-foreground">{kpi.name}</h3>
-                    {kpi.isFormula && <span title="Calculated metric"><Calculator className="size-3 text-indigo-400" /></span>}
+                    {kpi.isFormula && <span title="Calculated metric"><Calculator className="size-3 text-indigo-600 dark:text-indigo-400" /></span>}
                   </div>
                   <span
                     className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusClasses(status)}`}
@@ -1657,7 +1657,7 @@ export default function KPIsPage() {
 
                 {/* Owner */}
                 <div className="mb-3 flex items-center gap-2">
-                  <div className="flex size-6 items-center justify-center rounded-full bg-indigo-500/20 text-[10px] font-semibold text-indigo-300">
+                  <div className="flex size-6 items-center justify-center rounded-full bg-indigo-500/20 text-[10px] font-semibold text-indigo-700 dark:text-indigo-300">
                     {kpi.owner.initials}
                   </div>
                   <span className="text-xs text-muted-foreground">{kpi.owner.name}</span>
@@ -1697,15 +1697,15 @@ export default function KPIsPage() {
                   )}
                   <div className="flex items-center gap-1">
                     {kpi.trend > 0 ? (
-                      <TrendingUp className="size-3.5 text-green-400" />
+                      <TrendingUp className="size-3.5 text-green-600 dark:text-green-400" />
                     ) : kpi.trend < 0 ? (
-                      <TrendingDown className="size-3.5 text-red-400" />
+                      <TrendingDown className="size-3.5 text-red-600 dark:text-red-400" />
                     ) : (
                       <span className="size-3.5 text-center text-xs text-muted-foreground">--</span>
                     )}
                     <span
                       className={`text-xs font-medium ${
-                        kpi.trend > 0 ? "text-green-400" : kpi.trend < 0 ? "text-red-400" : "text-muted-foreground"
+                        kpi.trend > 0 ? "text-green-600 dark:text-green-400" : kpi.trend < 0 ? "text-red-600 dark:text-red-400" : "text-muted-foreground"
                       }`}
                     >
                       {kpi.trend !== 0 ? `${kpi.trend > 0 ? "+" : ""}${kpi.trend}%` : "0%"}
@@ -1719,9 +1719,9 @@ export default function KPIsPage() {
                     Goal: {formatValue(kpi.goalValue, kpi.unit)}
                   </p>
                   {kpi.goalDirection === "above" ? (
-                    <span title="Higher is better"><ArrowUp className="size-3 text-green-400/70" /></span>
+                    <span title="Higher is better"><ArrowUp className="size-3 text-green-600 dark:text-green-400/70" /></span>
                   ) : kpi.goalDirection === "below" ? (
-                    <span title="Lower is better"><ArrowDown className="size-3 text-green-400/70" /></span>
+                    <span title="Lower is better"><ArrowDown className="size-3 text-green-600 dark:text-green-400/70" /></span>
                   ) : null}
                 </div>
 
@@ -1776,12 +1776,12 @@ export default function KPIsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1.5">
                         <span className="text-sm font-medium text-foreground">{kpi.name}</span>
-                        {kpi.isFormula && <Calculator className="size-3 text-indigo-400" />}
+                        {kpi.isFormula && <Calculator className="size-3 text-indigo-600 dark:text-indigo-400" />}
                       </div>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <div className="flex size-5 items-center justify-center rounded-full bg-indigo-500/20 text-[9px] font-semibold text-indigo-300">
+                        <div className="flex size-5 items-center justify-center rounded-full bg-indigo-500/20 text-[9px] font-semibold text-indigo-700 dark:text-indigo-300">
                           {kpi.owner.initials}
                         </div>
                         <span className="text-xs text-muted-foreground">{kpi.owner.name}</span>
@@ -1790,9 +1790,9 @@ export default function KPIsPage() {
                     <td className="px-4 py-3 text-xs text-muted-foreground">{formatValue(kpi.goalValue, kpi.unit)}</td>
                     <td className="px-4 py-3 text-center">
                       {kpi.goalDirection === "above" ? (
-                        <ArrowUp className="inline size-3.5 text-green-400/70" />
+                        <ArrowUp className="inline size-3.5 text-green-600 dark:text-green-400/70" />
                       ) : (
-                        <ArrowDown className="inline size-3.5 text-green-400/70" />
+                        <ArrowDown className="inline size-3.5 text-green-600 dark:text-green-400/70" />
                       )}
                     </td>
                     <td className="px-4 py-3 text-right" onClick={(e) => e.stopPropagation()}>
@@ -1826,13 +1826,13 @@ export default function KPIsPage() {
                     <td className="px-4 py-3 text-center">
                       <div className="inline-flex items-center gap-1">
                         {kpi.trend > 0 ? (
-                          <TrendingUp className="size-3 text-green-400" />
+                          <TrendingUp className="size-3 text-green-600 dark:text-green-400" />
                         ) : kpi.trend < 0 ? (
-                          <TrendingDown className="size-3 text-red-400" />
+                          <TrendingDown className="size-3 text-red-600 dark:text-red-400" />
                         ) : null}
                         <span
                           className={`text-xs ${
-                            kpi.trend > 0 ? "text-green-400" : kpi.trend < 0 ? "text-red-400" : "text-muted-foreground"
+                            kpi.trend > 0 ? "text-green-600 dark:text-green-400" : kpi.trend < 0 ? "text-red-600 dark:text-red-400" : "text-muted-foreground"
                           }`}
                         >
                           {kpi.trend !== 0 ? `${kpi.trend > 0 ? "+" : ""}${kpi.trend}%` : "--"}
@@ -1848,7 +1848,7 @@ export default function KPIsPage() {
                       return (
                         <td key={i} className="px-2 py-3 text-center">
                           <span
-                            className={`text-xs font-medium ${isGoalMet ? "text-green-400" : "text-red-400"}`}
+                            className={`text-xs font-medium ${isGoalMet ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}
                           >
                             {kpi.unit === "$"
                               ? val >= 1000

@@ -68,8 +68,8 @@ import {
 const ITEMS_PER_PAGE = 10;
 
 const statusColors: Record<string, string> = {
-  active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  lead: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  active: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  lead: "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30",
   inactive: "bg-muted text-muted-foreground border-border",
 };
 
@@ -234,14 +234,14 @@ export default function ContactsPage() {
         value: String(contacts.length),
         icon: CONTACT_TYPES[0].icon,
         change: `${CONTACT_TYPES.map((t) => `${getContactsByType(t.key).length} ${t.label}`).join(", ")}`,
-        color: "text-indigo-400",
+        color: "text-indigo-600 dark:text-indigo-400",
       },
       {
         label: "Active Deals",
         value: String(activeDealsCount),
         icon: FolderKanban,
         change: "View pipeline",
-        color: "text-emerald-400",
+        color: "text-emerald-600 dark:text-emerald-400",
         link: "/crm/deals",
       },
       {
@@ -249,14 +249,14 @@ export default function ContactsPage() {
         value: `$${(pipelineStats.totalPipelineValue / 1000).toFixed(0)}K`,
         icon: DollarSign,
         change: `Weighted: $${(pipelineStats.weightedValue / 1000).toFixed(0)}K`,
-        color: "text-amber-400",
+        color: "text-amber-600 dark:text-amber-400",
       },
       {
         label: "Speed-to-Lead",
         value: `${avgSpeedToLead} min`,
         icon: Zap,
         change: "Avg first response time",
-        color: "text-purple-400",
+        color: "text-purple-600 dark:text-purple-400",
       },
     ],
     [activeDealsCount, pipelineStats, avgSpeedToLead]
@@ -437,7 +437,7 @@ export default function ContactsPage() {
                 })}
                 <div className="flex items-center justify-between pt-2 border-t border-border">
                   <p className="text-sm font-semibold text-foreground">Total</p>
-                  <span className="text-sm font-bold text-indigo-400">
+                  <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
                     {contacts.length}
                   </span>
                 </div>
@@ -467,7 +467,7 @@ export default function ContactsPage() {
                           {deal.assignedTo}
                         </p>
                       </div>
-                      <span className="text-sm font-medium text-emerald-400">
+                      <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         ${deal.value.toLocaleString()}
                       </span>
                     </div>
@@ -475,7 +475,7 @@ export default function ContactsPage() {
               </div>
               <Link
                 href="/crm/deals"
-                className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 mt-3 transition-colors"
+                className="inline-flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 mt-3 transition-colors"
               >
                 View all deals
                 <ChevronRight className="h-3 w-3" />
@@ -507,7 +507,7 @@ export default function ContactsPage() {
                     className="flex items-center justify-between py-2 border-b border-border/50 last:border-0"
                   >
                     <p className="text-sm text-foreground">{row.label}</p>
-                    <span className="text-sm font-medium text-amber-400">
+                    <span className="text-sm font-medium text-amber-600 dark:text-amber-400">
                       ${row.value.toLocaleString()}
                     </span>
                   </div>
@@ -540,10 +540,10 @@ export default function ContactsPage() {
                       <span
                         className={`text-sm font-medium ${
                           c.speedToLead! <= 5
-                            ? "text-emerald-400"
+                            ? "text-emerald-600 dark:text-emerald-400"
                             : c.speedToLead! <= 15
-                            ? "text-amber-400"
-                            : "text-red-400"
+                            ? "text-amber-600 dark:text-amber-400"
+                            : "text-red-600 dark:text-red-400"
                         }`}
                       >
                         {c.speedToLead} min
@@ -639,11 +639,11 @@ export default function ContactsPage() {
                       className="flex items-center gap-3"
                     >
                       <Avatar className="h-8 w-8 border border-border">
-                        <AvatarFallback className="bg-indigo-500/20 text-xs text-indigo-300">
+                        <AvatarFallback className="bg-indigo-500/20 text-xs text-indigo-700 dark:text-indigo-300">
                           {contact.initials}
                         </AvatarFallback>
                       </Avatar>
-                      <span className="font-medium text-foreground group-hover:text-indigo-300 transition-colors">
+                      <span className="font-medium text-foreground group-hover:text-indigo-700 dark:text-indigo-300 transition-colors">
                         {contact.name}
                       </span>
                     </Link>
@@ -720,7 +720,7 @@ export default function ContactsPage() {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10 border border-border">
-                    <AvatarFallback className="bg-indigo-500/20 text-sm text-indigo-300">
+                    <AvatarFallback className="bg-indigo-500/20 text-sm text-indigo-700 dark:text-indigo-300">
                       {contact.initials}
                     </AvatarFallback>
                   </Avatar>
@@ -786,7 +786,7 @@ export default function ContactsPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <div className="rounded-lg bg-indigo-500/10 p-2">
-                <Plus className="h-4 w-4 text-indigo-400" />
+                <Plus className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               </div>
               Add New Contact
             </DialogTitle>
@@ -799,7 +799,7 @@ export default function ContactsPage() {
             {/* Contact Information */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <User className="h-4 w-4 text-indigo-400" />
+                <User className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                   Contact Information
                 </h3>
@@ -807,7 +807,7 @@ export default function ContactsPage() {
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                    First Name <span className="text-red-400">*</span>
+                    First Name <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <Input
                     placeholder="First name"
@@ -820,12 +820,12 @@ export default function ContactsPage() {
                     }`}
                   />
                   {errors.firstName && (
-                    <p className="text-xs text-red-400 mt-1">Required</p>
+                    <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>
                   )}
                 </div>
                 <div>
                   <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                    Last Name <span className="text-red-400">*</span>
+                    Last Name <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <Input
                     placeholder="Last name"
@@ -838,12 +838,12 @@ export default function ContactsPage() {
                     }`}
                   />
                   {errors.lastName && (
-                    <p className="text-xs text-red-400 mt-1">Required</p>
+                    <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>
                   )}
                 </div>
                 <div>
                   <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                    Email <span className="text-red-400">*</span>
+                    Email <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <Input
                     type="email"
@@ -857,7 +857,7 @@ export default function ContactsPage() {
                     }`}
                   />
                   {errors.email && (
-                    <p className="text-xs text-red-400 mt-1">Required</p>
+                    <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>
                   )}
                 </div>
                 <div>
@@ -891,7 +891,7 @@ export default function ContactsPage() {
             {/* Company & Type */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Building2 className="h-4 w-4 text-indigo-400" />
+                <Building2 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                   Company & Type
                 </h3>
@@ -912,7 +912,7 @@ export default function ContactsPage() {
                 </div>
                 <div>
                   <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                    Contact Type <span className="text-red-400">*</span>
+                    Contact Type <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <Select
                     value={form.contactType}
@@ -944,7 +944,7 @@ export default function ContactsPage() {
                     </SelectContent>
                   </Select>
                   {errors.contactType && (
-                    <p className="text-xs text-red-400 mt-1">Required</p>
+                    <p className="text-xs text-red-600 dark:text-red-400 mt-1">Required</p>
                   )}
                 </div>
                 <div className="sm:col-span-2">
@@ -1012,7 +1012,7 @@ export default function ContactsPage() {
             {/* Account Details */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Briefcase className="h-4 w-4 text-indigo-400" />
+                <Briefcase className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                   Account Details
                 </h3>
@@ -1100,7 +1100,7 @@ export default function ContactsPage() {
             {/* Tags */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Tag className="h-4 w-4 text-indigo-400" />
+                <Tag className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                   Tags
                 </h3>
@@ -1111,11 +1111,11 @@ export default function ContactsPage() {
                     <Badge
                       key={tag}
                       variant="outline"
-                      className="bg-indigo-500/10 text-indigo-300 border-indigo-500/20 cursor-pointer hover:border-red-500/30 group transition-colors"
+                      className="bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border-indigo-500/20 cursor-pointer hover:border-red-500/30 group transition-colors"
                       onClick={() => removeTag(tag)}
                     >
                       {tag}
-                      <X className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-red-400" />
+                      <X className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-red-600 dark:text-red-400" />
                     </Badge>
                   ))}
                 </div>

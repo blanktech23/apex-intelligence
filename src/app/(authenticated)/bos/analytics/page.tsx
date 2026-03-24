@@ -85,7 +85,7 @@ const summaryCards = [
     value: "32",
     subtitle: "24 completed / 8 active",
     icon: Target,
-    iconColor: "text-indigo-400",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
     iconBg: "bg-indigo-500/10",
   },
   {
@@ -93,7 +93,7 @@ const summaryCards = [
     value: "48",
     subtitle: "This quarter",
     icon: Calendar,
-    iconColor: "text-cyan-400",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
     iconBg: "bg-cyan-500/10",
   },
   {
@@ -101,7 +101,7 @@ const summaryCards = [
     value: "67",
     subtitle: "Avg 4.8 days resolution",
     icon: CheckCircle2,
-    iconColor: "text-green-400",
+    iconColor: "text-green-600 dark:text-green-400",
     iconBg: "bg-green-500/10",
   },
   {
@@ -109,7 +109,7 @@ const summaryCards = [
     value: "8.2",
     subtitle: "Out of 10",
     icon: Star,
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-500/10",
   },
 ];

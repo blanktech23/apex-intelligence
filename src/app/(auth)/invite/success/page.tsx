@@ -29,7 +29,7 @@ export default function InviteSuccessPage() {
         {/* Green checkmark animation */}
         <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-green-500/15 ring-4 ring-green-500/10">
           <svg
-            className="h-10 w-10 text-green-400"
+            className="h-10 w-10 text-green-600 dark:text-green-400"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={2.5}
@@ -54,7 +54,7 @@ export default function InviteSuccessPage() {
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           as a{" "}
-          <span className="inline-flex items-center rounded-md bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
+          <span className="inline-flex items-center rounded-md bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
             Manager
           </span>
         </p>

@@ -22,7 +22,7 @@ export default function ResetPasswordSuccessPage() {
         {/* Green checkmark animation */}
         <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-500/15 ring-4 ring-green-500/10">
           <svg
-            className="h-10 w-10 text-green-400"
+            className="h-10 w-10 text-green-600 dark:text-green-400"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={2.5}

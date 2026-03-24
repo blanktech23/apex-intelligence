@@ -189,9 +189,9 @@ const initialRocks: Rock[] = [
 // ---------------------------------------------------------------------------
 
 const rockStatusConfig: Record<RockStatus, { bg: string; text: string; ring: string }> = {
-  'On Track': { bg: 'bg-green-400/10', text: 'text-green-400', ring: 'ring-green-400/20' },
-  'Off Track': { bg: 'bg-red-400/10', text: 'text-red-400', ring: 'ring-red-400/20' },
-  Complete: { bg: 'bg-blue-400/10', text: 'text-blue-400', ring: 'ring-blue-400/20' },
+  'On Track': { bg: 'bg-green-400/10', text: 'text-green-600 dark:text-green-400', ring: 'ring-green-400/20' },
+  'Off Track': { bg: 'bg-red-400/10', text: 'text-red-600 dark:text-red-400', ring: 'ring-red-400/20' },
+  Complete: { bg: 'bg-blue-400/10', text: 'text-blue-600 dark:text-blue-400', ring: 'ring-blue-400/20' },
 };
 
 // ---------------------------------------------------------------------------
@@ -250,7 +250,7 @@ function SectionCard({ section }: { section: VisionSection }) {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-7 gap-1.5 rounded-lg px-2.5 text-xs text-red-400 hover:bg-red-400/10 transition-all"
+                className="h-7 gap-1.5 rounded-lg px-2.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-400/10 transition-all"
                 onClick={handleCancel}
               >
                 <X className="h-3 w-3" />
@@ -259,7 +259,7 @@ function SectionCard({ section }: { section: VisionSection }) {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-7 gap-1.5 rounded-lg px-2.5 text-xs text-green-400 hover:bg-green-400/10 transition-all"
+                className="h-7 gap-1.5 rounded-lg px-2.5 text-xs text-green-600 dark:text-green-400 hover:bg-green-400/10 transition-all"
                 onClick={handleSave}
               >
                 <Check className="h-3 w-3" />
@@ -435,10 +435,10 @@ function RocksSection() {
                     strokeLinecap="round"
                     className={
                       rock.status === 'Complete'
-                        ? 'text-blue-400'
+                        ? 'text-blue-600 dark:text-blue-400'
                         : rock.status === 'On Track'
-                          ? 'text-green-400'
-                          : 'text-red-400'
+                          ? 'text-green-600 dark:text-green-400'
+                          : 'text-red-600 dark:text-red-400'
                     }
                   />
                 </svg>
@@ -498,14 +498,14 @@ export default function VisionPage() {
       <div className="glass rounded-xl p-4">
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2">
-            <Eye className="h-4 w-4 text-indigo-400" />
+            <Eye className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <span className="text-sm font-medium text-foreground">8</span>
             <span className="text-xs text-muted-foreground">Sections</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-            <span className="text-sm font-medium text-green-400">8/8</span>
+            <span className="text-sm font-medium text-green-600 dark:text-green-400">8/8</span>
             <span className="text-xs text-muted-foreground">Completed</span>
           </div>
           <div className="h-4 w-px bg-border" />

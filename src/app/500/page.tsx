@@ -22,7 +22,7 @@ export default function ServerErrorPage() {
       <div className="glass relative z-10 w-full max-w-lg rounded-2xl p-8 text-center">
         {/* Error icon */}
         <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/15 ring-4 ring-red-500/10">
-          <AlertTriangle className="h-8 w-8 text-red-400" />
+          <AlertTriangle className="h-8 w-8 text-red-600 dark:text-red-400" />
         </div>
 
         {/* Heading */}

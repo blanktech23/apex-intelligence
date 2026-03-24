@@ -27,7 +27,7 @@ export function DegradedBanner() {
       </p>
       <button
         onClick={() => setVisible(false)}
-        className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded text-amber-600/70 dark:text-amber-400/70 transition-colors hover:text-amber-700 dark:hover:text-amber-300"
+        className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded text-amber-600/70 dark:text-amber-400/70 transition-colors hover:text-amber-700 dark:hover:text-amber-700 dark:text-amber-300"
         title="Hide banner (demo only)"
       >
         <X className="h-3.5 w-3.5" />

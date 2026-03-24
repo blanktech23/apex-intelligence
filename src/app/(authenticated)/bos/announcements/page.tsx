@@ -60,17 +60,17 @@ const categoryConfig: Record<
 > = {
   win: {
     label: "Win",
-    badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     icon: Trophy,
   },
   update: {
     label: "Update",
-    badge: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+    badge: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
     icon: Info,
   },
   alert: {
     label: "Alert",
-    badge: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+    badge: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
     icon: AlertTriangle,
   },
   general: {
@@ -463,7 +463,7 @@ export default function AnnouncementsPage() {
               >
                 {/* Pin indicator */}
                 {ann.pinned && (
-                  <div className="flex items-center gap-1.5 mb-3 text-[11px] text-indigo-400 font-medium">
+                  <div className="flex items-center gap-1.5 mb-3 text-[11px] text-indigo-600 dark:text-indigo-400 font-medium">
                     <Pin className="h-3 w-3" />
                     Pinned
                   </div>
@@ -497,7 +497,7 @@ export default function AnnouncementsPage() {
                       onClick={() => togglePin(ann.id)}
                       className={`rounded-lg p-1.5 transition-colors ${
                         ann.pinned
-                          ? "text-indigo-400 bg-indigo-500/10"
+                          ? "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10"
                           : "text-muted-foreground/50 hover:text-foreground hover:bg-muted/50"
                       }`}
                       title={ann.pinned ? "Unpin" : "Pin"}
@@ -560,7 +560,7 @@ export default function AnnouncementsPage() {
                           onClick={() => toggleReaction(ann.id, type)}
                           className={`flex items-center gap-1.5 text-xs transition-all rounded-lg px-2.5 py-1.5 ${
                             isActive
-                              ? "text-indigo-400 bg-indigo-500/10"
+                              ? "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10"
                               : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                           }`}
                           title={rc.label}
@@ -578,7 +578,7 @@ export default function AnnouncementsPage() {
                       onClick={() => toggleComments(ann.id)}
                       className={`flex items-center gap-1.5 text-xs transition-all rounded-lg px-2.5 py-1.5 ${
                         commentsOpen
-                          ? "text-indigo-400 bg-indigo-500/10"
+                          ? "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10"
                           : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                       }`}
                     >

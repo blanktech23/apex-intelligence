@@ -282,9 +282,9 @@ const people: Person[] = [
 // ---------------------------------------------------------------------------
 
 const statusConfig: Record<PersonStatus, { bg: string; text: string; ring: string }> = {
-  Active: { bg: 'bg-green-400/10', text: 'text-green-400', ring: 'ring-green-400/20' },
-  'On Leave': { bg: 'bg-amber-400/10', text: 'text-amber-400', ring: 'ring-amber-400/20' },
-  Inactive: { bg: 'bg-gray-400/10', text: 'text-gray-400', ring: 'ring-gray-400/20' },
+  Active: { bg: 'bg-green-400/10', text: 'text-green-600 dark:text-green-400', ring: 'ring-green-400/20' },
+  'On Leave': { bg: 'bg-amber-400/10', text: 'text-amber-600 dark:text-amber-400', ring: 'ring-amber-400/20' },
+  Inactive: { bg: 'bg-gray-400/10', text: 'text-gray-600 dark:text-gray-400', ring: 'ring-gray-400/20' },
 };
 
 const coreValuesConfig: Record<CoreValuesRating, { color: string; label: string; fullLabel: string }> = {
@@ -383,26 +383,26 @@ export default function PeoplePage() {
       <div className="glass rounded-xl p-4">
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2">
-            <User className="h-4 w-4 text-indigo-400" />
+            <User className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <span className="text-sm font-medium text-foreground">{people.length}</span>
             <span className="text-xs text-muted-foreground">Total People</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-            <span className="text-sm font-medium text-green-400">{activeCount}</span>
+            <span className="text-sm font-medium text-green-600 dark:text-green-400">{activeCount}</span>
             <span className="text-xs text-muted-foreground">Active</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-amber-400" />
-            <span className="text-sm font-medium text-amber-400">{onLeaveCount}</span>
+            <span className="text-sm font-medium text-amber-600 dark:text-amber-400">{onLeaveCount}</span>
             <span className="text-xs text-muted-foreground">On Leave</span>
           </div>
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-gray-400" />
-            <span className="text-sm font-medium text-gray-400">{inactiveCount}</span>
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{inactiveCount}</span>
             <span className="text-xs text-muted-foreground">Inactive</span>
           </div>
         </div>
@@ -753,7 +753,7 @@ export default function PeoplePage() {
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <User className="h-4 w-4 text-indigo-400" />
+              <User className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               Team Member Profile
             </DialogTitle>
             <DialogDescription>

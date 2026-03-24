@@ -284,7 +284,7 @@ export default function MeetingRecapPage() {
                 <h1 className="text-xl font-bold text-foreground">
                   Leadership Team Weekly Sync
                 </h1>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-green-400/10 px-2.5 py-0.5 text-[10px] font-semibold text-green-400 ring-1 ring-green-400/20">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-green-400/10 px-2.5 py-0.5 text-[10px] font-semibold text-green-600 dark:text-green-400 ring-1 ring-green-400/20">
                   <CheckCircle2 className="h-3 w-3" />
                   Completed
                 </span>
@@ -303,8 +303,8 @@ export default function MeetingRecapPage() {
                   5 of 6 attended
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Star className="h-4 w-4 text-amber-400 fill-amber-400" />
-                  <span className="font-medium text-amber-400">
+                  <Star className="h-4 w-4 text-amber-600 dark:text-amber-400 fill-amber-400" />
+                  <span className="font-medium text-amber-600 dark:text-amber-400">
                     {avgRating.toFixed(1)}/10
                   </span>
                 </span>
@@ -316,7 +316,7 @@ export default function MeetingRecapPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${exportState === 'done' ? 'text-emerald-400' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${exportState === 'done' ? 'text-emerald-600 dark:text-emerald-400' : 'text-muted-foreground hover:text-foreground'}`}
                 disabled={exportState !== 'idle'}
                 onClick={() => {
                   setExportState('exporting');
@@ -383,8 +383,8 @@ export default function MeetingRecapPage() {
 
           {/* AI badge */}
           <div className="mt-4 flex items-center gap-2 rounded-lg bg-indigo-500/5 px-3 py-2">
-            <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
-            <span className="text-xs text-indigo-400">
+            <Sparkles className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+            <span className="text-xs text-indigo-600 dark:text-indigo-400">
               AI-generated recap by Kiptra AI Meeting Assistant
             </span>
           </div>
@@ -393,14 +393,14 @@ export default function MeetingRecapPage() {
         {/* Decisions Made */}
         <div className="glass rounded-xl p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Target className="h-4 w-4 text-indigo-400" />
+            <Target className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <h2 className="text-base font-semibold text-foreground">Decisions Made</h2>
             <span className="text-xs text-muted-foreground">({decisions.length})</span>
           </div>
           <div className="space-y-2">
             {decisions.map((decision, i) => (
               <div key={i} className="flex items-start gap-3 rounded-lg bg-muted/20 p-3">
-                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-400" />
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-600 dark:text-green-400" />
                 <div>
                   <p className="text-sm text-foreground">{decision.text}</p>
                   <p className="mt-0.5 text-[10px] text-muted-foreground">
@@ -415,7 +415,7 @@ export default function MeetingRecapPage() {
         {/* Action Items */}
         <div className="glass rounded-xl p-6">
           <div className="flex items-center gap-2 mb-4">
-            <FileText className="h-4 w-4 text-indigo-400" />
+            <FileText className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <h2 className="text-base font-semibold text-foreground">Action Items</h2>
             <span className="text-xs text-muted-foreground">
               ({actionItems.length})
@@ -454,8 +454,8 @@ export default function MeetingRecapPage() {
                         className={cn(
                           'inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold',
                           item.source === 'Carried Forward'
-                            ? 'bg-amber-500/15 text-amber-400 ring-1 ring-amber-500/20'
-                            : 'bg-indigo-500/15 text-indigo-400 ring-1 ring-indigo-500/20'
+                            ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 ring-1 ring-amber-500/20'
+                            : 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 ring-1 ring-indigo-500/20'
                         )}
                       >
                         {item.source}
@@ -471,7 +471,7 @@ export default function MeetingRecapPage() {
         {/* Issues Summary */}
         <div className="glass rounded-xl p-6">
           <div className="flex items-center gap-2 mb-4">
-            <AlertTriangle className="h-4 w-4 text-indigo-400" />
+            <AlertTriangle className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <h2 className="text-base font-semibold text-foreground">Issues Summary</h2>
             <span className="text-xs text-muted-foreground">
               {issuesSummary.filter((i) => i.status === 'resolved').length} resolved,{' '}
@@ -489,9 +489,9 @@ export default function MeetingRecapPage() {
               >
                 <div className="flex items-start gap-3">
                   {issue.status === 'resolved' ? (
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-400" />
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-600 dark:text-green-400" />
                   ) : (
-                    <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+                    <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
                   )}
                   <div>
                     <p className="text-sm font-medium text-foreground">{issue.title}</p>
@@ -504,8 +504,8 @@ export default function MeetingRecapPage() {
                       className={cn(
                         'mt-1.5 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1',
                         issue.status === 'resolved'
-                          ? 'bg-green-500/15 text-green-400 ring-green-500/20'
-                          : 'bg-amber-500/15 text-amber-400 ring-amber-500/20'
+                          ? 'bg-green-500/15 text-green-600 dark:text-green-400 ring-green-500/20'
+                          : 'bg-amber-500/15 text-amber-600 dark:text-amber-400 ring-amber-500/20'
                       )}
                     >
                       {issue.status === 'resolved' ? 'Resolved' : 'Carried Forward'}
@@ -520,7 +520,7 @@ export default function MeetingRecapPage() {
         {/* Section-by-Section Notes */}
         <div className="glass rounded-xl p-6">
           <div className="flex items-center gap-2 mb-4">
-            <MessageSquare className="h-4 w-4 text-indigo-400" />
+            <MessageSquare className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             <h2 className="text-base font-semibold text-foreground">
               Section-by-Section Notes
             </h2>
@@ -581,7 +581,7 @@ export default function MeetingRecapPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-indigo-400" />
+              <Mail className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
               Send Recap Email
             </DialogTitle>
             <DialogDescription>
@@ -615,7 +615,7 @@ export default function MeetingRecapPage() {
                   <span className="flex-1 rounded-lg bg-muted/30 px-3 py-1.5 text-xs text-foreground">{email}</span>
                   <button
                     type="button"
-                    className="p-1 rounded hover:bg-muted/60 text-muted-foreground hover:text-red-400"
+                    className="p-1 rounded hover:bg-muted/60 text-muted-foreground hover:text-red-600 dark:text-red-400"
                     onClick={() => setAdditionalEmails((prev) => prev.filter((_, j) => j !== i))}
                   >
                     <X className="h-3 w-3" />

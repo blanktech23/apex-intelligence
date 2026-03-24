@@ -45,10 +45,10 @@ import {
 /* ------------------------------------------------------------------ */
 
 const strengthSegments = [
-  { min: 0, color: "bg-red-500", label: "Weak", textColor: "text-red-400" },
-  { min: 4, color: "bg-amber-500", label: "Fair", textColor: "text-amber-400" },
-  { min: 8, color: "bg-emerald-500", label: "Strong", textColor: "text-emerald-400" },
-  { min: 12, color: "bg-cyan-400", label: "Very strong", textColor: "text-cyan-400" },
+  { min: 0, color: "bg-red-500", label: "Weak", textColor: "text-red-600 dark:text-red-400" },
+  { min: 4, color: "bg-amber-500", label: "Fair", textColor: "text-amber-600 dark:text-amber-400" },
+  { min: 8, color: "bg-emerald-500", label: "Strong", textColor: "text-emerald-600 dark:text-emerald-400" },
+  { min: 12, color: "bg-cyan-400", label: "Very strong", textColor: "text-cyan-600 dark:text-cyan-400" },
 ];
 
 function getPasswordStrength(password: string) {
@@ -385,7 +385,7 @@ export default function SecuritySettingsPage() {
                 <Badge
                   className={
                     mfaEnabled
-                      ? "border-0 bg-emerald-500/15 text-emerald-400"
+                      ? "border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
                       : "border-0 bg-muted text-muted-foreground"
                   }
                 >
@@ -644,8 +644,8 @@ export default function SecuritySettingsPage() {
                     <Badge
                       className={
                         entry.status === "success"
-                          ? "border-0 bg-emerald-500/15 text-emerald-400"
-                          : "border-0 bg-red-500/15 text-red-400"
+                          ? "border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+                          : "border-0 bg-red-500/15 text-red-600 dark:text-red-400"
                       }
                     >
                       {entry.status === "success" ? "Success" : "Blocked"}
@@ -669,8 +669,8 @@ export default function SecuritySettingsPage() {
                 <Badge
                   className={
                     entry.status === "success"
-                      ? "border-0 bg-emerald-500/15 text-emerald-400"
-                      : "border-0 bg-red-500/15 text-red-400"
+                      ? "border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+                      : "border-0 bg-red-500/15 text-red-600 dark:text-red-400"
                   }
                 >
                   {entry.status === "success" ? "Success" : "Blocked"}
@@ -939,7 +939,7 @@ export default function SecuritySettingsPage() {
             <>
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5 text-amber-400" />
+                  <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                   Regenerate Recovery Codes
                 </DialogTitle>
                 <DialogDescription>
@@ -1118,7 +1118,7 @@ export default function SecuritySettingsPage() {
             <>
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-emerald-400" />
+                  <Check className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                   API Key Generated
                 </DialogTitle>
                 <DialogDescription>
@@ -1127,7 +1127,7 @@ export default function SecuritySettingsPage() {
               </DialogHeader>
               <div className="space-y-3">
                 <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
-                  <div className="flex items-center gap-2 text-xs text-amber-400 mb-2">
+                  <div className="flex items-center gap-2 text-xs text-amber-600 dark:text-amber-400 mb-2">
                     <AlertTriangle className="h-3.5 w-3.5" />
                     Copy now — you won&apos;t see this again
                   </div>
