@@ -961,12 +961,12 @@ export default function ContactDetailPage() {
                   key={i}
                   className={`rounded-lg p-3 text-sm ${
                     insight.type === "risk"
-                      ? "bg-red-500/10 border border-red-500/20 text-red-300"
+                      ? "bg-red-500/10 border border-red-500/20 text-red-700 dark:text-red-300"
                       : insight.type === "opportunity"
-                      ? "bg-amber-500/10 border border-amber-500/20 text-amber-300"
+                      ? "bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-300"
                       : insight.type === "growth"
-                      ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-300"
-                      : "bg-blue-500/10 border border-blue-500/20 text-blue-300"
+                      ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
+                      : "bg-blue-500/10 border border-blue-500/20 text-blue-700 dark:text-blue-300"
                   }`}
                 >
                   {insight.text}
