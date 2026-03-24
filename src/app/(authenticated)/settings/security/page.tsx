@@ -15,11 +15,22 @@ import {
   QrCode,
   Globe,
   Clock,
+  AlertTriangle,
+  Download,
+  Check,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -54,8 +65,9 @@ function getPasswordStrength(password: string) {
 /*  Mock data                                                          */
 /* ------------------------------------------------------------------ */
 
-const sessions = [
+const initialSessions = [
   {
+    id: "s1",
     device: "MacBook Pro",
     icon: Laptop,
     browser: "Chrome 121",
@@ -65,6 +77,7 @@ const sessions = [
     current: true,
   },
   {
+    id: "s2",
     device: "iPhone 15 Pro",
     icon: Smartphone,
     browser: "Safari Mobile",
@@ -74,6 +87,7 @@ const sessions = [
     current: false,
   },
   {
+    id: "s3",
     device: "Windows Desktop",
     icon: Monitor,
     browser: "Edge 121",
@@ -97,12 +111,26 @@ const loginHistory = [
   { ip: "10.0.0.15", device: "iPhone 15 Pro - Safari", timestamp: "Mar 8, 2026 at 4:33 PM", status: "success" as const },
 ];
 
-const apiKeys = [
+const initialApiKeys = [
   { id: "ak_1", name: "Production API Key", key: "ak_live_...x8Fk", created: "Jan 10, 2026", lastUsed: "2 minutes ago" },
   { id: "ak_2", name: "Staging API Key", key: "ak_test_...m3Qr", created: "Feb 5, 2026", lastUsed: "1 day ago" },
   { id: "ak_3", name: "CI/CD Pipeline", key: "ak_live_...pW2n", created: "Mar 1, 2026", lastUsed: "6 hours ago" },
   { id: "ak_4", name: "Webhook Endpoint", key: "ak_live_...j9Tz", created: "Mar 12, 2026", lastUsed: "Never" },
 ];
+
+/* ------------------------------------------------------------------ */
+/*  Recovery codes generator                                           */
+/* ------------------------------------------------------------------ */
+
+function generateRecoveryCodes(): string[] {
+  const codes: string[] = [];
+  for (let i = 0; i < 8; i++) {
+    const part1 = Math.random().toString(36).slice(2, 7).toUpperCase();
+    const part2 = Math.random().toString(36).slice(2, 7).toUpperCase();
+    codes.push(`${part1}-${part2}`);
+  }
+  return codes;
+}
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
@@ -115,6 +143,34 @@ export default function SecuritySettingsPage() {
   const [newPassword, setNewPassword] = useState("");
   const [mfaEnabled, setMfaEnabled] = useState(true);
 
+  // Password dialog state
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const [pwdCurrent, setPwdCurrent] = useState("");
+  const [pwdNew, setPwdNew] = useState("");
+  const [pwdConfirm, setPwdConfirm] = useState("");
+  const [pwdShowCurrent, setPwdShowCurrent] = useState(false);
+  const [pwdShowNew, setPwdShowNew] = useState(false);
+  const [pwdShowConfirm, setPwdShowConfirm] = useState(false);
+  const [pwdError, setPwdError] = useState("");
+
+  // Recovery codes dialog state
+  const [showRecoveryDialog, setShowRecoveryDialog] = useState(false);
+  const [recoveryStep, setRecoveryStep] = useState<"confirm" | "codes">("confirm");
+  const [recoveryCodes, setRecoveryCodes] = useState<string[]>([]);
+
+  // Revoke all sessions dialog state
+  const [showRevokeAllDialog, setShowRevokeAllDialog] = useState(false);
+
+  // Sessions state
+  const [activeSessions, setActiveSessions] = useState(initialSessions);
+
+  // API keys state
+  const [apiKeysList, setApiKeysList] = useState(initialApiKeys);
+  const [showApiKeyDialog, setShowApiKeyDialog] = useState(false);
+  const [newKeyName, setNewKeyName] = useState("");
+  const [newKeyExpiry, setNewKeyExpiry] = useState("90");
+  const [generatedKey, setGeneratedKey] = useState<string | null>(null);
+
   const strength = getPasswordStrength(newPassword);
   const activeSegment = strengthSegments.reduce(
     (acc, seg) => (strength >= seg.min ? seg : acc),
@@ -122,6 +178,84 @@ export default function SecuritySettingsPage() {
   );
   const filledSegments =
     strength === 0 ? 0 : strength >= 12 ? 4 : strength >= 8 ? 3 : strength >= 4 ? 2 : 1;
+
+  // Password dialog helpers
+  const pwdStrength = getPasswordStrength(pwdNew);
+  const pwdActiveSegment = strengthSegments.reduce(
+    (acc, seg) => (pwdStrength >= seg.min ? seg : acc),
+    strengthSegments[0]
+  );
+  const pwdFilledSegments =
+    pwdStrength === 0 ? 0 : pwdStrength >= 12 ? 4 : pwdStrength >= 8 ? 3 : pwdStrength >= 4 ? 2 : 1;
+
+  const handlePasswordSubmit = () => {
+    if (!pwdCurrent) {
+      setPwdError("Current password is required");
+      return;
+    }
+    if (pwdNew.length < 8) {
+      setPwdError("New password must be at least 8 characters");
+      return;
+    }
+    if (pwdNew === pwdCurrent) {
+      setPwdError("New password must be different from current password");
+      return;
+    }
+    if (pwdNew !== pwdConfirm) {
+      setPwdError("Passwords do not match");
+      return;
+    }
+    setPwdError("");
+    toast.success("Password updated successfully");
+    setShowPasswordDialog(false);
+    setPwdCurrent("");
+    setPwdNew("");
+    setPwdConfirm("");
+  };
+
+  const handleRegenerateRecovery = () => {
+    const codes = generateRecoveryCodes();
+    setRecoveryCodes(codes);
+    setRecoveryStep("codes");
+    toast.success("Recovery codes regenerated");
+  };
+
+  const handleRevokeAllSessions = () => {
+    setActiveSessions((prev) => prev.filter((s) => s.current));
+    setShowRevokeAllDialog(false);
+    toast.success("All other sessions revoked");
+  };
+
+  const handleRevokeSession = (sessionId: string) => {
+    setActiveSessions((prev) => prev.filter((s) => s.id !== sessionId));
+    toast.success("Session revoked");
+  };
+
+  const handleGenerateApiKey = () => {
+    if (!newKeyName.trim()) return;
+    const key = `kip_sk_${Math.random().toString(36).slice(2, 14)}`;
+    setGeneratedKey(key);
+    const now = new Date();
+    const month = now.toLocaleString("en-US", { month: "short" });
+    const day = now.getDate();
+    const year = now.getFullYear();
+    setApiKeysList((prev) => [
+      ...prev,
+      {
+        id: `ak_${Date.now()}`,
+        name: newKeyName,
+        key: `kip_sk_...${key.slice(-4)}`,
+        created: `${month} ${day}, ${year}`,
+        lastUsed: "Never",
+      },
+    ]);
+    toast.success("API key generated");
+  };
+
+  const handleRevokeApiKey = (keyId: string) => {
+    setApiKeysList((prev) => prev.filter((k) => k.id !== keyId));
+    toast.success("API key revoked");
+  };
 
   return (
     <div className="max-w-3xl space-y-6">
@@ -229,7 +363,7 @@ export default function SecuritySettingsPage() {
             <Button
               type="submit"
               className="h-10 rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_24px_rgba(99,102,241,0.3)]"
-              onClick={() => toast.success("Password updated successfully")}
+              onClick={() => setShowPasswordDialog(true)}
             >
               Change password
             </Button>
@@ -318,7 +452,7 @@ export default function SecuritySettingsPage() {
               </p>
               <button
                 type="button"
-                onClick={() => toast.success("Recovery codes regenerated")}
+                onClick={() => { setRecoveryStep("confirm"); setShowRecoveryDialog(true); }}
                 className="text-sm font-medium text-primary transition-colors hover:text-primary/80"
               >
                 Regenerate recovery codes
@@ -336,13 +470,15 @@ export default function SecuritySettingsPage() {
           <h2 className="text-base font-semibold text-foreground">
             Active sessions
           </h2>
-          <button
-            type="button"
-            onClick={() => toast.success("All other sessions revoked")}
-            className="text-sm font-medium text-destructive transition-colors hover:text-destructive/80"
-          >
-            Revoke all other sessions
-          </button>
+          {activeSessions.filter((s) => !s.current).length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowRevokeAllDialog(true)}
+              className="text-sm font-medium text-destructive transition-colors hover:text-destructive/80"
+            >
+              Revoke all other sessions
+            </button>
+          )}
         </div>
 
         {/* Desktop table */}
@@ -357,11 +493,11 @@ export default function SecuritySettingsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sessions.map((session) => {
+              {activeSessions.map((session) => {
                 const Icon = session.icon;
                 return (
                   <TableRow
-                    key={session.device}
+                    key={session.id}
                     className="border-border hover:bg-muted/20"
                   >
                     <TableCell>
@@ -401,7 +537,7 @@ export default function SecuritySettingsPage() {
                           variant="ghost"
                           size="sm"
                           className="h-7 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
-                          onClick={() => toast.success("Session revoked")}
+                          onClick={() => handleRevokeSession(session.id)}
                         >
                           Revoke
                         </Button>
@@ -416,11 +552,11 @@ export default function SecuritySettingsPage() {
 
         {/* Mobile cards */}
         <div className="md:hidden space-y-3">
-          {sessions.map((session) => {
+          {activeSessions.map((session) => {
             const Icon = session.icon;
             return (
               <div
-                key={session.device}
+                key={session.id}
                 className="rounded-lg border border-border p-4 space-y-3"
               >
                 <div className="flex items-center gap-3">
@@ -452,7 +588,7 @@ export default function SecuritySettingsPage() {
                       variant="ghost"
                       size="sm"
                       className="h-7 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
-                      onClick={() => toast.success("Session revoked")}
+                      onClick={() => handleRevokeSession(session.id)}
                     >
                       Revoke
                     </Button>
@@ -560,7 +696,15 @@ export default function SecuritySettingsPage() {
               API Keys
             </h2>
           </div>
-          <Button className="h-8 gap-1.5 rounded-lg bg-primary px-3 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_24px_rgba(99,102,241,0.3)]" onClick={() => toast.success("New API key generated")}>
+          <Button
+            className="h-8 gap-1.5 rounded-lg bg-primary px-3 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_24px_rgba(99,102,241,0.3)]"
+            onClick={() => {
+              setNewKeyName("");
+              setNewKeyExpiry("90");
+              setGeneratedKey(null);
+              setShowApiKeyDialog(true);
+            }}
+          >
             <Plus className="h-3.5 w-3.5" />
             Generate new key
           </Button>
@@ -579,7 +723,7 @@ export default function SecuritySettingsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {apiKeys.map((apiKey) => (
+              {apiKeysList.map((apiKey) => (
                 <TableRow
                   key={apiKey.id}
                   className="border-border hover:bg-muted/20"
@@ -608,7 +752,7 @@ export default function SecuritySettingsPage() {
                       variant="ghost"
                       size="sm"
                       className="h-7 gap-1 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
-                      onClick={() => toast.success("API key revoked")}
+                      onClick={() => handleRevokeApiKey(apiKey.id)}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                       Revoke
@@ -622,7 +766,7 @@ export default function SecuritySettingsPage() {
 
         {/* Mobile cards */}
         <div className="md:hidden space-y-3">
-          {apiKeys.map((apiKey) => (
+          {apiKeysList.map((apiKey) => (
             <div
               key={apiKey.id}
               className="rounded-lg border border-border p-4 space-y-3"
@@ -652,7 +796,7 @@ export default function SecuritySettingsPage() {
                   variant="ghost"
                   size="sm"
                   className="h-7 gap-1 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
-                  onClick={() => toast.success("API key revoked")}
+                  onClick={() => handleRevokeApiKey(apiKey.id)}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                   Revoke
@@ -666,6 +810,362 @@ export default function SecuritySettingsPage() {
           API keys grant full access to your account. Keep them secret and rotate them regularly.
         </p>
       </div>
+
+      {/* ============================================================ */}
+      {/*  Change Password Dialog                                       */}
+      {/* ============================================================ */}
+      <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Change Password</DialogTitle>
+            <DialogDescription>
+              Enter your current password and choose a new one.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {/* Current password */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-foreground">Current password</label>
+              <div className="relative">
+                <Input
+                  type={pwdShowCurrent ? "text" : "password"}
+                  placeholder="Enter current password"
+                  value={pwdCurrent}
+                  onChange={(e) => { setPwdCurrent(e.target.value); setPwdError(""); }}
+                  className="h-10 rounded-lg border-border bg-muted/30 px-3 pr-10 text-sm focus-visible:border-primary focus-visible:ring-primary/30"
+                />
+                <button
+                  type="button"
+                  onClick={() => setPwdShowCurrent(!pwdShowCurrent)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {pwdShowCurrent ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* New password */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-foreground">New password</label>
+              <div className="relative">
+                <Input
+                  type={pwdShowNew ? "text" : "password"}
+                  placeholder="Enter new password"
+                  value={pwdNew}
+                  onChange={(e) => { setPwdNew(e.target.value); setPwdError(""); }}
+                  className="h-10 rounded-lg border-border bg-muted/30 px-3 pr-10 text-sm focus-visible:border-primary focus-visible:ring-primary/30"
+                />
+                <button
+                  type="button"
+                  onClick={() => setPwdShowNew(!pwdShowNew)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {pwdShowNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+              {/* Strength meter */}
+              {pwdNew && (
+                <div className="space-y-1.5 pt-1">
+                  <div className="flex gap-1">
+                    {[0, 1, 2, 3].map((i) => (
+                      <div
+                        key={i}
+                        className={`h-1 flex-1 rounded-full transition-colors ${
+                          i < pwdFilledSegments ? pwdActiveSegment.color : "bg-muted"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Password strength:{" "}
+                    <span className={pwdActiveSegment.textColor}>
+                      {pwdActiveSegment.label}
+                    </span>
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Confirm password */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-foreground">Confirm new password</label>
+              <div className="relative">
+                <Input
+                  type={pwdShowConfirm ? "text" : "password"}
+                  placeholder="Confirm new password"
+                  value={pwdConfirm}
+                  onChange={(e) => { setPwdConfirm(e.target.value); setPwdError(""); }}
+                  className="h-10 rounded-lg border-border bg-muted/30 px-3 pr-10 text-sm focus-visible:border-primary focus-visible:ring-primary/30"
+                />
+                <button
+                  type="button"
+                  onClick={() => setPwdShowConfirm(!pwdShowConfirm)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {pwdShowConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            {pwdError && (
+              <p className="text-sm text-destructive">{pwdError}</p>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowPasswordDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              onClick={handlePasswordSubmit}
+            >
+              Update password
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ============================================================ */}
+      {/*  Recovery Codes Dialog                                        */}
+      {/* ============================================================ */}
+      <Dialog open={showRecoveryDialog} onOpenChange={setShowRecoveryDialog}>
+        <DialogContent className="sm:max-w-md">
+          {recoveryStep === "confirm" ? (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-amber-400" />
+                  Regenerate Recovery Codes
+                </DialogTitle>
+                <DialogDescription>
+                  This will invalidate your existing recovery codes. Any previously saved codes will no longer work. Are you sure?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowRecoveryDialog(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="bg-amber-600 text-white hover:bg-amber-700"
+                  onClick={handleRegenerateRecovery}
+                >
+                  Regenerate codes
+                </Button>
+              </DialogFooter>
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle>Your New Recovery Codes</DialogTitle>
+                <DialogDescription>
+                  Save these codes in a secure location. Each code can only be used once.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid grid-cols-2 gap-2">
+                {recoveryCodes.map((code, i) => (
+                  <code
+                    key={i}
+                    className="rounded-md border border-border bg-muted/30 px-3 py-2 text-center font-mono text-xs text-foreground"
+                  >
+                    {code}
+                  </code>
+                ))}
+              </div>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  className="gap-1.5"
+                  onClick={() => {
+                    const text = recoveryCodes.join("\n");
+                    const blob = new Blob([text], { type: "text/plain" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "kiptra-recovery-codes.txt";
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    toast.success("Recovery codes downloaded");
+                  }}
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Download
+                </Button>
+                <Button
+                  variant="outline"
+                  className="gap-1.5"
+                  onClick={() => {
+                    navigator.clipboard.writeText(recoveryCodes.join("\n"));
+                    toast.success("Recovery codes copied to clipboard");
+                  }}
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                  Copy
+                </Button>
+                <Button
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  onClick={() => setShowRecoveryDialog(false)}
+                >
+                  Done
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* ============================================================ */}
+      {/*  Revoke All Sessions Dialog                                   */}
+      {/* ============================================================ */}
+      <Dialog open={showRevokeAllDialog} onOpenChange={setShowRevokeAllDialog}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-destructive" />
+              Revoke All Sessions
+            </DialogTitle>
+            <DialogDescription>
+              This will sign you out of all other devices. Your current session will remain active. Continue?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowRevokeAllDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="bg-destructive text-white hover:bg-destructive/90"
+              onClick={handleRevokeAllSessions}
+            >
+              Revoke all sessions
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ============================================================ */}
+      {/*  Generate API Key Dialog                                      */}
+      {/* ============================================================ */}
+      <Dialog
+        open={showApiKeyDialog}
+        onOpenChange={(open) => {
+          if (!open) {
+            setGeneratedKey(null);
+            setNewKeyName("");
+          }
+          setShowApiKeyDialog(open);
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
+          {!generatedKey ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Generate API Key</DialogTitle>
+                <DialogDescription>
+                  Create a new API key for programmatic access.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground">Key name</label>
+                  <Input
+                    placeholder="e.g. Production API Key"
+                    value={newKeyName}
+                    onChange={(e) => setNewKeyName(e.target.value)}
+                    className="h-10 rounded-lg border-border bg-muted/30 px-3 text-sm focus-visible:border-primary focus-visible:ring-primary/30"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground">Expiration</label>
+                  <select
+                    value={newKeyExpiry}
+                    onChange={(e) => setNewKeyExpiry(e.target.value)}
+                    className="flex h-10 w-full rounded-lg border border-border bg-muted/30 px-3 text-sm text-foreground focus-visible:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/30"
+                  >
+                    <option value="30">30 days</option>
+                    <option value="90">90 days</option>
+                    <option value="365">1 year</option>
+                    <option value="never">Never</option>
+                  </select>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowApiKeyDialog(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  disabled={!newKeyName.trim()}
+                  onClick={handleGenerateApiKey}
+                >
+                  Generate key
+                </Button>
+              </DialogFooter>
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Check className="h-5 w-5 text-emerald-400" />
+                  API Key Generated
+                </DialogTitle>
+                <DialogDescription>
+                  Copy this key now. You will not be able to see it again.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-3">
+                <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
+                  <div className="flex items-center gap-2 text-xs text-amber-400 mb-2">
+                    <AlertTriangle className="h-3.5 w-3.5" />
+                    Copy now — you won&apos;t see this again
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <code className="flex-1 rounded bg-muted/40 px-3 py-2 font-mono text-xs text-foreground break-all">
+                      {generatedKey}
+                    </code>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="shrink-0 gap-1.5"
+                      onClick={() => {
+                        navigator.clipboard.writeText(generatedKey);
+                        toast.success("API key copied to clipboard");
+                      }}
+                    >
+                      <Copy className="h-3.5 w-3.5" />
+                      Copy
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  onClick={() => {
+                    setShowApiKeyDialog(false);
+                    setGeneratedKey(null);
+                    setNewKeyName("");
+                  }}
+                >
+                  Done
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

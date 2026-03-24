@@ -13,6 +13,22 @@ import {
   Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 
 /* ------------------------------------------------------------------ */
@@ -130,6 +146,13 @@ const mockProjects: DesignProject[] = [
 
 export default function DesignProjectsPage() {
   const [search, setSearch] = useState("");
+  const [showNewProject, setShowNewProject] = useState(false);
+  const [newProjectName, setNewProjectName] = useState("");
+  const [newClientName, setNewClientName] = useState("");
+  const [newProjectType, setNewProjectType] = useState("");
+  const [newAddress, setNewAddress] = useState("");
+  const [newBudget, setNewBudget] = useState("");
+  const [newStartDate, setNewStartDate] = useState("");
 
   const filtered = mockProjects.filter(
     (p) =>
@@ -158,7 +181,15 @@ export default function DesignProjectsPage() {
         </div>
         <Button
           className="gap-2 bg-primary text-xs font-semibold text-primary-foreground hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]"
-          onClick={() => toast.success("New project dialog would open")}
+          onClick={() => {
+            setNewProjectName("");
+            setNewClientName("");
+            setNewProjectType("");
+            setNewAddress("");
+            setNewBudget("");
+            setNewStartDate("");
+            setShowNewProject(true);
+          }}
         >
           <Plus className="size-3.5" />
           New Project
@@ -271,6 +302,103 @@ export default function DesignProjectsPage() {
           </div>
         )}
       </div>
+
+      {/* New Project Dialog */}
+      <Dialog open={showNewProject} onOpenChange={setShowNewProject}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Create New Project</DialogTitle>
+            <DialogDescription>
+              Set up a new kitchen or bath design project.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">
+                Project Name <span className="text-red-400">*</span>
+              </label>
+              <Input
+                value={newProjectName}
+                onChange={(e) => setNewProjectName(e.target.value)}
+                placeholder="e.g. Modern Kitchen Remodel"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">
+                Client Name <span className="text-red-400">*</span>
+              </label>
+              <Input
+                value={newClientName}
+                onChange={(e) => setNewClientName(e.target.value)}
+                placeholder="e.g. Sarah Johnson"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">Project Type</label>
+              <Select value={newProjectType} onValueChange={(v) => setNewProjectType(v ?? "")}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select type..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="kitchen-remodel">Kitchen Remodel</SelectItem>
+                  <SelectItem value="bathroom-remodel">Bathroom Remodel</SelectItem>
+                  <SelectItem value="full-home-remodel">Full Home Remodel</SelectItem>
+                  <SelectItem value="new-construction">New Construction</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">Address</label>
+              <Input
+                value={newAddress}
+                onChange={(e) => setNewAddress(e.target.value)}
+                placeholder="e.g. 123 Main St, Austin TX"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">Budget Range</label>
+              <Select value={newBudget} onValueChange={(v) => setNewBudget(v ?? "")}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select budget..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="under-25k">Under $25K</SelectItem>
+                  <SelectItem value="25k-50k">$25K - $50K</SelectItem>
+                  <SelectItem value="50k-100k">$50K - $100K</SelectItem>
+                  <SelectItem value="100k-250k">$100K - $250K</SelectItem>
+                  <SelectItem value="250k-plus">$250K+</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">Start Date</label>
+              <Input
+                type="date"
+                value={newStartDate}
+                onChange={(e) => setNewStartDate(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowNewProject(false)}>
+              Cancel
+            </Button>
+            <Button
+              disabled={!newProjectName.trim() || !newClientName.trim()}
+              onClick={() => {
+                if (!newProjectName.trim() || !newClientName.trim()) {
+                  toast.error("Project Name and Client Name are required");
+                  return;
+                }
+                toast.success(`Project created: ${newProjectName}`);
+                setShowNewProject(false);
+              }}
+            >
+              Create Project
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -123,6 +123,16 @@ const invoiceStatusColors: Record<string, string> = {
   draft: "bg-muted text-muted-foreground border-border",
 };
 
+const ALL_TAGS = [
+  "VIP",
+  "Hot Lead",
+  "Returning Client",
+  "Referral",
+  "Premium",
+  "New Construction",
+  "Renovation",
+];
+
 export default function ContactDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -135,6 +145,22 @@ export default function ContactDetailPage() {
   const [activeTab, setActiveTab] = useState("deals");
   const [contactTags, setContactTags] = useState<string[]>(contact?.tags ?? []);
   const [noteText, setNoteText] = useState("");
+  const [showTagPicker, setShowTagPicker] = useState(false);
+  const [tagSearch, setTagSearch] = useState("");
+  const tagPickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (tagPickerRef.current && !tagPickerRef.current.contains(e.target as Node)) {
+        setShowTagPicker(false);
+        setTagSearch("");
+      }
+    }
+    if (showTagPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [showTagPicker]);
 
   if (!contact) {
     return (
@@ -1003,22 +1029,70 @@ export default function ContactDetailPage() {
                   key={tag}
                   variant="outline"
                   className="bg-foreground/5 text-muted-foreground border-border hover:border-red-500/30 group cursor-pointer transition-colors"
-                  onClick={() =>
-                    setContactTags((prev) => prev.filter((t) => t !== tag))
-                  }
+                  onClick={() => {
+                    setContactTags((prev) => prev.filter((t) => t !== tag));
+                    toast.success(`Tag removed: ${tag}`);
+                  }}
                 >
                   {tag}
                   <X className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-red-400" />
                 </Badge>
               ))}
-              <Badge
-                variant="outline"
-                className="bg-indigo-500/10 text-indigo-400 border-indigo-500/20 cursor-pointer hover:bg-indigo-500/20 transition-colors"
-                onClick={() => toast.info("Add tag dialog coming soon")}
-              >
-                <Plus className="h-3 w-3 mr-1" />
-                Add Tag
-              </Badge>
+              <div className="relative" ref={tagPickerRef}>
+                <Badge
+                  variant="outline"
+                  className="bg-indigo-500/10 text-indigo-400 border-indigo-500/20 cursor-pointer hover:bg-indigo-500/20 transition-colors"
+                  onClick={() => {
+                    setShowTagPicker((prev) => !prev);
+                    setTagSearch("");
+                  }}
+                >
+                  <Plus className="h-3 w-3 mr-1" />
+                  Add Tag
+                </Badge>
+                {showTagPicker && (
+                  <div className="absolute right-0 top-full mt-2 z-50 w-56 rounded-lg border border-border bg-background shadow-xl p-2">
+                    <input
+                      type="text"
+                      autoFocus
+                      value={tagSearch}
+                      onChange={(e) => setTagSearch(e.target.value)}
+                      placeholder="Search tags..."
+                      className="w-full rounded-md border border-border bg-foreground/[0.02] px-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary mb-1"
+                    />
+                    <div className="max-h-48 overflow-y-auto">
+                      {ALL_TAGS.filter(
+                        (t) =>
+                          !contactTags.includes(t) &&
+                          t.toLowerCase().includes(tagSearch.toLowerCase())
+                      ).length === 0 ? (
+                        <p className="text-xs text-muted-foreground text-center py-3">
+                          No tags available
+                        </p>
+                      ) : (
+                        ALL_TAGS.filter(
+                          (t) =>
+                            !contactTags.includes(t) &&
+                            t.toLowerCase().includes(tagSearch.toLowerCase())
+                        ).map((tag) => (
+                          <button
+                            key={tag}
+                            onClick={() => {
+                              setContactTags((prev) => [...prev, tag]);
+                              toast.success(`Tag added: ${tag}`);
+                              setShowTagPicker(false);
+                              setTagSearch("");
+                            }}
+                            className="w-full text-left rounded-md px-3 py-1.5 text-xs text-foreground hover:bg-foreground/[0.05] transition-colors"
+                          >
+                            {tag}
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </Card>
         </div>

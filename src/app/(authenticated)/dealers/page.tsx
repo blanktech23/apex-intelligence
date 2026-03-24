@@ -12,6 +12,10 @@ import {
   DollarSign,
   Clock,
   ChevronDown,
+  X,
+  Mail,
+  ShoppingCart,
+  Pencil,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -100,6 +104,7 @@ export default function DealersPage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviteForm, setInviteForm] = useState(defaultInviteForm);
   const [inviteErrors, setInviteErrors] = useState<Record<string, string>>({});
+  const [selectedDealer, setSelectedDealer] = useState<(typeof dealers)[number] | null>(null);
 
   useEffect(() => setMounted(true), []);
 
@@ -292,7 +297,7 @@ export default function DealersPage() {
               <TableRow
                 key={d.name}
                 className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer"
-                onClick={() => toast(d.name, { description: `Region: ${d.region} | Orders: ${d.ordersMTD} | Revenue: ${d.revenueMTD > 0 ? `$${d.revenueMTD.toLocaleString()}` : "--"} | Rep: ${d.rep}` })}
+                onClick={() => setSelectedDealer(d)}
               >
                 <TableCell className="font-medium text-foreground">{d.name}</TableCell>
                 <TableCell className="text-muted-foreground">{d.region}</TableCell>
@@ -305,6 +310,94 @@ export default function DealersPage() {
           </TableBody>
         </Table>
       </Card>
+
+      {/* Dealer Detail Slide-out Panel */}
+      {selectedDealer && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setSelectedDealer(null)} />
+          <div className="relative z-10 h-full w-full max-w-md overflow-y-auto border-l border-border bg-background p-6 shadow-2xl animate-in slide-in-from-right duration-200">
+            <button onClick={() => setSelectedDealer(null)} className="absolute right-4 top-4 rounded-md p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted">
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="space-y-6">
+              {/* Header */}
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">{selectedDealer.name}</h2>
+                <p className="text-sm text-muted-foreground mt-0.5">{selectedDealer.region}</p>
+                <Badge variant="outline" className={`mt-2 ${statusColors[selectedDealer.status]}`}>{selectedDealer.status}</Badge>
+              </div>
+
+              <Separator className="bg-border" />
+
+              {/* Details Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Region</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedDealer.region}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Assigned Rep</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedDealer.rep}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Orders MTD</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedDealer.ordersMTD}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Revenue MTD</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedDealer.revenueMTD > 0 ? `$${selectedDealer.revenueMTD.toLocaleString()}` : "--"}</p>
+                </div>
+              </div>
+
+              <Separator className="bg-border" />
+
+              {/* Contact Info */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-2">Contact Information</p>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Mail className="h-3.5 w-3.5" />
+                    <span>{selectedDealer.name.toLowerCase().replace(/ /g, "").replace(/&/g, "")}@email.com</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Users className="h-3.5 w-3.5" />
+                    <span>Primary Contact: {selectedDealer.rep !== "Unassigned" ? selectedDealer.rep : "Pending"}</span>
+                  </div>
+                </div>
+              </div>
+
+              <Separator className="bg-border" />
+
+              {/* Quick Actions */}
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-muted-foreground mb-1.5">Quick Actions</p>
+                <button
+                  onClick={() => toast.success(`Showing orders for ${selectedDealer.name}`)}
+                  className="flex w-full items-center gap-2 rounded-lg border border-border bg-foreground/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
+                >
+                  <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+                  View Orders
+                </button>
+                <button
+                  onClick={() => toast.success("Opening message composer")}
+                  className="flex w-full items-center gap-2 rounded-lg border border-border bg-foreground/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
+                >
+                  <Mail className="h-4 w-4 text-muted-foreground" />
+                  Send Message
+                </button>
+                <button
+                  onClick={() => toast.success(`Edit form opened for ${selectedDealer.name}`)}
+                  className="flex w-full items-center gap-2 rounded-lg border border-border bg-foreground/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
+                >
+                  <Pencil className="h-4 w-4 text-muted-foreground" />
+                  Edit Dealer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Invite Dealer Dialog */}
       <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>

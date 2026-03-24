@@ -61,7 +61,22 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { BomPreview } from "@/components/kb/bom-preview";
+
+const chatSwapAlternatives = [
+  { id: "s1", name: 'Shaker White 36" Base Cabinet', price: "$420" },
+  { id: "s2", name: 'Euro Slab 36" Base', price: "$380" },
+  { id: "s3", name: 'Heritage Oak 36" Base', price: "$510" },
+  { id: "s4", name: 'Modern Gray 36" Base', price: "$445" },
+];
 
 // ---------------------------------------------------------------------------
 // Agent Maps
@@ -3166,6 +3181,12 @@ export default function AgentChatPage() {
   const [renderLevel, setRenderLevel] = useState<1 | 2>(1);
   const [showSelected, setShowSelected] = useState(true);
   const [bomOpen, setBomOpen] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(100);
+  const [undoStack, setUndoStack] = useState(3);
+  const [redoStack, setRedoStack] = useState(0);
+  const [showSwapDialog, setShowSwapDialog] = useState(false);
+  const [swapSelected, setSwapSelected] = useState<string | null>(null);
+  const [selectedItemName, setSelectedItemName] = useState(mockSelectedItem.name);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -3549,23 +3570,24 @@ export default function AgentChatPage() {
               <div className="h-4 w-px bg-border" />
 
               {/* Zoom controls */}
-              <Button variant="ghost" size="icon-sm" title="Zoom in" onClick={() => toast("Zoomed in")}>
+              <Button variant="ghost" size="icon-sm" title="Zoom in" onClick={() => { setZoomLevel(prev => Math.min(prev + 25, 400)); toast.success(`Zoom: ${Math.min(zoomLevel + 25, 400)}%`); }}>
                 <ZoomIn className="size-4" />
               </Button>
-              <Button variant="ghost" size="icon-sm" title="Zoom out" onClick={() => toast("Zoomed out")}>
+              <Button variant="ghost" size="icon-sm" title="Zoom out" onClick={() => { setZoomLevel(prev => Math.max(prev - 25, 25)); toast.success(`Zoom: ${Math.max(zoomLevel - 25, 25)}%`); }}>
                 <ZoomOut className="size-4" />
               </Button>
-              <Button variant="ghost" size="icon-sm" title="Fit to view" onClick={() => toast("Fit to view")}>
+              <span className="text-xs text-muted-foreground tabular-nums w-10 text-center">{zoomLevel}%</span>
+              <Button variant="ghost" size="icon-sm" title="Fit to view" onClick={() => { setZoomLevel(100); toast.success("Fit to view — 100%"); }}>
                 <Maximize2 className="size-4" />
               </Button>
 
               <div className="h-4 w-px bg-border" />
 
               {/* Undo / Redo */}
-              <Button variant="ghost" size="icon-sm" title="Undo" onClick={() => toast("Undo")}>
+              <Button variant="ghost" size="icon-sm" title="Undo" disabled={undoStack === 0} onClick={() => { if (undoStack > 0) { setUndoStack(prev => prev - 1); setRedoStack(prev => prev + 1); toast.success("Undo"); } }}>
                 <Undo2 className="size-4" />
               </Button>
-              <Button variant="ghost" size="icon-sm" title="Redo" onClick={() => toast("Redo")}>
+              <Button variant="ghost" size="icon-sm" title="Redo" disabled={redoStack === 0} onClick={() => { if (redoStack > 0) { setRedoStack(prev => prev - 1); setUndoStack(prev => prev + 1); toast.success("Redo"); } }}>
                 <Redo2 className="size-4" />
               </Button>
 
@@ -3674,7 +3696,7 @@ export default function AgentChatPage() {
                       <label className="text-[10px] uppercase tracking-wider text-muted-foreground/60">
                         Name
                       </label>
-                      <p className="text-sm font-medium text-foreground">{mockSelectedItem.name}</p>
+                      <p className="text-sm font-medium text-foreground">{selectedItemName}</p>
                     </div>
 
                     {/* Details */}
@@ -3712,7 +3734,7 @@ export default function AgentChatPage() {
                       <Button
                         variant="outline"
                         className="w-full gap-2 text-xs"
-                        onClick={() => toast.success("Opening product swap dialog")}
+                        onClick={() => { setSwapSelected(null); setShowSwapDialog(true); }}
                       >
                         <RefreshCw className="size-3.5" />
                         Swap Product
@@ -3855,6 +3877,61 @@ export default function AgentChatPage() {
         )}
       </div>
       <BomPreview open={bomOpen} onOpenChange={setBomOpen} />
+
+      {/* Swap Product Dialog */}
+      <Dialog open={showSwapDialog} onOpenChange={setShowSwapDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Swap Product</DialogTitle>
+            <DialogDescription>
+              Replace the current product with an alternative.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div className="rounded-lg border border-border bg-muted/30 p-3">
+              <p className="text-xs text-muted-foreground">Current product</p>
+              <p className="text-sm font-medium text-foreground">{selectedItemName}</p>
+            </div>
+            <p className="text-xs font-medium text-muted-foreground">Alternatives</p>
+            <div className="grid grid-cols-2 gap-2">
+              {chatSwapAlternatives.map((alt) => (
+                <button
+                  key={alt.id}
+                  onClick={() => setSwapSelected(alt.id)}
+                  className={`rounded-lg border p-3 text-left transition-all ${
+                    swapSelected === alt.id
+                      ? "border-primary bg-primary/10 ring-1 ring-primary"
+                      : "border-border hover:border-muted-foreground/30"
+                  }`}
+                >
+                  <div className="mb-2 h-12 w-full rounded bg-muted/50" />
+                  <p className="text-xs font-medium text-foreground leading-tight">{alt.name}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{alt.price}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" size="sm" onClick={() => setShowSwapDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              disabled={!swapSelected}
+              onClick={() => {
+                const alt = chatSwapAlternatives.find((a) => a.id === swapSelected);
+                if (alt) {
+                  setSelectedItemName(alt.name);
+                  toast.success(`Product swapped to ${alt.name}`);
+                  setShowSwapDialog(false);
+                }
+              }}
+            >
+              Swap
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -30,6 +30,7 @@ import {
   ChevronRight,
   Zap,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -391,6 +392,8 @@ const initialIssues: Issue[] = [
 // --- Component ---
 
 export default function IssuesPage() {
+  const router = useRouter();
+  const [actionItemsCreated, setActionItemsCreated] = useState<Set<string>>(new Set());
   const [issues, setIssues] = useState<Issue[]>(initialIssues);
   const [activeTab, setActiveTab] = useState<TabValue>("all");
   const [listMode, setListMode] = useState<ListMode>("all_issues");
@@ -1363,11 +1366,24 @@ export default function IssuesPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="mt-2 h-7 text-xs text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 gap-1.5"
-                        onClick={() => toast.success("Action item created from resolution")}
+                        className={`mt-2 h-7 text-xs gap-1.5 ${actionItemsCreated.has(`${currentSelected.id}-resolution`) ? 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-default' : 'text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10'}`}
+                        disabled={actionItemsCreated.has(`${currentSelected.id}-resolution`)}
+                        onClick={() => {
+                          setActionItemsCreated((prev) => new Set(prev).add(`${currentSelected.id}-resolution`));
+                          toast.success("Action item created from resolution");
+                        }}
                       >
-                        <ArrowRight className="h-3 w-3" />
-                        Create Action Item
+                        {actionItemsCreated.has(`${currentSelected.id}-resolution`) ? (
+                          <>
+                            <CheckCircle2 className="h-3 w-3" />
+                            Action Item Created
+                          </>
+                        ) : (
+                          <>
+                            <ArrowRight className="h-3 w-3" />
+                            Create Action Item
+                          </>
+                        )}
                       </Button>
                     </div>
                   </>
@@ -1386,11 +1402,24 @@ export default function IssuesPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="mt-2 h-7 text-xs text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 gap-1.5"
-                        onClick={() => toast.success("Action item created from issue")}
+                        className={`mt-2 h-7 text-xs gap-1.5 ${actionItemsCreated.has(`${currentSelected.id}-issue`) ? 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-default' : 'text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10'}`}
+                        disabled={actionItemsCreated.has(`${currentSelected.id}-issue`)}
+                        onClick={() => {
+                          setActionItemsCreated((prev) => new Set(prev).add(`${currentSelected.id}-issue`));
+                          toast.success("Action item created from issue");
+                        }}
                       >
-                        <ArrowRight className="h-3 w-3" />
-                        Create Action Item from Resolution
+                        {actionItemsCreated.has(`${currentSelected.id}-issue`) ? (
+                          <>
+                            <CheckCircle2 className="h-3 w-3" />
+                            Action Item Created
+                          </>
+                        ) : (
+                          <>
+                            <ArrowRight className="h-3 w-3" />
+                            Create Action Item from Issue
+                          </>
+                        )}
                       </Button>
                     </div>
                   </>
@@ -1406,7 +1435,17 @@ export default function IssuesPage() {
                       </h5>
                       <div
                         className="flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors"
-                        onClick={() => toast.info(`Navigating to: ${currentSelected.relatedTo}`)}
+                        onClick={() => {
+                          const text = (currentSelected.relatedTo ?? '').toLowerCase();
+                          let route = '/bos';
+                          if (text.includes('kpi') || text.includes('metric') || text.includes('score')) route = '/bos/kpis';
+                          else if (text.includes('goal') || text.includes('rock') || text.includes('reduce') || text.includes('increase') || text.includes('improve')) route = '/bos/goals';
+                          else if (text.includes('issue')) route = '/bos/issues';
+                          else if (text.includes('meeting')) route = '/bos/meetings';
+                          else if (text.includes('review')) route = '/bos/reviews';
+                          router.push(route);
+                          toast.success(`Viewing: ${currentSelected.relatedTo}`);
+                        }}
                       >
                         <Link2 className="h-3.5 w-3.5" />
                         {currentSelected.relatedTo}

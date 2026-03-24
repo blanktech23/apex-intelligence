@@ -594,6 +594,18 @@ export default function ReviewsPage() {
   const [templatePreview, setTemplatePreview] = useState<TemplateInfo | null>(null);
   const [reviewFormModal, setReviewFormModal] = useState<{ personId: string; mode: 'start' | 'continue' | 'view' } | null>(null);
   const [pastCycleExpanded, setPastCycleExpanded] = useState<string | null>(null);
+  const [showCustomizeDialog, setShowCustomizeDialog] = useState(false);
+  const [customizeTarget, setCustomizeTarget] = useState<string | null>(null);
+  const [customizeSections, setCustomizeSections] = useState({
+    coreValuesRating: true,
+    roleSpecificQuestions: true,
+    peerFeedback360: false,
+    selfAssessment: false,
+    goalProgressReview: true,
+    customQuestions: false,
+  });
+  const [customQuestionInputs, setCustomQuestionInputs] = useState<string[]>([]);
+  const [ratingScale, setRatingScale] = useState<'1-5 Stars' | '1-10 Scale' | 'Agree-Disagree'>('1-5 Stars');
 
   // Person step state for interactive progression
   const [personSteps, setPersonSteps] = useState<Record<string, ReviewStep>>(
@@ -1672,10 +1684,18 @@ export default function ReviewsPage() {
                     className="h-8 shrink-0 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/30"
                     onClick={(e) => {
                       e.stopPropagation();
-                      toast('Coming soon', {
-                        description: 'Template customization will be available in a future update.',
-                        duration: 2500,
+                      setCustomizeTarget(template.name);
+                      setCustomizeSections({
+                        coreValuesRating: true,
+                        roleSpecificQuestions: true,
+                        peerFeedback360: false,
+                        selfAssessment: false,
+                        goalProgressReview: true,
+                        customQuestions: false,
                       });
+                      setCustomQuestionInputs([]);
+                      setRatingScale('1-5 Stars');
+                      setShowCustomizeDialog(true);
                     }}
                   >
                     <PenLine className="h-3.5 w-3.5 mr-1.5" />
@@ -2062,10 +2082,19 @@ export default function ReviewsPage() {
               size="sm"
               className="h-8 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground"
               onClick={() => {
-                toast('Coming soon', {
-                  description: 'Template customization will be available in a future update.',
-                  duration: 2500,
+                setCustomizeTarget(templatePreview?.name ?? null);
+                setCustomizeSections({
+                  coreValuesRating: true,
+                  roleSpecificQuestions: true,
+                  peerFeedback360: false,
+                  selfAssessment: false,
+                  goalProgressReview: true,
+                  customQuestions: false,
                 });
+                setCustomQuestionInputs([]);
+                setRatingScale('1-5 Stars');
+                setTemplatePreview(null);
+                setShowCustomizeDialog(true);
               }}
             >
               <PenLine className="h-3.5 w-3.5 mr-1.5" />
@@ -2083,6 +2112,132 @@ export default function ReviewsPage() {
               className="h-8 gap-1.5 rounded-lg bg-primary px-4 text-xs font-medium text-primary-foreground"
             >
               Use Template
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Customize Template Dialog */}
+      <Dialog open={showCustomizeDialog} onOpenChange={(open) => { if (!open) setShowCustomizeDialog(false); }}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <PenLine className="h-4 w-4 text-indigo-400" />
+              Customize Review Template
+            </DialogTitle>
+            <DialogDescription>
+              {customizeTarget && <span className="block mt-1 text-foreground font-medium">{customizeTarget}</span>}
+              Toggle sections and configure the rating scale for this template.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Template Sections</h4>
+              <div className="space-y-2">
+                {([
+                  { key: 'coreValuesRating' as const, label: 'Core Values Rating', defaultOn: true },
+                  { key: 'roleSpecificQuestions' as const, label: 'Role-Specific Questions', defaultOn: true },
+                  { key: 'peerFeedback360' as const, label: '360\u00b0 Peer Feedback', defaultOn: false },
+                  { key: 'selfAssessment' as const, label: 'Self Assessment', defaultOn: false },
+                  { key: 'goalProgressReview' as const, label: 'Goal Progress Review', defaultOn: true },
+                  { key: 'customQuestions' as const, label: 'Custom Questions', defaultOn: false },
+                ]).map((section) => (
+                  <button
+                    key={section.key}
+                    type="button"
+                    className="flex w-full items-center justify-between rounded-lg bg-muted/30 px-3 py-2.5 text-left transition-colors hover:bg-muted/50"
+                    onClick={() => setCustomizeSections((prev) => ({ ...prev, [section.key]: !prev[section.key] }))}
+                  >
+                    <span className="text-sm text-foreground">{section.label}</span>
+                    <span className={`flex h-5 w-9 items-center rounded-full px-0.5 transition-colors ${customizeSections[section.key] ? 'bg-primary' : 'bg-muted-foreground/30'}`}>
+                      <span className={`h-4 w-4 rounded-full bg-white shadow transition-transform ${customizeSections[section.key] ? 'translate-x-4' : 'translate-x-0'}`} />
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            {customizeSections.customQuestions && (
+              <div>
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Custom Questions</h4>
+                <div className="space-y-2">
+                  {customQuestionInputs.map((q, i) => (
+                    <div key={i} className="flex gap-2">
+                      <Input
+                        value={q}
+                        onChange={(e) => setCustomQuestionInputs((prev) => prev.map((v, j) => j === i ? e.target.value : v))}
+                        placeholder={`Question ${i + 1}`}
+                        className="h-8 text-xs"
+                      />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2 text-muted-foreground hover:text-red-400"
+                        onClick={() => setCustomQuestionInputs((prev) => prev.filter((_, j) => j !== i))}
+                      >
+                        &times;
+                      </Button>
+                    </div>
+                  ))}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 gap-1.5 text-xs text-primary hover:bg-primary/10"
+                    onClick={() => setCustomQuestionInputs((prev) => [...prev, ''])}
+                  >
+                    <Plus className="h-3 w-3" />
+                    Add Custom Question
+                  </Button>
+                </div>
+              </div>
+            )}
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Rating Scale</h4>
+              <div className="flex gap-2">
+                {(['1-5 Stars', '1-10 Scale', 'Agree-Disagree'] as const).map((scale) => (
+                  <button
+                    key={scale}
+                    type="button"
+                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${ratingScale === scale ? 'border-primary bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:border-muted-foreground/40'}`}
+                    onClick={() => setRatingScale(scale)}
+                  >
+                    {scale}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground"
+              onClick={() => {
+                setCustomizeSections({
+                  coreValuesRating: true,
+                  roleSpecificQuestions: true,
+                  peerFeedback360: false,
+                  selfAssessment: false,
+                  goalProgressReview: true,
+                  customQuestions: false,
+                });
+                setCustomQuestionInputs([]);
+                setRatingScale('1-5 Stars');
+                toast('Template reset to defaults');
+              }}
+            >
+              Reset to Default
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => {
+                toast.success('Template customized', {
+                  description: `${customizeTarget} has been updated with your settings.`,
+                });
+                setShowCustomizeDialog(false);
+              }}
+              className="h-8 gap-1.5 rounded-lg bg-primary px-4 text-xs font-medium text-primary-foreground"
+            >
+              Save Template
             </Button>
           </DialogFooter>
         </DialogContent>

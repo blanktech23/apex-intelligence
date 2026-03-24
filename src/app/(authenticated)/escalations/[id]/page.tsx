@@ -269,6 +269,7 @@ export default function EscalationDetailPage() {
   const [reassignToast, setReassignToast] = useState<string | null>(null);
   const [currentStatus, setCurrentStatus] = useState<string>(escalation.status);
   const [sourceContextOpen, setSourceContextOpen] = useState(false);
+  const [completedActions, setCompletedActions] = useState<Set<string>>(new Set());
 
   const p = priorityStyles[escalation.priority];
   const s =
@@ -816,21 +817,53 @@ export default function EscalationDetailPage() {
               <Lightbulb className="h-4 w-4 text-amber-400" />
               Suggested Actions
             </h3>
+            <p className="mt-2 text-xs text-muted-foreground/60">
+              {completedActions.size} of {escalation.suggestedActions.length} actions completed
+            </p>
+            <div className="mt-1 h-1 w-full rounded-full bg-muted/40 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-emerald-400 transition-all duration-500"
+                style={{ width: `${(completedActions.size / escalation.suggestedActions.length) * 100}%` }}
+              />
+            </div>
             <div className="mt-4 space-y-2.5">
               {escalation.suggestedActions.map((action) => {
                 const Icon = action.icon;
+                const isDone = completedActions.has(action.label);
                 return (
                   <button
                     key={action.label}
-                    onClick={() => toast.info(action.label)}
-                    className="group flex w-full items-start gap-3 rounded-lg border border-border bg-muted/20 p-3 text-left transition-all hover:border-primary/25 hover:bg-primary/[0.06]"
+                    disabled={isDone}
+                    onClick={() => {
+                      setCompletedActions((prev) => new Set(prev).add(action.label));
+                      toast.success(`Action initiated: ${action.label}`, {
+                        description: "Assigned to you. Track progress in the Actions tab.",
+                      });
+                    }}
+                    className={`group flex w-full items-start gap-3 rounded-lg border p-3 text-left transition-all ${
+                      isDone
+                        ? "border-emerald-500/20 bg-emerald-500/[0.04] opacity-75 cursor-default"
+                        : "border-border bg-muted/20 hover:border-primary/25 hover:bg-primary/[0.06]"
+                    }`}
                   >
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 transition-colors group-hover:bg-primary/20">
-                      <Icon className="h-3.5 w-3.5 text-primary" />
+                    <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors ${
+                      isDone
+                        ? "bg-emerald-500/15"
+                        : "bg-primary/10 group-hover:bg-primary/20"
+                    }`}>
+                      {isDone ? (
+                        <Check className="h-3.5 w-3.5 text-emerald-400" />
+                      ) : (
+                        <Icon className="h-3.5 w-3.5 text-primary" />
+                      )}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">
-                        {action.label}
+                      <p className={`text-sm font-medium transition-colors ${
+                        isDone
+                          ? "text-emerald-400/80"
+                          : "text-foreground group-hover:text-primary"
+                      }`}>
+                        {action.label}{isDone ? " — Done \u2713" : ""}
                       </p>
                       <p className="mt-0.5 text-xs text-muted-foreground/70">
                         {action.description}

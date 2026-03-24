@@ -746,7 +746,10 @@ function ChatBubble({
   onFeedback?: () => void;
   onLinkClick?: () => void;
 }) {
-  const [feedbackGiven, setFeedbackGiven] = useState(false);
+  const [feedbackGiven, setFeedbackGiven] = useState<null | "up" | "down">(null);
+  const [showFeedbackInput, setShowFeedbackInput] = useState(false);
+  const [feedbackText, setFeedbackText] = useState("");
+  const feedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isUser = msg.role === "user";
 
   return (
@@ -813,9 +816,8 @@ function ChatBubble({
             </span>
             <button
               onClick={() => {
-                setFeedbackGiven(true);
-                toast.success("Thanks for your feedback!");
-                console.log("[Help] Positive feedback for:", msg.id);
+                setFeedbackGiven("up");
+                toast.success("Thanks for the feedback!");
               }}
               className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-emerald-500/10 hover:text-emerald-500"
               aria-label="Helpful"
@@ -824,9 +826,13 @@ function ChatBubble({
             </button>
             <button
               onClick={() => {
-                setFeedbackGiven(true);
-                toast.success("Thanks for your feedback!");
-                console.log("[Help] Negative feedback for:", msg.id);
+                setFeedbackGiven("down");
+                setShowFeedbackInput(true);
+                toast("Thanks for the feedback. We'll improve this response.");
+                if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
+                feedbackTimerRef.current = setTimeout(() => {
+                  setShowFeedbackInput(false);
+                }, 5000);
               }}
               className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-red-500/10 hover:text-red-500"
               aria-label="Not helpful"
@@ -837,9 +843,51 @@ function ChatBubble({
         )}
 
         {feedbackGiven && msg.role === "assistant" && (
-          <p className="text-[11px] text-muted-foreground/60">
-            Feedback recorded
-          </p>
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-1 pt-0.5">
+              <button
+                disabled
+                className={`rounded-md p-1 ${feedbackGiven === "up" ? "text-emerald-500 bg-emerald-500/10" : "text-muted-foreground/30"}`}
+                aria-label="Helpful"
+              >
+                <ThumbsUp className="h-3 w-3" style={feedbackGiven === "up" ? { fill: "currentColor" } : undefined} />
+              </button>
+              <button
+                disabled
+                className={`rounded-md p-1 ${feedbackGiven === "down" ? "text-red-500 bg-red-500/10" : "text-muted-foreground/30"}`}
+                aria-label="Not helpful"
+              >
+                <ThumbsDown className="h-3 w-3" style={feedbackGiven === "down" ? { fill: "currentColor" } : undefined} />
+              </button>
+              <span className="ml-1 text-[11px] text-muted-foreground/60">Feedback recorded</span>
+            </div>
+            {showFeedbackInput && feedbackGiven === "down" && (
+              <div className="flex items-start gap-1.5">
+                <textarea
+                  value={feedbackText}
+                  onChange={(e) => setFeedbackText(e.target.value)}
+                  placeholder="What went wrong?"
+                  rows={2}
+                  className="flex-1 rounded-lg border border-border bg-muted/30 px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/50 focus:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/30 resize-none"
+                  onFocus={() => {
+                    if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    setShowFeedbackInput(false);
+                    if (feedbackText.trim()) {
+                      toast.success("Feedback submitted. Thank you!");
+                    }
+                    setFeedbackText("");
+                  }}
+                  className="mt-0.5 rounded-md bg-primary/10 p-1.5 text-primary transition-colors hover:bg-primary/20"
+                >
+                  <Send className="h-3 w-3" />
+                </button>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

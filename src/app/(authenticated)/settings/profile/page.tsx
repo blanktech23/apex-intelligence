@@ -1,11 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Camera } from "lucide-react";
+import { Camera, Upload, Check, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export default function ProfileSettingsPage() {
   const [fullName, setFullName] = useState("Joseph Wells");
@@ -13,12 +21,41 @@ export default function ProfileSettingsPage() {
   const [phone, setPhone] = useState("+1 555-0123");
   const [modified, setModified] = useState(false);
 
+  // Avatar dialog state
+  const [showAvatarDialog, setShowAvatarDialog] = useState(false);
+  const [avatarUpdated, setAvatarUpdated] = useState(false);
+
+  // Microsoft connect dialog state
+  const [showMicrosoftDialog, setShowMicrosoftDialog] = useState(false);
+  const [msStep, setMsStep] = useState<1 | 2 | 3>(1);
+  const [microsoftConnected, setMicrosoftConnected] = useState(false);
+
   const handleChange = (
     setter: (v: string) => void,
     value: string
   ) => {
     setter(value);
     setModified(true);
+  };
+
+  const handleAvatarUpload = () => {
+    toast.success("Avatar updated successfully");
+    setAvatarUpdated(true);
+    setShowAvatarDialog(false);
+  };
+
+  const handleMicrosoftConnect = () => {
+    setMsStep(2);
+    setTimeout(() => {
+      setMsStep(3);
+    }, 1500);
+  };
+
+  const handleMicrosoftDone = () => {
+    setMicrosoftConnected(true);
+    setShowMicrosoftDialog(false);
+    toast.success("Microsoft 365 connected");
+    setMsStep(1);
   };
 
   return (
@@ -33,7 +70,7 @@ export default function ProfileSettingsPage() {
         >
           {/* Avatar section */}
           <div className="flex items-center gap-5">
-            <div className="relative flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-primary/20 text-2xl font-bold text-primary">
+            <div className={`relative flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-primary/20 text-2xl font-bold text-primary ${avatarUpdated ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : ""}`}>
               JW
               <div className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-background bg-white/10">
                 <Camera className="h-3.5 w-3.5 text-muted-foreground" />
@@ -47,7 +84,7 @@ export default function ProfileSettingsPage() {
                 variant="outline"
                 size="sm"
                 className="mt-2 border-border text-xs"
-                onClick={() => toast.success("Avatar updated successfully")}
+                onClick={() => setShowAvatarDialog(true)}
               >
                 Change avatar
               </Button>
@@ -138,7 +175,7 @@ export default function ProfileSettingsPage() {
                 </Badge>
               </div>
 
-              {/* Microsoft - not connected */}
+              {/* Microsoft - connect flow */}
               <div className="flex items-center justify-between rounded-lg border border-border bg-muted/20 px-4 py-3">
                 <div className="flex items-center gap-3">
                   <svg className="h-5 w-5" viewBox="0 0 23 23">
@@ -149,14 +186,20 @@ export default function ProfileSettingsPage() {
                   </svg>
                   <span className="text-sm text-foreground">Microsoft</span>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-border text-xs"
-                  onClick={() => toast.info("Connecting to Microsoft...")}
-                >
-                  Connect
-                </Button>
+                {microsoftConnected ? (
+                  <Badge className="border-0 bg-emerald-500/15 text-emerald-400">
+                    Connected
+                  </Badge>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-border text-xs"
+                    onClick={() => { setMsStep(1); setShowMicrosoftDialog(true); }}
+                  >
+                    Connect
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -174,6 +217,131 @@ export default function ProfileSettingsPage() {
           </div>
         </form>
       </div>
+
+      {/* ============================================================ */}
+      {/*  Avatar Upload Dialog                                         */}
+      {/* ============================================================ */}
+      <Dialog open={showAvatarDialog} onOpenChange={setShowAvatarDialog}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Upload Avatar</DialogTitle>
+            <DialogDescription>
+              Choose a new profile photo.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {/* Current avatar preview */}
+            <div className="flex justify-center">
+              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/20 text-3xl font-bold text-primary">
+                JW
+              </div>
+            </div>
+
+            {/* Drop zone */}
+            <div
+              className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border bg-muted/20 px-6 py-8 transition-colors hover:border-primary/40 hover:bg-muted/30 cursor-pointer"
+              onClick={handleAvatarUpload}
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                <Upload className="h-5 w-5 text-primary" />
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-medium text-foreground">
+                  Click to upload or drag and drop
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  PNG, JPG, or GIF up to 5MB
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAvatarDialog(false)}>
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ============================================================ */}
+      {/*  Microsoft Connect Dialog                                     */}
+      {/* ============================================================ */}
+      <Dialog open={showMicrosoftDialog} onOpenChange={(open) => { if (!open && msStep !== 2) { setShowMicrosoftDialog(false); setMsStep(1); } }}>
+        <DialogContent className="sm:max-w-sm">
+          {msStep === 1 && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Connect Microsoft 365</DialogTitle>
+                <DialogDescription>
+                  Link your Microsoft 365 account to sync calendars, emails, and files.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex flex-col items-center gap-4 py-4">
+                <svg className="h-12 w-12" viewBox="0 0 23 23">
+                  <path fill="#f35325" d="M0 0h11v11H0z" />
+                  <path fill="#81bc06" d="M12 0h11v11H12z" />
+                  <path fill="#05a6f0" d="M0 12h11v11H0z" />
+                  <path fill="#ffba08" d="M12 12h11v11H12z" />
+                </svg>
+                <Button
+                  className="w-full gap-2 bg-[#0078d4] text-white hover:bg-[#106ebe]"
+                  onClick={handleMicrosoftConnect}
+                >
+                  <svg className="h-4 w-4" viewBox="0 0 23 23">
+                    <path fill="#fff" d="M0 0h11v11H0z" opacity="0.8" />
+                    <path fill="#fff" d="M12 0h11v11H12z" opacity="0.6" />
+                    <path fill="#fff" d="M0 12h11v11H0z" opacity="0.6" />
+                    <path fill="#fff" d="M12 12h11v11H12z" opacity="0.4" />
+                  </svg>
+                  Sign in with Microsoft
+                </Button>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShowMicrosoftDialog(false)}>
+                  Cancel
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+
+          {msStep === 2 && (
+            <div className="flex flex-col items-center gap-4 py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="text-sm text-muted-foreground">
+                Connecting to Microsoft 365...
+              </p>
+            </div>
+          )}
+
+          {msStep === 3 && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Check className="h-5 w-5 text-emerald-400" />
+                  Connected!
+                </DialogTitle>
+                <DialogDescription>
+                  Your Microsoft 365 account has been successfully linked.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4">
+                <p className="text-sm text-foreground font-medium">joseph@kiptra.io</p>
+                <p className="text-xs text-muted-foreground mt-1">Microsoft 365 Business</p>
+              </div>
+              <DialogFooter>
+                <Button
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  onClick={handleMicrosoftDone}
+                >
+                  Done
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

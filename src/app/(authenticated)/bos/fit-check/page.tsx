@@ -28,6 +28,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { Loader2, Send as SendIcon } from 'lucide-react';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -829,6 +830,12 @@ export default function FitCheckPage() {
   const [sortAsc, setSortAsc] = useState(true);
   const [wizardPerson, setWizardPerson] = useState<PersonFitData | null>(null);
   const [activeTab, setActiveTab] = useState<'analyzer' | 'health'>('analyzer');
+  const [exportFitState, setExportFitState] = useState<'idle' | 'exporting' | 'done'>('idle');
+  const [scheduledOneOnOnes, setScheduledOneOnOnes] = useState<Set<string>>(new Set());
+  const [plansCreated, setPlansCreated] = useState<Set<string>>(new Set());
+  const [messagesSent, setMessagesSent] = useState<Set<string>>(new Set());
+  const [messageTargetId, setMessageTargetId] = useState<string | null>(null);
+  const [messageText, setMessageText] = useState('');
 
   // Counts
   const rightRightCount = members.filter((m) => m.fitStatus === 'right-right').length;
@@ -946,11 +953,33 @@ export default function FitCheckPage() {
           <Button
             size="sm"
             variant="ghost"
-            className="h-9 gap-2 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground"
-            onClick={() => toast.success('Fit Check report exported')}
+            className={`h-9 gap-2 rounded-lg px-3 text-xs ${exportFitState === 'done' ? 'text-emerald-400' : 'text-muted-foreground hover:text-foreground'}`}
+            disabled={exportFitState !== 'idle'}
+            onClick={() => {
+              setExportFitState('exporting');
+              toast.success('Fit Check report exported');
+              setTimeout(() => {
+                setExportFitState('done');
+                setTimeout(() => setExportFitState('idle'), 2000);
+              }, 1500);
+            }}
           >
-            <Download className="h-3.5 w-3.5" />
-            Export
+            {exportFitState === 'exporting' ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                Exporting...
+              </>
+            ) : exportFitState === 'done' ? (
+              <>
+                <CheckCircle2 className="h-3.5 w-3.5" />
+                Exported
+              </>
+            ) : (
+              <>
+                <Download className="h-3.5 w-3.5" />
+                Export
+              </>
+            )}
           </Button>
           <Button
             size="sm"
@@ -1332,31 +1361,105 @@ export default function FitCheckPage() {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="h-8 gap-1.5 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground"
-                    onClick={() => toast.success(`1-on-1 scheduled with ${person.name}`)}
+                    className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${scheduledOneOnOnes.has(person.id) ? 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-default' : 'text-muted-foreground hover:text-foreground'}`}
+                    disabled={scheduledOneOnOnes.has(person.id)}
+                    onClick={() => {
+                      setScheduledOneOnOnes((prev) => new Set(prev).add(person.id));
+                      toast.success(`1-on-1 scheduled with ${person.name}`);
+                    }}
                   >
-                    <Calendar className="h-3.5 w-3.5" />
-                    Schedule 1-on-1
+                    {scheduledOneOnOnes.has(person.id) ? (
+                      <>
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Scheduled
+                      </>
+                    ) : (
+                      <>
+                        <Calendar className="h-3.5 w-3.5" />
+                        Schedule 1-on-1
+                      </>
+                    )}
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="h-8 gap-1.5 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground"
-                    onClick={() => toast.success(`Improvement plan created for ${person.name}`)}
+                    className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${plansCreated.has(person.id) ? 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-default' : 'text-muted-foreground hover:text-foreground'}`}
+                    disabled={plansCreated.has(person.id)}
+                    onClick={() => {
+                      setPlansCreated((prev) => new Set(prev).add(person.id));
+                      toast.success(`Improvement plan created for ${person.name}`);
+                    }}
                   >
-                    <ClipboardList className="h-3.5 w-3.5" />
-                    Create Improvement Plan
+                    {plansCreated.has(person.id) ? (
+                      <>
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Plan Created
+                      </>
+                    ) : (
+                      <>
+                        <ClipboardList className="h-3.5 w-3.5" />
+                        Create Improvement Plan
+                      </>
+                    )}
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="h-8 gap-1.5 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground"
-                    onClick={() => toast.success(`Message sent to ${person.name}`)}
+                    className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${messagesSent.has(person.id) ? 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-default' : 'text-muted-foreground hover:text-foreground'}`}
+                    disabled={messagesSent.has(person.id)}
+                    onClick={() => {
+                      setMessageTargetId(messageTargetId === person.id ? null : person.id);
+                      setMessageText('');
+                    }}
                   >
-                    <MessageSquare className="h-3.5 w-3.5" />
-                    Message
+                    {messagesSent.has(person.id) ? (
+                      <>
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Message Sent
+                      </>
+                    ) : (
+                      <>
+                        <MessageSquare className="h-3.5 w-3.5" />
+                        Message
+                      </>
+                    )}
                   </Button>
                 </div>
+                {messageTargetId === person.id && !messagesSent.has(person.id) && (
+                  <div className="mt-3 space-y-2 border-t border-border/50 pt-3">
+                    <textarea
+                      value={messageText}
+                      onChange={(e) => setMessageText(e.target.value)}
+                      placeholder={`Message to ${person.name}...`}
+                      className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                      rows={3}
+                    />
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 px-2 text-xs text-muted-foreground"
+                        onClick={() => { setMessageTargetId(null); setMessageText(''); }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="h-7 gap-1.5 rounded-lg bg-primary px-3 text-xs text-primary-foreground"
+                        disabled={!messageText.trim()}
+                        onClick={() => {
+                          setMessagesSent((prev) => new Set(prev).add(person.id));
+                          setMessageTargetId(null);
+                          setMessageText('');
+                          toast.success(`Message sent to ${person.name}`);
+                        }}
+                      >
+                        <SendIcon className="h-3 w-3" />
+                        Send
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}

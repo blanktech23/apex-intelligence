@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   Package,
   ChevronDown,
+  X,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -118,6 +119,17 @@ export default function ProductionPage() {
   const [mounted, setMounted] = useState(false);
   const [filter, setFilter] = useState("all");
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<(typeof production)[number] | null>(null);
+
+  const productionSteps = ["Order Received", "In Production", "QC Check", "Ready to Ship"];
+  const stepMap: Record<string, number> = { "In Queue": 0, "In Production": 1, "Quality Check": 2, "Ready to Ship": 3 };
+
+  function handleUpdateStatus(newStatus: string) {
+    if (selectedItem) {
+      setSelectedItem({ ...selectedItem, status: newStatus });
+      toast.success(`Status updated to "${newStatus}" for ${selectedItem.order}`);
+    }
+  }
 
   useEffect(() => setMounted(true), []);
 
@@ -340,7 +352,7 @@ export default function ProductionPage() {
               <TableRow
                 key={p.order}
                 className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer"
-                onClick={() => toast(`${p.order} - ${p.productLine}`, { description: `Dealer: ${p.dealer} | Status: ${p.status} | Qty: ${p.qty} | Est: ${new Date(p.est).toLocaleDateString("en-US", { month: "short", day: "numeric" })}` })}
+                onClick={() => setSelectedItem(p)}
               >
                 <TableCell className="font-medium text-foreground">{p.order}</TableCell>
                 <TableCell className="text-muted-foreground">{p.dealer}</TableCell>
@@ -353,6 +365,102 @@ export default function ProductionPage() {
           </TableBody>
         </Table>
       </Card>
+
+      {/* Production Detail Slide-out Panel */}
+      {selectedItem && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setSelectedItem(null)} />
+          <div className="relative z-10 h-full w-full max-w-md overflow-y-auto border-l border-border bg-background p-6 shadow-2xl animate-in slide-in-from-right duration-200">
+            <button onClick={() => setSelectedItem(null)} className="absolute right-4 top-4 rounded-md p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted">
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="space-y-6">
+              {/* Header */}
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">{selectedItem.order}</h2>
+                <p className="text-sm text-muted-foreground mt-0.5">{selectedItem.productLine}</p>
+                <Badge variant="outline" className={`mt-2 ${statusColors[selectedItem.status]}`}>{selectedItem.status}</Badge>
+              </div>
+
+              <Separator className="bg-border" />
+
+              {/* Details Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Dealer</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedItem.dealer}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Quantity</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedItem.qty}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Product Line</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedItem.productLine}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Est. Completion</p>
+                  <p className="text-sm text-foreground mt-0.5">{new Date(selectedItem.est).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
+                </div>
+              </div>
+
+              <Separator className="bg-border" />
+
+              {/* Timeline / Progress */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-3">Production Timeline</p>
+                <div className="space-y-3">
+                  {productionSteps.map((step, i) => {
+                    const currentStep = stepMap[selectedItem.status] ?? 0;
+                    const isComplete = i < currentStep;
+                    const isCurrent = i === currentStep;
+                    return (
+                      <div key={step} className="flex items-center gap-3">
+                        <div className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-medium ${
+                          isComplete ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" :
+                          isCurrent ? "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30" :
+                          "bg-foreground/5 text-muted-foreground border border-border"
+                        }`}>
+                          {isComplete ? <CheckCircle2 className="h-3.5 w-3.5" /> : i + 1}
+                        </div>
+                        <span className={`text-sm ${isCurrent ? "font-medium text-foreground" : isComplete ? "text-emerald-400" : "text-muted-foreground"}`}>{step}</span>
+                        {isCurrent && <Badge variant="outline" className="bg-indigo-500/10 text-indigo-400 border-indigo-500/30 text-[10px] px-1.5 py-0">Current</Badge>}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <Separator className="bg-border" />
+
+              {/* Actions */}
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground mb-1.5">Update Status</p>
+                  <Select value={selectedItem.status} onValueChange={(v) => v && handleUpdateStatus(v)}>
+                    <SelectTrigger className="glass border-border bg-foreground/5 text-foreground">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="glass-strong border-border bg-popover">
+                      <SelectItem value="In Queue">In Queue</SelectItem>
+                      <SelectItem value="In Production">In Production</SelectItem>
+                      <SelectItem value="Quality Check">QC Check</SelectItem>
+                      <SelectItem value="Ready to Ship">Ready to Ship</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <button
+                  onClick={() => toast.success("Shipping label generated")}
+                  className="w-full rounded-lg border border-border bg-foreground/5 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
+                >
+                  Print Label
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -17,10 +17,20 @@ import {
   Clock,
   TrendingUp,
   ArrowRight,
+  Plus,
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -202,6 +212,31 @@ export default function BillingSettingsPage() {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState(false);
+
+  // Payment method dialog state
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCvc, setCardCvc] = useState("");
+  const [showNewCard, setShowNewCard] = useState(false);
+
+  // Download button loading state
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
+
+  const handleDownloadInvoice = (id: string) => {
+    setDownloadingId(id);
+    toast.success(`Downloading ${id}.pdf`);
+    setTimeout(() => setDownloadingId(null), 1000);
+  };
+
+  const handleUpdatePayment = () => {
+    toast.success("Payment method updated");
+    setShowPaymentDialog(false);
+    setShowNewCard(false);
+    setCardNumber("");
+    setCardExpiry("");
+    setCardCvc("");
+  };
 
   if (!config.canViewBilling) {
     return (
@@ -395,7 +430,7 @@ export default function BillingSettingsPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => toast.info("Opening payment method settings...")}
+            onClick={() => setShowPaymentDialog(true)}
             className="border-border text-xs"
           >
             Update
@@ -475,11 +510,12 @@ export default function BillingSettingsPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => toast.success(`Downloading ${item.id}.pdf`)}
+                      onClick={() => handleDownloadInvoice(item.id)}
+                      disabled={downloadingId === item.id}
                       className="h-7 gap-1 text-xs text-muted-foreground hover:text-foreground"
                     >
                       <Download className="h-3.5 w-3.5" />
-                      PDF
+                      {downloadingId === item.id ? "Downloading..." : "PDF"}
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -505,16 +541,110 @@ export default function BillingSettingsPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => toast.success(`Downloading ${item.id}.pdf`)}
+                onClick={() => handleDownloadInvoice(item.id)}
+                disabled={downloadingId === item.id}
                 className="h-7 gap-1 px-0 text-xs text-muted-foreground hover:text-foreground"
               >
                 <Download className="h-3.5 w-3.5" />
-                Download PDF
+                {downloadingId === item.id ? "Downloading..." : "Download PDF"}
               </Button>
             </div>
           ))}
         </div>
       </div>
+
+      {/* ============================================================ */}
+      {/*  Payment Method Dialog                                        */}
+      {/* ============================================================ */}
+      <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Update Payment Method</DialogTitle>
+            <DialogDescription>
+              {showNewCard ? "Enter your new card details." : "Your current payment method is shown below."}
+            </DialogDescription>
+          </DialogHeader>
+
+          {!showNewCard ? (
+            <div className="space-y-4">
+              {/* Current card */}
+              <div className="flex items-center gap-4 rounded-lg border border-border bg-muted/30 px-4 py-3">
+                <div className="flex h-8 w-12 items-center justify-center rounded bg-gradient-to-br from-blue-600 to-blue-800">
+                  <span className="text-[9px] font-bold tracking-wider text-white">VISA</span>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-foreground">Visa ending in 4242</p>
+                  <p className="text-xs text-muted-foreground">Expires 12/2028</p>
+                </div>
+                <Badge className="border-0 bg-emerald-500/15 text-emerald-400">Default</Badge>
+              </div>
+              <Button
+                variant="outline"
+                className="w-full gap-2 text-sm"
+                onClick={() => setShowNewCard(true)}
+              >
+                <Plus className="h-4 w-4" />
+                Add new card
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-foreground">Card number</label>
+                <Input
+                  placeholder="1234 5678 9012 3456"
+                  value={cardNumber}
+                  onChange={(e) => setCardNumber(e.target.value)}
+                  className="h-10 rounded-lg border-border bg-muted/30 px-3 text-sm focus-visible:border-primary focus-visible:ring-primary/30"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground">Expiry</label>
+                  <Input
+                    placeholder="MM/YY"
+                    value={cardExpiry}
+                    onChange={(e) => setCardExpiry(e.target.value)}
+                    className="h-10 rounded-lg border-border bg-muted/30 px-3 text-sm focus-visible:border-primary focus-visible:ring-primary/30"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground">CVC</label>
+                  <Input
+                    placeholder="123"
+                    value={cardCvc}
+                    onChange={(e) => setCardCvc(e.target.value)}
+                    className="h-10 rounded-lg border-border bg-muted/30 px-3 text-sm focus-visible:border-primary focus-visible:ring-primary/30"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowPaymentDialog(false);
+                setShowNewCard(false);
+                setCardNumber("");
+                setCardExpiry("");
+                setCardCvc("");
+              }}
+            >
+              Cancel
+            </Button>
+            {showNewCard && (
+              <Button
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                onClick={handleUpdatePayment}
+              >
+                Save card
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* ============================================================ */}
       {/*  Upgrade plan dialog                                          */}

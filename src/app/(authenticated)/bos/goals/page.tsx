@@ -37,6 +37,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -451,6 +452,7 @@ function MilestoneBurndownChart({ milestones }: { milestones: Milestone[] }) {
 // --- Component ---
 
 export default function GoalsPage() {
+  const router = useRouter();
   const [goals, setGoals] = useState<Goal[]>(initialGoals);
   const [activeQuarter, setActiveQuarter] = useState<Quarter>("Q1 2026");
   const [expandedGoal, setExpandedGoal] = useState<string | null>(null);
@@ -1146,7 +1148,11 @@ export default function GoalsPage() {
                               <TypeIcon className={`h-3 w-3 ${typeColor}`} />
                               <button
                                 className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
-                                onClick={() => toast.info(`Navigating to ${item.type}: "${item.title}"`)}
+                                onClick={() => {
+                                  const routeMap: Record<string, string> = { goal: '/bos/goals', rock: '/bos/goals', milestone: '/bos/goals', kpi: '/bos/kpis', issue: '/bos/issues', todo: '/bos/goals' };
+                                  router.push(routeMap[item.type] ?? '/bos');
+                                  toast.success(`Viewing ${item.type}: "${item.title}"`);
+                                }}
                               >
                                 {item.title}
                               </button>
@@ -1181,7 +1187,10 @@ export default function GoalsPage() {
                       <div
                         key={kpi}
                         className="flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors"
-                        onClick={() => toast.info(`Navigating to KPI: ${kpi}`)}
+                        onClick={() => {
+                          router.push('/bos/kpis');
+                          toast.success(`Viewing KPI: ${kpi}`);
+                        }}
                       >
                         <Link2 className="h-3 w-3" />
                         {kpi}

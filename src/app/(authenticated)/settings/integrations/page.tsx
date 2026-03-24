@@ -27,6 +27,7 @@ import {
   XCircle,
   Zap,
   CreditCard,
+  Copy,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -766,6 +767,27 @@ export default function IntegrationsPage() {
   const [oauthTarget, setOauthTarget] = useState<Integration | null>(null);
   const [oauthModalKey, setOauthModalKey] = useState(0);
 
+  // Integration config dialog state
+  const [configTarget, setConfigTarget] = useState<Integration | null>(null);
+  const [configSaving, setConfigSaving] = useState(false);
+  const [configTesting, setConfigTesting] = useState(false);
+  const [configDisconnectConfirm, setConfigDisconnectConfirm] = useState(false);
+  const [configSyncFreq, setConfigSyncFreq] = useState("realtime");
+  const [configSyncDir, setConfigSyncDir] = useState("two-way");
+  const [configAutoSync, setConfigAutoSync] = useState(true);
+  const [configConflict, setConfigConflict] = useState("kiptra-wins");
+
+  const openConfigDialog = (integration: Integration) => {
+    setConfigTarget(integration);
+    setConfigSyncFreq("realtime");
+    setConfigSyncDir("two-way");
+    setConfigAutoSync(true);
+    setConfigConflict("kiptra-wins");
+    setConfigSaving(false);
+    setConfigTesting(false);
+    setConfigDisconnectConfirm(false);
+  };
+
   const handleTestConnection = (name: string) => {
     setTestingConnection(name);
     setTestResults((prev) => {
@@ -888,6 +910,178 @@ export default function IntegrationsPage() {
           </div>
         </div>
       )}
+
+      {/* Integration Config Dialog */}
+      <Dialog open={!!configTarget} onOpenChange={(open) => { if (!open) { setConfigTarget(null); setConfigDisconnectConfirm(false); } }}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>{configTarget?.name} Settings</DialogTitle>
+            <DialogDescription>Configure sync behavior and connection settings for {configTarget?.name}.</DialogDescription>
+          </DialogHeader>
+
+          {configDisconnectConfirm ? (
+            <div className="space-y-4 py-2">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/15">
+                  <AlertCircle className="h-5 w-5 text-red-400" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Disconnect {configTarget?.name}?</p>
+                  <p className="text-xs text-muted-foreground">All synced data will be preserved, but new syncs will stop immediately.</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-end gap-3">
+                <Button variant="outline" size="sm" onClick={() => setConfigDisconnectConfirm(false)}>Cancel</Button>
+                <Button
+                  size="sm"
+                  className="bg-red-500 text-white hover:bg-red-500/90"
+                  onClick={() => {
+                    const name = configTarget?.name ?? "";
+                    setIntegrations((prev) =>
+                      prev.map((i) =>
+                        i.name === name ? { ...i, status: "not_connected" as IntegrationStatus, health: undefined, lastSync: undefined } : i
+                      )
+                    );
+                    toast.success(`Disconnected from ${name}`);
+                    setConfigTarget(null);
+                    setConfigDisconnectConfirm(false);
+                  }}
+                >
+                  Disconnect
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-5 py-2">
+              {/* Sync Frequency */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground">Sync frequency</label>
+                <select
+                  value={configSyncFreq}
+                  onChange={(e) => setConfigSyncFreq(e.target.value)}
+                  className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
+                >
+                  <option value="realtime">Real-time</option>
+                  <option value="15min">Every 15 minutes</option>
+                  <option value="hourly">Hourly</option>
+                  <option value="daily">Daily</option>
+                </select>
+              </div>
+
+              {/* Sync Direction */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground">Sync direction</label>
+                <select
+                  value={configSyncDir}
+                  onChange={(e) => setConfigSyncDir(e.target.value)}
+                  className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
+                >
+                  <option value="two-way">Two-way</option>
+                  <option value="kiptra-out">Kiptra → {configTarget?.name}</option>
+                  <option value="kiptra-in">{configTarget?.name} → Kiptra</option>
+                </select>
+              </div>
+
+              {/* Auto-sync toggle */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-medium text-foreground">Auto-sync new records</p>
+                  <p className="text-[11px] text-muted-foreground">Automatically sync newly created records</p>
+                </div>
+                <button
+                  onClick={() => setConfigAutoSync(!configAutoSync)}
+                  className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${configAutoSync ? "bg-primary" : "bg-muted-foreground/30"}`}
+                >
+                  <span className={`inline-block h-3.5 w-3.5 rounded-full bg-white transition-transform ${configAutoSync ? "translate-x-[18px]" : "translate-x-[3px]"}`} />
+                </button>
+              </div>
+
+              {/* Conflict Resolution */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground">Conflict resolution</label>
+                <select
+                  value={configConflict}
+                  onChange={(e) => setConfigConflict(e.target.value)}
+                  className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
+                >
+                  <option value="kiptra-wins">Kiptra wins</option>
+                  <option value="ext-wins">{configTarget?.name} wins</option>
+                  <option value="manual">Manual review</option>
+                </select>
+              </div>
+
+              {/* Webhook URL */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground">Webhook URL</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    readOnly
+                    value={`https://api.kiptra.io/webhooks/${configTarget?.name.toLowerCase().replace(/\s+/g, "-") ?? "integration"}`}
+                    className="flex-1 rounded-lg border border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground font-mono select-all focus:outline-none"
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-9 shrink-0"
+                    onClick={() => {
+                      navigator.clipboard.writeText(`https://api.kiptra.io/webhooks/${configTarget?.name.toLowerCase().replace(/\s+/g, "-") ?? "integration"}`);
+                      toast.success("Webhook URL copied");
+                    }}
+                  >
+                    <Copy className="h-3 w-3" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-between border-t border-border pt-4">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={configTesting}
+                    onClick={() => {
+                      setConfigTesting(true);
+                      setTimeout(() => {
+                        setConfigTesting(false);
+                        toast.success("Connection verified \u2713");
+                      }, 1000);
+                    }}
+                    className="h-8 gap-1.5 text-xs"
+                  >
+                    {configTesting ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
+                    Test Connection
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setConfigDisconnectConfirm(true)}
+                    className="h-8 text-xs text-red-400 border-red-500/20 hover:bg-red-500/10 hover:text-red-400"
+                  >
+                    Disconnect
+                  </Button>
+                </div>
+                <Button
+                  size="sm"
+                  disabled={configSaving}
+                  onClick={() => {
+                    setConfigSaving(true);
+                    setTimeout(() => {
+                      setConfigSaving(false);
+                      toast.success(`${configTarget?.name} settings updated`);
+                      setConfigTarget(null);
+                    }, 500);
+                  }}
+                  className="h-8 gap-1.5 text-xs"
+                >
+                  {configSaving ? <Loader2 className="h-3 w-3 animate-spin" /> : null}
+                  Save Settings
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Header */}
       <div>
@@ -1027,7 +1221,7 @@ export default function IntegrationsPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => toast.info(`Opening ${integration.name} settings...`)}
+                      onClick={() => openConfigDialog(integration)}
                       className="h-7 gap-1.5 rounded-md border-border px-3 text-xs font-medium text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground"
                     >
                       <Settings className="h-3 w-3" />

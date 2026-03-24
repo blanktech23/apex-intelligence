@@ -11,7 +11,10 @@ import {
   CheckCircle2,
   Timer,
   ChevronDown,
+  X,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -100,6 +103,11 @@ export default function DistributionPage() {
   const [mounted, setMounted] = useState(false);
   const [filter, setFilter] = useState("all");
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  const [selectedShipment, setSelectedShipment] = useState<(typeof shipments)[number] | null>(null);
+  const [trackingInput, setTrackingInput] = useState("");
+
+  const shipmentSteps = ["Packed", "Picked Up", "In Transit", "Delivered"];
+  const shipmentStepMap: Record<string, number> = { "Pending Shipment": 0, "In Transit": 2, Delivered: 3, Delayed: 2 };
 
   useEffect(() => setMounted(true), []);
 
@@ -302,7 +310,7 @@ export default function DistributionPage() {
               <TableRow
                 key={s.id}
                 className="border-border transition-colors hover:bg-foreground/[0.03] cursor-pointer"
-                onClick={() => toast(s.id, { description: `Dealer: ${s.dealer} | Items: ${s.items} | Carrier: ${s.carrier} | Status: ${s.status}` })}
+                onClick={() => { setSelectedShipment(s); setTrackingInput(""); }}
               >
                 <TableCell className="font-medium text-foreground">{s.id}</TableCell>
                 <TableCell className="text-muted-foreground">{s.dealer}</TableCell>
@@ -315,6 +323,112 @@ export default function DistributionPage() {
           </TableBody>
         </Table>
       </Card>
+
+      {/* Shipment Detail Slide-out Panel */}
+      {selectedShipment && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setSelectedShipment(null)} />
+          <div className="relative z-10 h-full w-full max-w-md overflow-y-auto border-l border-border bg-background p-6 shadow-2xl animate-in slide-in-from-right duration-200">
+            <button onClick={() => setSelectedShipment(null)} className="absolute right-4 top-4 rounded-md p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted">
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="space-y-6">
+              {/* Header */}
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">{selectedShipment.id}</h2>
+                <p className="text-sm text-muted-foreground mt-0.5">{selectedShipment.dealer}</p>
+                <Badge variant="outline" className={`mt-2 ${statusColors[selectedShipment.status]}`}>{selectedShipment.status}</Badge>
+              </div>
+
+              <Separator className="bg-border" />
+
+              {/* Details Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Dealer</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedShipment.dealer}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Items</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedShipment.items}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Carrier</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedShipment.carrier}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">ETA</p>
+                  <p className="text-sm text-foreground mt-0.5">{new Date(selectedShipment.eta).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Tracking Number</p>
+                  <p className="text-sm text-foreground mt-0.5 font-mono">TRK-{selectedShipment.id.replace("SHP-", "")}X</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">Status</p>
+                  <p className="text-sm text-foreground mt-0.5">{selectedShipment.status}</p>
+                </div>
+              </div>
+
+              <Separator className="bg-border" />
+
+              {/* Shipment Timeline */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-3">Shipment Timeline</p>
+                <div className="space-y-3">
+                  {shipmentSteps.map((step, i) => {
+                    const currentStep = shipmentStepMap[selectedShipment.status] ?? 0;
+                    const isComplete = i < currentStep;
+                    const isCurrent = i === currentStep;
+                    return (
+                      <div key={step} className="flex items-center gap-3">
+                        <div className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-medium ${
+                          isComplete ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" :
+                          isCurrent ? "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30" :
+                          "bg-foreground/5 text-muted-foreground border border-border"
+                        }`}>
+                          {isComplete ? <CheckCircle2 className="h-3.5 w-3.5" /> : i + 1}
+                        </div>
+                        <span className={`text-sm ${isCurrent ? "font-medium text-foreground" : isComplete ? "text-emerald-400" : "text-muted-foreground"}`}>{step}</span>
+                        {isCurrent && <Badge variant="outline" className="bg-indigo-500/10 text-indigo-400 border-indigo-500/30 text-[10px] px-1.5 py-0">Current</Badge>}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <Separator className="bg-border" />
+
+              {/* Update Tracking */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-1.5">Update Tracking</p>
+                <div className="flex gap-2">
+                  <Input
+                    value={trackingInput}
+                    onChange={(e) => setTrackingInput(e.target.value)}
+                    placeholder="Enter new tracking number"
+                    className="glass border-border bg-foreground/5 text-foreground placeholder:text-muted-foreground"
+                  />
+                  <Button
+                    className="bg-indigo-600 hover:bg-indigo-500 text-white shrink-0"
+                    onClick={() => {
+                      if (trackingInput.trim()) {
+                        toast.success(`Tracking updated to "${trackingInput}" for ${selectedShipment.id}`);
+                        setTrackingInput("");
+                      } else {
+                        toast.error("Please enter a tracking number");
+                      }
+                    }}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

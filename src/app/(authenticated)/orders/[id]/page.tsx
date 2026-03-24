@@ -16,11 +16,29 @@ import {
   FileText,
   Plus,
   MessageSquare,
+  Copy,
+  Circle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -302,6 +320,12 @@ export default function OrderDetailPage() {
   const orderId = params.id as string;
   const order = ordersData[orderId];
   const [noteText, setNoteText] = useState("");
+  const [showReorderDialog, setShowReorderDialog] = useState(false);
+  const [showTracking, setShowTracking] = useState(false);
+  const [reorderQtys, setReorderQtys] = useState<Record<string, number>>({});
+  const [reorderShipping, setReorderShipping] = useState("standard");
+  const [downloadingTop, setDownloadingTop] = useState(false);
+  const [downloadingSide, setDownloadingSide] = useState(false);
 
   if (!order) {
     return (
@@ -357,14 +381,21 @@ export default function OrderDetailPage() {
             <Button
               variant="outline"
               className="glass border-border text-foreground hover:bg-foreground/[0.05] gap-2"
-              onClick={() => toast.success("Invoice downloaded")}
+              disabled={downloadingTop}
+              onClick={() => {
+                setDownloadingTop(true);
+                setTimeout(() => {
+                  setDownloadingTop(false);
+                  toast.success("Invoice downloaded");
+                }, 1000);
+              }}
             >
               <Download className="h-4 w-4" />
-              Download Invoice
+              {downloadingTop ? "Downloading..." : "Download Invoice"}
             </Button>
             <Button
               className="bg-indigo-600 hover:bg-indigo-500 text-white gap-2"
-              onClick={() => toast.success("Tracking info opened")}
+              onClick={() => setShowTracking(true)}
             >
               <Truck className="h-4 w-4" />
               Track Shipment
@@ -621,15 +652,22 @@ export default function OrderDetailPage() {
               <Button
                 variant="outline"
                 className="w-full glass border-border text-foreground hover:bg-foreground/[0.05] justify-start gap-2"
-                onClick={() => toast.success("Invoice downloaded")}
+                disabled={downloadingSide}
+                onClick={() => {
+                  setDownloadingSide(true);
+                  setTimeout(() => {
+                    setDownloadingSide(false);
+                    toast.success("Invoice downloaded");
+                  }, 1000);
+                }}
               >
                 <Download className="h-4 w-4 text-indigo-400" />
-                Download Invoice
+                {downloadingSide ? "Downloading..." : "Download Invoice"}
               </Button>
               <Button
                 variant="outline"
                 className="w-full glass border-border text-foreground hover:bg-foreground/[0.05] justify-start gap-2"
-                onClick={() => toast.success("Tracking info opened")}
+                onClick={() => setShowTracking(true)}
               >
                 <MapPin className="h-4 w-4 text-indigo-400" />
                 Track Shipment
@@ -637,7 +675,13 @@ export default function OrderDetailPage() {
               <Button
                 variant="outline"
                 className="w-full glass border-border text-foreground hover:bg-foreground/[0.05] justify-start gap-2"
-                onClick={() => toast.info("Reorder flow coming soon")}
+                onClick={() => {
+                  const qtys: Record<string, number> = {};
+                  order.items.forEach((item) => { qtys[item.sku] = item.qty; });
+                  setReorderQtys(qtys);
+                  setReorderShipping("standard");
+                  setShowReorderDialog(true);
+                }}
               >
                 <Package className="h-4 w-4 text-indigo-400" />
                 Reorder
@@ -646,6 +690,172 @@ export default function OrderDetailPage() {
           </Card>
         </div>
       </div>
+
+      {/* Reorder Dialog */}
+      <Dialog open={showReorderDialog} onOpenChange={setShowReorderDialog}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Reorder &mdash; {order.id}</DialogTitle>
+            <DialogDescription>Adjust quantities and place a new order based on this one.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-3">
+              {order.items.map((item) => (
+                <div key={item.sku} className="flex items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
+                    <p className="text-xs text-muted-foreground">{item.sku} &middot; {item.finish}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="number"
+                      min={1}
+                      value={reorderQtys[item.sku] ?? item.qty}
+                      onChange={(e) =>
+                        setReorderQtys((prev) => ({
+                          ...prev,
+                          [item.sku]: Math.max(1, parseInt(e.target.value) || 1),
+                        }))
+                      }
+                      className="w-20 text-center"
+                    />
+                    <span className="text-xs text-muted-foreground w-20 text-right">
+                      ${((reorderQtys[item.sku] ?? item.qty) * item.unitPrice).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Separator className="bg-border" />
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Shipping Method</span>
+              <Select value={reorderShipping} onValueChange={(v) => setReorderShipping(v ?? "standard")}>
+                <SelectTrigger className="w-44">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="standard">Standard (Free)</SelectItem>
+                  <SelectItem value="express">Express ($49)</SelectItem>
+                  <SelectItem value="freight">Freight ($150)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <Separator className="bg-border" />
+            <div className="flex justify-between font-semibold text-foreground">
+              <span>Estimated Total</span>
+              <span>
+                ${(
+                  order.items.reduce(
+                    (sum, item) => sum + (reorderQtys[item.sku] ?? item.qty) * item.unitPrice,
+                    0
+                  ) *
+                    1.0825 +
+                  (reorderShipping === "express" ? 49 : reorderShipping === "freight" ? 150 : 0)
+                ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowReorderDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              className="bg-indigo-600 hover:bg-indigo-500 text-white"
+              onClick={() => {
+                const newId = `ORD-2024-${Math.floor(Math.random() * 900 + 100)}`;
+                toast.success(`Reorder placed! New order ${newId} created`);
+                setShowReorderDialog(false);
+              }}
+            >
+              Place Reorder
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Shipment Tracking Dialog */}
+      <Dialog open={showTracking} onOpenChange={setShowTracking}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Shipment Tracking &mdash; {order.id}</DialogTitle>
+            <DialogDescription>Live tracking information for your shipment.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Carrier</span>
+              <span className="font-medium text-foreground">FedEx Ground</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Tracking #</span>
+              <div className="flex items-center gap-2">
+                <code className="text-xs font-mono text-foreground bg-foreground/5 px-2 py-1 rounded">7891-2345-6789</code>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 w-7 p-0"
+                  onClick={() => {
+                    navigator.clipboard.writeText("7891-2345-6789");
+                    toast.success("Tracking number copied");
+                  }}
+                >
+                  <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                </Button>
+              </div>
+            </div>
+            <Separator className="bg-border" />
+            <div className="relative space-y-0">
+              <div className="absolute left-[15px] top-4 bottom-4 w-px bg-border" />
+              {[
+                { label: "Order Confirmed", date: "Mar 15, 2:30 PM", done: true },
+                { label: "Shipped from Warehouse", date: "Mar 16, 9:15 AM", done: true },
+                { label: "In Transit", date: "Mar 17, 11:45 AM", done: true, note: "Current location: Memphis, TN" },
+                { label: "Out for Delivery", date: "Estimated Mar 19", done: false, pending: true },
+                { label: "Delivered", date: "", done: false },
+              ].map((step, i) => (
+                <div key={i} className="relative flex gap-4 py-3">
+                  <div
+                    className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border ${
+                      step.done
+                        ? "border-emerald-500/30 bg-emerald-500/10"
+                        : step.pending
+                        ? "border-amber-500/30 bg-amber-500/10"
+                        : "border-border bg-foreground/5"
+                    }`}
+                  >
+                    {step.done ? (
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                    ) : step.pending ? (
+                      <Clock className="h-3.5 w-3.5 text-amber-400" />
+                    ) : (
+                      <Circle className="h-3.5 w-3.5 text-muted-foreground" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0 pt-1">
+                    <p className={`text-sm font-medium ${step.done ? "text-foreground" : "text-muted-foreground"}`}>
+                      {step.label}
+                    </p>
+                    {step.date && <p className="text-xs text-muted-foreground">{step.date}</p>}
+                    {step.note && <p className="text-xs text-indigo-400 mt-0.5">{step.note}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              className="gap-2"
+              onClick={() => {
+                navigator.clipboard.writeText("7891-2345-6789");
+                toast.success("Tracking number copied");
+              }}
+            >
+              <Copy className="h-4 w-4" />
+              Copy Tracking Number
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

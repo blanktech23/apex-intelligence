@@ -128,7 +128,7 @@ export default function ChatPage() {
                 <ArrowLeft className="h-4 w-4" />
               </button>
               <div className="flex-1">
-                <ChannelHeader channel={activeChannel} />
+                <ChannelHeader channel={activeChannel} onSearchClick={() => setIsSearchOpen(true)} />
               </div>
             </div>
 

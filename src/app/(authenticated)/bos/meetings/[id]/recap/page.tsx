@@ -17,8 +17,21 @@ import {
   MessageSquare,
   Target,
   Sparkles,
+  Loader2,
+  Send,
+  Plus,
+  X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -226,6 +239,14 @@ export default function MeetingRecapPage() {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(['Check-in'])
   );
+  const [exportState, setExportState] = useState<'idle' | 'exporting' | 'done'>('idle');
+  const [showEmailDialog, setShowEmailDialog] = useState(false);
+  const [emailRecipients, setEmailRecipients] = useState<Record<string, boolean>>(
+    Object.fromEntries(recapAttendees.map((a) => [a.name, true]))
+  );
+  const [additionalEmail, setAdditionalEmail] = useState('');
+  const [additionalEmails, setAdditionalEmails] = useState<string[]>([]);
+  const [emailSending, setEmailSending] = useState(false);
 
   const toggleSection = (section: string) => {
     setExpandedSections((prev) => {
@@ -295,17 +316,45 @@ export default function MeetingRecapPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 gap-1.5 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground"
-                onClick={() => toast.success('PDF export started. Check your downloads.')}
+                className={`h-8 gap-1.5 rounded-lg px-3 text-xs ${exportState === 'done' ? 'text-emerald-400' : 'text-muted-foreground hover:text-foreground'}`}
+                disabled={exportState !== 'idle'}
+                onClick={() => {
+                  setExportState('exporting');
+                  toast.success('PDF export started. Check your downloads.');
+                  setTimeout(() => {
+                    setExportState('done');
+                    setTimeout(() => setExportState('idle'), 2000);
+                  }, 1500);
+                }}
               >
-                <Download className="h-3.5 w-3.5" />
-                Export PDF
+                {exportState === 'exporting' ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    Exporting...
+                  </>
+                ) : exportState === 'done' ? (
+                  <>
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    Exported
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-3.5 w-3.5" />
+                    Export PDF
+                  </>
+                )}
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
                 className="h-8 gap-1.5 rounded-lg px-3 text-xs text-muted-foreground hover:text-foreground"
-                onClick={() => toast.success('Recap email sent to all 5 attendees.')}
+                onClick={() => {
+                  setEmailRecipients(Object.fromEntries(recapAttendees.map((a) => [a.name, true])));
+                  setAdditionalEmails([]);
+                  setAdditionalEmail('');
+                  setEmailSending(false);
+                  setShowEmailDialog(true);
+                }}
               >
                 <Mail className="h-3.5 w-3.5" />
                 Share via Email
@@ -526,6 +575,116 @@ export default function MeetingRecapPage() {
           </Link>
         </div>
       </div>
+
+      {/* Send Recap Email Dialog */}
+      <Dialog open={showEmailDialog} onOpenChange={(open) => { if (!open) setShowEmailDialog(false); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Mail className="h-4 w-4 text-indigo-400" />
+              Send Recap Email
+            </DialogTitle>
+            <DialogDescription>
+              Select attendees to receive the meeting recap.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 py-2">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Attendees</h4>
+            <div className="space-y-1.5">
+              {recapAttendees.map((attendee) => (
+                <button
+                  key={attendee.name}
+                  type="button"
+                  className="flex w-full items-center gap-3 rounded-lg bg-muted/30 px-3 py-2 text-left transition-colors hover:bg-muted/50"
+                  onClick={() => setEmailRecipients((prev) => ({ ...prev, [attendee.name]: !prev[attendee.name] }))}
+                >
+                  <span className={`flex h-4 w-4 items-center justify-center rounded border text-[10px] ${emailRecipients[attendee.name] ? 'border-primary bg-primary text-primary-foreground' : 'border-muted-foreground/40'}`}>
+                    {emailRecipients[attendee.name] && '\u2713'}
+                  </span>
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-[10px] font-bold text-primary">
+                    {attendee.avatar}
+                  </div>
+                  <span className="text-sm text-foreground">{attendee.name}</span>
+                </button>
+              ))}
+            </div>
+            <div className="pt-2">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Additional Recipients</h4>
+              {additionalEmails.map((email, i) => (
+                <div key={i} className="flex items-center gap-2 mb-1.5">
+                  <span className="flex-1 rounded-lg bg-muted/30 px-3 py-1.5 text-xs text-foreground">{email}</span>
+                  <button
+                    type="button"
+                    className="p-1 rounded hover:bg-muted/60 text-muted-foreground hover:text-red-400"
+                    onClick={() => setAdditionalEmails((prev) => prev.filter((_, j) => j !== i))}
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              <div className="flex gap-2">
+                <Input
+                  value={additionalEmail}
+                  onChange={(e) => setAdditionalEmail(e.target.value)}
+                  placeholder="email@example.com"
+                  className="h-8 text-xs"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && additionalEmail.trim()) {
+                      setAdditionalEmails((prev) => [...prev, additionalEmail.trim()]);
+                      setAdditionalEmail('');
+                    }
+                  }}
+                />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-2 text-xs text-primary hover:bg-primary/10"
+                  disabled={!additionalEmail.trim()}
+                  onClick={() => {
+                    if (additionalEmail.trim()) {
+                      setAdditionalEmails((prev) => [...prev, additionalEmail.trim()]);
+                      setAdditionalEmail('');
+                    }
+                  }}
+                >
+                  <Plus className="h-3 w-3" />
+                </Button>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" size="sm" className="h-8 rounded-lg px-3 text-xs text-muted-foreground" onClick={() => setShowEmailDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              disabled={emailSending}
+              onClick={() => {
+                setEmailSending(true);
+                const recipientCount = Object.values(emailRecipients).filter(Boolean).length + additionalEmails.length;
+                setTimeout(() => {
+                  toast.success(`Recap sent to ${recipientCount} recipient${recipientCount !== 1 ? 's' : ''}`);
+                  setShowEmailDialog(false);
+                  setEmailSending(false);
+                }, 1000);
+              }}
+              className="h-8 gap-1.5 rounded-lg bg-primary px-4 text-xs font-medium text-primary-foreground"
+            >
+              {emailSending ? (
+                <>
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Send className="h-3.5 w-3.5" />
+                  Send
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
