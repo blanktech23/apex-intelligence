@@ -322,7 +322,7 @@ export default function ProjectsPage() {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-sm text-muted-foreground" suppressHydrationWarning>
                     {new Date(project.dueDate).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import {
   Target,
   Flag,
@@ -462,6 +462,9 @@ export default function GoalsPage() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [showArchived, setShowArchived] = useState(false);
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => { setNow(new Date()); }, []);
 
   // Modal states
   const [showNewRockModal, setShowNewRockModal] = useState(false);
@@ -923,7 +926,7 @@ export default function GoalsPage() {
                       {completedMilestones}/{goal.milestones.length} milestones
                     </span>
                     {/* Due date */}
-                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                    <span className="text-xs text-muted-foreground flex items-center gap-1" suppressHydrationWarning>
                       <CalendarDays className="h-3 w-3" />
                       {new Date(goal.dueDate).toLocaleDateString("en-US", {
                         month: "short",
@@ -1068,7 +1071,7 @@ export default function GoalsPage() {
                   </div>
                   <div className="space-y-2">
                     {goal.milestones.map((milestone) => {
-                      const isOverdue = !milestone.completed && new Date(milestone.dueDate) < new Date();
+                      const isOverdue = !milestone.completed && now != null && new Date(milestone.dueDate) < now;
                       return (
                         <div
                           key={milestone.id}
@@ -1095,7 +1098,7 @@ export default function GoalsPage() {
                           >
                             {milestone.title}
                           </span>
-                          <span className={`text-xs shrink-0 ${isOverdue ? "text-red-400 font-medium" : "text-muted-foreground"}`}>
+                          <span className={`text-xs shrink-0 ${isOverdue ? "text-red-400 font-medium" : "text-muted-foreground"}`} suppressHydrationWarning>
                             {isOverdue && <AlertCircle className="h-3 w-3 inline mr-1" />}
                             {new Date(milestone.dueDate).toLocaleDateString("en-US", {
                               month: "short",
@@ -1200,7 +1203,7 @@ export default function GoalsPage() {
                         <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-muted-foreground/40 shrink-0" />
                         <div>
                           <p className="text-xs text-muted-foreground">{entry.text}</p>
-                          <p className="text-[10px] text-muted-foreground/60 mt-0.5">
+                          <p className="text-[10px] text-muted-foreground/60 mt-0.5" suppressHydrationWarning>
                             {new Date(entry.date).toLocaleDateString("en-US", {
                               month: "short",
                               day: "numeric",
@@ -1231,7 +1234,7 @@ export default function GoalsPage() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <span className="text-xs font-medium text-foreground">{comment.author}</span>
-                            <span className="text-[10px] text-muted-foreground/60">
+                            <span className="text-[10px] text-muted-foreground/60" suppressHydrationWarning>
                               {new Date(comment.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                             </span>
                           </div>
@@ -1918,7 +1921,7 @@ export default function GoalsPage() {
                     {aiResult.milestones.map((m, i) => (
                       <div key={i} className="glass rounded-lg px-3 py-2 flex items-center justify-between">
                         <span className="text-xs text-foreground">{m.title}</span>
-                        <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
+                        <span className="text-[10px] text-muted-foreground shrink-0 ml-2" suppressHydrationWarning>
                           {new Date(m.dueDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                         </span>
                       </div>

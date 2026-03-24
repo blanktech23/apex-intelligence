@@ -1626,7 +1626,7 @@ export default function ReviewsPage() {
                           <div className="flex items-center gap-1.5">
                             <Star className="h-3 w-3 text-amber-400 fill-amber-400" />
                             <span className="text-xs font-medium text-foreground">
-                              {(3.5 + Math.random() * 1.5).toFixed(1)}
+                              {(3.5 + ((person.name.charCodeAt(0) % 15) / 10)).toFixed(1)}
                             </span>
                           </div>
                           <Badge

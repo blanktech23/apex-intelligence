@@ -828,7 +828,7 @@ export default function ActionsPage() {
                         <span className="text-[11px] text-muted-foreground">{item.owner.name}</span>
                       </div>
                       {/* Due date */}
-                      <span className={`text-[11px] flex items-center gap-1 ${dueDateColor}`}>
+                      <span className={`text-[11px] flex items-center gap-1 ${dueDateColor}`} suppressHydrationWarning>
                         <CalendarDays className="h-3 w-3" />
                         {dueStatus === "overdue" && !completed && "Overdue: "}
                         {new Date(item.dueDate).toLocaleDateString("en-US", {
@@ -871,7 +871,7 @@ export default function ActionsPage() {
                         </span>
                       )}
                       {/* Created date */}
-                      <span className="text-[11px] text-muted-foreground/60 flex items-center gap-1">
+                      <span className="text-[11px] text-muted-foreground/60 flex items-center gap-1" suppressHydrationWarning>
                         <Clock className="h-3 w-3" />
                         Created {new Date(item.createdDate).toLocaleDateString("en-US", {
                           month: "short",
@@ -1181,7 +1181,7 @@ export default function ActionsPage() {
                   className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-sm text-foreground bg-muted/40 hover:bg-muted/60 transition-colors"
                 >
                   <span>{opt.label}</span>
-                  <span className="text-xs text-muted-foreground">{new Date(opt.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                  <span className="text-xs text-muted-foreground" suppressHydrationWarning>{new Date(opt.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
                 </button>
               ))}
             </div>

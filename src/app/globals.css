@@ -180,6 +180,16 @@
     border: 1px solid var(--glass-border);
   }
 
+  .light .glass {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+  }
+
+  .dark .glass {
+    background-color: hsl(var(--card));
+    border-color: hsl(var(--border));
+  }
+
   .glass-hover:hover {
     background: var(--glass-hover);
     border-color: var(--glass-border);

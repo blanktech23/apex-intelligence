@@ -282,7 +282,7 @@ export function Sidebar() {
           indent && !isCollapsedDesktop && "pl-9",
           active
             ? "bg-primary/10 text-foreground glow-primary"
-            : "text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground"
+            : "text-slate-400 hover:bg-foreground/[0.06] hover:text-foreground"
         )}
       >
         {/* Active indicator bar */}
@@ -293,7 +293,7 @@ export function Sidebar() {
         <Icon
           className={cn(
             "h-[18px] w-[18px] shrink-0 transition-colors",
-            active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+            active ? "text-primary" : "text-slate-400 group-hover:text-foreground"
           )}
         />
 
@@ -534,7 +534,7 @@ export function Sidebar() {
           {visibleBosGroups.map((group, groupIdx) => (
             <div key={group.label}>
               {!isCollapsedDesktop && (
-                <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60 px-3 pt-4 pb-1">
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 px-3 pt-4 pb-1">
                   {group.label}
                 </div>
               )}
@@ -635,6 +635,7 @@ export function Sidebar() {
         {/* Collapse toggle -- desktop only */}
         <button
           onClick={() => setCollapsed(!collapsed)}
+          aria-label={isCollapsedDesktop ? "Expand sidebar" : "Collapse sidebar"}
           className={cn(
             "hidden lg:flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground",
             isCollapsedDesktop && "justify-center px-0"
@@ -683,6 +684,7 @@ export function Sidebar() {
         <button
           onClick={() => setMobileOpen(false)}
           className="absolute right-3 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          aria-label="Close menu"
         >
           <X className="h-4 w-4" />
         </button>

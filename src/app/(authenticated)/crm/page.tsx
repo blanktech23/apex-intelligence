@@ -165,6 +165,9 @@ export default function CRMDashboardPage() {
         {statCards.map((stat) => (
           <Card
             key={stat.key}
+            role="button"
+            tabIndex={0}
+            aria-expanded={expandedCard === stat.key}
             className={`glass border-border p-5 cursor-pointer transition-all duration-200 hover:bg-foreground/[0.03] ${
               expandedCard === stat.key
                 ? "ring-1 ring-indigo-500/30 border-indigo-500/20"
@@ -173,6 +176,12 @@ export default function CRMDashboardPage() {
             onClick={() =>
               setExpandedCard(expandedCard === stat.key ? null : stat.key)
             }
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setExpandedCard(expandedCard === stat.key ? null : stat.key);
+              }
+            }}
           >
             <div className="flex items-center justify-between">
               <div>

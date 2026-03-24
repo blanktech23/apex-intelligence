@@ -362,6 +362,7 @@ export default function KitchenBathDesignerPage() {
           </Link>
           <button
             onClick={() => setMobileChatOpen(false)}
+            aria-label="Close chat panel"
             className="lg:hidden rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           >
             <X className="size-4" />
@@ -439,6 +440,7 @@ export default function KitchenBathDesignerPage() {
             />
             <button
               className="absolute bottom-2.5 right-2.5 flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
+              aria-label="Send message"
               onClick={() => {
                 if (inputValue.trim()) {
                   toast.success("Message sent to Design Spec Assistant");
@@ -634,12 +636,14 @@ export default function KitchenBathDesignerPage() {
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => setMobilePropsOpen(false)}
+                  aria-label="Close properties panel"
                   className="lg:hidden rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                 >
                   <X className="size-3.5" />
                 </button>
                 <button
                   onClick={() => setShowSelected(false)}
+                  aria-label="Deselect element"
                   className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                 >
                   <X className="size-3.5" />

@@ -111,6 +111,7 @@ export function RoleSwitcher() {
               </div>
               <button
                 onClick={() => setExpanded(false)}
+                aria-label="Close role switcher"
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 <X className="h-4 w-4" />

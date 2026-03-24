@@ -100,6 +100,7 @@ export function TopBar() {
           <button
             data-tour="notification-bell"
             onClick={() => setNotificationsOpen(!notificationsOpen)}
+            aria-label="Notifications"
             className={cn(
               "relative flex h-9 w-9 items-center justify-center rounded-lg transition-all duration-200",
               notificationsOpen

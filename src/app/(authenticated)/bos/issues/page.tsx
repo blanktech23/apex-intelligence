@@ -1116,7 +1116,7 @@ export default function IssuesPage() {
                           P{issue.priorityRank}
                         </span>
                         {/* Date */}
-                        <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+                        <span className="text-[11px] text-muted-foreground flex items-center gap-1" suppressHydrationWarning>
                           <Clock className="h-3 w-3" />
                           {new Date(issue.createdDate).toLocaleDateString("en-US", {
                             month: "short",
@@ -1485,7 +1485,7 @@ export default function IssuesPage() {
                         <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-muted-foreground/40 shrink-0" />
                         <div>
                           <p className="text-xs text-muted-foreground">{entry.text}</p>
-                          <p className="text-[10px] text-muted-foreground/60 mt-0.5">
+                          <p className="text-[10px] text-muted-foreground/60 mt-0.5" suppressHydrationWarning>
                             {new Date(entry.date).toLocaleDateString("en-US", {
                               month: "short",
                               day: "numeric",
