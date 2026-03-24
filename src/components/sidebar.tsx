@@ -47,6 +47,9 @@ import {
   Factory,
   Store,
   Truck,
+  BookUser,
+  Kanban,
+  Activity,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRole } from "@/lib/role-context";
@@ -79,7 +82,7 @@ interface BosNavGroup {
 const NAV_ITEM_REGISTRY: Record<string, { icon: React.ComponentType<{ className?: string }>; href: string; badge?: number; dataTour?: string }> = {
   Dashboard:    { icon: LayoutDashboard, href: "/dashboard", dataTour: "dashboard-link" },
   Agents:       { icon: Bot, href: "/dashboard/agents", dataTour: "agents-link" },
-  Customers:    { icon: Users, href: "/customers", dataTour: "customers-link" },
+  CRM:          { icon: BookUser, href: "/crm", dataTour: "crm-link" },
   Projects:     { icon: FolderKanban, href: "/projects", dataTour: "projects-link" },
   Escalations:  { icon: AlertTriangle, href: "/escalations", badge: 3, dataTour: "escalations-link" },
   Approvals:    { icon: CheckSquare, href: "/approvals", badge: 12, dataTour: "approvals-link" },
@@ -179,6 +182,7 @@ export function Sidebar() {
 
   const isBosMode = pathname.startsWith("/bos") && !pathname.includes("/onboarding");
   const isSettingsMode = pathname.startsWith("/settings");
+  const isCrmMode = pathname.startsWith("/crm");
 
   const settingsNavItems: NavItem[] = [
     { label: "Profile", icon: User, href: "/settings/profile" },
@@ -191,6 +195,13 @@ export function Sidebar() {
       ? [{ label: "Billing", icon: CreditCard, href: "/settings/billing" }]
       : []),
     { label: "Integrations", icon: Plug, href: "/settings/integrations" },
+  ];
+
+  const crmNavItems: NavItem[] = [
+    { label: "Overview", icon: LayoutDashboard, href: "/crm" },
+    { label: "Pipeline", icon: Kanban, href: "/crm/pipeline" },
+    { label: "Contacts", icon: Users, href: "/crm/contacts" },
+    { label: "Activities", icon: Activity, href: "/crm/activities" },
   ];
 
   // Build nav items: intersection of persona template's sidebarItems and role's sidebarItems
@@ -222,6 +233,12 @@ export function Sidebar() {
       if (isBosMode) return pathname === "/bos";
       // In main nav, Business OS link highlights for any /bos route
       return pathname.startsWith("/bos");
+    }
+    if (href === "/crm") {
+      // In CRM mode, Overview is exact match only
+      if (isCrmMode) return pathname === "/crm";
+      // In main nav, CRM link highlights for any /crm route
+      return pathname.startsWith("/crm");
     }
     // Settings sub-routes: exact match or nested
     if (isSettingsMode && href.startsWith("/settings/")) {
@@ -370,6 +387,62 @@ export function Sidebar() {
       );
     }
 
+    if (isCrmMode) {
+      return (
+        <div className="border-b border-border">
+          {/* Back button */}
+          <div className={cn("px-4 pt-4 pb-2", isCollapsedDesktop && "px-2")}>
+            {isCollapsedDesktop ? (
+              <Tooltip>
+                <TooltipTrigger className="w-full">
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center rounded-lg py-1.5 text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right" sideOffset={12}>
+                  Back to Dashboard
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              <Link
+                href="/dashboard"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back</span>
+              </Link>
+            )}
+          </div>
+          {/* CRM branding */}
+          <div
+            className={cn(
+              "flex items-center gap-2 px-4 pb-5 pt-2",
+              isCollapsedDesktop && "justify-center px-2"
+            )}
+          >
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/20">
+              <BookUser className="h-4 w-4 text-primary" />
+            </div>
+            {!isCollapsedDesktop && (
+              <div className="flex flex-col">
+                <span className="text-gradient text-lg font-bold leading-tight tracking-tight">
+                  CRM
+                </span>
+                <span className="text-[10px] font-medium leading-tight text-muted-foreground">
+                  Customer Relationship Management
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
     if (isSettingsMode) {
       return (
         <div className="border-b border-border">
@@ -471,6 +544,14 @@ export function Sidebar() {
               </div>
             </div>
           ))}
+        </nav>
+      );
+    }
+
+    if (isCrmMode) {
+      return (
+        <nav className="flex-1 space-y-0.5 overflow-y-auto px-2 py-3">
+          {crmNavItems.map((item) => renderNavLink(item, isCollapsedDesktop))}
         </nav>
       );
     }

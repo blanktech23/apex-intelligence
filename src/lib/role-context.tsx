@@ -29,7 +29,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     name: "Joseph Wells",
     email: "joseph@kiptra.io",
     sidebarItems: [
-      "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Business OS", "Settings",
+      "Dashboard", "Agents", "CRM", "Projects", "Escalations", "Approvals", "Reports", "Business OS", "Settings",
       "Orders", "Contractors", "Catalog", "Reps", "Territory", "Commissions", "Production", "Dealers", "Distribution",
       "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Vision Plan", "Reviews", "Announcements", "Processes", "Knowledge Portal", "Assessments", "Fit Check", "Analytics",
       "Scorecard", "Quarterly Rocks",
@@ -50,7 +50,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     name: "Sarah Chen",
     email: "sarah@kiptra.io",
     sidebarItems: [
-      "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Business OS", "Settings",
+      "Dashboard", "Agents", "CRM", "Projects", "Escalations", "Approvals", "Reports", "Business OS", "Settings",
       "Orders", "Contractors", "Catalog", "Reps", "Territory", "Commissions", "Production", "Dealers", "Distribution",
       "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Vision Plan", "Reviews", "Announcements", "Processes", "Knowledge Portal", "Assessments", "Fit Check", "Analytics",
       "Scorecard", "Quarterly Rocks",
@@ -71,7 +71,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     name: "Mike Torres",
     email: "mike@kiptra.io",
     sidebarItems: [
-      "Dashboard", "Agents", "Customers", "Projects", "Escalations", "Approvals", "Reports", "Business OS", "Settings",
+      "Dashboard", "Agents", "CRM", "Projects", "Escalations", "Approvals", "Reports", "Business OS", "Settings",
       "Orders", "Contractors", "Catalog", "Reps", "Territory", "Commissions", "Production", "Dealers", "Distribution",
       "BOS Hub", "KPI Dashboard", "Meetings", "Goals & Milestones", "Issues", "Action Items", "Org Chart", "People", "Reviews", "Announcements", "Processes", "Fit Check",
       "Scorecard", "Quarterly Rocks",
@@ -111,7 +111,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     name: "David Kim",
     email: "david@kiptra.io",
     sidebarItems: [
-      "Dashboard", "Agents", "Customers", "Orders", "Commissions", "Reports", "Business OS",
+      "Dashboard", "Agents", "CRM", "Orders", "Commissions", "Reports", "Business OS",
       "BOS Hub", "KPI Dashboard", "Analytics",
     ],
     canApprove: false,

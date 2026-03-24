@@ -22,7 +22,7 @@ import { useRole } from "@/lib/role-context";
 const routeLabels: Record<string, string> = {
   dashboard: "Dashboard",
   agents: "Agents",
-  customers: "Customers",
+  crm: "CRM",
   projects: "Projects",
   escalations: "Escalations",
   reports: "Reports",

@@ -58,7 +58,7 @@ const contractor: PersonaTemplate = {
   sidebarItems: [
     "Dashboard",
     "Agents",
-    "Customers",
+    "CRM",
     "Projects",
     "Escalations",
     "Approvals",
@@ -153,7 +153,7 @@ const contractor: PersonaTemplate = {
       id: "c-customer",
       label: "Add your first customer",
       description: "Import or create a homeowner lead",
-      href: "/customers",
+      href: "/crm/contacts",
       completed: false,
     },
     {
@@ -403,7 +403,7 @@ const rep: PersonaTemplate = {
   sidebarItems: [
     "Dashboard",
     "Agents",
-    "Customers",
+    "CRM",
     "Territory",
     "Orders",
     "Commissions",

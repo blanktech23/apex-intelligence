@@ -223,8 +223,8 @@ const routeContextMap: Record<string, RouteContext> = {
       },
     ],
   },
-  "/customers": {
-    title: "Customers",
+  "/crm/contacts": {
+    title: "Contacts",
     suggestions: [
       {
         question: "Where does customer data come from?",
@@ -525,7 +525,7 @@ const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
       response: {
         message:
           "View your customer pipeline, lead scores, contact history, and communication timeline.",
-        link: { label: "Go to Customers \u2192", href: "/customers" },
+        link: { label: "Go to CRM \u2192", href: "/crm/contacts" },
       },
     },
     {
