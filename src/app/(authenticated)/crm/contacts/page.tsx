@@ -70,7 +70,7 @@ const ITEMS_PER_PAGE = 10;
 const statusColors: Record<string, string> = {
   active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
   lead: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  inactive: "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
+  inactive: "bg-muted text-muted-foreground border-border",
 };
 
 const sourceOptions = [

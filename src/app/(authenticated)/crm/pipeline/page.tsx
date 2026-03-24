@@ -202,7 +202,7 @@ export default function PipelinePage() {
       <div className="flex-shrink-0 px-6 pt-6 pb-4">
         <div className="flex items-center justify-between mb-1">
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold text-gradient">
               Pipeline
             </h1>
             <p className="text-sm text-muted-foreground mt-0.5">
@@ -222,9 +222,9 @@ export default function PipelinePage() {
               <Plus className="w-4 h-4 mr-1.5" />
               Create Deal
             </DialogTrigger>
-            <DialogContent className="bg-[#0f1629]/95 backdrop-blur-xl border-white/10 text-white max-w-md">
+            <DialogContent className="bg-popover/95 backdrop-blur-xl border-border text-foreground max-w-md">
               <DialogHeader>
-                <DialogTitle className="text-white">Create New Deal</DialogTitle>
+                <DialogTitle className="text-foreground">Create New Deal</DialogTitle>
               </DialogHeader>
               <div className="space-y-3 mt-2">
                 <div>
@@ -237,7 +237,7 @@ export default function PipelinePage() {
                     onChange={(e) =>
                       setNewDeal((p) => ({ ...p, name: e.target.value }))
                     }
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                    className="bg-foreground/5 border-border text-foreground placeholder:text-muted-foreground"
                   />
                 </div>
                 <div>
@@ -250,12 +250,12 @@ export default function PipelinePage() {
                       v && setNewDeal((p) => ({ ...p, contactId: v }))
                     }
                   >
-                    <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                    <SelectTrigger className="bg-foreground/5 border-border text-foreground">
                       <SelectValue placeholder="Select contact" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#0f1629] border-white/10">
+                    <SelectContent className="bg-popover border-border">
                       {contacts.map((c) => (
-                        <SelectItem key={c.id} value={c.id} className="text-white">
+                        <SelectItem key={c.id} value={c.id} className="text-foreground">
                           {c.name}
                           {c.company ? ` — ${c.company}` : ""}
                         </SelectItem>
@@ -273,12 +273,12 @@ export default function PipelinePage() {
                       v && setNewDeal((p) => ({ ...p, stage: v as PipelineStage }))
                     }
                   >
-                    <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                    <SelectTrigger className="bg-foreground/5 border-border text-foreground">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#0f1629] border-white/10">
+                    <SelectContent className="bg-popover border-border">
                       {PIPELINE_STAGES.map((s) => (
-                        <SelectItem key={s.key} value={s.key} className="text-white">
+                        <SelectItem key={s.key} value={s.key} className="text-foreground">
                           {s.label}
                         </SelectItem>
                       ))}
@@ -296,7 +296,7 @@ export default function PipelinePage() {
                     onChange={(e) =>
                       setNewDeal((p) => ({ ...p, value: e.target.value }))
                     }
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                    className="bg-foreground/5 border-border text-foreground placeholder:text-muted-foreground"
                   />
                 </div>
                 <div>
@@ -312,7 +312,7 @@ export default function PipelinePage() {
                         expectedCloseDate: e.target.value,
                       }))
                     }
-                    className="bg-white/5 border-white/10 text-white"
+                    className="bg-foreground/5 border-border text-foreground"
                   />
                 </div>
                 <div>
@@ -325,7 +325,7 @@ export default function PipelinePage() {
                     onChange={(e) =>
                       setNewDeal((p) => ({ ...p, description: e.target.value }))
                     }
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                    className="bg-foreground/5 border-border text-foreground placeholder:text-muted-foreground"
                   />
                 </div>
                 <Button
@@ -340,50 +340,50 @@ export default function PipelinePage() {
         </div>
 
         {/* Summary Strip */}
-        <div className="flex items-center gap-6 mt-4 px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/[0.06]">
+        <div className="flex items-center gap-6 mt-4 px-4 py-2.5 rounded-lg bg-foreground/[0.03] border border-border">
           <div className="flex items-center gap-2">
             <DollarSign className="w-4 h-4 text-emerald-400" />
             <div>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                 Pipeline
               </p>
-              <p className="text-sm font-semibold text-white">
+              <p className="text-sm font-semibold text-foreground">
                 {formatFullValue(totalPipeline)}
               </p>
             </div>
           </div>
-          <div className="w-px h-8 bg-white/10" />
+          <div className="w-px h-8 bg-border" />
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-blue-400" />
             <div>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                 Weighted
               </p>
-              <p className="text-sm font-semibold text-white">
+              <p className="text-sm font-semibold text-foreground">
                 {formatFullValue(Math.round(weightedValue))}
               </p>
             </div>
           </div>
-          <div className="w-px h-8 bg-white/10" />
+          <div className="w-px h-8 bg-border" />
           <div className="flex items-center gap-2">
             <BarChart3 className="w-4 h-4 text-amber-400" />
             <div>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                 Open Deals
               </p>
-              <p className="text-sm font-semibold text-white">
+              <p className="text-sm font-semibold text-foreground">
                 {openDeals.length}
               </p>
             </div>
           </div>
-          <div className="w-px h-8 bg-white/10" />
+          <div className="w-px h-8 bg-border" />
           <div className="flex items-center gap-2">
             <Trophy className="w-4 h-4 text-purple-400" />
             <div>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                 Win Rate
               </p>
-              <p className="text-sm font-semibold text-white">{winRate}%</p>
+              <p className="text-sm font-semibold text-foreground">{winRate}%</p>
             </div>
           </div>
 
@@ -392,16 +392,16 @@ export default function PipelinePage() {
 
           {/* Filters */}
           <Select value={filterRep} onValueChange={(v: string | null) => v && setFilterRep(v)}>
-            <SelectTrigger className="w-[160px] h-8 text-xs bg-white/5 border-white/10 text-white">
+            <SelectTrigger className="w-[160px] h-8 text-xs bg-foreground/5 border-border text-foreground">
               <User className="w-3 h-3 mr-1 opacity-50" />
               <SelectValue placeholder="Assigned To" />
             </SelectTrigger>
-            <SelectContent className="bg-[#0f1629] border-white/10">
-              <SelectItem value="all" className="text-white text-xs">
+            <SelectContent className="bg-popover border-border">
+              <SelectItem value="all" className="text-foreground text-xs">
                 All Reps
               </SelectItem>
               {REPS.map((r) => (
-                <SelectItem key={r} value={r} className="text-white text-xs">
+                <SelectItem key={r} value={r} className="text-foreground text-xs">
                   {r}
                 </SelectItem>
               ))}
@@ -412,23 +412,23 @@ export default function PipelinePage() {
             value={filterStatus}
             onValueChange={(v: string | null) => v && setFilterStatus(v as "all" | DealStatus)}
           >
-            <SelectTrigger className="w-[120px] h-8 text-xs bg-white/5 border-white/10 text-white">
+            <SelectTrigger className="w-[120px] h-8 text-xs bg-foreground/5 border-border text-foreground">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent className="bg-[#0f1629] border-white/10">
-              <SelectItem value="all" className="text-white text-xs">
+            <SelectContent className="bg-popover border-border">
+              <SelectItem value="all" className="text-foreground text-xs">
                 All Status
               </SelectItem>
-              <SelectItem value="open" className="text-white text-xs">
+              <SelectItem value="open" className="text-foreground text-xs">
                 Open
               </SelectItem>
-              <SelectItem value="won" className="text-white text-xs">
+              <SelectItem value="won" className="text-foreground text-xs">
                 Won
               </SelectItem>
-              <SelectItem value="lost" className="text-white text-xs">
+              <SelectItem value="lost" className="text-foreground text-xs">
                 Lost
               </SelectItem>
-              <SelectItem value="on_hold" className="text-white text-xs">
+              <SelectItem value="on_hold" className="text-foreground text-xs">
                 On Hold
               </SelectItem>
             </SelectContent>
@@ -449,8 +449,8 @@ export default function PipelinePage() {
                 key={stage.key}
                 className={`flex flex-col rounded-xl border transition-all duration-200 ${
                   isDragOver
-                    ? `${stage.borderColor} ring-1 ring-current bg-white/[0.04]`
-                    : "border-white/[0.06] bg-white/[0.02]"
+                    ? `${stage.borderColor} ring-1 ring-current bg-foreground/[0.04]`
+                    : "border-border bg-foreground/[0.02]"
                 }`}
                 style={{ minWidth: 280, width: 280 }}
                 onDragOver={(e) => handleDragOver(e, stage.key)}
@@ -458,14 +458,14 @@ export default function PipelinePage() {
                 onDrop={(e) => handleDrop(e, stage.key)}
               >
                 {/* Column Header */}
-                <div className={`flex-shrink-0 px-3 py-2.5 border-b border-white/[0.06] rounded-t-xl`}>
+                <div className={`flex-shrink-0 px-3 py-2.5 border-b border-border rounded-t-xl`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
                       <stage.icon className={`w-3.5 h-3.5 ${stage.color}`} />
                       <span className={`text-xs font-semibold ${stage.color}`}>
                         {stage.shortLabel}
                       </span>
-                      <span className="text-[10px] text-muted-foreground bg-white/5 rounded-full px-1.5 py-0.5 ml-0.5">
+                      <span className="text-[10px] text-muted-foreground bg-foreground/5 rounded-full px-1.5 py-0.5 ml-0.5">
                         {stageDeals.length}
                       </span>
                     </div>
@@ -476,7 +476,7 @@ export default function PipelinePage() {
                 </div>
 
                 {/* Cards Container */}
-                <div className="flex-1 min-h-0 overflow-y-auto p-2 space-y-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
+                <div className="flex-1 min-h-0 overflow-y-auto p-2 space-y-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-foreground/10">
                   {stageDeals.length === 0 ? (
                     <div className="flex items-center justify-center h-20 text-xs text-muted-foreground/50 italic">
                       No deals
@@ -539,11 +539,11 @@ function DealCard({
       draggable
       onDragStart={(e) => onDragStart(e, deal.id)}
       onClick={onClick}
-      className="group relative rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.15] p-3 cursor-pointer transition-all duration-150 active:scale-[0.98]"
+      className="group relative rounded-lg border border-border bg-foreground/[0.03] hover:bg-foreground/[0.06] hover:border-foreground/[0.15] p-3 cursor-pointer transition-all duration-150 active:scale-[0.98]"
     >
       {/* Drag handle */}
       <div className="absolute top-2.5 right-2 opacity-0 group-hover:opacity-40 transition-opacity">
-        <GripVertical className="w-3.5 h-3.5 text-white" />
+        <GripVertical className="w-3.5 h-3.5 text-muted-foreground" />
       </div>
 
       {/* Contact name */}
@@ -552,13 +552,13 @@ function DealCard({
       </p>
 
       {/* Deal name */}
-      <p className="text-sm font-medium text-white mt-0.5 truncate pr-4">
+      <p className="text-sm font-medium text-foreground mt-0.5 truncate pr-4">
         {deal.name}
       </p>
 
       {/* Value + GP */}
       <div className="flex items-center gap-2 mt-2">
-        <span className="text-sm font-semibold text-white">
+        <span className="text-sm font-semibold text-foreground">
           {deal.value >= 100000
             ? formatFullValue(deal.value)
             : formatValue(deal.value)}

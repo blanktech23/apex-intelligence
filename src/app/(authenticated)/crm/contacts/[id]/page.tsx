@@ -57,7 +57,7 @@ import {
 const statusColors: Record<string, string> = {
   active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
   lead: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  inactive: "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
+  inactive: "bg-muted text-muted-foreground border-border",
 };
 
 const dealStatusColors: Record<string, string> = {
@@ -120,7 +120,7 @@ const invoiceStatusColors: Record<string, string> = {
   partial: "bg-amber-500/20 text-amber-400 border-amber-500/30",
   overdue: "bg-red-500/20 text-red-400 border-red-500/30",
   sent: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  draft: "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
+  draft: "bg-muted text-muted-foreground border-border",
 };
 
 export default function ContactDetailPage() {
@@ -807,7 +807,7 @@ export default function ContactDetailPage() {
                           variant="outline"
                           className={
                             invoiceStatusColors[inv.status] ??
-                            "bg-zinc-500/20 text-zinc-400"
+                            "bg-muted text-muted-foreground"
                           }
                         >
                           {inv.status.charAt(0).toUpperCase() +
