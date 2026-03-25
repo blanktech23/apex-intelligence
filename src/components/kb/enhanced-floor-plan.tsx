@@ -37,16 +37,21 @@ const SVG_W = ROOM_W * SCALE + PAD * 2 + 60;
 const SVG_H = ROOM_D * SCALE + PAD * 2 + 60;
 
 const COLOR = {
-  base: { fill: "rgba(59,130,246,0.12)", stroke: "rgba(96,165,250,0.5)" },
-  wall: { fill: "rgba(99,102,241,0.12)", stroke: "rgba(129,140,248,0.5)" },
-  corner: { fill: "rgba(59,130,246,0.12)", stroke: "rgba(96,165,250,0.5)" },
-  tall: { fill: "rgba(139,92,246,0.12)", stroke: "rgba(167,139,250,0.5)" },
-  island: { fill: "rgba(34,197,94,0.10)", stroke: "rgba(74,222,128,0.5)" },
-  appliance: { fill: "rgba(245,158,11,0.12)", stroke: "rgba(245,158,11,0.5)" },
-  fixture: { fill: "rgba(34,211,238,0.12)", stroke: "rgba(34,211,238,0.5)" },
+  base: { fill: "rgba(59,130,246,0.18)", stroke: "rgba(37,99,235,0.8)" },
+  wall: { fill: "rgba(99,102,241,0.15)", stroke: "rgba(79,70,229,0.7)" },
+  corner: { fill: "rgba(59,130,246,0.18)", stroke: "rgba(37,99,235,0.8)" },
+  tall: { fill: "rgba(139,92,246,0.18)", stroke: "rgba(124,58,237,0.7)" },
+  island: { fill: "rgba(34,197,94,0.15)", stroke: "rgba(22,163,74,0.7)" },
+  appliance: { fill: "rgba(245,158,11,0.18)", stroke: "rgba(217,119,6,0.8)" },
+  fixture: { fill: "rgba(6,182,212,0.18)", stroke: "rgba(8,145,178,0.8)" },
 } as const;
 
-const SEVERITY_COLOR = { P1: "rgba(239,68,68,0.7)", P2: "rgba(245,158,11,0.6)", P3: "rgba(234,179,8,0.5)" };
+const SEVERITY_COLOR = { P1: "rgba(220,38,38,0.8)", P2: "rgba(217,119,6,0.7)", P3: "rgba(202,138,4,0.6)" };
+
+const TEXT_COLOR = "rgba(15,23,42,0.85)"; // slate-900 for light mode readability
+const DIM_COLOR = "rgba(71,85,105,0.9)"; // slate-600 for dimensions
+const WALL_COLOR = "rgba(51,65,85,0.7)"; // slate-700 for walls
+const GRID_COLOR = "rgba(148,163,184,0.25)"; // slate-400 for grid
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -83,7 +88,7 @@ function GridPattern() {
     <>
       <defs>
         <pattern id="grid-dots-enhanced" width={12 * SCALE} height={12 * SCALE} patternUnits="userSpaceOnUse">
-          <circle cx="0" cy="0" r="0.8" fill="rgba(255,255,255,0.05)" />
+          <circle cx="0" cy="0" r="0.8" fill="rgba(148,163,184,0.2)" />
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#grid-dots-enhanced)" />
@@ -99,7 +104,7 @@ function Walls({ walls }: { walls: WallSegment[] }) {
           key={w.id}
           x1={tx(w.start.x)} y1={ty(w.start.y)}
           x2={tx(w.end.x)} y2={ty(w.end.y)}
-          stroke="rgba(255,255,255,0.35)"
+          stroke="rgba(51,65,85,0.6)"
           strokeWidth={w.thickness * SCALE * 0.4}
           strokeLinecap="round"
         />
@@ -121,9 +126,9 @@ function Openings({ openings }: { openings: Opening[] }) {
             const wy = ty(0);
             return (
               <g key={o.id}>
-                <line x1={wx} y1={wy - 3} x2={wx + o.width * SCALE} y2={wy - 3} stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
-                <line x1={wx} y1={wy + 3} x2={wx + o.width * SCALE} y2={wy + 3} stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
-                <text x={wx + (o.width * SCALE) / 2} y={wy - 9} fill="rgba(255,255,255,0.25)" fontSize="8" textAnchor="middle" fontFamily="monospace">window</text>
+                <line x1={wx} y1={wy - 3} x2={wx + o.width * SCALE} y2={wy - 3} stroke="rgba(100,116,139,0.5)" strokeWidth="2" />
+                <line x1={wx} y1={wy + 3} x2={wx + o.width * SCALE} y2={wy + 3} stroke="rgba(100,116,139,0.5)" strokeWidth="2" />
+                <text x={wx + (o.width * SCALE) / 2} y={wy - 9} fill="rgba(71,85,105,0.7)" fontSize="8" textAnchor="middle" fontFamily="monospace">window</text>
               </g>
             );
           }
@@ -132,9 +137,9 @@ function Openings({ openings }: { openings: Opening[] }) {
             const wy = ty(o.y);
             return (
               <g key={o.id}>
-                <line x1={wx - 3} y1={wy} x2={wx - 3} y2={wy + o.width * SCALE} stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
-                <line x1={wx + 3} y1={wy} x2={wx + 3} y2={wy + o.width * SCALE} stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
-                <text x={wx + 12} y={wy + (o.width * SCALE) / 2} fill="rgba(255,255,255,0.25)" fontSize="8" textAnchor="middle" fontFamily="monospace" transform={`rotate(90, ${wx + 12}, ${wy + (o.width * SCALE) / 2})`}>window</text>
+                <line x1={wx - 3} y1={wy} x2={wx - 3} y2={wy + o.width * SCALE} stroke="rgba(100,116,139,0.5)" strokeWidth="2" />
+                <line x1={wx + 3} y1={wy} x2={wx + 3} y2={wy + o.width * SCALE} stroke="rgba(100,116,139,0.5)" strokeWidth="2" />
+                <text x={wx + 12} y={wy + (o.width * SCALE) / 2} fill="rgba(71,85,105,0.7)" fontSize="8" textAnchor="middle" fontFamily="monospace" transform={`rotate(90, ${wx + 12}, ${wy + (o.width * SCALE) / 2})`}>window</text>
               </g>
             );
           }
@@ -149,14 +154,14 @@ function Openings({ openings }: { openings: Opening[] }) {
           return (
             <g key={o.id}>
               {/* Door gap in wall */}
-              <line x1={dx} y1={dy} x2={dx + dw} y2={dy} stroke="#0d1117" strokeWidth={6} />
+              <line x1={dx} y1={dy} x2={dx + dw} y2={dy} stroke="rgba(255,255,255,0.95)" strokeWidth={6} />
               {/* Door leaf */}
               <line
                 x1={isRight ? dx + dw : dx}
                 y1={dy}
                 x2={isRight ? dx + dw : dx}
                 y2={dy - dw}
-                stroke="rgba(255,255,255,0.3)"
+                stroke="rgba(71,85,105,0.6)"
                 strokeWidth="1.5"
               />
               {/* Swing arc */}
@@ -165,11 +170,11 @@ function Openings({ openings }: { openings: Opening[] }) {
                   ? `M ${dx + dw} ${dy - dw} A ${dw} ${dw} 0 0 1 ${dx} ${dy}`
                   : `M ${dx} ${dy - dw} A ${dw} ${dw} 0 0 0 ${dx + dw} ${dy}`}
                 fill="none"
-                stroke="rgba(255,255,255,0.15)"
+                stroke="rgba(100,116,139,0.5)"
                 strokeWidth="1"
                 strokeDasharray="4 3"
               />
-              <text x={dx + dw / 2} y={dy + 14} fill="rgba(255,255,255,0.25)" fontSize="8" textAnchor="middle" fontFamily="monospace">door</text>
+              <text x={dx + dw / 2} y={dy + 14} fill="rgba(71,85,105,0.7)" fontSize="8" textAnchor="middle" fontFamily="monospace">door</text>
             </g>
           );
         }
@@ -241,7 +246,7 @@ function CabinetRect({
         <>
           <rect
             x={rx - 2} y={ry - 2} width={rw + 4} height={rh + 4} rx={3}
-            fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5"
+            fill="none" stroke="rgba(79,70,229,0.8)" strokeWidth="1.5"
           />
           {/* Corner handles */}
           {[[rx - 3, ry - 3], [rx + rw - 1, ry - 3], [rx - 3, ry + rh - 1], [rx + rw - 1, ry + rh - 1]].map(([hx, hy], i) => (
@@ -288,10 +293,10 @@ function ApplianceRect({
       {/* Range burner circles */}
       {app.name.includes("Range") && (
         <>
-          <circle cx={fRx + fRw * 0.3} cy={fRy + fRh * 0.3} r={3} fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="0.8" />
-          <circle cx={fRx + fRw * 0.7} cy={fRy + fRh * 0.3} r={3} fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="0.8" />
-          <circle cx={fRx + fRw * 0.3} cy={fRy + fRh * 0.7} r={3} fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="0.8" />
-          <circle cx={fRx + fRw * 0.7} cy={fRy + fRh * 0.7} r={3} fill="none" stroke="rgba(245,158,11,0.4)" strokeWidth="0.8" />
+          <circle cx={fRx + fRw * 0.3} cy={fRy + fRh * 0.3} r={3} fill="none" stroke="rgba(217,119,6,0.5)" strokeWidth="0.8" />
+          <circle cx={fRx + fRw * 0.7} cy={fRy + fRh * 0.3} r={3} fill="none" stroke="rgba(217,119,6,0.5)" strokeWidth="0.8" />
+          <circle cx={fRx + fRw * 0.3} cy={fRy + fRh * 0.7} r={3} fill="none" stroke="rgba(217,119,6,0.5)" strokeWidth="0.8" />
+          <circle cx={fRx + fRw * 0.7} cy={fRy + fRh * 0.7} r={3} fill="none" stroke="rgba(217,119,6,0.5)" strokeWidth="0.8" />
         </>
       )}
       <text
@@ -303,7 +308,7 @@ function ApplianceRect({
       {selected && (
         <rect
           x={fRx - 2} y={fRy - 2} width={fRw + 4} height={fRh + 4} rx={3}
-          fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5"
+          fill="none" stroke="rgba(79,70,229,0.8)" strokeWidth="1.5"
         />
       )}
     </g>
@@ -334,13 +339,13 @@ function FixtureRect({
       {/* Sink basin shapes */}
       {fix.name.includes("Sink") && (
         <>
-          <rect x={fx + 3} y={fy + 3} width={fw * 0.4} height={fh - 6} rx={4} fill="none" stroke="rgba(34,211,238,0.35)" strokeWidth="0.8" />
-          <rect x={fx + fw * 0.5} y={fy + 3} width={fw * 0.4} height={fh - 6} rx={4} fill="none" stroke="rgba(34,211,238,0.35)" strokeWidth="0.8" />
+          <rect x={fx + 3} y={fy + 3} width={fw * 0.4} height={fh - 6} rx={4} fill="none" stroke="rgba(8,145,178,0.5)" strokeWidth="0.8" />
+          <rect x={fx + fw * 0.5} y={fy + 3} width={fw * 0.4} height={fh - 6} rx={4} fill="none" stroke="rgba(8,145,178,0.5)" strokeWidth="0.8" />
         </>
       )}
       {/* Faucet dot */}
       {fix.name.includes("Faucet") && (
-        <circle cx={fx + fw / 2} cy={fy + fh / 2} r={2} fill="rgba(34,211,238,0.5)" />
+        <circle cx={fx + fw / 2} cy={fy + fh / 2} r={2} fill="rgba(8,145,178,0.6)" />
       )}
       <text
         x={fx + fw / 2} y={fy + fh + 10}
@@ -351,7 +356,7 @@ function FixtureRect({
       {selected && (
         <rect
           x={fx - 2} y={fy - 2} width={fw + 4} height={fh + 4} rx={4}
-          fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5"
+          fill="none" stroke="rgba(79,70,229,0.8)" strokeWidth="1.5"
         />
       )}
     </g>
@@ -387,28 +392,28 @@ function WorkTriangle() {
     <g>
       {/* Triangle lines */}
       <line x1={sinkCx} y1={sinkCy} x2={rangeCx} y2={rangeCy}
-        stroke="rgba(245,158,11,0.3)" strokeWidth="1.5" strokeDasharray="8 4" />
+        stroke="rgba(217,119,6,0.5)" strokeWidth="1.5" strokeDasharray="8 4" />
       <line x1={rangeCx} y1={rangeCy} x2={fridgeCx} y2={fridgeCy}
-        stroke="rgba(245,158,11,0.3)" strokeWidth="1.5" strokeDasharray="8 4" />
+        stroke="rgba(217,119,6,0.5)" strokeWidth="1.5" strokeDasharray="8 4" />
       <line x1={fridgeCx} y1={fridgeCy} x2={sinkCx} y2={sinkCy}
-        stroke="rgba(245,158,11,0.3)" strokeWidth="1.5" strokeDasharray="8 4" />
+        stroke="rgba(217,119,6,0.5)" strokeWidth="1.5" strokeDasharray="8 4" />
 
       {/* Leg measurements */}
       <text
         x={(sinkCx + rangeCx) / 2 - 5} y={(sinkCy + rangeCy) / 2 - 6}
-        fill="rgba(245,158,11,0.6)" fontSize="7" textAnchor="middle" fontFamily="monospace"
+        fill="rgba(180,83,9,0.8)" fontSize="7" textAnchor="middle" fontFamily="monospace"
       >
         {(sinkToRange / 12).toFixed(1)}&apos;
       </text>
       <text
         x={(rangeCx + fridgeCx) / 2 + 12} y={(rangeCy + fridgeCy) / 2}
-        fill="rgba(245,158,11,0.6)" fontSize="7" textAnchor="middle" fontFamily="monospace"
+        fill="rgba(180,83,9,0.8)" fontSize="7" textAnchor="middle" fontFamily="monospace"
       >
         {(rangeToFridge / 12).toFixed(1)}&apos;
       </text>
       <text
         x={(fridgeCx + sinkCx) / 2} y={(fridgeCy + sinkCy) / 2 - 6}
-        fill="rgba(245,158,11,0.6)" fontSize="7" textAnchor="middle" fontFamily="monospace"
+        fill="rgba(180,83,9,0.8)" fontSize="7" textAnchor="middle" fontFamily="monospace"
       >
         {(fridgeToSink / 12).toFixed(1)}&apos;
       </text>
@@ -416,7 +421,7 @@ function WorkTriangle() {
       {/* Total label */}
       <text
         x={(sinkCx + rangeCx + fridgeCx) / 3} y={(sinkCy + rangeCy + fridgeCy) / 3 + 4}
-        fill="rgba(245,158,11,0.5)" fontSize="8" textAnchor="middle" fontStyle="italic" fontFamily="monospace"
+        fill="rgba(180,83,9,0.75)" fontSize="8" textAnchor="middle" fontStyle="italic" fontFamily="monospace"
       >
         triangle {(total / 12).toFixed(1)}&apos;
       </text>
@@ -433,26 +438,26 @@ function DimensionLines() {
     <g>
       {/* Horizontal (top) */}
       <line x1={PAD} y1={PAD - dimOffset} x2={PAD + w} y2={PAD - dimOffset}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+        stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
       <line x1={PAD} y1={PAD - dimOffset - 4} x2={PAD} y2={PAD - dimOffset + 4}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+        stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
       <line x1={PAD + w} y1={PAD - dimOffset - 4} x2={PAD + w} y2={PAD - dimOffset + 4}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+        stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
       <text x={PAD + w / 2} y={PAD - dimOffset - 6}
-        fill="rgba(148,163,184,0.6)" fontSize="10" textAnchor="middle" fontFamily="monospace">
+        fill="rgba(30,41,59,0.85)" fontSize="11" textAnchor="middle" fontFamily="monospace">
         {formatInches(ROOM_W)}
       </text>
 
       {/* Vertical (right) */}
       <line x1={PAD + w + dimOffset} y1={PAD} x2={PAD + w + dimOffset} y2={PAD + h}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+        stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
       <line x1={PAD + w + dimOffset - 4} y1={PAD} x2={PAD + w + dimOffset + 4} y2={PAD}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+        stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
       <line x1={PAD + w + dimOffset - 4} y1={PAD + h} x2={PAD + w + dimOffset + 4} y2={PAD + h}
-        stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+        stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
       <text
         x={PAD + w + dimOffset + 14} y={PAD + h / 2}
-        fill="rgba(148,163,184,0.6)" fontSize="10" textAnchor="middle" fontFamily="monospace"
+        fill="rgba(30,41,59,0.85)" fontSize="11" textAnchor="middle" fontFamily="monospace"
         transform={`rotate(90, ${PAD + w + dimOffset + 14}, ${PAD + h / 2})`}
       >
         {formatInches(ROOM_D)}
@@ -471,7 +476,7 @@ function CabinetDimLabels({ cabinets }: { cabinets: Cabinet[] }) {
           return (
             <text key={`dim-${cab.id}`}
               x={rx - 6} y={ry + rw / 2}
-              fill="rgba(148,163,184,0.5)" fontSize="6" textAnchor="middle" fontFamily="monospace"
+              fill="rgba(51,65,85,0.8)" fontSize="7" textAnchor="middle" fontFamily="monospace"
               transform={`rotate(-90, ${rx - 6}, ${ry + rw / 2})`}
             >
               {cab.width}&quot;
@@ -481,7 +486,7 @@ function CabinetDimLabels({ cabinets }: { cabinets: Cabinet[] }) {
         return (
           <text key={`dim-${cab.id}`}
             x={rx + rw / 2} y={ry - 5}
-            fill="rgba(148,163,184,0.5)" fontSize="6" textAnchor="middle" fontFamily="monospace"
+            fill="rgba(51,65,85,0.8)" fontSize="7" textAnchor="middle" fontFamily="monospace"
           >
             {cab.width}&quot;
           </text>
@@ -514,9 +519,9 @@ function FinishZones() {
         fill="rgba(34,197,94,0.06)" stroke="rgba(74,222,128,0.15)" strokeWidth="1" strokeDasharray="6 3"
       />
       <text x={tx(minX) - 8} y={ty(minY) - 14}
-        fill="rgba(74,222,128,0.4)" fontSize="7" fontFamily="monospace">Island Zone</text>
+        fill="rgba(22,101,52,0.7)" fontSize="7" fontFamily="monospace">Island Zone</text>
       <text x={PAD + 4} y={PAD + 12}
-        fill="rgba(129,140,248,0.3)" fontSize="7" fontFamily="monospace">Perimeter Zone</text>
+        fill="rgba(67,56,202,0.6)" fontSize="7" fontFamily="monospace">Perimeter Zone</text>
     </g>
   );
 }
@@ -538,9 +543,9 @@ function SnapGuides({ selectedId }: { selectedId: string }) {
   return (
     <g>
       <line x1={cx} y1={PAD - 10} x2={cx} y2={PAD + ROOM_D * SCALE + 10}
-        stroke="rgba(34,211,238,0.3)" strokeWidth="0.8" strokeDasharray="4 4" />
+        stroke="rgba(14,116,144,0.5)" strokeWidth="0.8" strokeDasharray="4 4" />
       <line x1={PAD - 10} y1={cy} x2={PAD + ROOM_W * SCALE + 10} y2={cy}
-        stroke="rgba(34,211,238,0.3)" strokeWidth="0.8" strokeDasharray="4 4" />
+        stroke="rgba(14,116,144,0.5)" strokeWidth="0.8" strokeDasharray="4 4" />
     </g>
   );
 }
@@ -565,13 +570,13 @@ function Legend() {
             <rect x={lx} y={y0} width={10} height={10} rx={1}
               fill={item.fill} stroke={item.stroke} strokeWidth="1"
               strokeDasharray={item.dash ? "2 1" : undefined} />
-            <text x={lx + 14} y={y0 + 8} fill="rgba(148,163,184,0.6)" fontSize="8">{item.label}</text>
+            <text x={lx + 14} y={y0 + 8} fill="rgba(51,65,85,0.75)" fontSize="9">{item.label}</text>
           </g>
         );
       })}
       <line x1={PAD + items.length * 88} y1={y0 + 5} x2={PAD + items.length * 88 + 24} y2={y0 + 5}
-        stroke="rgba(245,158,11,0.4)" strokeWidth="1.5" strokeDasharray="6 3" />
-      <text x={PAD + items.length * 88 + 28} y={y0 + 8} fill="rgba(148,163,184,0.6)" fontSize="8">Work Triangle</text>
+        stroke="rgba(217,119,6,0.5)" strokeWidth="1.5" strokeDasharray="6 3" />
+      <text x={PAD + items.length * 88 + 28} y={y0 + 8} fill="rgba(51,65,85,0.75)" fontSize="9">Work Triangle</text>
     </g>
   );
 }
