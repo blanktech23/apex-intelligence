@@ -3652,20 +3652,7 @@ export default function AgentChatPage() {
                   <View3DKitchen />
                 )}
 
-                  {/* Floating canvas toolbar for selected items */}
-                  <CanvasToolbar
-                    selectedItemId={selectedItemId}
-                    onAction={(action) => {
-                      if (action === "delete") { setSelectedItemId(null); setShowSelected(false); toast.success("Item removed from design"); }
-                      else if (action === "duplicate") toast.success("Item duplicated");
-                      else if (action === "rotate-cw") toast.success("Rotated 90° clockwise");
-                      else if (action === "rotate-ccw") toast.success("Rotated 90° counter-clockwise");
-                      else if (action === "move") toast.info("Drag to reposition item");
-                      else if (action === "swap") { setSwapSelected(null); setShowSwapDialog(true); }
-                      else toast.info(`Action: ${action}`);
-                    }}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2"
-                  />
+                  {/* Canvas toolbar removed — actions available via ribbon toolbar + keyboard shortcuts */}
                 </div>
 
                 {/* View filter tabs */}
