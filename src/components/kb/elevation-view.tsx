@@ -107,7 +107,7 @@ function DoorFront({
           width={halfW - inset}
           height={h - inset * 2}
           fill="none"
-          stroke="rgba(148,163,184,0.4)"
+          stroke="rgba(100,116,139,0.55)"
           strokeWidth={0.5}
         />
         {/* Left panel (shaker profile) */}
@@ -117,7 +117,7 @@ function DoorFront({
           width={halfW - panelInset - inset + 2}
           height={h - panelInset * 2}
           fill="none"
-          stroke="rgba(148,163,184,0.25)"
+          stroke="rgba(100,116,139,0.45)"
           strokeWidth={0.5}
         />
         {/* Left handle */}
@@ -137,7 +137,7 @@ function DoorFront({
           width={halfW - inset}
           height={h - inset * 2}
           fill="none"
-          stroke="rgba(148,163,184,0.4)"
+          stroke="rgba(100,116,139,0.55)"
           strokeWidth={0.5}
         />
         {/* Right panel */}
@@ -147,7 +147,7 @@ function DoorFront({
           width={halfW - panelInset - inset + 2}
           height={h - panelInset * 2}
           fill="none"
-          stroke="rgba(148,163,184,0.25)"
+          stroke="rgba(100,116,139,0.45)"
           strokeWidth={0.5}
         />
         {/* Right handle */}
@@ -172,7 +172,7 @@ function DoorFront({
         width={w - inset * 2}
         height={h - inset * 2}
         fill="none"
-        stroke="rgba(148,163,184,0.4)"
+        stroke="rgba(100,116,139,0.55)"
         strokeWidth={0.5}
       />
       {/* Panel */}
@@ -182,7 +182,7 @@ function DoorFront({
         width={w - panelInset * 2}
         height={h - panelInset * 2}
         fill="none"
-        stroke="rgba(148,163,184,0.25)"
+        stroke="rgba(100,116,139,0.45)"
         strokeWidth={0.5}
       />
       {/* Handle */}
@@ -228,7 +228,7 @@ function DrawerFronts({
               width={w - inset * 2}
               height={drawerH}
               fill="none"
-              stroke="rgba(148,163,184,0.4)"
+              stroke="rgba(100,116,139,0.55)"
               strokeWidth={0.5}
             />
             {/* Drawer pull */}
@@ -271,7 +271,7 @@ function HorizontalDimension({
         y1={y}
         x2={x2}
         y2={y}
-        stroke="rgba(99,102,241,0.5)"
+        stroke="rgba(79,70,229,0.7)"
         strokeWidth={0.5}
       />
       <line
@@ -279,7 +279,7 @@ function HorizontalDimension({
         y1={y - 4}
         x2={x1}
         y2={y + 4}
-        stroke="rgba(99,102,241,0.5)"
+        stroke="rgba(79,70,229,0.7)"
         strokeWidth={0.5}
       />
       <line
@@ -287,14 +287,14 @@ function HorizontalDimension({
         y1={y - 4}
         x2={x2}
         y2={y + 4}
-        stroke="rgba(99,102,241,0.5)"
+        stroke="rgba(79,70,229,0.7)"
         strokeWidth={0.5}
       />
       <text
         x={mid}
         y={y - 5}
         textAnchor="middle"
-        fill="rgba(99,102,241,0.7)"
+        fill="rgba(67,56,202,0.85)"
         fontSize={9}
         fontFamily="monospace"
       >
@@ -323,7 +323,7 @@ function VerticalDimension({
         y1={y1}
         x2={x}
         y2={y2}
-        stroke="rgba(99,102,241,0.5)"
+        stroke="rgba(79,70,229,0.7)"
         strokeWidth={0.5}
       />
       <line
@@ -331,7 +331,7 @@ function VerticalDimension({
         y1={y1}
         x2={x + 4}
         y2={y1}
-        stroke="rgba(99,102,241,0.5)"
+        stroke="rgba(79,70,229,0.7)"
         strokeWidth={0.5}
       />
       <line
@@ -339,14 +339,14 @@ function VerticalDimension({
         y1={y2}
         x2={x + 4}
         y2={y2}
-        stroke="rgba(99,102,241,0.5)"
+        stroke="rgba(79,70,229,0.7)"
         strokeWidth={0.5}
       />
       <text
         x={x - 8}
         y={mid + 3}
         textAnchor="end"
-        fill="rgba(99,102,241,0.7)"
+        fill="rgba(67,56,202,0.85)"
         fontSize={9}
         fontFamily="monospace"
       >
@@ -515,7 +515,7 @@ export function ElevationView({
       )}
     >
       {/* Wall selector tabs */}
-      <div className="mb-4 flex items-center gap-1 rounded-full bg-[rgba(255,255,255,0.04)] p-1">
+      <div className="mb-4 flex items-center gap-1 rounded-full bg-muted/50 p-1">
         {WALL_TABS.map((tab) => (
           <button
             key={tab.key}
@@ -524,7 +524,7 @@ export function ElevationView({
               "rounded-full px-4 py-1.5 text-xs font-medium transition-all",
               selectedWall === tab.key
                 ? "bg-indigo-600 text-white shadow-sm"
-                : "text-[rgba(148,163,184,0.7)] hover:text-[rgba(148,163,184,1)]"
+                : "text-muted-foreground hover:text-foreground"
             )}
           >
             {tab.label}
@@ -535,10 +535,10 @@ export function ElevationView({
       {isEmpty ? (
         <div className="flex flex-1 items-center justify-center">
           <div className="text-center space-y-2">
-            <p className="text-sm text-[rgba(148,163,184,0.5)]">
+            <p className="text-sm text-muted-foreground">
               No cabinets assigned to {wallData.name}
             </p>
-            <p className="text-xs text-[rgba(148,163,184,0.3)]">
+            <p className="text-xs text-muted-foreground/60">
               Select another wall to view elevation
             </p>
           </div>
@@ -573,7 +573,7 @@ export function ElevationView({
               x={MARGIN_LEFT - 14}
               y={ceilingY + 4}
               textAnchor="end"
-              fill="rgba(148,163,184,0.3)"
+              fill="rgba(71,85,105,0.6)"
               fontSize={8}
               fontFamily="monospace"
             >
@@ -586,7 +586,7 @@ export function ElevationView({
               y1={floorY}
               x2={MARGIN_LEFT + wallLength * SCALE + 10}
               y2={floorY}
-              stroke="rgba(148,163,184,0.4)"
+              stroke="rgba(100,116,139,0.55)"
               strokeWidth={1.5}
             />
 
@@ -602,7 +602,7 @@ export function ElevationView({
                   : wallLength * SCALE
               }
               height={dims.toeKickHeight * SCALE}
-              fill="rgba(30,30,40,0.8)"
+              fill="rgba(30,41,59,0.8)"
               stroke="rgba(148,163,184,0.2)"
               strokeWidth={0.5}
             />
@@ -619,7 +619,7 @@ export function ElevationView({
                   8
                 }
                 height={dims.counterHeight * SCALE - dims.baseHeight * SCALE}
-                fill="rgba(148,163,184,0.08)"
+                fill="rgba(148,163,184,0.2)"
                 stroke="rgba(148,163,184,0.35)"
                 strokeWidth={1}
               />
@@ -718,7 +718,7 @@ export function ElevationView({
                     x={x + w / 2}
                     y={floorY + 14}
                     textAnchor="middle"
-                    fill="rgba(148,163,184,0.5)"
+                    fill="rgba(51,65,85,0.75)"
                     fontSize={8}
                     fontFamily="monospace"
                   >
@@ -780,7 +780,7 @@ export function ElevationView({
                       y1={actualWcY}
                       x2={x + w + 2}
                       y2={actualWcY}
-                      stroke="rgba(148,163,184,0.4)"
+                      stroke="rgba(100,116,139,0.55)"
                       strokeWidth={2}
                     />
                   )}
@@ -840,7 +840,7 @@ export function ElevationView({
                     x={x + w / 2}
                     y={floorY + 14}
                     textAnchor="middle"
-                    fill="rgba(148,163,184,0.5)"
+                    fill="rgba(51,65,85,0.75)"
                     fontSize={8}
                     fontFamily="monospace"
                   >
@@ -1065,7 +1065,7 @@ export function ElevationView({
               x={svgW / 2}
               y={svgH - 10}
               textAnchor="middle"
-              fill="rgba(148,163,184,0.3)"
+              fill="rgba(71,85,105,0.6)"
               fontSize={11}
               fontFamily="monospace"
               fontWeight="bold"
