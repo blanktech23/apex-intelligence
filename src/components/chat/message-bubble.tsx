@@ -25,7 +25,20 @@ import { AttachmentPreview } from "@/components/chat/attachment-preview"
 interface MessageBubbleProps {
   message: ChatMessage
   isOwn: boolean
+  isDm?: boolean
   onThreadClick?: (messageId: string) => void
+}
+
+const MEMBER_NAMES: Record<string, string> = {
+  "current-user": "You",
+  "sarah-chen": "Sarah Chen",
+  "mike-thompson": "Mike Thompson",
+  "lisa-johnson": "Lisa Johnson",
+  "jason-park": "Jason Park",
+  "emma-walsh": "Emma Walsh",
+  "carlos-mendez": "Carlos Mendez",
+  "rachel-torres": "Rachel Torres",
+  "david-kim": "David Kim",
 }
 
 function formatTime(dateStr: string): string {
@@ -89,6 +102,7 @@ function SystemMessageBubble({ message }: { message: SystemMessage }) {
 export function MessageBubble({
   message,
   isOwn,
+  isDm = false,
   onThreadClick,
 }: MessageBubbleProps) {
   if (message.type === "system") {
@@ -194,9 +208,26 @@ export function MessageBubble({
 
         {/* Read receipts (own messages) */}
         {isOwn && message.readBy.length > 0 && (
-          <div className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
+          <div className="group/read relative mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
             <CheckCheck className="size-3" />
-            <span>Read by {message.readBy.join(", ")}</span>
+            {isDm ? (
+              <span>Read</span>
+            ) : (
+              <>
+                <span className="cursor-default">
+                  Read by {message.readBy.filter(id => id !== "current-user").slice(0, 2).map(id => MEMBER_NAMES[id] || id).join(", ")}
+                  {message.readBy.filter(id => id !== "current-user").length > 2 && ` +${message.readBy.filter(id => id !== "current-user").length - 2}`}
+                </span>
+                {message.readBy.filter(id => id !== "current-user").length > 0 && (
+                  <div className="invisible absolute bottom-full left-0 z-50 mb-1 rounded-md border border-border bg-popover px-2.5 py-1.5 text-[11px] text-popover-foreground shadow-md group-hover/read:visible">
+                    <p className="mb-1 font-medium">Read by</p>
+                    {message.readBy.filter(id => id !== "current-user").map(id => (
+                      <p key={id}>{MEMBER_NAMES[id] || id}</p>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
           </div>
         )}
 

@@ -39,6 +39,7 @@ interface MessageThreadProps {
   channelName: string
   onThreadClick: (messageId: string) => void
   disabled?: boolean
+  isDm?: boolean
 }
 
 // ---------------------------------------------------------------------------
@@ -114,6 +115,7 @@ export function MessageThread({
   channelName,
   onThreadClick,
   disabled,
+  isDm = false,
 }: MessageThreadProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages)
@@ -150,7 +152,7 @@ export function MessageThread({
       createdAt: new Date().toISOString(),
       isEdited: false,
       reactions: [],
-      readBy: ["current-user"],
+      readBy: [],
       replyCount: 0,
       mentions: [],
       attachments: [],
@@ -161,6 +163,9 @@ export function MessageThread({
 
     // Simulate Sarah responding after 1.5s
     setTimeout(() => {
+      // Mark user's message as read by Sarah
+      setMessages((prev) => prev.map(m => m.id === userMessage.id ? { ...m, readBy: ["sarah-chen"] } : m))
+
       const responseMessage: TextMessage = {
         id: `sarah-${Date.now()}`,
         channelId: "",
@@ -178,7 +183,7 @@ export function MessageThread({
         createdAt: new Date().toISOString(),
         isEdited: false,
         reactions: [],
-        readBy: ["sarah-chen"],
+        readBy: [],
         replyCount: 0,
         mentions: [],
         attachments: [],
@@ -218,6 +223,7 @@ export function MessageThread({
                   key={msg.id}
                   message={msg}
                   isOwn={msg.sender.id === "current-user"}
+                  isDm={isDm}
                   onThreadClick={
                     msg.replyCount > 0 ? () => onThreadClick(msg.id) : undefined
                   }

@@ -138,6 +138,7 @@ export default function ChatPage() {
               channelName={activeChannel.displayName}
               onThreadClick={handleThreadClick}
               disabled={isReadOnly}
+              isDm={activeChannel.type === "dm"}
             />
           </>
         ) : (
