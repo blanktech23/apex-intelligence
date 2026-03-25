@@ -92,7 +92,7 @@ export default function ChatPage() {
   }, []);
 
   return (
-    <div className="fixed inset-0 top-[57px] z-10 flex overflow-hidden bg-background">
+    <div className="flex overflow-hidden bg-background" style={{ height: 'calc(100dvh - 57px)' }}>
       {/* ---------------------------------------------------------------- */}
       {/*  Channel List (left panel)                                       */}
       {/* ---------------------------------------------------------------- */}

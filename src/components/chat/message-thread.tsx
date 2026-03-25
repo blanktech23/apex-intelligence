@@ -193,13 +193,6 @@ export function MessageThread({
 
   return (
     <div className="flex h-full flex-col">
-      {/* Channel header */}
-      <div className="flex h-12 shrink-0 items-center border-b border-border px-4">
-        <span className="text-sm font-semibold text-foreground">
-          #{channelName}
-        </span>
-      </div>
-
       {/* Message list */}
       <div
         ref={scrollRef}
