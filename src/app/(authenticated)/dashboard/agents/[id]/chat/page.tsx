@@ -32,6 +32,7 @@ import {
   MessageSquarePlus,
   Maximize2,
   Minimize2,
+  Mountain,
   MousePointer2,
   Move,
   Package,
@@ -70,6 +71,18 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { BomPreview } from "@/components/kb/bom-preview";
+import { EnhancedFloorPlan } from "@/components/kb/enhanced-floor-plan";
+import { ElevationView } from "@/components/kb/elevation-view";
+import { ModificationPanel } from "@/components/kb/modification-panel";
+import { FinishZonePanel } from "@/components/kb/finish-zone-panel";
+import { ConstraintPanel } from "@/components/kb/constraint-panel";
+import { PricingPanel } from "@/components/kb/pricing-panel";
+import { EnhancedBomPreview } from "@/components/kb/enhanced-bom-preview";
+import { DoorStyleConfigurator } from "@/components/kb/door-style-configurator";
+import { OrderExportPreview } from "@/components/kb/order-export-preview";
+import { AutosaveIndicator } from "@/components/kb/autosave-indicator";
+import { CollaborationIndicator } from "@/components/kb/collaboration-indicator";
+import { CanvasToolbar } from "@/components/kb/canvas-toolbar";
 
 const chatSwapAlternatives = [
   { id: "s1", name: 'Shaker White 36" Base Cabinet', price: "$420" },
@@ -2754,7 +2767,7 @@ const defaultMockResponses = [
 /*  K&B Designer: SVG Floor Plan (2D Mock)                             */
 /* ------------------------------------------------------------------ */
 
-function FloorPlan2D() {
+function FloorPlanElevationLegacy() {
   // Elevation view — front-facing cabinet drawing (like installation book)
   const ox = 70, oy = 50;
 
@@ -3175,12 +3188,20 @@ export default function AgentChatPage() {
   const [canvasOpen, setCanvasOpen] = useState(false);
   const [canvasTab, setCanvasTab] = useState<"2d" | "3d" | "materials">("2d");
   const [canvasFullscreen, setCanvasFullscreen] = useState(false);
-  const [viewMode, setViewMode] = useState<"2d" | "3d">("2d");
+  const [viewMode, setViewMode] = useState<"2d" | "elevation" | "3d">("2d");
   const [snapGrid, setSnapGrid] = useState(true);
+  const [showDimensions, setShowDimensions] = useState(true);
   const [units, setUnits] = useState<"in" | "cm">("in");
   const [renderLevel, setRenderLevel] = useState<1 | 2>(1);
   const [showSelected, setShowSelected] = useState(true);
   const [bomOpen, setBomOpen] = useState(false);
+  const [enhancedBomOpen, setEnhancedBomOpen] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [showConstraints, setShowConstraints] = useState(true);
+  const [showFinishZones, setShowFinishZones] = useState(false);
+  const [showConfigurator, setShowConfigurator] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [selectedWall, setSelectedWall] = useState("south");
   const [zoomLevel, setZoomLevel] = useState(100);
   const [undoStack, setUndoStack] = useState(3);
   const [redoStack, setRedoStack] = useState(0);
@@ -3556,6 +3577,17 @@ export default function AgentChatPage() {
                   2D
                 </button>
                 <button
+                  onClick={() => setViewMode("elevation")}
+                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all flex items-center gap-1 ${
+                    viewMode === "elevation"
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Mountain className="size-3" />
+                  Elev
+                </button>
+                <button
                   onClick={() => setViewMode("3d")}
                   className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
                     viewMode === "3d"
@@ -3566,6 +3598,9 @@ export default function AgentChatPage() {
                   3D
                 </button>
               </div>
+
+              {/* Collaboration indicator */}
+              <CollaborationIndicator />
 
               <div className="h-4 w-px bg-border" />
 
@@ -3607,6 +3642,20 @@ export default function AgentChatPage() {
                 Snap
               </button>
 
+              {/* Dimensions toggle */}
+              <button
+                onClick={() => setShowDimensions(!showDimensions)}
+                className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-all ${
+                  showDimensions
+                    ? "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                title="Show dimensions"
+              >
+                <Ruler className="size-3.5" />
+                Dims
+              </button>
+
               {/* Units */}
               <button
                 onClick={() => setUnits(units === "in" ? "cm" : "in")}
@@ -3618,6 +3667,16 @@ export default function AgentChatPage() {
               </button>
 
               <div className="flex-1" />
+
+              {/* Order Export */}
+              <button
+                onClick={() => setExportOpen(true)}
+                className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-all"
+                title="Export order"
+              >
+                <Download className="size-3.5" />
+                Export
+              </button>
 
               {/* Render quality */}
               <div className="glass flex items-center gap-0.5 rounded-lg p-0.5">
@@ -3660,7 +3719,7 @@ export default function AgentChatPage() {
             <div className="flex flex-1 overflow-hidden">
               {/* Canvas area */}
               <div
-                className="flex-1 overflow-hidden"
+                className="relative flex-1 overflow-hidden"
                 style={{
                   background: "#0d1117",
                   backgroundImage:
@@ -3668,7 +3727,41 @@ export default function AgentChatPage() {
                   backgroundSize: "20px 20px",
                 }}
               >
-                {viewMode === "2d" ? <FloorPlan2D /> : <View3DKitchen />}
+                {viewMode === "2d" ? (
+                  <EnhancedFloorPlan
+                    selectedItemId={selectedItemId}
+                    onSelectItem={(id) => { setSelectedItemId(id); setShowSelected(true); }}
+                    showConstraints={showConstraints}
+                    showFinishZones={showFinishZones}
+                    showDimensions={showDimensions}
+                    showSnapGuides={snapGrid}
+                    zoomLevel={zoomLevel}
+                  />
+                ) : viewMode === "elevation" ? (
+                  <ElevationView
+                    selectedWall={selectedWall}
+                    onWallChange={setSelectedWall}
+                    selectedItemId={selectedItemId}
+                    onSelectItem={(id) => { setSelectedItemId(id); setShowSelected(true); }}
+                  />
+                ) : (
+                  <View3DKitchen />
+                )}
+
+                {/* Floating canvas toolbar for selected items */}
+                <CanvasToolbar
+                  selectedItemId={selectedItemId}
+                  onAction={(action) => {
+                    if (action === "delete") { setSelectedItemId(null); setShowSelected(false); toast.success("Item removed from design"); }
+                    else if (action === "duplicate") toast.success("Item duplicated");
+                    else if (action === "rotate-cw") toast.success("Rotated 90° clockwise");
+                    else if (action === "rotate-ccw") toast.success("Rotated 90° counter-clockwise");
+                    else if (action === "move") toast.info("Drag to reposition item");
+                    else if (action === "swap") { setSwapSelected(null); setShowSwapDialog(true); }
+                    else toast.info(`Action: ${action}`);
+                  }}
+                  className="absolute bottom-4 left-1/2 -translate-x-1/2"
+                />
               </div>
 
               {/* Right properties panel */}
@@ -3729,6 +3822,11 @@ export default function AgentChatPage() {
 
                     <div className="h-px bg-border" />
 
+                    {/* Modification panel for selected item */}
+                    <ModificationPanel selectedItemId={selectedItemId} />
+
+                    <div className="h-px bg-border" />
+
                     {/* Actions */}
                     <div className="space-y-2">
                       <Button
@@ -3740,17 +3838,33 @@ export default function AgentChatPage() {
                         Swap Product
                       </Button>
                       <Button
+                        variant="outline"
+                        className="w-full gap-2 text-xs"
+                        onClick={() => setShowConfigurator(true)}
+                      >
+                        <Palette className="size-3.5" />
+                        Configure Style
+                      </Button>
+                      <Button
                         variant="destructive"
                         className="w-full gap-2 text-xs"
                         onClick={() => {
                           toast.success("Item removed from design");
                           setShowSelected(false);
+                          setSelectedItemId(null);
                         }}
                       >
                         <Trash2 className="size-3.5" />
                         Remove
                       </Button>
                     </div>
+
+                    <div className="h-px bg-border" />
+
+                    {/* Wave 2 collapsible panels */}
+                    <FinishZonePanel />
+                    <ConstraintPanel onSelectItem={(id) => { setSelectedItemId(id); }} />
+                    <PricingPanel />
                   </div>
                 ) : (
                   /* Design summary (nothing selected) */
@@ -3844,6 +3958,7 @@ export default function AgentChatPage() {
 
             {/* Status bar */}
             <div className="flex items-center gap-4 border-t border-border bg-muted/20 px-4 py-1.5 text-xs text-muted-foreground">
+              <AutosaveIndicator />
               <span className="hidden sm:inline font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
               <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-600 dark:text-green-400">
                 <Check className="size-3" />
@@ -3865,7 +3980,7 @@ export default function AgentChatPage() {
                   Export RVT
                 </button>
                 <button
-                  onClick={() => setBomOpen(true)}
+                  onClick={() => setEnhancedBomOpen(true)}
                   className="rounded-md bg-primary/20 px-2 py-0.5 text-[10px] font-semibold text-primary hover:bg-primary/30 transition-colors"
                 >
                   Generate Estimate
@@ -3877,6 +3992,16 @@ export default function AgentChatPage() {
         )}
       </div>
       <BomPreview open={bomOpen} onOpenChange={setBomOpen} />
+      <EnhancedBomPreview open={enhancedBomOpen} onOpenChange={setEnhancedBomOpen} />
+      <OrderExportPreview open={exportOpen} onOpenChange={setExportOpen} />
+      <DoorStyleConfigurator
+        open={showConfigurator}
+        onOpenChange={setShowConfigurator}
+        onApply={(config) => {
+          toast.success(`Applied ${config.doorStyle} door style in ${config.finish}`);
+          setShowConfigurator(false);
+        }}
+      />
 
       {/* Swap Product Dialog */}
       <Dialog open={showSwapDialog} onOpenChange={setShowSwapDialog}>
