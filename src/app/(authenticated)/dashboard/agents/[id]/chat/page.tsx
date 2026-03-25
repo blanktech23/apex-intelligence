@@ -3701,10 +3701,10 @@ export default function AgentChatPage() {
             <div className="flex flex-1 overflow-hidden">
               {/* Canvas area */}
               <div
-                className="relative flex-1 overflow-hidden bg-muted/30"
+                className="relative flex-1 overflow-hidden bg-gray-50 dark:bg-[#0d1117]"
                 style={{
                   backgroundImage:
-                    "radial-gradient(hsl(var(--muted-foreground) / 0.15) 1px, transparent 1px)",
+                    "radial-gradient(circle, rgba(148,163,184,0.3) 1px, transparent 1px)",
                   backgroundSize: "20px 20px",
                 }}
               >
