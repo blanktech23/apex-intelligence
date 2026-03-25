@@ -83,6 +83,10 @@ import { OrderExportPreview } from "@/components/kb/order-export-preview";
 import { AutosaveIndicator } from "@/components/kb/autosave-indicator";
 import { CollaborationIndicator } from "@/components/kb/collaboration-indicator";
 import { CanvasToolbar } from "@/components/kb/canvas-toolbar";
+import { PlacementPanel } from "@/components/kb/placement-panel";
+import { ViewFilterTabs } from "@/components/kb/view-filter-tabs";
+import { RibbonToolbar, type RibbonTab } from "@/components/kb/ribbon-toolbar";
+import type { VisibilityFilter } from "@/components/kb/enhanced-floor-plan";
 
 const chatSwapAlternatives = [
   { id: "s1", name: 'Shaker White 36" Base Cabinet', price: "$420" },
@@ -3208,6 +3212,11 @@ export default function AgentChatPage() {
   const [showSwapDialog, setShowSwapDialog] = useState(false);
   const [swapSelected, setSwapSelected] = useState<string | null>(null);
   const [selectedItemName, setSelectedItemName] = useState(mockSelectedItem.name);
+  const [ribbonTab, setRibbonTab] = useState<RibbonTab>("ITEMS");
+  const [visibilityFilter, setVisibilityFilter] = useState<VisibilityFilter>("all");
+  const [showGrid, setShowGrid] = useState(true);
+  const [itemPosX, setItemPosX] = useState(0);
+  const [itemPosY, setItemPosY] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -3544,59 +3553,10 @@ export default function AgentChatPage() {
             {/* ============================================================= */}
             {/* K&B DESIGNER VIEWPORT                                          */}
             {/* ============================================================= */}
-            {/* Top toolbar */}
-            <div className="flex items-center gap-2 overflow-x-auto border-b border-border px-3 py-2">
-              {/* View toggle */}
-              <div className="glass flex items-center gap-0.5 rounded-lg p-0.5">
-                <button
-                  onClick={() => setViewMode("2d")}
-                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
-                    viewMode === "2d"
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  2D
-                </button>
-                <button
-                  onClick={() => setViewMode("elevation")}
-                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all flex items-center gap-1 ${
-                    viewMode === "elevation"
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <Mountain className="size-3" />
-                  Elev
-                </button>
-                <button
-                  onClick={() => setViewMode("3d")}
-                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
-                    viewMode === "3d"
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  3D
-                </button>
-              </div>
 
-              {/* Collaboration indicator */}
+            {/* Quick access bar */}
+            <div className="flex items-center gap-2 border-b border-border/50 px-3 py-1">
               <CollaborationIndicator />
-
-              <div className="h-4 w-px bg-border" />
-
-              {/* Zoom controls */}
-              <Button variant="ghost" size="icon-sm" title="Zoom in" onClick={() => { setZoomLevel(prev => Math.min(prev + 25, 400)); toast.success(`Zoom: ${Math.min(zoomLevel + 25, 400)}%`); }}>
-                <ZoomIn className="size-4" />
-              </Button>
-              <Button variant="ghost" size="icon-sm" title="Zoom out" onClick={() => { setZoomLevel(prev => Math.max(prev - 25, 25)); toast.success(`Zoom: ${Math.max(zoomLevel - 25, 25)}%`); }}>
-                <ZoomOut className="size-4" />
-              </Button>
-              <span className="text-xs text-muted-foreground tabular-nums w-10 text-center">{zoomLevel}%</span>
-              <Button variant="ghost" size="icon-sm" title="Fit to view" onClick={() => { setZoomLevel(100); toast.success("Fit to view — 100%"); }}>
-                <Maximize2 className="size-4" />
-              </Button>
 
               <div className="h-4 w-px bg-border" />
 
@@ -3607,46 +3567,6 @@ export default function AgentChatPage() {
               <Button variant="ghost" size="icon-sm" title="Redo" disabled={redoStack === 0} onClick={() => { if (redoStack > 0) { setRedoStack(prev => prev - 1); setUndoStack(prev => prev + 1); toast.success("Redo"); } }}>
                 <Redo2 className="size-4" />
               </Button>
-
-              <div className="h-4 w-px bg-border" />
-
-              {/* Snap-to-grid */}
-              <button
-                onClick={() => setSnapGrid(!snapGrid)}
-                className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-all ${
-                  snapGrid
-                    ? "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-                title="Snap to grid"
-              >
-                <Grid3X3 className="size-3.5" />
-                Snap
-              </button>
-
-              {/* Dimensions toggle */}
-              <button
-                onClick={() => setShowDimensions(!showDimensions)}
-                className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-all ${
-                  showDimensions
-                    ? "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-                title="Show dimensions"
-              >
-                <Ruler className="size-3.5" />
-                Dims
-              </button>
-
-              {/* Units */}
-              <button
-                onClick={() => setUnits(units === "in" ? "cm" : "in")}
-                className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-all"
-                title="Toggle units"
-              >
-                <Ruler className="size-3.5" />
-                {units === "in" ? "inches" : "cm"}
-              </button>
 
               <div className="flex-1" />
 
@@ -3697,54 +3617,87 @@ export default function AgentChatPage() {
               </Button>
             </div>
 
+            {/* Ribbon toolbar */}
+            <RibbonToolbar
+              activeTab={ribbonTab}
+              onTabChange={setRibbonTab}
+              zoomLevel={zoomLevel}
+              onZoomIn={() => { setZoomLevel(prev => Math.min(prev + 25, 400)); toast.success(`Zoom: ${Math.min(zoomLevel + 25, 400)}%`); }}
+              onZoomOut={() => { setZoomLevel(prev => Math.max(prev - 25, 25)); toast.success(`Zoom: ${Math.max(zoomLevel - 25, 25)}%`); }}
+              onFitView={() => { setZoomLevel(100); toast.success("Fit to view — 100%"); }}
+              snapGrid={snapGrid}
+              onSnapToggle={() => setSnapGrid(!snapGrid)}
+              showDimensions={showDimensions}
+              onDimsToggle={() => setShowDimensions(!showDimensions)}
+              units={units}
+              onUnitsToggle={() => setUnits(units === "in" ? "cm" : "in")}
+              showGrid={showGrid}
+              onGridToggle={() => setShowGrid(!showGrid)}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+            />
+
             {/* Canvas + Properties row */}
             <div className="flex flex-1 overflow-hidden">
               {/* Canvas area */}
-              <div
-                className="relative flex-1 overflow-hidden bg-gray-50 dark:bg-[#0d1117]"
-                style={{
-                  backgroundImage: [
-                    "linear-gradient(rgba(148,163,184,0.15) 1px, transparent 1px)",
-                    "linear-gradient(90deg, rgba(148,163,184,0.15) 1px, transparent 1px)",
-                    "radial-gradient(circle, rgba(148,163,184,0.35) 1px, transparent 1px)",
-                  ].join(", "),
-                  backgroundSize: "20px 20px, 20px 20px, 20px 20px",
-                }}
-              >
-                {viewMode === "2d" ? (
-                  <EnhancedFloorPlan
-                    selectedItemId={selectedItemId}
-                    onSelectItem={(id) => { setSelectedItemId(id); setShowSelected(true); }}
-                    showConstraints={showConstraints}
-                    showFinishZones={showFinishZones}
-                    showDimensions={showDimensions}
-                    showSnapGuides={snapGrid}
-                    zoomLevel={zoomLevel}
-                  />
-                ) : viewMode === "elevation" ? (
-                  <ElevationView
-                    selectedWall={selectedWall}
-                    onWallChange={setSelectedWall}
-                    selectedItemId={selectedItemId}
-                    onSelectItem={(id) => { setSelectedItemId(id); setShowSelected(true); }}
+              <div className="relative flex flex-1 flex-col overflow-hidden">
+                <div
+                  className="relative flex-1 overflow-hidden bg-gray-50 dark:bg-[#0d1117]"
+                  style={{
+                    touchAction: "none",
+                    backgroundImage: showGrid ? [
+                      "linear-gradient(rgba(148,163,184,0.15) 1px, transparent 1px)",
+                      "linear-gradient(90deg, rgba(148,163,184,0.15) 1px, transparent 1px)",
+                      "radial-gradient(circle, rgba(148,163,184,0.35) 1px, transparent 1px)",
+                    ].join(", ") : "none",
+                    backgroundSize: "20px 20px, 20px 20px, 20px 20px",
+                  }}
+                >
+                  {viewMode === "2d" ? (
+                    <EnhancedFloorPlan
+                      selectedItemId={selectedItemId}
+                      onSelectItem={(id) => { setSelectedItemId(id); setShowSelected(true); }}
+                      showConstraints={showConstraints}
+                      showFinishZones={showFinishZones}
+                      showDimensions={showDimensions}
+                      showSnapGuides={snapGrid}
+                      zoomLevel={zoomLevel}
+                      onZoomChange={setZoomLevel}
+                      visibilityFilter={visibilityFilter}
+                      onDoubleClickItem={() => setShowConfigurator(true)}
+                      onItemPositionChange={(id, x, y) => { setItemPosX(x); setItemPosY(y); }}
+                    />
+                  ) : viewMode === "elevation" ? (
+                    <ElevationView
+                      selectedWall={selectedWall}
+                      onWallChange={setSelectedWall}
+                      selectedItemId={selectedItemId}
+                      onSelectItem={(id) => { setSelectedItemId(id); setShowSelected(true); }}
                   />
                 ) : (
                   <View3DKitchen />
                 )}
 
-                {/* Floating canvas toolbar for selected items */}
-                <CanvasToolbar
-                  selectedItemId={selectedItemId}
-                  onAction={(action) => {
-                    if (action === "delete") { setSelectedItemId(null); setShowSelected(false); toast.success("Item removed from design"); }
-                    else if (action === "duplicate") toast.success("Item duplicated");
-                    else if (action === "rotate-cw") toast.success("Rotated 90° clockwise");
-                    else if (action === "rotate-ccw") toast.success("Rotated 90° counter-clockwise");
-                    else if (action === "move") toast.info("Drag to reposition item");
-                    else if (action === "swap") { setSwapSelected(null); setShowSwapDialog(true); }
-                    else toast.info(`Action: ${action}`);
-                  }}
-                  className="absolute bottom-4 left-1/2 -translate-x-1/2"
+                  {/* Floating canvas toolbar for selected items */}
+                  <CanvasToolbar
+                    selectedItemId={selectedItemId}
+                    onAction={(action) => {
+                      if (action === "delete") { setSelectedItemId(null); setShowSelected(false); toast.success("Item removed from design"); }
+                      else if (action === "duplicate") toast.success("Item duplicated");
+                      else if (action === "rotate-cw") toast.success("Rotated 90° clockwise");
+                      else if (action === "rotate-ccw") toast.success("Rotated 90° counter-clockwise");
+                      else if (action === "move") toast.info("Drag to reposition item");
+                      else if (action === "swap") { setSwapSelected(null); setShowSwapDialog(true); }
+                      else toast.info(`Action: ${action}`);
+                    }}
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2"
+                  />
+                </div>
+
+                {/* View filter tabs */}
+                <ViewFilterTabs
+                  activeFilter={visibilityFilter}
+                  onFilterChange={setVisibilityFilter}
                 />
               </div>
 
@@ -3808,6 +3761,25 @@ export default function AgentChatPage() {
 
                     {/* Modification panel for selected item */}
                     <ModificationPanel selectedItemId={selectedItemId} />
+
+                    <div className="h-px bg-border" />
+
+                    {/* Placement panel */}
+                    <PlacementPanel
+                      selectedItemName={selectedItemName}
+                      selectedItemSku={mockSelectedItem.sku}
+                      posX={itemPosX}
+                      posY={itemPosY}
+                      onMove={(dir, offset) => {
+                        toast.success(`Moved ${dir} by ${offset}"`);
+                      }}
+                      onAdd={(dir, offset) => {
+                        toast.success(`Added item ${dir} at ${offset}" offset`);
+                      }}
+                      onCopy={(dir, offset) => {
+                        toast.success(`Copied item ${dir} at ${offset}" offset`);
+                      }}
+                    />
 
                     <div className="h-px bg-border" />
 
