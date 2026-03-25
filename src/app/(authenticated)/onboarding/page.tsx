@@ -774,10 +774,12 @@ function ReviewStep({
 
       {/* Launch button */}
       <div className="flex justify-center pt-4">
-        <Button className="h-12 gap-3 rounded-xl bg-primary px-10 text-base font-bold text-primary-foreground shadow-[0_0_40px_rgba(99,102,241,0.3)] transition-all hover:bg-primary/90 hover:shadow-[0_0_60px_rgba(99,102,241,0.5)]">
-          <Sparkles className="size-5" />
-          Launch Kiptra AI
-        </Button>
+        <a href="/dashboard">
+          <Button className="h-12 gap-3 rounded-xl bg-primary px-10 text-base font-bold text-primary-foreground shadow-[0_0_40px_rgba(99,102,241,0.3)] transition-all hover:bg-primary/90 hover:shadow-[0_0_60px_rgba(99,102,241,0.5)]">
+            <Sparkles className="size-5" />
+            Launch Kiptra AI
+          </Button>
+        </a>
       </div>
     </div>
   );
@@ -846,7 +848,19 @@ export default function OnboardingPage() {
   const canContinueStep1 = selectedPersona !== null;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-6 py-8">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-background">
+      {/* Skip / Close button */}
+      <div className="absolute right-4 top-4 z-10">
+        <a
+          href="/dashboard"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/80 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+        >
+          <X className="size-3.5" />
+          Skip
+        </a>
+      </div>
+
+      <div className="mx-auto max-w-3xl space-y-8 px-6 py-8">
       {/* Step indicator */}
       <StepIndicator currentStep={currentStep} />
 
@@ -945,6 +959,7 @@ export default function OnboardingPage() {
             </button>
           )}
       </div>
+    </div>
     </div>
   );
 }

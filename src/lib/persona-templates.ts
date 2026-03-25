@@ -57,6 +57,7 @@ const contractor: PersonaTemplate = {
 
   sidebarItems: [
     "Dashboard",
+    "Setup Guide",
     "Agents",
     "CRM",
     "Chat",
@@ -220,6 +221,7 @@ const dealer: PersonaTemplate = {
 
   sidebarItems: [
     "Dashboard",
+    "Setup Guide",
     "Agents",
     "Orders",
     "Chat",
@@ -404,6 +406,7 @@ const rep: PersonaTemplate = {
 
   sidebarItems: [
     "Dashboard",
+    "Setup Guide",
     "Agents",
     "CRM",
     "Chat",
@@ -558,6 +561,7 @@ const manufacturer: PersonaTemplate = {
 
   sidebarItems: [
     "Dashboard",
+    "Setup Guide",
     "Agents",
     "Production",
     "Chat",

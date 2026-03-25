@@ -31,6 +31,7 @@ import {
   Truck,
   CheckCircle,
   Clock,
+  Rocket,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -974,6 +975,9 @@ function DealerDashboard() {
           </p>
         </div>
 
+        {/* Welcome Banner */}
+        <WelcomeBanner />
+
         {/* Stats */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {dealerStatsCards.map((card) => (
@@ -1077,6 +1081,9 @@ function RepDashboard() {
           </p>
         </div>
 
+        {/* Welcome Banner */}
+        <WelcomeBanner />
+
         {/* Stats */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {repStatsCards.map((card) => (
@@ -1169,6 +1176,9 @@ function ManufacturerDashboard() {
             Production, dealers, and distribution overview
           </p>
         </div>
+
+        {/* Welcome Banner */}
+        <WelcomeBanner />
 
         {/* Stats */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -1313,6 +1323,68 @@ function DashboardSkeleton() {
 }
 
 // ---------------------------------------------------------------------------
+// Welcome Banner
+// ---------------------------------------------------------------------------
+
+function WelcomeBanner() {
+  const [dismissed, setDismissed] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("kiptra-welcome-dismissed") === "true";
+    }
+    return false;
+  });
+
+  if (dismissed) return null;
+
+  const handleDismiss = () => {
+    setDismissed(true);
+    localStorage.setItem("kiptra-welcome-dismissed", "true");
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500/15 via-violet-500/15 to-indigo-500/10 border border-indigo-500/20 p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-500/20">
+            <Rocket className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-sm font-semibold text-foreground">
+              Welcome to Kiptra! Complete your setup to get the most out of the platform.
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              2 of 6 steps complete
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={handleDismiss}
+          className="shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
+          aria-label="Dismiss welcome banner"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+      <div className="mt-4 flex items-center gap-3">
+        <Link
+          href="/onboarding"
+          className="inline-flex h-9 items-center gap-2 rounded-lg bg-indigo-600 px-4 text-sm font-semibold text-white transition-all hover:bg-indigo-700 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]"
+        >
+          Start Setup
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+        <div className="flex items-center gap-2">
+          <div className="h-1.5 w-24 overflow-hidden rounded-full bg-indigo-500/20">
+            <div className="h-full w-1/3 rounded-full bg-indigo-500 transition-all" />
+          </div>
+          <span className="text-[11px] font-medium text-muted-foreground">33%</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Contractor Dashboard (original — unchanged)
 // ---------------------------------------------------------------------------
 
@@ -1334,6 +1406,9 @@ function ContractorDashboard() {
             Real-time overview of your AI agent workforce
           </p>
         </div>
+
+        {/* Welcome Banner */}
+        <WelcomeBanner />
 
         {/* Escalation Alert Banner */}
         <EscalationAlertBanner role={role} />

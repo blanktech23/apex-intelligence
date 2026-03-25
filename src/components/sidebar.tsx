@@ -51,6 +51,7 @@ import {
   Kanban,
   Activity,
   MessageSquare,
+  Rocket,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRole } from "@/lib/role-context";
@@ -68,6 +69,7 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
   href: string;
   badge?: number;
+  textBadge?: string;
   sidebarLabel?: string;
 }
 
@@ -80,8 +82,9 @@ interface BosNavGroup {
 /*  Master nav-item registry (all possible items across all personas)  */
 /* ------------------------------------------------------------------ */
 
-const NAV_ITEM_REGISTRY: Record<string, { icon: React.ComponentType<{ className?: string }>; href: string; badge?: number; dataTour?: string }> = {
+const NAV_ITEM_REGISTRY: Record<string, { icon: React.ComponentType<{ className?: string }>; href: string; badge?: number; textBadge?: string; dataTour?: string }> = {
   Dashboard:    { icon: LayoutDashboard, href: "/dashboard", dataTour: "dashboard-link" },
+  "Setup Guide": { icon: Rocket, href: "/onboarding", textBadge: "NEW", dataTour: "setup-guide-link" },
   Agents:       { icon: Bot, href: "/dashboard/agents", dataTour: "agents-link" },
   CRM:          { icon: BookUser, href: "/crm", dataTour: "crm-link" },
   Chat:         { icon: MessageSquare, href: "/chat", badge: 5, dataTour: "chat-link" },
@@ -211,7 +214,7 @@ export function Sidebar() {
     .filter((label) => config.sidebarItems.includes(label) && NAV_ITEM_REGISTRY[label])
     .map((label) => {
       const entry = NAV_ITEM_REGISTRY[label];
-      return { label, icon: entry.icon, href: entry.href, badge: entry.badge };
+      return { label, icon: entry.icon, href: entry.href, badge: entry.badge, textBadge: entry.textBadge };
     });
 
   // BOS sub-nav: filter by template.bosItems AND role sidebarItems
@@ -300,6 +303,11 @@ export function Sidebar() {
         {!isCollapsedDesktop && (
           <>
             <span>{item.label}</span>
+            {item.textBadge && (
+              <span className="ml-auto flex h-5 items-center rounded-full bg-amber-500/20 px-2 text-[10px] font-bold tracking-wide text-amber-600 dark:text-amber-400 animate-pulse">
+                {item.textBadge}
+              </span>
+            )}
             {item.badge !== undefined && item.badge > 0 && (
               <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500/20 px-1.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
                 {item.badge}
@@ -308,6 +316,9 @@ export function Sidebar() {
           </>
         )}
 
+        {isCollapsedDesktop && item.textBadge && (
+          <span className="absolute -right-1 -top-1 flex h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+        )}
         {isCollapsedDesktop && item.badge !== undefined && item.badge > 0 && (
           <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-white">
             {item.badge}
