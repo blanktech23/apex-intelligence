@@ -598,23 +598,7 @@ export function Sidebar() {
           <OnboardingChecklist collapsed={isCollapsedDesktop} />
         </div>
 
-        {/* Plan badge */}
-        <div
-          className={cn(
-            "mb-2 flex items-center gap-2 rounded-lg bg-primary/[0.06] px-3 py-2",
-            isCollapsedDesktop && "justify-center px-1"
-          )}
-        >
-          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-primary/20">
-            <Sparkles className="h-3 w-3 text-primary" />
-          </div>
-          {!isCollapsedDesktop && (
-            <div className="flex flex-col">
-              <span className="text-xs font-semibold text-foreground">Professional</span>
-              <span className="text-[10px] text-muted-foreground">5 agent seats</span>
-            </div>
-          )}
-        </div>
+        {/* Plan badge — hidden from sidebar, component preserved below */}
 
         {/* AI Usage indicator */}
         {usageStyle && (
