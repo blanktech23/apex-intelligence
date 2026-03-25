@@ -3703,9 +3703,12 @@ export default function AgentChatPage() {
               <div
                 className="relative flex-1 overflow-hidden bg-gray-50 dark:bg-[#0d1117]"
                 style={{
-                  backgroundImage:
-                    "radial-gradient(circle, rgba(148,163,184,0.3) 1px, transparent 1px)",
-                  backgroundSize: "20px 20px",
+                  backgroundImage: [
+                    "linear-gradient(rgba(148,163,184,0.15) 1px, transparent 1px)",
+                    "linear-gradient(90deg, rgba(148,163,184,0.15) 1px, transparent 1px)",
+                    "radial-gradient(circle, rgba(148,163,184,0.35) 1px, transparent 1px)",
+                  ].join(", "),
+                  backgroundSize: "20px 20px, 20px 20px, 20px 20px",
                 }}
               >
                 {viewMode === "2d" ? (
