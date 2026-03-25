@@ -3616,15 +3616,23 @@ export default function AgentChatPage() {
               {/* Canvas area */}
               <div className="relative flex flex-1 flex-col overflow-hidden">
                 <div
-                  className="relative flex-1 overflow-hidden bg-gray-50 dark:bg-[#0d1117]"
+                  className="relative flex-1 overflow-hidden"
                   style={{
                     touchAction: "none",
+                    backgroundColor: showGrid ? "#f0f7f0" : "#f8fafc",
                     backgroundImage: showGrid ? [
-                      "linear-gradient(rgba(148,163,184,0.15) 1px, transparent 1px)",
-                      "linear-gradient(90deg, rgba(148,163,184,0.15) 1px, transparent 1px)",
-                      "radial-gradient(circle, rgba(148,163,184,0.35) 1px, transparent 1px)",
+                      /* Minor grid lines every 20px — light green */
+                      "linear-gradient(#e8f5e9 1px, transparent 1px)",
+                      "linear-gradient(90deg, #e8f5e9 1px, transparent 1px)",
+                      /* Major grid lines every 80px (4th line) — darker green */
+                      "linear-gradient(#c8e6c9 1.5px, transparent 1.5px)",
+                      "linear-gradient(90deg, #c8e6c9 1.5px, transparent 1.5px)",
+                      /* Dots at major intersections */
+                      "radial-gradient(circle, #a5d6a7 1.5px, transparent 1.5px)",
                     ].join(", ") : "none",
-                    backgroundSize: "20px 20px, 20px 20px, 20px 20px",
+                    backgroundSize: showGrid
+                      ? "20px 20px, 20px 20px, 80px 80px, 80px 80px, 80px 80px"
+                      : "auto",
                   }}
                 >
                   {viewMode === "2d" ? (
@@ -3675,6 +3683,65 @@ export default function AgentChatPage() {
                       >
                         <X className="size-3.5" />
                       </button>
+                    </div>
+
+                    {/* 3D Isometric Cabinet Preview */}
+                    <div className="rounded-lg border border-border bg-slate-50 dark:bg-muted/20 p-2 flex items-center justify-center" style={{ height: 160 }}>
+                      <svg width="140" height="140" viewBox="0 0 140 140">
+                        {mockSelectedItem.category === "Base Cabinet" ? (
+                          /* Base cabinet: 3D box with doors + countertop */
+                          <g>
+                            {/* Countertop top face (parallelogram) */}
+                            <polygon points="25,20 95,20 115,8 45,8" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="1" />
+                            {/* Countertop front face */}
+                            <rect x="25" y="20" width="70" height="5" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="0.8" />
+                            {/* Cabinet front face */}
+                            <rect x="25" y="25" width="70" height="85" rx="1" fill="#dbeafe" stroke="#3b82f6" strokeWidth="1.2" />
+                            {/* Two door panels */}
+                            <rect x="28" y="28" width="31" height="79" rx="1" fill="none" stroke="#60a5fa" strokeWidth="0.8" />
+                            <rect x="62" y="28" width="31" height="79" rx="1" fill="none" stroke="#60a5fa" strokeWidth="0.8" />
+                            {/* Door handles */}
+                            <line x1="56" y1="60" x2="56" y2="74" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" />
+                            <line x1="65" y1="60" x2="65" y2="74" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" />
+                            {/* Right side face (parallelogram) */}
+                            <polygon points="95,25 115,13 115,98 95,110" fill="#bfdbfe" stroke="#3b82f6" strokeWidth="0.8" />
+                            {/* Countertop right side */}
+                            <polygon points="95,20 115,8 115,13 95,25" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="0.8" />
+                            {/* Toe kick */}
+                            <rect x="25" y="110" width="70" height="8" fill="#94a3b8" stroke="#64748b" strokeWidth="0.8" />
+                            {/* SKU label */}
+                            <text x="60" y="134" textAnchor="middle" fill="#334155" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                              {mockSelectedItem.sku.split("-")[0]}
+                            </text>
+                          </g>
+                        ) : mockSelectedItem.category === "Wall Cabinet" ? (
+                          /* Wall cabinet: smaller box */
+                          <g transform="translate(10, 20)">
+                            <polygon points="20,10 90,10 105,2 35,2" fill="#e0e7ff" stroke="#a5b4fc" strokeWidth="1" />
+                            <rect x="20" y="10" width="70" height="65" rx="1" fill="#e0e7ff" stroke="#6366f1" strokeWidth="1.2" />
+                            <rect x="23" y="13" width="64" height="59" rx="1" fill="none" stroke="#818cf8" strokeWidth="0.8" />
+                            <polygon points="90,10 105,2 105,67 90,75" fill="#c7d2fe" stroke="#6366f1" strokeWidth="0.8" />
+                            <circle cx="55" cy="42" r="2" fill="#4f46e5" />
+                            <text x="60" y="100" textAnchor="middle" fill="#334155" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                              {mockSelectedItem.sku.split("-")[0]}
+                            </text>
+                          </g>
+                        ) : (
+                          /* Appliance / default */
+                          <g>
+                            <polygon points="25,15 95,15 115,5 45,5" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1" />
+                            <rect x="25" y="15" width="70" height="95" rx="1" fill="#fef9c3" stroke="#f59e0b" strokeWidth="1.2" />
+                            <polygon points="95,15 115,5 115,100 95,110" fill="#fde68a" stroke="#f59e0b" strokeWidth="0.8" />
+                            <circle cx="45" cy="45" r="6" fill="none" stroke="#d97706" strokeWidth="1" />
+                            <circle cx="75" cy="45" r="6" fill="none" stroke="#d97706" strokeWidth="1" />
+                            <circle cx="45" cy="75" r="6" fill="none" stroke="#d97706" strokeWidth="1" />
+                            <circle cx="75" cy="75" r="6" fill="none" stroke="#d97706" strokeWidth="1" />
+                            <text x="60" y="134" textAnchor="middle" fill="#334155" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                              {mockSelectedItem.sku.split("-")[0]}
+                            </text>
+                          </g>
+                        )}
+                      </svg>
                     </div>
 
                     {/* Category badge */}
@@ -3876,6 +3943,12 @@ export default function AgentChatPage() {
             {/* Status bar */}
             <div className="flex items-center gap-4 border-t border-border bg-muted/20 px-4 py-1.5 text-xs text-muted-foreground">
               <AutosaveIndicator />
+              {/* Contextual status tip */}
+              <span className="hidden sm:inline text-[11px] text-slate-600 dark:text-muted-foreground italic">
+                {selectedItemId
+                  ? "Press Del to remove. Arrow keys to nudge. Double-click to configure."
+                  : "Click on a cabinet to select it. Drag to move."}
+              </span>
               <span className="hidden sm:inline font-mono">12&apos;-0&quot; x 14&apos;-0&quot; | 168 sq ft</span>
               <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-600 dark:text-green-400">
                 <Check className="size-3" />

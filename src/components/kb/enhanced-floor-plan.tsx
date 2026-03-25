@@ -136,31 +136,73 @@ function clamp(val: number, min: number, max: number) {
 /* ------------------------------------------------------------------ */
 
 function GridPattern() {
+  const minorStep = 12 * SCALE; // ~38px per foot
+  const majorStep = minorStep * 4;
   return (
     <>
       <defs>
-        <pattern id="grid-dots-enhanced" width={12 * SCALE} height={12 * SCALE} patternUnits="userSpaceOnUse">
-          <circle cx="0" cy="0" r="0.8" fill="rgba(148,163,184,0.2)" />
+        <pattern id="grid-minor-enhanced" width={minorStep} height={minorStep} patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2={minorStep} y2="0" stroke="rgba(76,175,80,0.12)" strokeWidth="0.5" />
+          <line x1="0" y1="0" x2="0" y2={minorStep} stroke="rgba(76,175,80,0.12)" strokeWidth="0.5" />
+        </pattern>
+        <pattern id="grid-major-enhanced" width={majorStep} height={majorStep} patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2={majorStep} y2="0" stroke="rgba(76,175,80,0.25)" strokeWidth="1" />
+          <line x1="0" y1="0" x2="0" y2={majorStep} stroke="rgba(76,175,80,0.25)" strokeWidth="1" />
+          <circle cx="0" cy="0" r="1.5" fill="rgba(76,175,80,0.3)" />
         </pattern>
       </defs>
-      <rect width={SVG_W} height={SVG_H} fill="url(#grid-dots-enhanced)" />
+      <rect width={SVG_W} height={SVG_H} fill="url(#grid-minor-enhanced)" />
+      <rect width={SVG_W} height={SVG_H} fill="url(#grid-major-enhanced)" />
     </>
   );
 }
 
 function Walls({ walls }: { walls: WallSegment[] }) {
+  const wallThicknessPx = 5 * SCALE; // 5 inches wall thickness
+  const halfThick = wallThicknessPx / 2;
+
   return (
     <g>
-      {walls.map((w) => (
-        <line
-          key={w.id}
-          x1={tx(w.start.x)} y1={ty(w.start.y)}
-          x2={tx(w.end.x)} y2={ty(w.end.y)}
-          stroke="rgba(51,65,85,0.6)"
-          strokeWidth={w.thickness * SCALE * 0.4}
-          strokeLinecap="round"
-        />
-      ))}
+      {walls.map((w) => {
+        const x1 = tx(w.start.x);
+        const y1 = ty(w.start.y);
+        const x2 = tx(w.end.x);
+        const y2 = ty(w.end.y);
+
+        // Calculate normal vector for wall thickness
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        const nx = (-dy / len) * halfThick;
+        const ny = (dx / len) * halfThick;
+
+        return (
+          <g key={w.id}>
+            {/* Wall fill between double lines */}
+            <polygon
+              points={`${x1 + nx},${y1 + ny} ${x2 + nx},${y2 + ny} ${x2 - nx},${y2 - ny} ${x1 - nx},${y1 - ny}`}
+              fill="rgba(226,232,240,0.6)"
+              stroke="none"
+            />
+            {/* Outer wall line */}
+            <line
+              x1={x1 + nx} y1={y1 + ny}
+              x2={x2 + nx} y2={y2 + ny}
+              stroke="rgba(51,65,85,0.7)"
+              strokeWidth="1.5"
+              strokeLinecap="square"
+            />
+            {/* Inner wall line */}
+            <line
+              x1={x1 - nx} y1={y1 - ny}
+              x2={x2 - nx} y2={y2 - ny}
+              stroke="rgba(51,65,85,0.7)"
+              strokeWidth="1.5"
+              strokeLinecap="square"
+            />
+          </g>
+        );
+      })}
     </g>
   );
 }
@@ -482,21 +524,36 @@ function DimensionLines() {
   const w = ROOM_W * SCALE;
   const h = ROOM_D * SCALE;
   const dimOffset = 24;
+  const tickLen = 5;
+
+  // 45-degree tick mark helper
+  const tick45 = (cx: number, cy: number, vertical: boolean) => {
+    const d = tickLen;
+    if (vertical) {
+      // Tick perpendicular to vertical dim line
+      return <line x1={cx - d} y1={cy - d} x2={cx + d} y2={cy + d} stroke="rgba(51,65,85,0.7)" strokeWidth="1" />;
+    }
+    // Tick perpendicular to horizontal dim line
+    return <line x1={cx - d} y1={cy + d} x2={cx + d} y2={cy - d} stroke="rgba(51,65,85,0.7)" strokeWidth="1" />;
+  };
 
   return (
     <g>
-      <line x1={PAD} y1={PAD - dimOffset} x2={PAD + w} y2={PAD - dimOffset} stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
-      <line x1={PAD} y1={PAD - dimOffset - 4} x2={PAD} y2={PAD - dimOffset + 4} stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
-      <line x1={PAD + w} y1={PAD - dimOffset - 4} x2={PAD + w} y2={PAD - dimOffset + 4} stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
-      <text x={PAD + w / 2} y={PAD - dimOffset - 6} fill="rgba(30,41,59,0.85)" fontSize="11" textAnchor="middle" fontFamily="monospace">
+      {/* Horizontal (top) — total room width */}
+      <line x1={PAD} y1={PAD - dimOffset} x2={PAD + w} y2={PAD - dimOffset} stroke="rgba(71,85,105,0.5)" strokeWidth="0.8" />
+      {tick45(PAD, PAD - dimOffset, false)}
+      {tick45(PAD + w, PAD - dimOffset, false)}
+      <text x={PAD + w / 2} y={PAD - dimOffset - 7} fill="rgba(30,41,59,0.9)" fontSize="11" textAnchor="middle" fontFamily="monospace" fontWeight="500">
         {formatInches(ROOM_W)}
       </text>
-      <line x1={PAD + w + dimOffset} y1={PAD} x2={PAD + w + dimOffset} y2={PAD + h} stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
-      <line x1={PAD + w + dimOffset - 4} y1={PAD} x2={PAD + w + dimOffset + 4} y2={PAD} stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
-      <line x1={PAD + w + dimOffset - 4} y1={PAD + h} x2={PAD + w + dimOffset + 4} y2={PAD + h} stroke="rgba(100,116,139,0.5)" strokeWidth="1" />
+
+      {/* Vertical (right) — total room depth */}
+      <line x1={PAD + w + dimOffset} y1={PAD} x2={PAD + w + dimOffset} y2={PAD + h} stroke="rgba(71,85,105,0.5)" strokeWidth="0.8" />
+      {tick45(PAD + w + dimOffset, PAD, true)}
+      {tick45(PAD + w + dimOffset, PAD + h, true)}
       <text
         x={PAD + w + dimOffset + 14} y={PAD + h / 2}
-        fill="rgba(30,41,59,0.85)" fontSize="11" textAnchor="middle" fontFamily="monospace"
+        fill="rgba(30,41,59,0.9)" fontSize="11" textAnchor="middle" fontFamily="monospace" fontWeight="500"
         transform={`rotate(90, ${PAD + w + dimOffset + 14}, ${PAD + h / 2})`}
       >
         {formatInches(ROOM_D)}
@@ -506,38 +563,63 @@ function DimensionLines() {
 }
 
 function CabinetDimLabels({ cabinets }: { cabinets: Cabinet[] }) {
+  const tickLen = 3;
+
   return (
     <g>
       {cabinets.filter(c => c.type !== "wall").map((cab) => {
-        const { rx, ry, rw } = itemRect(cab);
+        const { rx, ry, rw, rh } = itemRect(cab);
         const isVertical = cab.rotation === 90 || cab.rotation === 270;
+
         if (isVertical) {
+          const dimX = rx - 10;
+          const startY = ry;
+          const endY = ry + rh;
           return (
-            <text key={`dim-${cab.id}`}
-              x={rx - 6} y={ry + rw / 2}
-              fill="rgba(51,65,85,0.8)" fontSize="7" textAnchor="middle" fontFamily="monospace"
-              transform={`rotate(-90, ${rx - 6}, ${ry + rw / 2})`}
+            <g key={`dim-${cab.id}`}>
+              {/* Dimension line */}
+              <line x1={dimX} y1={startY} x2={dimX} y2={endY} stroke="rgba(71,85,105,0.4)" strokeWidth="0.6" />
+              {/* Tick marks (45-degree) */}
+              <line x1={dimX - tickLen} y1={startY - tickLen} x2={dimX + tickLen} y2={startY + tickLen} stroke="rgba(51,65,85,0.7)" strokeWidth="0.8" />
+              <line x1={dimX - tickLen} y1={endY - tickLen} x2={dimX + tickLen} y2={endY + tickLen} stroke="rgba(51,65,85,0.7)" strokeWidth="0.8" />
+              {/* Label */}
+              <text
+                x={dimX - 4} y={startY + (endY - startY) / 2}
+                fill="rgba(51,65,85,0.85)" fontSize="7" textAnchor="middle" fontFamily="monospace"
+                transform={`rotate(-90, ${dimX - 4}, ${startY + (endY - startY) / 2})`}
+              >
+                {cab.width}&quot;
+              </text>
+            </g>
+          );
+        }
+
+        const dimY = ry - 8;
+        const startX = rx;
+        const endX = rx + rw;
+        return (
+          <g key={`dim-${cab.id}`}>
+            {/* Dimension line */}
+            <line x1={startX} y1={dimY} x2={endX} y2={dimY} stroke="rgba(71,85,105,0.4)" strokeWidth="0.6" />
+            {/* Tick marks (45-degree) */}
+            <line x1={startX - tickLen} y1={dimY + tickLen} x2={startX + tickLen} y2={dimY - tickLen} stroke="rgba(51,65,85,0.7)" strokeWidth="0.8" />
+            <line x1={endX - tickLen} y1={dimY + tickLen} x2={endX + tickLen} y2={dimY - tickLen} stroke="rgba(51,65,85,0.7)" strokeWidth="0.8" />
+            {/* Label */}
+            <text
+              x={startX + rw / 2} y={dimY - 3}
+              fill="rgba(51,65,85,0.85)" fontSize="7" textAnchor="middle" fontFamily="monospace"
             >
               {cab.width}&quot;
             </text>
-          );
-        }
-        return (
-          <text key={`dim-${cab.id}`}
-            x={rx + rw / 2} y={ry - 5}
-            fill="rgba(51,65,85,0.8)" fontSize="7" textAnchor="middle" fontFamily="monospace"
-          >
-            {cab.width}&quot;
-          </text>
+          </g>
         );
       })}
     </g>
   );
 }
 
-/** Enhanced dimension chains along walls with gap dims */
+/** Enhanced dimension chains along walls with tick marks, individual widths, and total bracket */
 function WallDimensionChains({ cabinets }: { cabinets: Cabinet[] }) {
-  // North wall running dims
   const northCabs = cabinets
     .filter(c => c.wall === "north" && c.type !== "wall")
     .sort((a, b) => a.x - b.x);
@@ -547,58 +629,100 @@ function WallDimensionChains({ cabinets }: { cabinets: Cabinet[] }) {
     .sort((a, b) => a.y - b.y);
 
   const chainOffset = 42;
+  const totalOffset = 56; // total dimension bracket further out
+  const tickLen = 3;
+
+  // 45-degree tick for horizontal chain
+  const hTick = (x: number, y: number) => (
+    <line x1={x - tickLen} y1={y + tickLen} x2={x + tickLen} y2={y - tickLen} stroke="rgba(51,65,85,0.65)" strokeWidth="0.8" />
+  );
+  // 45-degree tick for vertical chain
+  const vTick = (x: number, y: number) => (
+    <line x1={x - tickLen} y1={y - tickLen} x2={x + tickLen} y2={y + tickLen} stroke="rgba(51,65,85,0.65)" strokeWidth="0.8" />
+  );
 
   return (
     <g>
-      {/* North wall running dimensions */}
-      {northCabs.length > 0 && (
-        <g>
-          {northCabs.map((cab, i) => {
-            const cumX = cab.x + cab.width;
-            const svgX = tx(cumX);
-            const svgY = PAD - chainOffset;
-            // Show cumulative distance from wall start
-            return (
-              <g key={`nchain-${cab.id}`}>
-                <line x1={svgX} y1={svgY - 3} x2={svgX} y2={svgY + 3} stroke="rgba(99,102,241,0.4)" strokeWidth="0.8" />
-                <text x={svgX} y={svgY - 5} fill="rgba(67,56,202,0.7)" fontSize="6" textAnchor="middle" fontFamily="monospace">
-                  {cumX}&quot;
-                </text>
-                {/* Gap to next cabinet */}
-                {i < northCabs.length - 1 && northCabs[i + 1].x > cumX && (
-                  <text
-                    x={tx((cumX + northCabs[i + 1].x) / 2)}
-                    y={svgY + 10}
-                    fill="rgba(220,38,38,0.6)" fontSize="6" textAnchor="middle" fontFamily="monospace"
-                  >
-                    gap {northCabs[i + 1].x - cumX}&quot;
+      {/* North wall running dimension chain */}
+      {northCabs.length > 0 && (() => {
+        const firstX = northCabs[0].x;
+        const lastEnd = northCabs[northCabs.length - 1].x + northCabs[northCabs.length - 1].width;
+        const svgY = PAD - chainOffset;
+        const totalY = PAD - totalOffset;
+        return (
+          <g>
+            {/* Individual cabinet widths with ticks */}
+            {northCabs.map((cab, i) => {
+              const startX = tx(cab.x);
+              const endX = tx(cab.x + cab.width);
+              const midX = (startX + endX) / 2;
+              return (
+                <g key={`nchain-${cab.id}`}>
+                  {/* Dim line segment */}
+                  <line x1={startX} y1={svgY} x2={endX} y2={svgY} stroke="rgba(71,85,105,0.35)" strokeWidth="0.6" />
+                  {/* Start tick */}
+                  {hTick(startX, svgY)}
+                  {/* End tick (only on last, others share with next start) */}
+                  {i === northCabs.length - 1 && hTick(endX, svgY)}
+                  {/* Individual width label */}
+                  <text x={midX} y={svgY - 4} fill="rgba(51,65,85,0.8)" fontSize="6.5" textAnchor="middle" fontFamily="monospace">
+                    {cab.width}&quot;
                   </text>
-                )}
-              </g>
-            );
-          })}
-          <line x1={PAD} y1={PAD - chainOffset} x2={tx(northCabs[northCabs.length - 1].x + northCabs[northCabs.length - 1].width)} y2={PAD - chainOffset} stroke="rgba(99,102,241,0.3)" strokeWidth="0.6" />
-        </g>
-      )}
+                  {/* Cumulative distance below line */}
+                  <text x={endX} y={svgY + 10} fill="rgba(67,56,202,0.6)" fontSize="5.5" textAnchor="middle" fontFamily="monospace">
+                    {cab.x + cab.width}&quot;
+                  </text>
+                </g>
+              );
+            })}
+            {/* Total wall run dimension bracket */}
+            <line x1={tx(firstX)} y1={totalY} x2={tx(lastEnd)} y2={totalY} stroke="rgba(51,65,85,0.5)" strokeWidth="0.8" />
+            {hTick(tx(firstX), totalY)}
+            {hTick(tx(lastEnd), totalY)}
+            <text x={(tx(firstX) + tx(lastEnd)) / 2} y={totalY - 4} fill="rgba(30,41,59,0.85)" fontSize="8" textAnchor="middle" fontFamily="monospace" fontWeight="600">
+              {lastEnd - firstX}&quot; total
+            </text>
+          </g>
+        );
+      })()}
 
-      {/* East wall running dimensions */}
-      {eastCabs.length > 0 && (
-        <g>
-          {eastCabs.map((cab) => {
-            const cumY = cab.y + cab.width; // width because rotated 90
-            const svgX = tx(ROOM_W) + chainOffset;
-            const svgY = ty(cumY);
-            return (
-              <g key={`echain-${cab.id}`}>
-                <line x1={svgX - 3} y1={svgY} x2={svgX + 3} y2={svgY} stroke="rgba(99,102,241,0.4)" strokeWidth="0.8" />
-                <text x={svgX + 8} y={svgY + 3} fill="rgba(67,56,202,0.7)" fontSize="6" textAnchor="start" fontFamily="monospace">
-                  {cumY}&quot;
-                </text>
-              </g>
-            );
-          })}
-        </g>
-      )}
+      {/* East wall running dimension chain */}
+      {eastCabs.length > 0 && (() => {
+        const firstY = eastCabs[0].y;
+        const lastEnd = eastCabs[eastCabs.length - 1].y + eastCabs[eastCabs.length - 1].width;
+        const svgX = tx(ROOM_W) + chainOffset;
+        const totalX = tx(ROOM_W) + totalOffset;
+        return (
+          <g>
+            {eastCabs.map((cab, i) => {
+              const startY = ty(cab.y);
+              const endY = ty(cab.y + cab.width);
+              const midY = (startY + endY) / 2;
+              return (
+                <g key={`echain-${cab.id}`}>
+                  <line x1={svgX} y1={startY} x2={svgX} y2={endY} stroke="rgba(71,85,105,0.35)" strokeWidth="0.6" />
+                  {vTick(svgX, startY)}
+                  {i === eastCabs.length - 1 && vTick(svgX, endY)}
+                  <text x={svgX + 8} y={midY + 2} fill="rgba(51,65,85,0.8)" fontSize="6.5" textAnchor="start" fontFamily="monospace">
+                    {cab.width}&quot;
+                  </text>
+                </g>
+              );
+            })}
+            {/* Total bracket for east wall */}
+            <line x1={totalX} y1={ty(firstY)} x2={totalX} y2={ty(lastEnd)} stroke="rgba(51,65,85,0.5)" strokeWidth="0.8" />
+            {vTick(totalX, ty(firstY))}
+            {vTick(totalX, ty(lastEnd))}
+            <text
+              x={totalX + 8} y={(ty(firstY) + ty(lastEnd)) / 2}
+              fill="rgba(30,41,59,0.85)" fontSize="8" textAnchor="start" fontFamily="monospace" fontWeight="600"
+              transform={`rotate(90, ${totalX + 8}, ${(ty(firstY) + ty(lastEnd)) / 2})`}
+            >
+              {lastEnd - firstY}&quot; total
+            </text>
+          </g>
+        );
+      })()}
     </g>
   );
 }

@@ -15,12 +15,15 @@ interface PlacementPanelProps {
   selectedItemSku: string;
   posX: number;
   posY: number;
+  length?: number;
+  angle?: number;
   onMove?: (direction: "up" | "down" | "left" | "right", offset: number) => void;
   onAdd?: (direction: "up" | "down" | "left" | "right", offset: number) => void;
   onCopy?: (direction: "up" | "down" | "left" | "right", offset: number) => void;
 }
 
 type PlacementMode = "add" | "move" | "copy";
+type PlacementTab = "place" | "coords";
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
@@ -31,12 +34,15 @@ export function PlacementPanel({
   selectedItemSku,
   posX,
   posY,
+  length = 36,
+  angle = 0,
   onMove,
   onAdd,
   onCopy,
 }: PlacementPanelProps) {
   const [mode, setMode] = useState<PlacementMode>("move");
   const [offset, setOffset] = useState("1");
+  const [activeTab, setActiveTab] = useState<PlacementTab>("place");
 
   const offsetVal = parseFloat(offset) || 1;
 
@@ -59,11 +65,57 @@ export function PlacementPanel({
         Placement
       </h4>
 
-      {/* Selected item */}
-      <div className="glass rounded-lg p-2.5">
-        <p className="text-xs font-medium text-foreground truncate">
-          {selectedItemSku} &mdash; {selectedItemName}
-        </p>
+      {/* Circular wheel */}
+      <div className="flex flex-col items-center">
+        <div className="relative" style={{ width: 120, height: 120 }}>
+          {/* Circle border */}
+          <div
+            className="absolute inset-0 rounded-full border-2 border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50"
+          />
+
+          {/* Center SKU label */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-sm font-bold text-slate-800 dark:text-slate-200 font-mono">
+              {selectedItemSku}
+            </span>
+          </div>
+
+          {/* North arrow */}
+          <button
+            onClick={() => handleDirection("up")}
+            className="absolute left-1/2 -translate-x-1/2 -top-3 size-7 rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-400 transition-colors"
+            title="Move Up"
+          >
+            <ArrowUp className="size-3.5 text-slate-700 dark:text-slate-300" />
+          </button>
+
+          {/* South arrow */}
+          <button
+            onClick={() => handleDirection("down")}
+            className="absolute left-1/2 -translate-x-1/2 -bottom-3 size-7 rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-400 transition-colors"
+            title="Move Down"
+          >
+            <ArrowDown className="size-3.5 text-slate-700 dark:text-slate-300" />
+          </button>
+
+          {/* West arrow */}
+          <button
+            onClick={() => handleDirection("left")}
+            className="absolute top-1/2 -translate-y-1/2 -left-3 size-7 rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-400 transition-colors"
+            title="Move Left"
+          >
+            <ArrowLeft className="size-3.5 text-slate-700 dark:text-slate-300" />
+          </button>
+
+          {/* East arrow */}
+          <button
+            onClick={() => handleDirection("right")}
+            className="absolute top-1/2 -translate-y-1/2 -right-3 size-7 rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-400 transition-colors"
+            title="Move Right"
+          >
+            <ArrowRight className="size-3.5 text-slate-700 dark:text-slate-300" />
+          </button>
+        </div>
       </div>
 
       {/* Offset input */}
@@ -82,52 +134,7 @@ export function PlacementPanel({
         <span className="text-[10px] text-muted-foreground">inches</span>
       </div>
 
-      {/* Directional arrows */}
-      <div className="flex flex-col items-center gap-1">
-        <Button
-          variant="outline"
-          size="icon"
-          className="size-8"
-          onClick={() => handleDirection("up")}
-          title="Up"
-        >
-          <ArrowUp className="size-4" />
-        </Button>
-        <div className="flex items-center gap-1">
-          <Button
-            variant="outline"
-            size="icon"
-            className="size-8"
-            onClick={() => handleDirection("left")}
-            title="Left"
-          >
-            <ArrowLeft className="size-4" />
-          </Button>
-          <div className="size-8 flex items-center justify-center rounded-md border border-border bg-muted/30">
-            <span className="text-[9px] font-mono text-muted-foreground">{offsetVal}&quot;</span>
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            className="size-8"
-            onClick={() => handleDirection("right")}
-            title="Right"
-          >
-            <ArrowRight className="size-4" />
-          </Button>
-        </div>
-        <Button
-          variant="outline"
-          size="icon"
-          className="size-8"
-          onClick={() => handleDirection("down")}
-          title="Down"
-        >
-          <ArrowDown className="size-4" />
-        </Button>
-      </div>
-
-      {/* Mode toggle */}
+      {/* Mode toggle: Add / Move / Copy */}
       <div className="flex items-center gap-1 rounded-lg border border-border p-0.5 bg-muted/20">
         {([
           { key: "add" as const, icon: Plus, label: "Add" },
@@ -139,7 +146,7 @@ export function PlacementPanel({
             onClick={() => setMode(key)}
             className={`flex flex-1 items-center justify-center gap-1 rounded-md px-2 py-1.5 text-[10px] font-medium transition-all ${
               mode === key
-                ? "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                ? "bg-blue-500/15 text-blue-600 dark:text-blue-400 shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -149,18 +156,60 @@ export function PlacementPanel({
         ))}
       </div>
 
-      {/* Coords display */}
-      <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/10 px-3 py-2">
-        <div>
-          <span className="text-[9px] uppercase tracking-wider text-muted-foreground/60">X</span>
-          <p className="text-xs font-mono font-medium text-foreground">{Math.round(posX)}&quot;</p>
-        </div>
-        <div className="h-6 w-px bg-border" />
-        <div>
-          <span className="text-[9px] uppercase tracking-wider text-muted-foreground/60">Y</span>
-          <p className="text-xs font-mono font-medium text-foreground">{Math.round(posY)}&quot;</p>
-        </div>
+      {/* Place / Coords tabs */}
+      <div className="flex items-center rounded-lg border border-border overflow-hidden">
+        <button
+          onClick={() => setActiveTab("place")}
+          className={`flex-1 px-3 py-1.5 text-[10px] font-medium transition-all ${
+            activeTab === "place"
+              ? "bg-blue-500/15 text-blue-600 dark:text-blue-400"
+              : "text-muted-foreground hover:text-foreground bg-muted/10"
+          }`}
+        >
+          Place
+        </button>
+        <div className="w-px h-6 bg-border" />
+        <button
+          onClick={() => setActiveTab("coords")}
+          className={`flex-1 px-3 py-1.5 text-[10px] font-medium transition-all ${
+            activeTab === "coords"
+              ? "bg-blue-500/15 text-blue-600 dark:text-blue-400"
+              : "text-muted-foreground hover:text-foreground bg-muted/10"
+          }`}
+        >
+          Coords
+        </button>
       </div>
+
+      {/* Tab content */}
+      {activeTab === "place" ? (
+        <div className="glass rounded-lg p-2.5">
+          <p className="text-xs font-medium text-foreground truncate">
+            {selectedItemSku} &mdash; {selectedItemName}
+          </p>
+          <p className="text-[10px] text-muted-foreground mt-1">
+            Use arrows to place relative to selection
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            { label: "X", value: `${Math.round(posX)}"` },
+            { label: "Y", value: `${Math.round(posY)}"` },
+            { label: "Length", value: `${length}"` },
+            { label: "Angle", value: `${angle}°` },
+          ].map((field) => (
+            <div key={field.label} className="rounded-lg border border-border bg-muted/10 px-2.5 py-1.5">
+              <span className="text-[9px] uppercase tracking-wider text-muted-foreground/60">
+                {field.label}
+              </span>
+              <p className="text-xs font-mono font-medium text-foreground">
+                {field.value}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
