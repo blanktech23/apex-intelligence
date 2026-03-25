@@ -3539,25 +3539,7 @@ export default function AgentChatPage() {
         {/* ----- Design Canvas Panel ----- */}
         {canvasOpen && id === "design-spec-assistant" && (
           <div
-            className={`flex flex-col border-l transition-all duration-300 ${canvasFullscreen ? "fixed inset-0 z-50" : "fixed inset-0 z-50 lg:relative lg:inset-auto lg:z-auto lg:w-[55%] lg:shrink-0"}`}
-            style={{
-              backgroundColor: '#080e1a',
-              color: '#e8eaf0',
-              '--background': '#0a0e1a',
-              '--foreground': '#e8eaf0',
-              '--card': 'rgba(255,255,255,0.05)',
-              '--card-foreground': '#e8eaf0',
-              '--popover': '#151d2e',
-              '--popover-foreground': '#e8eaf0',
-              '--muted': 'rgba(255,255,255,0.06)',
-              '--muted-foreground': '#64748b',
-              '--border': 'rgba(255,255,255,0.08)',
-              '--input': 'rgba(255,255,255,0.1)',
-              '--glass': 'rgba(255,255,255,0.05)',
-              '--glass-border': 'rgba(255,255,255,0.1)',
-              '--glass-hover': 'rgba(255,255,255,0.08)',
-              borderColor: 'rgba(255,255,255,0.08)',
-            } as React.CSSProperties}
+            className="fixed inset-0 z-50 flex flex-col border-l border-border bg-background transition-all duration-300"
           >
             {/* ============================================================= */}
             {/* K&B DESIGNER VIEWPORT                                          */}
@@ -3719,11 +3701,10 @@ export default function AgentChatPage() {
             <div className="flex flex-1 overflow-hidden">
               {/* Canvas area */}
               <div
-                className="relative flex-1 overflow-hidden"
+                className="relative flex-1 overflow-hidden bg-muted/30"
                 style={{
-                  background: "#0d1117",
                   backgroundImage:
-                    "radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)",
+                    "radial-gradient(hsl(var(--muted-foreground) / 0.15) 1px, transparent 1px)",
                   backgroundSize: "20px 20px",
                 }}
               >
