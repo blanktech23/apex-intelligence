@@ -192,7 +192,7 @@ export function MessageThread({
   const groups = useMemo(() => groupMessagesByDay(messages), [messages])
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex min-h-0 flex-1 flex-col">
       {/* Message list */}
       <div
         ref={scrollRef}

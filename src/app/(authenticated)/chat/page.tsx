@@ -114,7 +114,7 @@ export default function ChatPage() {
       <div
         className={`${
           mobileShowMessages ? "flex" : "hidden lg:flex"
-        } flex-1 flex-col overflow-hidden`}
+        } min-h-0 flex-1 flex-col overflow-hidden`}
       >
         {activeChannel ? (
           <>
