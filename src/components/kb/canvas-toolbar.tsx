@@ -52,7 +52,7 @@ export function CanvasToolbar({
   return (
     <TooltipProvider>
       <div
-        className={`absolute top-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 rounded-full border border-border/50 bg-background/80 backdrop-blur-xl px-2 py-1.5 shadow-lg ${className ?? ""}`}
+        className={`absolute top-3 left-1/2 -translate-x-1/2 z-30 inline-flex items-center gap-0.5 rounded-lg border border-border bg-background px-1.5 py-1 shadow-md ${className ?? ""}`}
       >
         {actions.map((action) => {
           const Icon = action.icon;
