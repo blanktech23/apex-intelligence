@@ -3580,32 +3580,6 @@ export default function AgentChatPage() {
                 Export
               </button>
 
-              {/* Render quality */}
-              <div className="glass flex items-center gap-0.5 rounded-lg p-0.5">
-                <button
-                  onClick={() => setRenderLevel(1)}
-                  className={`rounded-md px-2 py-1 text-xs font-medium transition-all ${
-                    renderLevel === 1
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <Eye className="mr-1 inline size-3" />
-                  Level 1
-                </button>
-                <button
-                  onClick={() => setRenderLevel(2)}
-                  className={`rounded-md px-2 py-1 text-xs font-medium transition-all ${
-                    renderLevel === 2
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <Camera className="mr-1 inline size-3" />
-                  Level 2
-                </button>
-              </div>
-
               <div className="h-4 w-px bg-border" />
 
               {/* Fullscreen / Close */}
