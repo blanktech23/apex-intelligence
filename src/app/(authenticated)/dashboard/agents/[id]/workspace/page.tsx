@@ -89,12 +89,12 @@ const agentNameMap: Record<string, string> = {
   "field-operations": "Field Operations Agent",
   // Plan v3 IDs
   "support-agent": "Support Agent",
-  "discovery-concierge": "Discovery Concierge",
-  "project-orchestrator": "Project Orchestrator",
-  "estimate-engine": "Estimate Engine",
-  "operations-controller": "Operations Controller",
-  "executive-navigator": "Executive Navigator",
-  "design-spec-assistant": "Design Spec Assistant",
+  "leads-agent": "Leads Agent",
+  "project-management-agent": "Project Management Agent",
+  "sales-agent": "Sales Agent",
+  "bookkeeping-agent": "Bookkeeping Agent",
+  "ceo-agent": "CEO Agent",
+  "design-agent": "Design Agent",
 };
 
 // ---------------------------------------------------------------------------
@@ -103,12 +103,12 @@ const agentNameMap: Record<string, string> = {
 
 const idAliasMap: Record<string, string> = {
   "support-agent": "customer-support",
-  "discovery-concierge": "sales-outreach",
-  "project-orchestrator": "scheduling",
-  "estimate-engine": "estimation",
-  "operations-controller": "bookkeeping",
-  "executive-navigator": "project-management",
-  "design-spec-assistant": "design-spec-assistant",
+  "leads-agent": "sales-outreach",
+  "project-management-agent": "scheduling",
+  "sales-agent": "estimation",
+  "bookkeeping-agent": "bookkeeping",
+  "ceo-agent": "project-management",
+  "design-agent": "design-agent",
 };
 
 // ---------------------------------------------------------------------------

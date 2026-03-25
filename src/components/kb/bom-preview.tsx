@@ -226,7 +226,7 @@ export function BomPreview({
           <Button
             className="gap-2 text-xs bg-primary text-primary-foreground hover:bg-primary/90"
             onClick={() => {
-              toast.success("BOM sent to Estimate Engine");
+              toast.success("BOM sent to Sales Agent");
               onOpenChange(false);
             }}
           >

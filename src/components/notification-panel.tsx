@@ -25,7 +25,7 @@ const initialNotifications: Notification[] = [
   {
     id: "1",
     type: "success",
-    title: "Estimate Engine completed 3 estimates",
+    title: "Sales Agent completed 3 estimates",
     summary: "Roofing replacement, Kitchen remodel, and HVAC installation estimates are ready for review.",
     time: "2 min ago",
     unread: true,
@@ -33,7 +33,7 @@ const initialNotifications: Notification[] = [
   {
     id: "2",
     type: "warning",
-    title: "Discovery Concierge needs approval",
+    title: "Leads Agent needs approval",
     summary: "A new lead requires manual qualification before the agent can proceed with outreach.",
     time: "15 min ago",
     unread: true,

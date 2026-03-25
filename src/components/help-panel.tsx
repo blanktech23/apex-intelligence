@@ -245,7 +245,7 @@ const routeContextMap: Record<string, RouteContext> = {
       {
         question: "How does lead scoring work?",
         answer:
-          "The Discovery Concierge agent automatically scores leads based on engagement, project size, and response patterns.",
+          "The Leads Agent agent automatically scores leads based on engagement, project size, and response patterns.",
       },
     ],
   },
@@ -582,7 +582,7 @@ const chatResponsePatterns: Array<{ pattern: RegExp; response: ChatResponse }> =
       pattern: /estimate|bid|quote|proposal/i,
       response: {
         message:
-          "The Estimate Engine agent generates detailed project cost estimates from specs and pricing data. View pending estimates in Approvals or check the agent's history.",
+          "The Sales Agent agent generates detailed project cost estimates from specs and pricing data. View pending estimates in Approvals or check the agent's history.",
         link: { label: "Go to Approvals \u2192", href: "/approvals" },
       },
     },

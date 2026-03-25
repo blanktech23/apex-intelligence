@@ -55,7 +55,7 @@ const roleBullets: Record<
     { icon: Clock, text: "Coordinate team tasks" },
   ],
   designer: [
-    { icon: Palette, text: "Access Design Spec Assistant" },
+    { icon: Palette, text: "Access Design Agent" },
     { icon: FileText, text: "Review & collaborate on specs" },
     { icon: Clock, text: "View project timelines" },
   ],

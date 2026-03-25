@@ -48,7 +48,7 @@ const mockEscalations: Escalation[] = [
   {
     id: "esc-001",
     priority: "HIGH",
-    agent: { name: "Discovery Concierge", icon: Compass },
+    agent: { name: "Leads Agent", icon: Compass },
     summary:
       "New lead from website: Johnson Remodeling requesting kitchen estimate. Contact info verified, budget range $30-50k...",
     created: "5m ago",
@@ -57,7 +57,7 @@ const mockEscalations: Escalation[] = [
   {
     id: "esc-002",
     priority: "MEDIUM",
-    agent: { name: "Estimate Engine", icon: Brain },
+    agent: { name: "Sales Agent", icon: Brain },
     summary:
       "Estimate draft for 2,400 sqft bathroom renovation at $45,200. Includes demolition, plumbing, tile, and fixtures...",
     created: "15m ago",
@@ -66,7 +66,7 @@ const mockEscalations: Escalation[] = [
   {
     id: "esc-003",
     priority: "HIGH",
-    agent: { name: "Operations Controller", icon: Settings2 },
+    agent: { name: "Bookkeeping Agent", icon: Settings2 },
     summary:
       "Schedule conflict detected: Two crews assigned to same site on March 18. Crew A (framing) and Crew B (electrical)...",
     created: "30m ago",
@@ -75,7 +75,7 @@ const mockEscalations: Escalation[] = [
   {
     id: "esc-004",
     priority: "LOW",
-    agent: { name: "Executive Navigator", icon: Zap },
+    agent: { name: "CEO Agent", icon: Zap },
     summary:
       "Weekly report summary: Revenue up 12%, 3 new leads, 2 projects completed. Cash flow positive for the quarter...",
     created: "2h ago",
@@ -93,7 +93,7 @@ const mockEscalations: Escalation[] = [
   {
     id: "esc-006",
     priority: "LOW",
-    agent: { name: "Project Orchestrator", icon: Calendar },
+    agent: { name: "Project Management Agent", icon: Calendar },
     summary:
       "Suggested reschedule: Rain forecast for exterior work on March 19. Recommending move to March 21 for siding crew...",
     created: "6h ago",
@@ -135,12 +135,12 @@ const statusConfig: Record<
 
 const agentOptions = [
   "All",
-  "Discovery Concierge",
-  "Estimate Engine",
-  "Operations Controller",
-  "Executive Navigator",
-  "Project Orchestrator",
-  "Design Spec Assistant",
+  "Leads Agent",
+  "Sales Agent",
+  "Bookkeeping Agent",
+  "CEO Agent",
+  "Project Management Agent",
+  "Design Agent",
   "Support Agent",
 ];
 

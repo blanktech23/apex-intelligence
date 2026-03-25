@@ -48,7 +48,7 @@ interface AgentROI {
 
 const agentROIData: AgentROI[] = [
   {
-    agent: "Discovery Concierge",
+    agent: "Leads Agent",
     description: "Qualifies and routes inbound leads",
     humanRole: "Sales Coordinator",
     hourlyRate: 24,
@@ -57,7 +57,7 @@ const agentROIData: AgentROI[] = [
     agentCost: 8.40,
   },
   {
-    agent: "Estimate Engine",
+    agent: "Sales Agent",
     description: "Generates cost estimates from project specs",
     humanRole: "Construction Estimator",
     hourlyRate: 36,
@@ -66,7 +66,7 @@ const agentROIData: AgentROI[] = [
     agentCost: 14.35,
   },
   {
-    agent: "Operations Controller",
+    agent: "Bookkeeping Agent",
     description: "Monitors timelines and resource allocation",
     humanRole: "Project Coordinator",
     hourlyRate: 28,
@@ -75,7 +75,7 @@ const agentROIData: AgentROI[] = [
     agentCost: 6.30,
   },
   {
-    agent: "Executive Navigator",
+    agent: "CEO Agent",
     description: "Surfaces KPIs and strategic insights",
     humanRole: "Business Analyst",
     hourlyRate: 43,
@@ -84,7 +84,7 @@ const agentROIData: AgentROI[] = [
     agentCost: 11.20,
   },
   {
-    agent: "Project Orchestrator",
+    agent: "Project Management Agent",
     description: "Manages crew scheduling and availability",
     humanRole: "Scheduler / Dispatcher",
     hourlyRate: 26,
@@ -93,7 +93,7 @@ const agentROIData: AgentROI[] = [
     agentCost: 4.20,
   },
   {
-    agent: "Design Spec Assistant",
+    agent: "Design Agent",
     description: "Extracts specs from design documents",
     humanRole: "Specs Writer",
     hourlyRate: 31,

@@ -148,7 +148,7 @@ const escalation = {
 
 const auditTrail = [
   {
-    description: "ESC-1042 created by Discovery Concierge",
+    description: "ESC-1042 created by Leads Agent",
     time: "2 hours ago",
     type: "create" as const,
   },

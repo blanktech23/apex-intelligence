@@ -92,37 +92,37 @@ const contractor: PersonaTemplate = {
 
   agentConfig: [
     {
-      name: "Discovery Concierge",
+      name: "Leads Agent",
       description: "Qualifies homeowner leads and books consultations",
       icon: "Search",
       status: "active",
     },
     {
-      name: "Design Spec Assistant",
+      name: "Design Agent",
       description: "Generates K&B design specs and material lists",
       icon: "PenTool",
       status: "active",
     },
     {
-      name: "Estimate Engine",
+      name: "Sales Agent",
       description: "Creates project estimates for homeowners",
       icon: "Calculator",
       status: "active",
     },
     {
-      name: "Project Orchestrator",
+      name: "Project Management Agent",
       description: "Manages installation scheduling and milestones",
       icon: "CalendarClock",
       status: "active",
     },
     {
-      name: "Operations Controller",
+      name: "Bookkeeping Agent",
       description: "Handles AP/AR, lien waivers, and financials",
       icon: "Receipt",
       status: "active",
     },
     {
-      name: "Executive Navigator",
+      name: "CEO Agent",
       description: "CEO briefing with project and revenue summaries",
       icon: "BarChart3",
       status: "active",
@@ -255,37 +255,37 @@ const dealer: PersonaTemplate = {
 
   agentConfig: [
     {
-      name: "Discovery Concierge",
+      name: "Leads Agent",
       description: "Qualifies contractor leads and trade applications",
       icon: "Search",
       status: "active",
     },
     {
-      name: "Design Spec Assistant",
+      name: "Design Agent",
       description: "Product specs and submittal packages for contractor orders",
       icon: "PenTool",
       status: "active",
     },
     {
-      name: "Estimate Engine",
+      name: "Sales Agent",
       description: "Generates contractor quotes from catalog pricing",
       icon: "Calculator",
       status: "active",
     },
     {
-      name: "Project Orchestrator",
+      name: "Project Management Agent",
       description: "Tracks order fulfillment and delivery scheduling",
       icon: "CalendarClock",
       status: "active",
     },
     {
-      name: "Operations Controller",
+      name: "Bookkeeping Agent",
       description: "Manages AP/AR and inventory",
       icon: "Receipt",
       status: "active",
     },
     {
-      name: "Executive Navigator",
+      name: "CEO Agent",
       description: "CEO briefing with sales and inventory summaries",
       icon: "BarChart3",
       status: "active",
@@ -427,25 +427,25 @@ const rep: PersonaTemplate = {
 
   agentConfig: [
     {
-      name: "Discovery Concierge",
+      name: "Leads Agent",
       description: "Tracks contractor opportunities in your territory",
       icon: "Search",
       status: "active",
     },
     {
-      name: "Design Spec Assistant",
+      name: "Design Agent",
       description: "Generates product spec sheets for contractors",
       icon: "PenTool",
       status: "active",
     },
     {
-      name: "Operations Controller",
+      name: "Bookkeeping Agent",
       description: "Commission reconciliation and payment tracking",
       icon: "Receipt",
       status: "active",
     },
     {
-      name: "Executive Navigator",
+      name: "CEO Agent",
       description: "Performance summary across territory and commissions",
       icon: "BarChart3",
       status: "active",
@@ -593,37 +593,37 @@ const manufacturer: PersonaTemplate = {
 
   agentConfig: [
     {
-      name: "Discovery Concierge",
+      name: "Leads Agent",
       description: "Qualifies dealer applications and partnership inquiries",
       icon: "Search",
       status: "active",
     },
     {
-      name: "Design Spec Assistant",
+      name: "Design Agent",
       description: "Manages catalog data, specs, and product documentation",
       icon: "PenTool",
       status: "active",
     },
     {
-      name: "Estimate Engine",
+      name: "Sales Agent",
       description: "Generates dealer pricing and wholesale quotes",
       icon: "Calculator",
       status: "active",
     },
     {
-      name: "Project Orchestrator",
+      name: "Project Management Agent",
       description: "Manages production scheduling and order fulfillment",
       icon: "CalendarClock",
       status: "active",
     },
     {
-      name: "Operations Controller",
+      name: "Bookkeeping Agent",
       description: "Handles AP/AR and production cost tracking",
       icon: "Receipt",
       status: "active",
     },
     {
-      name: "Executive Navigator",
+      name: "CEO Agent",
       description: "CEO briefing with production and sales analytics",
       icon: "BarChart3",
       status: "active",

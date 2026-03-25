@@ -175,7 +175,7 @@ export default function DesignProjectsPage() {
               Design Projects
             </h1>
             <p className="mt-0.5 text-sm text-muted-foreground">
-              Kitchen & bath designs managed by the Design Spec Assistant
+              Kitchen & bath designs managed by the Design Agent
             </p>
           </div>
         </div>

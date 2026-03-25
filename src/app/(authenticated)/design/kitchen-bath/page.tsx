@@ -270,7 +270,7 @@ export default function KitchenBathDesignerPage() {
           </div>
           <div className="flex-1">
             <h2 className="text-sm font-semibold text-foreground">
-              Design Spec Assistant
+              Design Agent
             </h2>
             <div className="flex items-center gap-1.5">
               <span className="inline-block size-1.5 rounded-full bg-green-400" />
@@ -390,7 +390,7 @@ export default function KitchenBathDesignerPage() {
                   aria-label="Send message"
                   onClick={() => {
                     if (inputValue.trim()) {
-                      toast.success("Message sent to Design Spec Assistant");
+                      toast.success("Message sent to Design Agent");
                       setInputValue("");
                     }
                   }}

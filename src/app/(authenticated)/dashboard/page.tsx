@@ -242,21 +242,21 @@ const chartData = [
 
 const allEscalations = [
   {
-    agent: "Discovery Concierge",
+    agent: "Leads Agent",
     icon: Mail,
     summary: "Unable to classify inbound lead - missing company domain",
     time: "12m ago",
     priority: "High" as const,
   },
   {
-    agent: "Estimate Engine",
+    agent: "Sales Agent",
     icon: Calculator,
     summary: "Material cost variance exceeds 15% threshold on bid #4821",
     time: "43m ago",
     priority: "Medium" as const,
   },
   {
-    agent: "Operations Controller",
+    agent: "Bookkeeping Agent",
     icon: Wrench,
     summary: "Schedule conflict detected between crews on Project Westfield",
     time: "1h ago",
@@ -278,7 +278,7 @@ const managerEscalations = allEscalations.slice(1, 3);
 const bookkeeperEscalations = [
   allEscalations[1], // Material cost variance
   {
-    agent: "Estimate Engine",
+    agent: "Sales Agent",
     icon: Calculator,
     summary: "Invoice #3892 payment overdue by 14 days - $2,100",
     time: "3h ago",
@@ -299,12 +299,12 @@ interface Agent {
 }
 
 const agents: Agent[] = [
-  { id: "discovery-concierge", name: "Discovery Concierge", icon: Mail, description: "Qualifies and routes inbound leads automatically", status: "Active", lastRun: "5m ago", todayCount: 12 },
-  { id: "estimate-engine", name: "Estimate Engine", icon: Calculator, description: "Generates cost estimates from project specs", status: "Active", lastRun: "15m ago", todayCount: 8 },
-  { id: "executive-navigator", name: "Executive Navigator", icon: BarChart3, description: "Surfaces KPIs and strategic insights for leadership", status: "Active", lastRun: "1h ago", todayCount: 3 },
-  { id: "operations-controller", name: "Operations Controller", icon: Wrench, description: "Monitors project timelines and resource allocation", status: "Active", lastRun: "30m ago", todayCount: 6 },
-  { id: "project-orchestrator", name: "Project Orchestrator", icon: Calendar, description: "Manages crew scheduling and availability", status: "Active", lastRun: "2h ago", todayCount: 4 },
-  { id: "design-spec-assistant", name: "Design Spec Assistant", icon: Palette, description: "Extracts specs and submittals from design documents", status: "Paused", lastRun: "1d ago", todayCount: 0 },
+  { id: "leads-agent", name: "Leads Agent", icon: Mail, description: "Qualifies and routes inbound leads automatically", status: "Active", lastRun: "5m ago", todayCount: 12 },
+  { id: "sales-agent", name: "Sales Agent", icon: Calculator, description: "Generates cost estimates from project specs", status: "Active", lastRun: "15m ago", todayCount: 8 },
+  { id: "ceo-agent", name: "CEO Agent", icon: BarChart3, description: "Surfaces KPIs and strategic insights for leadership", status: "Active", lastRun: "1h ago", todayCount: 3 },
+  { id: "bookkeeping-agent", name: "Bookkeeping Agent", icon: Wrench, description: "Monitors project timelines and resource allocation", status: "Active", lastRun: "30m ago", todayCount: 6 },
+  { id: "project-management-agent", name: "Project Management Agent", icon: Calendar, description: "Manages crew scheduling and availability", status: "Active", lastRun: "2h ago", todayCount: 4 },
+  { id: "design-agent", name: "Design Agent", icon: Palette, description: "Extracts specs and submittals from design documents", status: "Paused", lastRun: "1d ago", todayCount: 0 },
   { id: "support-agent", name: "Support Agent", icon: Headset, description: "Handles customer inquiries and ticket triage", status: "Active", lastRun: "10m ago", todayCount: 14 },
 ];
 
@@ -555,12 +555,12 @@ function getEscalationsForRole(role: Role) {
 function getAgentsForRole(role: Role) {
   switch (role) {
     case "designer":
-      return agents.filter((a) => a.id === "design-spec-assistant" || a.id === "support-agent");
+      return agents.filter((a) => a.id === "design-agent" || a.id === "support-agent");
     case "bookkeeper":
-      return agents.filter((a) => a.id === "estimate-engine" || a.id === "support-agent");
+      return agents.filter((a) => a.id === "sales-agent" || a.id === "support-agent");
     case "manager":
       return agents.filter((a) =>
-        ["operations-controller", "project-orchestrator", "estimate-engine", "support-agent"].includes(a.id)
+        ["bookkeeping-agent", "project-management-agent", "sales-agent", "support-agent"].includes(a.id)
       );
     case "owner":
     case "admin":
@@ -578,15 +578,15 @@ function getBriefingForRole(role: Role): string | null {
 
 **Revenue:** $12,400 in new estimates sent yesterday across 3 projects. Westfield Kitchen ($4,800) is closest to approval.
 
-**Operations:** All 6 active agents running normally. Project Orchestrator flagged a crew conflict on the Riverside project — Mike Torres resolved it at 7:15 AM.
+**Operations:** All 6 active agents running normally. Project Management Agent flagged a crew conflict on the Riverside project — Mike Torres resolved it at 7:15 AM.
 
 **Attention Needed:** 3 escalations pending your review, including a material cost variance on the Henderson renovation that exceeds your 15% threshold.
 
-**Pipeline:** Discovery Concierge qualified 4 new leads overnight. 2 match your ideal customer profile (residential remodel, $50K+ budget).`;
+**Pipeline:** Leads Agent qualified 4 new leads overnight. 2 match your ideal customer profile (residential remodel, $50K+ budget).`;
     case "manager":
       return `Good morning, Mike. Here's your daily overview:
 
-**Operations:** All 4 assigned agents running normally. Project Orchestrator flagged a crew conflict on the Riverside project — resolved at 7:15 AM.
+**Operations:** All 4 assigned agents running normally. Project Management Agent flagged a crew conflict on the Riverside project — resolved at 7:15 AM.
 
 **Attention Needed:** 2 escalations pending your review, including a schedule conflict on Project Westfield.
 
@@ -807,7 +807,7 @@ function DailyBriefingCard({ role }: { role: Role }) {
           <div>
             <h2 className="text-base font-semibold text-foreground">Daily Briefing</h2>
             <p className="text-xs text-muted-foreground">
-              Generated by Executive Navigator &middot; 8:00 AM today
+              Generated by CEO Agent &middot; 8:00 AM today
             </p>
           </div>
         </div>
@@ -984,7 +984,7 @@ function DealerDashboard() {
         {/* Briefing */}
         <PersonaBriefingCard
           briefingText={dealerBriefingText}
-          agentName="Operations Controller"
+          agentName="Bookkeeping Agent"
         />
 
         {/* Two-column activity */}
@@ -1087,7 +1087,7 @@ function RepDashboard() {
         {/* Briefing */}
         <PersonaBriefingCard
           briefingText={repBriefingText}
-          agentName="Executive Navigator"
+          agentName="CEO Agent"
         />
 
         {/* Two-column activity */}
@@ -1180,7 +1180,7 @@ function ManufacturerDashboard() {
         {/* Briefing */}
         <PersonaBriefingCard
           briefingText={manufacturerBriefingText}
-          agentName="Operations Controller"
+          agentName="Bookkeeping Agent"
         />
 
         {/* Two-column activity */}

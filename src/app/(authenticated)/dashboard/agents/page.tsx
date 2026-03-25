@@ -44,8 +44,8 @@ interface Agent {
 
 const initialAgents: Agent[] = [
   {
-    id: "discovery-concierge",
-    name: "Discovery Concierge",
+    id: "leads-agent",
+    name: "Leads Agent",
     description: "Qualifies and routes inbound leads automatically",
     icon: Mail,
     status: "Active",
@@ -57,8 +57,8 @@ const initialAgents: Agent[] = [
     keyMetricValue: "1,234",
   },
   {
-    id: "estimate-engine",
-    name: "Estimate Engine",
+    id: "sales-agent",
+    name: "Sales Agent",
     description: "Generates detailed project cost estimates from specs and pricing data",
     icon: Calculator,
     status: "Active",
@@ -70,8 +70,8 @@ const initialAgents: Agent[] = [
     keyMetricValue: "456",
   },
   {
-    id: "operations-controller",
-    name: "Operations Controller",
+    id: "bookkeeping-agent",
+    name: "Bookkeeping Agent",
     description: "Manages billing, AP/AR tracking, lien waivers, and QuickBooks integration",
     icon: Wrench,
     status: "Active",
@@ -83,8 +83,8 @@ const initialAgents: Agent[] = [
     keyMetricValue: "47",
   },
   {
-    id: "executive-navigator",
-    name: "Executive Navigator",
+    id: "ceo-agent",
+    name: "CEO Agent",
     description: "Surfaces KPIs, financial insights, and strategic briefings for leadership",
     icon: BarChart3,
     status: "Active",
@@ -96,8 +96,8 @@ const initialAgents: Agent[] = [
     keyMetricValue: "89",
   },
   {
-    id: "project-orchestrator",
-    name: "Project Orchestrator",
+    id: "project-management-agent",
+    name: "Project Management Agent",
     description: "Manages crew scheduling, equipment, and appointment coordination",
     icon: Calendar,
     status: "Active",
@@ -109,8 +109,8 @@ const initialAgents: Agent[] = [
     keyMetricValue: "892",
   },
   {
-    id: "design-spec-assistant",
-    name: "Design Spec Assistant",
+    id: "design-agent",
+    name: "Design Agent",
     description: "Extracts specs and submittals from design documents",
     icon: Palette,
     status: "Paused",
@@ -175,12 +175,12 @@ const integrationConnectionStatus: Record<string, { status: IntegrationStatus; l
 };
 
 const agentIntegrations: Record<string, string[]> = {
-  "discovery-concierge": ["JobTread", "Google Calendar", "Gmail"],
-  "estimate-engine": ["JobTread", "QuickBooks"],
-  "operations-controller": ["QuickBooks", "Stripe"],
-  "executive-navigator": ["QuickBooks", "JobTread"],
-  "project-orchestrator": ["JobTread", "Google Calendar"],
-  "design-spec-assistant": ["JobTread", "Google Calendar"],
+  "leads-agent": ["JobTread", "Google Calendar", "Gmail"],
+  "sales-agent": ["JobTread", "QuickBooks"],
+  "bookkeeping-agent": ["QuickBooks", "Stripe"],
+  "ceo-agent": ["QuickBooks", "JobTread"],
+  "project-management-agent": ["JobTread", "Google Calendar"],
+  "design-agent": ["JobTread", "Google Calendar"],
   "support-agent": [],
 };
 

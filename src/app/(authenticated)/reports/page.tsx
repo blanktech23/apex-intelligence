@@ -634,7 +634,7 @@ export default function ReportsPage() {
           <div className="flex items-start gap-3">
             <Brain className="mt-0.5 size-4 shrink-0 text-indigo-600 dark:text-indigo-400" />
             <p className="text-sm leading-relaxed text-muted-foreground">
-              <span className="font-medium text-foreground">Discovery Concierge</span> had
+              <span className="font-medium text-foreground">Leads Agent</span> had
               a 23% increase in lead qualification accuracy this month. The improved prompt
               chain reduced false-positive escalations by 31%, saving approximately 14 hours
               of manual review time.
@@ -644,7 +644,7 @@ export default function ReportsPage() {
           <div className="flex items-start gap-3">
             <Calendar className="mt-0.5 size-4 shrink-0 text-cyan-600 dark:text-cyan-400" />
             <p className="text-sm leading-relaxed text-muted-foreground">
-              <span className="font-medium text-foreground">Project Orchestrator</span>{" "}
+              <span className="font-medium text-foreground">Project Management Agent</span>{" "}
               resolved 847 scheduling conflicts automatically, up from 612 last month. Crew
               utilization improved to 91.4%, the highest since deployment.
             </p>

@@ -89,12 +89,12 @@ interface Agent {
 }
 
 const defaultAgents: Agent[] = [
-  { name: "Discovery Concierge", description: "Qualifies and routes inbound leads automatically", icon: Mail, enabled: true },
-  { name: "Estimate Engine", description: "Generates cost estimates from project specs", icon: Calculator, enabled: true },
-  { name: "Executive Navigator", description: "Surfaces KPIs and strategic insights for leadership", icon: BarChart3, enabled: true },
-  { name: "Operations Controller", description: "Monitors project timelines and resource allocation", icon: Wrench, enabled: true },
-  { name: "Project Orchestrator", description: "Manages crew scheduling and availability", icon: Calendar, enabled: false },
-  { name: "Design Spec Assistant", description: "Extracts specs and submittals from design documents", icon: Palette, enabled: false },
+  { name: "Leads Agent", description: "Qualifies and routes inbound leads automatically", icon: Mail, enabled: true },
+  { name: "Sales Agent", description: "Generates cost estimates from project specs", icon: Calculator, enabled: true },
+  { name: "CEO Agent", description: "Surfaces KPIs and strategic insights for leadership", icon: BarChart3, enabled: true },
+  { name: "Bookkeeping Agent", description: "Monitors project timelines and resource allocation", icon: Wrench, enabled: true },
+  { name: "Project Management Agent", description: "Manages crew scheduling and availability", icon: Calendar, enabled: false },
+  { name: "Design Agent", description: "Extracts specs and submittals from design documents", icon: Palette, enabled: false },
   { name: "Support Agent", description: "Handles customer inquiries and ticket triage", icon: Headset, enabled: true },
 ];
 

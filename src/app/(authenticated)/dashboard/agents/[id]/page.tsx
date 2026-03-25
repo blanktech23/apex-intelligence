@@ -122,12 +122,12 @@ interface AgentDetail {
 // ---------------------------------------------------------------------------
 
 const agentIconMap: Record<string, LucideIcon> = {
-  "discovery-concierge": Mail,
-  "estimate-engine": Calculator,
-  "operations-controller": Wrench,
-  "executive-navigator": BarChart3,
-  "project-orchestrator": Calendar,
-  "design-spec-assistant": Palette,
+  "leads-agent": Mail,
+  "sales-agent": Calculator,
+  "bookkeeping-agent": Wrench,
+  "ceo-agent": BarChart3,
+  "project-management-agent": Calendar,
+  "design-agent": Palette,
   "support-agent": Headset,
   // Legacy IDs for backward compatibility
   "customer-support": Headset,
@@ -140,34 +140,34 @@ const agentIconMap: Record<string, LucideIcon> = {
 };
 
 const agentNameMap: Record<string, string> = {
-  "discovery-concierge": "Discovery Concierge",
-  "estimate-engine": "Estimate Engine",
-  "operations-controller": "Operations Controller",
-  "executive-navigator": "Executive Navigator",
-  "project-orchestrator": "Project Orchestrator",
-  "design-spec-assistant": "Design Spec Assistant",
+  "leads-agent": "Leads Agent",
+  "sales-agent": "Sales Agent",
+  "bookkeeping-agent": "Bookkeeping Agent",
+  "ceo-agent": "CEO Agent",
+  "project-management-agent": "Project Management Agent",
+  "design-agent": "Design Agent",
   "support-agent": "Support Agent",
   "customer-support": "Support Agent",
-  "sales-outreach": "Discovery Concierge",
-  "scheduling": "Project Orchestrator",
-  "estimation": "Estimate Engine",
-  "bookkeeping": "Operations Controller",
-  "project-management": "Executive Navigator",
-  "field-operations": "Design Spec Assistant",
+  "sales-outreach": "Leads Agent",
+  "scheduling": "Project Management Agent",
+  "estimation": "Sales Agent",
+  "bookkeeping": "Bookkeeping Agent",
+  "project-management": "CEO Agent",
+  "field-operations": "Design Agent",
 };
 
 const agentDescriptionMap: Record<string, string> = {
-  "discovery-concierge":
+  "leads-agent":
     "Qualifies and routes inbound leads automatically. Scores leads based on engagement signals, classifies inquiries by intent, and initiates personalized outreach cadences for high-value prospects.",
-  "estimate-engine":
+  "sales-agent":
     "Generates detailed project cost estimates from specs and verified pricing data. Produces material breakdowns, compares vendor pricing across 500+ materials, and flags potential budget overruns early.",
-  "operations-controller":
+  "bookkeeping-agent":
     "Manages billing memos, AP/AR tracking, lien waivers, and QuickBooks integration. Provides real-time financial visibility with budget variance alerts and invoice processing.",
-  "executive-navigator":
+  "ceo-agent":
     "Surfaces KPIs, financial insights, and strategic briefings for leadership. Generates daily morning summaries, revenue forecasts, and cross-agent performance analysis.",
-  "project-orchestrator":
+  "project-management-agent":
     "Manages crew scheduling, equipment allocation, and appointment coordination. Resolves conflicts automatically, optimizes resource utilization, and sends real-time notifications for schedule changes.",
-  "design-spec-assistant":
+  "design-agent":
     "Extracts specs and submittals from design documents. Parses architectural drawings, identifies material specifications, and generates structured submittal packages for contractor review.",
   "support-agent":
     "AI-first customer support with knowledge base grounding. Targets 20-25% autonomous resolution at launch, scaling to 35-45% after 6 months. Uses confidence-gated responses and smart escalation.",
@@ -188,12 +188,12 @@ const agentDescriptionMap: Record<string, string> = {
 };
 
 const agentStatusMap: Record<string, AgentStatus> = {
-  "discovery-concierge": "Active",
-  "estimate-engine": "Active",
-  "operations-controller": "Active",
-  "executive-navigator": "Active",
-  "project-orchestrator": "Active",
-  "design-spec-assistant": "Paused",
+  "leads-agent": "Active",
+  "sales-agent": "Active",
+  "bookkeeping-agent": "Active",
+  "ceo-agent": "Active",
+  "project-management-agent": "Active",
+  "design-agent": "Paused",
   "support-agent": "Active",
   "customer-support": "Active",
   "sales-outreach": "Active",
@@ -738,7 +738,7 @@ const agentConfigMap: Record<string, AgentConfig> = {
     escalationRules: [
       { condition: "Specified material discontinued", action: "Alert designer with 3 alternatives" },
       { condition: "Spec conflict between plans and schedule", action: "Flag for architect review" },
-      { condition: "Material cost >20% above budget", action: "Escalate to Estimate Engine for re-evaluation" },
+      { condition: "Material cost >20% above budget", action: "Escalate to Sales Agent for re-evaluation" },
       { condition: "Missing specs for structural elements", action: "Escalate to structural engineer" },
     ],
   },
@@ -903,12 +903,12 @@ const integrationRegistry: Record<
 };
 
 const agentIntegrationMap: Record<string, string[]> = {
-  "discovery-concierge": ["JobTread", "Google Calendar", "Gmail"],
-  "estimate-engine": ["JobTread", "QuickBooks"],
-  "operations-controller": ["QuickBooks", "Stripe"],
-  "executive-navigator": ["QuickBooks", "JobTread"],
-  "project-orchestrator": ["JobTread", "Google Calendar"],
-  "design-spec-assistant": ["JobTread", "Google Calendar"],
+  "leads-agent": ["JobTread", "Google Calendar", "Gmail"],
+  "sales-agent": ["JobTread", "QuickBooks"],
+  "bookkeeping-agent": ["QuickBooks", "Stripe"],
+  "ceo-agent": ["QuickBooks", "JobTread"],
+  "project-management-agent": ["JobTread", "Google Calendar"],
+  "design-agent": ["JobTread", "Google Calendar"],
   "support-agent": [],
 };
 
@@ -926,12 +926,12 @@ function getIntegrationsForAgent(agentId: string): AgentIntegrationInfo[] {
 
 const idAliasMap: Record<string, string> = {
   "support-agent": "customer-support",
-  "discovery-concierge": "sales-outreach",
-  "project-orchestrator": "scheduling",
-  "estimate-engine": "estimation",
-  "operations-controller": "bookkeeping",
-  "executive-navigator": "project-management",
-  "design-spec-assistant": "design-spec",
+  "leads-agent": "sales-outreach",
+  "project-management-agent": "scheduling",
+  "sales-agent": "estimation",
+  "bookkeeping-agent": "bookkeeping",
+  "ceo-agent": "project-management",
+  "design-agent": "design-spec",
 };
 
 // ---------------------------------------------------------------------------

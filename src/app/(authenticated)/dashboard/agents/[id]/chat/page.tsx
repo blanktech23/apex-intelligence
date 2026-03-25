@@ -163,33 +163,33 @@ const agentColorMap: Record<
 // Plan v3 ID → legacy data ID alias map
 const idAliasMap: Record<string, string> = {
   "support-agent": "customer-support",
-  "discovery-concierge": "sales-outreach",
-  "project-orchestrator": "scheduling",
-  "estimate-engine": "estimation",
-  "operations-controller": "bookkeeping",
-  "executive-navigator": "project-management",
-  "design-spec-assistant": "design-spec-assistant",
+  "leads-agent": "sales-outreach",
+  "project-management-agent": "scheduling",
+  "sales-agent": "estimation",
+  "bookkeeping-agent": "bookkeeping",
+  "ceo-agent": "project-management",
+  "design-agent": "design-agent",
 };
 
 // Plan v3 canonical display names
 const v3NameMap: Record<string, string> = {
-  "discovery-concierge": "Discovery Concierge",
-  "estimate-engine": "Estimate Engine",
-  "operations-controller": "Operations Controller",
-  "executive-navigator": "Executive Navigator",
-  "project-orchestrator": "Project Orchestrator",
-  "design-spec-assistant": "Design Spec Assistant",
+  "leads-agent": "Leads Agent",
+  "sales-agent": "Sales Agent",
+  "bookkeeping-agent": "Bookkeeping Agent",
+  "ceo-agent": "CEO Agent",
+  "project-management-agent": "Project Management Agent",
+  "design-agent": "Design Agent",
   "support-agent": "Support Agent",
 };
 
 // Plan v3 icons
 const v3IconMap: Record<string, LucideIcon> = {
-  "discovery-concierge": Mail,
-  "estimate-engine": Calculator,
-  "operations-controller": Wrench,
-  "executive-navigator": BarChart3,
-  "project-orchestrator": Calendar,
-  "design-spec-assistant": Palette,
+  "leads-agent": Mail,
+  "sales-agent": Calculator,
+  "bookkeeping-agent": Wrench,
+  "ceo-agent": BarChart3,
+  "project-management-agent": Calendar,
+  "design-agent": Palette,
   "support-agent": Headset,
 };
 
@@ -3277,7 +3277,7 @@ export default function AgentChatPage() {
             >
               <Clock className="size-4" />
             </button>
-            {id === "design-spec-assistant" && (
+            {id === "design-agent" && (
               <>
                 {/* Mobile: show toast instead of opening canvas */}
                 <button
@@ -3546,7 +3546,7 @@ export default function AgentChatPage() {
         </div>
 
         {/* ----- Design Canvas Panel ----- */}
-        {canvasOpen && id === "design-spec-assistant" && (
+        {canvasOpen && id === "design-agent" && (
           <div
             className="fixed inset-0 z-50 flex flex-col border-l border-border bg-background transition-all duration-300"
           >

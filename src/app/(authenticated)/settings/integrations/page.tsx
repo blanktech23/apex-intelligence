@@ -225,39 +225,39 @@ interface AgentRef {
 }
 
 const agentDirectory: Record<string, AgentRef> = {
-  "discovery-concierge": {
-    id: "discovery-concierge",
-    name: "Discovery Concierge",
+  "leads-agent": {
+    id: "leads-agent",
+    name: "Leads Agent",
     icon: Mail,
     description: "Qualifies and routes inbound leads automatically",
   },
-  "estimate-engine": {
-    id: "estimate-engine",
-    name: "Estimate Engine",
+  "sales-agent": {
+    id: "sales-agent",
+    name: "Sales Agent",
     icon: Calculator,
     description: "Generates detailed project cost estimates from specs and pricing data",
   },
-  "operations-controller": {
-    id: "operations-controller",
-    name: "Operations Controller",
+  "bookkeeping-agent": {
+    id: "bookkeeping-agent",
+    name: "Bookkeeping Agent",
     icon: Wrench,
     description: "Manages billing, AP/AR tracking, lien waivers, and QuickBooks integration",
   },
-  "executive-navigator": {
-    id: "executive-navigator",
-    name: "Executive Navigator",
+  "ceo-agent": {
+    id: "ceo-agent",
+    name: "CEO Agent",
     icon: BarChart3,
     description: "Surfaces KPIs, financial insights, and strategic briefings for leadership",
   },
-  "project-orchestrator": {
-    id: "project-orchestrator",
-    name: "Project Orchestrator",
+  "project-management-agent": {
+    id: "project-management-agent",
+    name: "Project Management Agent",
     icon: Calendar,
     description: "Manages crew scheduling, equipment, and appointment coordination",
   },
-  "design-spec-assistant": {
-    id: "design-spec-assistant",
-    name: "Design Spec Assistant",
+  "design-agent": {
+    id: "design-agent",
+    name: "Design Agent",
     icon: Palette,
     description: "Extracts specs and submittals from design documents",
   },
@@ -265,16 +265,16 @@ const agentDirectory: Record<string, AgentRef> = {
 
 const integrationAgentMap: Record<string, string[]> = {
   JobTread: [
-    "discovery-concierge",
-    "estimate-engine",
-    "executive-navigator",
-    "project-orchestrator",
-    "design-spec-assistant",
+    "leads-agent",
+    "sales-agent",
+    "ceo-agent",
+    "project-management-agent",
+    "design-agent",
   ],
-  QuickBooks: ["estimate-engine", "operations-controller", "executive-navigator"],
-  "Google Calendar": ["discovery-concierge", "project-orchestrator", "design-spec-assistant"],
-  Gmail: ["discovery-concierge"],
-  Stripe: ["operations-controller"],
+  QuickBooks: ["sales-agent", "bookkeeping-agent", "ceo-agent"],
+  "Google Calendar": ["leads-agent", "project-management-agent", "design-agent"],
+  Gmail: ["leads-agent"],
+  Stripe: ["bookkeeping-agent"],
   Slack: [],
   Zapier: [],
   Twilio: [],

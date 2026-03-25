@@ -40,7 +40,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     canConfigureAgents: true,
     canViewReports: true,
     canEditProjects: true,
-    agents: ["Discovery Concierge", "Estimate Engine", "Operations Controller", "Executive Navigator", "Project Orchestrator", "Design Spec Assistant", "Support Agent"],
+    agents: ["Leads Agent", "Sales Agent", "Bookkeeping Agent", "CEO Agent", "Project Management Agent", "Design Agent", "Support Agent"],
   },
   admin: {
     label: "Admin",
@@ -61,7 +61,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     canConfigureAgents: true,
     canViewReports: true,
     canEditProjects: true,
-    agents: ["Discovery Concierge", "Estimate Engine", "Operations Controller", "Executive Navigator", "Project Orchestrator", "Design Spec Assistant", "Support Agent"],
+    agents: ["Leads Agent", "Sales Agent", "Bookkeeping Agent", "CEO Agent", "Project Management Agent", "Design Agent", "Support Agent"],
   },
   manager: {
     label: "Manager",
@@ -82,11 +82,11 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     canConfigureAgents: false,
     canViewReports: true,
     canEditProjects: true,
-    agents: ["Operations Controller", "Project Orchestrator", "Estimate Engine", "Support Agent"],
+    agents: ["Bookkeeping Agent", "Project Management Agent", "Sales Agent", "Support Agent"],
   },
   designer: {
     label: "Designer",
-    description: "Design specs and submittals. Works with Design Spec Assistant.",
+    description: "Design specs and submittals. Works with Design Agent.",
     color: "text-cyan-600 dark:text-cyan-400 bg-cyan-500/15 ring-cyan-500/20",
     avatar: "LP",
     name: "Lisa Park",
@@ -101,11 +101,11 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     canConfigureAgents: false,
     canViewReports: false,
     canEditProjects: true,
-    agents: ["Design Spec Assistant", "Support Agent"],
+    agents: ["Design Agent", "Support Agent"],
   },
   bookkeeper: {
     label: "Bookkeeper",
-    description: "Financial operations. Works with Operations Controller and Support Agent.",
+    description: "Financial operations. Works with Bookkeeping Agent and Support Agent.",
     color: "text-amber-600 dark:text-amber-400 bg-amber-500/15 ring-amber-500/20",
     avatar: "DK",
     name: "David Kim",
@@ -120,7 +120,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     canConfigureAgents: false,
     canViewReports: true,
     canEditProjects: false,
-    agents: ["Operations Controller", "Support Agent"],
+    agents: ["Bookkeeping Agent", "Support Agent"],
   },
   viewer: {
     label: "Viewer",
@@ -139,7 +139,7 @@ export const roleConfigs: Record<Role, RoleConfig> = {
     canConfigureAgents: false,
     canViewReports: true,
     canEditProjects: false,
-    agents: ["Support Agent", "Project Orchestrator"],
+    agents: ["Support Agent", "Project Management Agent"],
   },
 };
 

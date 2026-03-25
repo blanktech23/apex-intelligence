@@ -91,7 +91,7 @@ const notifications: Notification[] = [
     type: "error",
     title: "Escalation requires immediate attention",
     description:
-      "Discovery Concierge flagged a high-priority lead from Johnson Remodeling that needs manual review within 30 minutes.",
+      "Leads Agent flagged a high-priority lead from Johnson Remodeling that needs manual review within 30 minutes.",
     timestamp: "2 minutes ago",
     read: false,
     category: "mentions",
@@ -100,9 +100,9 @@ const notifications: Notification[] = [
   {
     id: "n-002",
     type: "warning",
-    title: "Estimate Engine accuracy drop detected",
+    title: "Sales Agent accuracy drop detected",
     description:
-      "The Estimate Engine's cost prediction accuracy dropped below 90% threshold over the last 24 hours. Review recent estimates for potential issues.",
+      "The Sales Agent's cost prediction accuracy dropped below 90% threshold over the last 24 hours. Review recent estimates for potential issues.",
     timestamp: "15 minutes ago",
     read: false,
     category: "system",
@@ -123,7 +123,7 @@ const notifications: Notification[] = [
     type: "info",
     title: "Sarah Chen mentioned you in a comment",
     description:
-      '@joseph "Can you review the updated bid for the Westfield project? The Operations Controller flagged a potential scheduling conflict."',
+      '@joseph "Can you review the updated bid for the Westfield project? The Bookkeeping Agent flagged a potential scheduling conflict."',
     timestamp: "1 hour ago",
     read: false,
     category: "mentions",
@@ -165,7 +165,7 @@ const notifications: Notification[] = [
     type: "warning",
     title: "Schedule conflict detected",
     description:
-      "The Project Orchestrator found a double-booking for Crew A on March 22. Both the Riverside and Oak Park projects overlap from 9 AM - 1 PM.",
+      "The Project Management Agent found a double-booking for Crew A on March 22. Both the Riverside and Oak Park projects overlap from 9 AM - 1 PM.",
     timestamp: "5 hours ago",
     read: true,
     category: "mentions",
@@ -174,9 +174,9 @@ const notifications: Notification[] = [
   {
     id: "n-009",
     type: "success",
-    title: "Design Spec Assistant re-enabled",
+    title: "Design Agent re-enabled",
     description:
-      "The Design Spec Assistant has been re-activated after maintenance. All pending document extractions will resume processing.",
+      "The Design Agent has been re-activated after maintenance. All pending document extractions will resume processing.",
     timestamp: "6 hours ago",
     read: true,
     category: "system",
