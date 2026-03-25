@@ -3235,7 +3235,7 @@ export default function AgentChatPage() {
   }, [inputValue]);
 
   return (
-    <div className="flex h-full flex-col bg-background bg-mesh">
+    <div className="flex flex-col bg-background bg-mesh" style={{ height: 'calc(100dvh - 57px)' }}>
       {/* ----------------------------------------------------------------- */}
       {/* Header */}
       {/* ----------------------------------------------------------------- */}
