@@ -1,13 +1,35 @@
 "use client"
 
-import { useEffect, useCallback, useRef } from "react"
+import { useEffect, useCallback, useRef, useState } from "react"
 import { ArrowLeft, X } from "lucide-react"
 
-import { toast } from "sonner"
-import type { ChatMessage } from "@/lib/chat-types"
+import type { ChatMessage, TextMessage } from "@/lib/chat-types"
 import { MessageBubble } from "@/components/chat/message-bubble"
 import { ChatComposer } from "@/components/chat/chat-composer"
+import { TypingIndicator } from "@/components/chat/typing-indicator"
 import { cn } from "@/lib/utils"
+
+// ---------------------------------------------------------------------------
+// Mock responses for thread replies
+// ---------------------------------------------------------------------------
+
+const THREAD_RESPONSES = [
+  "Got it, I'll take a look at that and get back to you.",
+  "Thanks for the update. Let me check with the team.",
+  "Makes sense. I'll update the project notes.",
+  "Good catch — I'll revise the estimate accordingly.",
+  "Let me pull up the specs on that. One moment.",
+  "Noted. I've added this to our action items.",
+  "I'll coordinate with the contractor on that.",
+  "That's a good point. Let me think about it and circle back.",
+]
+
+let threadResponseIndex = 0
+function getNextThreadResponse(): string {
+  const response = THREAD_RESPONSES[threadResponseIndex % THREAD_RESPONSES.length]
+  threadResponseIndex++
+  return response
+}
 
 // ---------------------------------------------------------------------------
 // Props
@@ -15,7 +37,7 @@ import { cn } from "@/lib/utils"
 
 interface ThreadPanelProps {
   rootMessage: ChatMessage
-  replies: ChatMessage[]
+  initialReplies: ChatMessage[]
   onClose: () => void
   channelName: string
 }
@@ -26,11 +48,18 @@ interface ThreadPanelProps {
 
 export function ThreadPanel({
   rootMessage,
-  replies,
+  initialReplies,
   onClose,
   channelName,
 }: ThreadPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [replies, setReplies] = useState<ChatMessage[]>(initialReplies)
+  const [isTyping, setIsTyping] = useState(false)
+
+  // Sync when thread changes
+  useEffect(() => {
+    setReplies(initialReplies)
+  }, [initialReplies])
 
   // Escape key closes the panel
   const handleKeyDown = useCallback(
@@ -47,13 +76,71 @@ export function ThreadPanel({
     return () => document.removeEventListener("keydown", handleKeyDown)
   }, [handleKeyDown])
 
-  // Scroll to bottom on mount
+  // Scroll to bottom on mount and when replies change
   useEffect(() => {
     const el = scrollRef.current
     if (el) {
       el.scrollTop = el.scrollHeight
     }
-  }, [replies.length])
+  }, [replies.length, isTyping])
+
+  const handleReply = useCallback((text: string) => {
+    const userReply: TextMessage = {
+      id: `thread-user-${Date.now()}`,
+      channelId: rootMessage.channelId,
+      threadId: rootMessage.id,
+      type: "text",
+      content: text,
+      sender: {
+        id: "current-user",
+        name: "Alex Rivera",
+        initials: "AR",
+        role: "owner",
+        platform: "kiptra",
+        isOnline: true,
+      },
+      source: "kiptra",
+      createdAt: new Date().toISOString(),
+      isEdited: false,
+      reactions: [],
+      readBy: ["current-user"],
+      replyCount: 0,
+      mentions: [],
+      attachments: [],
+    }
+
+    setReplies((prev) => [...prev, userReply])
+    setIsTyping(true)
+
+    setTimeout(() => {
+      const responseReply: TextMessage = {
+        id: `thread-sarah-${Date.now()}`,
+        channelId: rootMessage.channelId,
+        threadId: rootMessage.id,
+        type: "text",
+        content: getNextThreadResponse(),
+        sender: {
+          id: "sarah-chen",
+          name: "Sarah Chen",
+          initials: "SC",
+          role: "designer",
+          platform: "slack",
+          isOnline: true,
+        },
+        source: "slack",
+        createdAt: new Date().toISOString(),
+        isEdited: false,
+        reactions: [],
+        readBy: ["sarah-chen"],
+        replyCount: 0,
+        mentions: [],
+        attachments: [],
+      }
+
+      setIsTyping(false)
+      setReplies((prev) => [...prev, responseReply])
+    }, 1500)
+  }, [rootMessage.channelId, rootMessage.id])
 
   return (
     <>
@@ -120,6 +207,9 @@ export function ThreadPanel({
               />
             ))}
           </div>
+
+          {/* Typing indicator in thread */}
+          {isTyping && <TypingIndicator name="Sarah Chen" className="mt-2" />}
         </div>
 
         {/* Reply composer */}
@@ -128,9 +218,7 @@ export function ThreadPanel({
             channelName={channelName}
             placeholder="Reply..."
             variant="compact"
-            onSend={(msg) => {
-              toast.success("Reply sent to thread")
-            }}
+            onSend={handleReply}
           />
         </div>
       </aside>

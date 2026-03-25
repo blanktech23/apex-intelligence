@@ -134,7 +134,7 @@ export default function ChatPage() {
 
             {/* Messages + composer */}
             <MessageThread
-              messages={messages}
+              initialMessages={messages}
               channelName={activeChannel.displayName}
               onThreadClick={handleThreadClick}
               disabled={isReadOnly}
@@ -151,7 +151,7 @@ export default function ChatPage() {
       {threadRootMessage && (
         <ThreadPanel
           rootMessage={threadRootMessage}
-          replies={threadReplies}
+          initialReplies={threadReplies}
           onClose={handleThreadClose}
           channelName={activeChannel?.displayName ?? ""}
         />

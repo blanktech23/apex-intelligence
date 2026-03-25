@@ -1,20 +1,41 @@
 "use client"
 
-import { useEffect, useRef, useMemo } from "react"
+import { useEffect, useRef, useMemo, useState, useCallback } from "react"
 
-import { toast } from "sonner"
-import type { ChatMessage } from "@/lib/chat-types"
+import type { ChatMessage, TextMessage } from "@/lib/chat-types"
 import { MessageBubble } from "@/components/chat/message-bubble"
 import { ChatComposer } from "@/components/chat/chat-composer"
 import { TypingIndicator } from "@/components/chat/typing-indicator"
 import { cn } from "@/lib/utils"
 
 // ---------------------------------------------------------------------------
+// Mock responses from Sarah Chen
+// ---------------------------------------------------------------------------
+
+const MOCK_RESPONSES = [
+  "Got it, I'll take a look at that and get back to you.",
+  "Thanks for the update. Let me check with the team.",
+  "Makes sense. I'll update the project notes.",
+  "Good catch — I'll revise the estimate accordingly.",
+  "Let me pull up the specs on that. One moment.",
+  "Noted. I've added this to our action items.",
+  "I'll coordinate with the contractor on that.",
+  "That's a good point. Let me think about it and circle back.",
+]
+
+let responseIndex = 0
+function getNextResponse(): string {
+  const response = MOCK_RESPONSES[responseIndex % MOCK_RESPONSES.length]
+  responseIndex++
+  return response
+}
+
+// ---------------------------------------------------------------------------
 // Props
 // ---------------------------------------------------------------------------
 
 interface MessageThreadProps {
-  messages: ChatMessage[]
+  initialMessages: ChatMessage[]
   channelName: string
   onThreadClick: (messageId: string) => void
   disabled?: boolean
@@ -89,12 +110,19 @@ function groupMessagesByDay(messages: ChatMessage[]): MessageGroup[] {
 // ---------------------------------------------------------------------------
 
 export function MessageThread({
-  messages,
+  initialMessages,
   channelName,
   onThreadClick,
   disabled,
 }: MessageThreadProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages)
+  const [isTyping, setIsTyping] = useState(false)
+
+  // Sync when channel changes (initialMessages changes)
+  useEffect(() => {
+    setMessages(initialMessages)
+  }, [initialMessages])
 
   // Scroll to bottom on mount and when messages change
   useEffect(() => {
@@ -102,7 +130,64 @@ export function MessageThread({
     if (el) {
       el.scrollTop = el.scrollHeight
     }
-  }, [messages.length])
+  }, [messages.length, isTyping])
+
+  const handleSend = useCallback((text: string) => {
+    const userMessage: TextMessage = {
+      id: `user-${Date.now()}`,
+      channelId: "",
+      type: "text",
+      content: text,
+      sender: {
+        id: "current-user",
+        name: "Alex Rivera",
+        initials: "AR",
+        role: "owner",
+        platform: "kiptra",
+        isOnline: true,
+      },
+      source: "kiptra",
+      createdAt: new Date().toISOString(),
+      isEdited: false,
+      reactions: [],
+      readBy: ["current-user"],
+      replyCount: 0,
+      mentions: [],
+      attachments: [],
+    }
+
+    setMessages((prev) => [...prev, userMessage])
+    setIsTyping(true)
+
+    // Simulate Sarah responding after 1.5s
+    setTimeout(() => {
+      const responseMessage: TextMessage = {
+        id: `sarah-${Date.now()}`,
+        channelId: "",
+        type: "text",
+        content: getNextResponse(),
+        sender: {
+          id: "sarah-chen",
+          name: "Sarah Chen",
+          initials: "SC",
+          role: "designer",
+          platform: "slack",
+          isOnline: true,
+        },
+        source: "slack",
+        createdAt: new Date().toISOString(),
+        isEdited: false,
+        reactions: [],
+        readBy: ["sarah-chen"],
+        replyCount: 0,
+        mentions: [],
+        attachments: [],
+      }
+
+      setIsTyping(false)
+      setMessages((prev) => [...prev, responseMessage])
+    }, 1500)
+  }, [])
 
   const groups = useMemo(() => groupMessagesByDay(messages), [messages])
 
@@ -150,8 +235,8 @@ export function MessageThread({
         ))}
       </div>
 
-      {/* Typing indicator (hardcoded Sarah for demo) */}
-      <TypingIndicator name="Sarah Chen" />
+      {/* Typing indicator — only shown when Sarah is "typing" */}
+      {isTyping && <TypingIndicator name="Sarah Chen" />}
 
       {/* Composer */}
       <div className="shrink-0 border-t border-border p-3">
@@ -159,9 +244,7 @@ export function MessageThread({
           channelName={channelName}
           disabled={disabled}
           placeholder={`Message #${channelName}`}
-          onSend={(msg) => {
-            toast.success(`Message sent to #${channelName}`)
-          }}
+          onSend={handleSend}
         />
       </div>
     </div>
